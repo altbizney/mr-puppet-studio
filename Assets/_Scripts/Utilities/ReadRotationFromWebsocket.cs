@@ -11,6 +11,11 @@ public class ReadRotationFromWebsocket : MonoBehaviour
 
     public Vector3 RotationOffset;
 
+    [Header("Debug")]
+    public bool DrawOrientation;
+
+    private Quaternion _targetRotation;
+
     private IEnumerator Start()
     {
         var webSocket = new WebSocket(new Uri(WebsocketUri));
@@ -27,9 +32,9 @@ public class ReadRotationFromWebsocket : MonoBehaviour
                 var y = float.Parse(input[2]);
                 var z = float.Parse(input[3]);
                 var w = float.Parse(input[4]);
-                var rotation = new Quaternion(x, y, z, w);
+                _targetRotation = new Quaternion(x, y, z, w);
 
-                RotationTarget.rotation = Quaternion.Lerp(RotationTarget.rotation, rotation * Quaternion.Euler(RotationOffset), RotationSharpness);
+                RotationTarget.rotation = Quaternion.Lerp(RotationTarget.rotation, _targetRotation * Quaternion.Euler(RotationOffset), RotationSharpness);
             }
 
             if (webSocket.error != null)
@@ -42,5 +47,13 @@ public class ReadRotationFromWebsocket : MonoBehaviour
         }
 
         webSocket.Close();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!DrawOrientation || RotationTarget == null) return;
+        Debug.DrawRay(RotationTarget.position, _targetRotation * transform.forward, Color.blue, 0f, true);
+        Debug.DrawRay(RotationTarget.position, _targetRotation * transform.up, Color.green, 0f, true);
+        Debug.DrawRay(RotationTarget.position, _targetRotation * transform.right, Color.red, 0f, true);
     }
 }

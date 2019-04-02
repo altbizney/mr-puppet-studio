@@ -409,6 +409,7 @@ MonoBehaviour:
   RotationTarget: {fileID: 6355721931151213796}
   RotationSharpness: 0.4
   RotationOffset: {x: 90, y: 0, z: 0}
+  DrawOrientation: 1
 --- !u!4 &551652325
 Transform:
   m_ObjectHideFlags: 0
