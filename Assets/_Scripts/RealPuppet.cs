@@ -7,23 +7,31 @@ namespace Thinko
     {
         [Header("Joints")]
         public Transform RootNode;
-        public Transform HeadNode;
         public Transform ButtNode;
+        
+        [Header("Head")] 
+        public bool AnimateHead = true;
+        public Transform HeadNode;
+        public Vector3 HeadRotationOffset;
+        [Range(0f, 1f)]
+        public float HeadRotationSharpness = 0.5f;
+
+        public bool DebugDrawRotation;
+
+        [Header("Jaw")] 
+        public bool AnimateJaw = true;
         public Transform JawNode;
-
-        [Header("Physics")]
-        [Range(0, 100)]
-        public float SpineFloppiness;
-    
-        [Header("Jaw Configuration")]
-        public float GloveOpen;
-        public float GloveClose;
+        public Transform JawInitialPose;
+        public Transform JawExtremePose;
+        [Range(0, .3f)]
+        public float JawSmoothness = .15f;
+        public float JawMin = 0;
+        public float JawMax = 1023;
         [ReadOnly]
-        public float LiveGloveValue;
+        public float JawGlove;
 
-        [Space]
-        public float RigOpen;
-        public float RigClose;
+        private float _jawNormalized;
+        private Vector3 _jawCurrentVelocity;
 
         private void Reset()
         {
@@ -55,6 +63,33 @@ namespace Thinko
                 {
                     JawNode = child;
                 }
+            }
+        }
+        
+        private void Update()
+        {
+            if (AnimateHead)
+            {
+                HeadNode.localRotation = Quaternion.Slerp(HeadNode.localRotation, GloveDataFromWebsocket.Rotation * Quaternion.Euler(HeadRotationOffset), HeadRotationSharpness);
+            }
+            
+            if (AnimateJaw)
+            {
+                JawGlove = GloveDataFromWebsocket.Jaw;
+                _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
+                JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (AnimateHead && DebugDrawRotation)
+            {
+                Debug.DrawRay(HeadNode.position, GloveDataFromWebsocket.Rotation * transform.forward, Color.blue, 0f, true);
+                Debug.DrawRay(HeadNode.position, GloveDataFromWebsocket.Rotation * transform.up, Color.green, 0f, true);
+                Debug.DrawRay(HeadNode.position, GloveDataFromWebsocket.Rotation * transform.right, Color.red, 0f, true);
+
             }
         }
     }
