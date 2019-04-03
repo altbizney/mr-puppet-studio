@@ -10,31 +10,59 @@ namespace Thinko
 
         private Transform[] _childNodes;
 
+        private static float _playModeJawMin;
+        private static float _playModeJawMax;
+
         private void OnEnable()
         {
             _realPuppet = target as RealPuppet;
+            
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+        }
+
+        private void OnPlayModeStateChanged(PlayModeStateChange obj)
+        {
+            // Save play mode jaw values
+            if (obj == PlayModeStateChange.ExitingPlayMode)
+            {
+                _playModeJawMin = _realPuppet.JawMin;
+                _playModeJawMax = _realPuppet.JawMax;
+            }
+            else if (obj == PlayModeStateChange.EnteredEditMode)
+            {
+                _realPuppet.JawMin = _playModeJawMin;
+                _realPuppet.JawMax = _playModeJawMax;
+            }
         }
 
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
             
-            var realPuppet = (RealPuppet)target;
-
             serializedObject.Update();
+            
+            GUILayout.Space(10);
+            
+            // Data Provider
+            _realPuppet.RealPuppetDataProvider = EditorGUILayout.ObjectField("Data Provider", _realPuppet.RealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
             
             // Head
             GUILayout.Space(10);
             GUILayout.Label("HEAD", EditorStyles.whiteLargeLabel);
             
-            realPuppet.AnimateHead = EditorGUILayout.Toggle("Enable", realPuppet.AnimateHead);
-            if (realPuppet.AnimateHead)
+            _realPuppet.AnimateHead = EditorGUILayout.Toggle("Enable", _realPuppet.AnimateHead);
+            if (_realPuppet.AnimateHead)
             {
                 EditorGUI.indentLevel = 1;
-                realPuppet.HeadNode = EditorGUILayout.ObjectField("Node", realPuppet.HeadNode, typeof(Transform), true) as Transform;
-                realPuppet.HeadRotationOffset = EditorGUILayout.Vector3Field("Rotation Offset", realPuppet.HeadRotationOffset);
-                realPuppet.HeadRotationSharpness = EditorGUILayout.Slider("Rotation Sharpness", realPuppet.HeadRotationSharpness, 0, 1);
-                realPuppet.DebugDrawRotation = EditorGUILayout.Toggle("Draw Rotation Gizmo", realPuppet.DebugDrawRotation);
+                _realPuppet.HeadNode = EditorGUILayout.ObjectField("Node", _realPuppet.HeadNode, typeof(Transform), true) as Transform;
+                _realPuppet.HeadRotationOffset = EditorGUILayout.Vector3Field("Rotation Offset", _realPuppet.HeadRotationOffset);
+                _realPuppet.HeadRotationSharpness = EditorGUILayout.Slider("Rotation Sharpness", _realPuppet.HeadRotationSharpness, 0, 1);
+                _realPuppet.DebugDrawRotation = EditorGUILayout.Toggle("Draw Rotation Gizmo", _realPuppet.DebugDrawRotation);
             }
             EditorGUI.indentLevel = 0;
             
@@ -44,41 +72,41 @@ namespace Thinko
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
             
-            realPuppet.AnimateJaw = EditorGUILayout.Toggle("Enable", realPuppet.AnimateJaw);
-            if (realPuppet.AnimateJaw)
+            _realPuppet.AnimateJaw = EditorGUILayout.Toggle("Enable", _realPuppet.AnimateJaw);
+            if (_realPuppet.AnimateJaw)
             {
                 EditorGUI.indentLevel = 1;
-                realPuppet.JawNode = EditorGUILayout.ObjectField("Node", realPuppet.JawNode, typeof(Transform), true) as Transform;
-                realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
-                realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
+                _realPuppet.JawNode = EditorGUILayout.ObjectField("Node", _realPuppet.JawNode, typeof(Transform), true) as Transform;
+                _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
+                _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
 
                 GUILayout.Space(10);
                 GUI.contentColor = Color.green;
-                EditorGUILayout.LabelField($"Live Glove Value: {realPuppet.JawGlove}");
+                EditorGUILayout.LabelField($"Live Glove Value: {_realPuppet.JawGlove}");
                 GUI.contentColor = Color.white;
                 
                 EditorGUILayout.BeginHorizontal();
-                realPuppet.JawMin = EditorGUILayout.FloatField("Min Glove Value", realPuppet.JawMin);
+                _realPuppet.JawMin = EditorGUILayout.FloatField("Min Glove Value", _realPuppet.JawMin);
                 GUI.enabled = Application.isPlaying;
                 if (GUILayout.Button("Grab"))
                 {
-                    realPuppet.JawMin = realPuppet.JawGlove;
+                    _realPuppet.JawMin = _realPuppet.JawGlove;
                 }
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
                 
                 EditorGUILayout.BeginHorizontal();
-                realPuppet.JawMax = EditorGUILayout.FloatField("Max Glove Value", realPuppet.JawMax);
+                _realPuppet.JawMax = EditorGUILayout.FloatField("Max Glove Value", _realPuppet.JawMax);
                 GUI.enabled = Application.isPlaying;
                 if (GUILayout.Button("Grab"))
                 {
-                    realPuppet.JawMax = realPuppet.JawGlove; 
+                    _realPuppet.JawMax = _realPuppet.JawGlove; 
                 }
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
                 
                 GUILayout.Space(10);
-                realPuppet.JawSmoothness = EditorGUILayout.Slider("Anim Smoothness", realPuppet.JawSmoothness, 0, .3f);
+                _realPuppet.JawSmoothness = EditorGUILayout.Slider("Anim Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
             EditorGUI.indentLevel = 0;
 
@@ -86,7 +114,7 @@ namespace Thinko
             
             if (EditorGUI.EndChangeCheck())
             {
-                EditorUtility.SetDirty(realPuppet);
+                EditorUtility.SetDirty(_realPuppet);
             }
         }
 
