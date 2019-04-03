@@ -114,6 +114,7 @@ namespace Thinko
             
             if (EditorGUI.EndChangeCheck())
             {
+                Undo.RecordObject(_realPuppet, "Modified RealPuppet Component"); 
                 EditorUtility.SetDirty(_realPuppet);
             }
         }
