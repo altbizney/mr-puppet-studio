@@ -44,30 +44,24 @@ namespace Thinko
                     {
                         _dataArr = _data.Split(',');
 
-                        if (_dataArr[0] == "E")
-                        {
-                            Rotation = Quaternion.Euler(
-                                float.Parse(_dataArr[2]) * -1,
-                                float.Parse(_dataArr[1]),
-                                float.Parse(_dataArr[3])
-                            );
+                        Rotation = new Quaternion(
+                            float.Parse(_dataArr[0]),
+                            float.Parse(_dataArr[1]),
+                            float.Parse(_dataArr[2]),
+                            float.Parse(_dataArr[3])
+                        );
 
-                            Jaw = int.Parse(_dataArr[4]);
-                        }
-                        else if (_dataArr[0] == "Q")
-                        {
-                            Rotation = new Quaternion(
-                                float.Parse(_dataArr[1]),
-                                float.Parse(_dataArr[2]),
-                                float.Parse(_dataArr[3]),
-                                float.Parse(_dataArr[4])
-                            );
+                        Rotation2 = new Quaternion(
+                            float.Parse(_dataArr[4]),
+                            float.Parse(_dataArr[5]),
+                            float.Parse(_dataArr[6]),
+                            float.Parse(_dataArr[7])
+                        );
 
-                            Jaw = int.Parse(_dataArr[5]);
-                        }
+                        Jaw = int.Parse(_dataArr[8]);
 
                         if (OutputData)
-                            Debug.Log($"Rotation: {Rotation} - Jaw: {Jaw}");
+                            Debug.Log($"Rotation: {Rotation} Rotation2: {Rotation2} Jaw: {Jaw}");
                     }
                 }
 
