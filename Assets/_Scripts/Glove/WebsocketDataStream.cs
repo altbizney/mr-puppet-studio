@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Thinko
 {
-    public class GloveDataFromWebsocket : RealPuppetDataProvider
+    public class WebsocketDataStream : RealPuppetDataProvider
     {
         public string WebsocketUri = "ws://localhost:3000";
 

@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 551652325}
   - component: {fileID: 551652324}
   m_Layer: 0
-  m_Name: GloveDataFromWebsocket
+  m_Name: WebsocketDataStream
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
