@@ -7,8 +7,8 @@ namespace Thinko
         public RealPuppetDataProvider RealPuppetDataProvider;
         
         [Header("Joints")]
-        public Transform WristNode;
         public Transform ElbowNode;
+        public Transform WristNode;
         
         private void Update()
         {
@@ -18,8 +18,8 @@ namespace Thinko
                 return;
             }
             
-            WristNode.localRotation = RealPuppetDataProvider.Rotation;
             ElbowNode.localRotation = RealPuppetDataProvider.Rotation2;            
+            WristNode.localRotation = RealPuppetDataProvider.Rotation;
         }
     }
 }
