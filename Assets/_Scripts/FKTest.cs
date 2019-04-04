@@ -19,7 +19,8 @@ namespace Thinko
             }
             
             ElbowNode.localRotation = RealPuppetDataProvider.Rotation2;            
-            WristNode.localRotation = RealPuppetDataProvider.Rotation;
+            // WristNode.localRotation = Quaternion.Euler(RealPuppetDataProvider.Rotation.eulerAngles - RealPuppetDataProvider.Rotation2.eulerAngles);
+            WristNode.localRotation = RealPuppetDataProvider.Rotation * Quaternion.Inverse(RealPuppetDataProvider.Rotation2);
         }
     }
 }
