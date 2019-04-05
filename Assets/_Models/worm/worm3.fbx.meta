@@ -70,7 +70,37 @@ ModelImporter:
     13700006: pupilLeft
     13700008: pupilRight
     13700010: tongue1
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_body
+    second: {fileID: 2100000, guid: 370ad4cffdd6342749973ab1f0c02fe3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_eye
+    second: {fileID: 2100000, guid: d0fe8fb2a83424448abc90bfe0a0cf43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_mouth
+    second: {fileID: 2100000, guid: 602187ad928c1465a8608c998ea3b9a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_pupil
+    second: {fileID: 2100000, guid: 538d01c306c5d4b3c8c77a473c895677, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_ring
+    second: {fileID: 2100000, guid: 33e20cc16245343ea8c744336707c20b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_tongue
+    second: {fileID: 2100000, guid: 908f5e92ea9cf4727ae0d27af53cd994, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -122,7 +152,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.099999994
+    previousCalculatedGlobalScale: 0.99999994
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
