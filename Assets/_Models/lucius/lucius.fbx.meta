@@ -143,17 +143,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: model_body
-    second: {fileID: 2100000, guid: b79c54f57ffa840a885adf567d57a3b3, type: 2}
+    second: {fileID: 2100000, guid: 0a3d1661efb164a2d84404bd9881f536, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: model_eye
-    second: {fileID: 2100000, guid: 6fc6649cd274e4911af0fc2a77d7c94a, type: 2}
+    second: {fileID: 2100000, guid: 3d6b8d411a3944e869a127b64a7a2aaf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: model_pasted__eye
-    second: {fileID: 2100000, guid: 9a685fee8c9464a76843dd4ad24d2e03, type: 2}
+    second: {fileID: 2100000, guid: 1c5d94bcb00cc48aaafb1cf4db4e57ce, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -163,15 +163,15 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: model_tooth1
-    second: {fileID: 2100000, guid: 3bb828859e9104e419affb4a907d991d, type: 2}
+    second: {fileID: 2100000, guid: 5d00583dc100b45309a984b3f5423a5e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: model_toungue
-    second: {fileID: 2100000, guid: 091b1dd0a0d5447d199817956d46d0f8, type: 2}
+    second: {fileID: 2100000, guid: db110475d66f340f9baa7b22777ca262, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:
