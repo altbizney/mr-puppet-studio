@@ -12,13 +12,20 @@ namespace Thinko
         [Header("Debug")] public bool OutputData;
 
         private string _data;
-        private string[] _dataArr;
+        private string[] _array;
+        private string[] _wrist;
+        private string[] _elbow;
+        private string[] _shoulder;
 
-        private Quaternion Rotation_curr = Quaternion.identity;
-        private Quaternion Rotation2_curr = Quaternion.identity;
+        private Quaternion WristRotation_curr = Quaternion.identity;
+        private Quaternion WristRotation_calib = Quaternion.identity;
 
-        private Quaternion Rotation_calib = Quaternion.identity;
-        private Quaternion Rotation2_calib = Quaternion.identity;
+        private Quaternion ElbowRotation_curr = Quaternion.identity;
+        private Quaternion ElbowRotation_calib = Quaternion.identity;
+
+        private Quaternion ShoulderRotation_curr = Quaternion.identity;
+        private Quaternion ShoulderRotation_calib = Quaternion.identity;
+
 
         private void OnEnable()
         {
@@ -28,24 +35,10 @@ namespace Thinko
         private void Update(){
             if (Input.GetKeyDown("space"))
             {
-                Rotation_calib = Rotation_curr;
-                Rotation2_calib = Rotation2_curr;
+                WristRotation_calib = WristRotation_curr;
+                ElbowRotation_calib = ElbowRotation_curr;
+                ShoulderRotation_calib = ShoulderRotation_curr;
             }
-        }
-
-
-        private Quaternion lhq(string data0,string data1,string data2,string data3) {
-            // The BNO055 sends a right handed quaternion in (w, x, y, z) format.
-            // Unity is a left handed quaternion in the (x, y, z, w) format.
-            // Quaternion q_lefthanded = new Quaternion( -bno[3], -bno[1], -bno[2], bno[0] );
-            // https://forums.adafruit.com/viewtopic.php?f=8&t=81671
-
-            return new Quaternion(
-                            float.Parse(data3) * -1,
-                            float.Parse(data1) * -1,
-                            float.Parse(data2) * -1,
-                            float.Parse(data0)
-                        );
         }
 
         private IEnumerator GrabData()
@@ -58,7 +51,7 @@ namespace Thinko
             {
                 if (webSocket.error != null)
                 {
-                    Debug.LogError("Error: " + webSocket.error);
+                    Debug.LogError("[Websocket] " + webSocket.error);
                     break;
                 }
 
@@ -67,22 +60,35 @@ namespace Thinko
                 {
                     if (_data.StartsWith("DEBUG"))
                     {
+                        // output debug
                         Debug.Log(_data);
                     }
                     else
                     {
-                        _dataArr = _data.Split(',');
+                        // process packet
+                        _array = _data.Split('\t');
 
-                        Rotation_curr = lhq(_dataArr[0],_dataArr[1],_dataArr[2],_dataArr[3]);
-                        Rotation2_curr = lhq(_dataArr[4],_dataArr[5],_dataArr[6],_dataArr[7]);
+                        // jaw
+                        Jaw = int.Parse(_array[0]);
 
-                        Rotation = Rotation_curr * Quaternion.Inverse(Rotation_calib);
-                        Rotation2 = Rotation2_curr * Quaternion.Inverse(Rotation2_calib);
+                        // rotations
+                        _wrist = _array[1].Split(',');
+                        _elbow = _array[2].Split(',');
+                        _shoulder = _array[3].Split(',');
 
-                        Jaw = int.Parse(_dataArr[8]);
+                        // initialize raw quaternions
+                        WristRotation_curr = new Quaternion(float.Parse(_wrist[0]),float.Parse(_wrist[1]),float.Parse(_wrist[2]),float.Parse(_wrist[3]));
+                        ElbowRotation_curr = new Quaternion(float.Parse(_elbow[0]),float.Parse(_elbow[1]),float.Parse(_elbow[2]),float.Parse(_elbow[3]));
+                        ShoulderRotation_curr = new Quaternion(float.Parse(_shoulder[0]),float.Parse(_shoulder[1]),float.Parse(_shoulder[2]),float.Parse(_shoulder[3]));
 
-                        if (OutputData)
-                            Debug.Log($"Rotation: {Rotation} Rotation2: {Rotation2} Jaw: {Jaw}");
+                        // apply calibration
+                        WristRotation = WristRotation_curr * Quaternion.Inverse(WristRotation_calib);
+                        ElbowRotation = ElbowRotation_curr * Quaternion.Inverse(ElbowRotation_calib);
+                        ShoulderRotation = ShoulderRotation_curr * Quaternion.Inverse(ShoulderRotation_calib);
+
+                        if (OutputData) {
+                            Debug.Log($"Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
+                        }
                     }
                 }
 

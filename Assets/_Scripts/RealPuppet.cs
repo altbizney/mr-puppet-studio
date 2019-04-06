@@ -78,7 +78,7 @@ namespace Thinko
             
             if (AnimateHead)
             {
-                HeadNode.localRotation = Quaternion.Slerp(HeadNode.localRotation, RealPuppetDataProvider.Rotation * Quaternion.Euler(HeadRotationOffset), HeadRotationSharpness);
+                HeadNode.localRotation = Quaternion.Slerp(HeadNode.localRotation, RealPuppetDataProvider.WristRotation * Quaternion.Euler(HeadRotationOffset), HeadRotationSharpness);
             }
             
             if (AnimateJaw)
@@ -87,17 +87,6 @@ namespace Thinko
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
                 JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
                 JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (RealPuppetDataProvider != null && AnimateHead && DebugDrawRotation)
-            {
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.forward, Color.blue, 0f, true);
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.up, Color.green, 0f, true);
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.right, Color.red, 0f, true);
-
             }
         }
     }
