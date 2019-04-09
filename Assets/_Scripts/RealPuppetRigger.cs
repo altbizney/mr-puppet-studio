@@ -14,7 +14,7 @@ namespace Thinko
 
         public JointType jointType = JointType.configurableJoint;
 
-        [Header("Use jointChainRoots[0] settings for all joints?")]
+        [Header("Use jointChainRoots[0] settings for all joints")]
         public bool overrideJointSettings;
 
         [Header("Configurable Joint Settings")]
@@ -22,8 +22,6 @@ namespace Thinko
         [Header("Character Joint Settings")]
 
         [Header("Final IK Joint Settings")]
-
-
 
 
         RealPuppet puppet;
@@ -40,7 +38,6 @@ namespace Thinko
         
             foreach (Transform jointChainRoot in jointChainRoots)
             {
-
                 SetupJointChain(jointChainRoot, jointType);
             }
 
@@ -50,11 +47,14 @@ namespace Thinko
 
             if (jt == JointType.configurableJoint) {
                 SetupConfigurableJointChain(jointChainRoot);
+                SetupRigidbodies(jointChainRoot);
             }
 
             if (jt == JointType.characterJoint)
             {
                 SetupCharacterJointChain(jointChainRoot);
+                SetupRigidbodies(jointChainRoot);
+
             }
 
             if (jt == JointType.FinalIK)
@@ -143,7 +143,27 @@ namespace Thinko
             Debug.Log("Hybrid not ready yet!");
 
         }
+        void SetupRigidbodies(Transform jointChainRoot)
+        {
 
+            Rigidbody masterRigidbody = jointChainRoot.GetComponent<Rigidbody>();
+
+            if (masterRigidbody == null)
+            {
+                masterRigidbody = jointChainRoot.GetChild(0).GetComponent<Rigidbody>();
+            }
+
+
+            Rigidbody[] childRigidbodies = jointChainRoot.GetComponentsInChildren<Rigidbody>();
+
+
+            foreach (Rigidbody rb in childRigidbodies)
+            {
+                SetupRigidbody(masterRigidbody, rb);
+
+            }
+
+        }
 
         void SetupConfigurableJoint(ConfigurableJoint masterJoint, ConfigurableJoint jointToSetup) {
 
@@ -170,7 +190,6 @@ namespace Thinko
             jointToSetup.angularZLimit = masterJoint.angularZLimit;
 
         }
-
         void SetupCharacterJoint(CharacterJoint masterJoint, CharacterJoint jointToSetup)
         {
 
@@ -238,6 +257,17 @@ namespace Thinko
 
 
         }
+
+        void SetupRigidbody(Rigidbody masterRigidbody, Rigidbody rb) {
+
+            rb.mass = masterRigidbody.mass;
+            rb.drag = masterRigidbody.drag;
+            rb.angularDrag = masterRigidbody.angularDrag;
+            rb.useGravity = masterRigidbody.useGravity;
+            rb.isKinematic = masterRigidbody.isKinematic;
+
+        }
+
 
         public void StartRiggingPuppet()
         {
