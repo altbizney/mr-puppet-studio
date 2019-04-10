@@ -51,9 +51,6 @@ namespace Thinko
             // Data Provider
             _realPuppet.RealPuppetDataProvider = EditorGUILayout.ObjectField("Data Provider", _realPuppet.RealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
 
-            // Data Provider
-            _realPuppet.body = EditorGUILayout.ObjectField("Body", _realPuppet.body, typeof(Transform), true) as Transform;
-
             // Head
             GUILayout.Space(10);
             GUILayout.Label("HEAD", EditorStyles.whiteLargeLabel);

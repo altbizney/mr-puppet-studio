@@ -32,19 +32,8 @@ namespace Thinko
         [ReadOnly]
         public float JawGlove;
 
-        [Header("Body")]
-        public Transform body;
-
         private float _jawNormalized;
         private Vector3 _jawCurrentVelocity;
-        private SkinnedMeshRenderer _bodyMesh;
-
-
-        private void Start()
-        {
-            // Grab the body skinned mesh renderer
-            _bodyMesh = body.GetComponent<SkinnedMeshRenderer>();
-        }
 
         private void Reset()
         {
@@ -99,9 +88,6 @@ namespace Thinko
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
                 JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
                 JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
-
-                // Animate blend shape here?
-                //_bodyMesh.SetBlendShapeWeight(0, blendShapeValue);
             }
         }
 
@@ -112,7 +98,6 @@ namespace Thinko
                 Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.forward, Color.blue, 0f, true);
                 Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.up, Color.green, 0f, true);
                 Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.right, Color.red, 0f, true);
-
             }
         }
     }
