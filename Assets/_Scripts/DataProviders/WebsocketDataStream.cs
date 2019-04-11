@@ -46,7 +46,7 @@ namespace Thinko
 
                         if (_dataArr[0] == "E")
                         {
-                            Rotation = Quaternion.Euler(
+                            WristRotation = Quaternion.Euler(
                                 float.Parse(_dataArr[2]) * -1,
                                 float.Parse(_dataArr[1]),
                                 float.Parse(_dataArr[3])
@@ -56,7 +56,7 @@ namespace Thinko
                         }
                         else if (_dataArr[0] == "Q")
                         {
-                            Rotation = new Quaternion(
+                            WristRotation = new Quaternion(
                                 float.Parse(_dataArr[1]),
                                 float.Parse(_dataArr[2]),
                                 float.Parse(_dataArr[3]),
@@ -67,7 +67,7 @@ namespace Thinko
                         }
 
                         if (OutputData)
-                            Debug.Log($"Rotation: {Rotation} - Jaw: {Jaw}");
+                            Debug.Log($"WristRotation: {WristRotation} - Jaw: {Jaw}");
                     }
                 }
 

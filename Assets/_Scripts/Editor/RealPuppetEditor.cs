@@ -3,6 +3,65 @@ using UnityEngine;
 
 namespace Thinko
 {
+    [CustomPropertyDrawer(typeof(RealPuppet.PuppetJoint))]
+    public class PuppetJointDrawer : PropertyDrawer
+    {
+        public override float GetPropertyHeight( SerializedProperty property, GUIContent label ) 
+        {
+            return EditorGUIUtility.singleLineHeight * 6;
+        }
+        
+        public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
+        {
+            EditorGUI.BeginProperty(rect, label, property);
+
+            var defColor = GUI.color;
+            
+            var x = rect.x;
+            rect.y += 10;
+            
+            EditorGUI.PropertyField(
+                new Rect(rect.x, rect.y, 35, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("Enabled"), GUIContent.none);
+            
+            GUI.color = property.FindPropertyRelative("RealPuppetDataProvider").objectReferenceValue != null ? defColor : Color.red;
+            rect.x += 35;
+            EditorGUI.PropertyField(
+                new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("RealPuppetDataProvider"), GUIContent.none);
+            GUI.color = defColor;
+            
+            rect.x += 200;
+            EditorGUI.PropertyField(
+                new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("InputSource"), GUIContent.none);
+            
+            GUI.color = property.FindPropertyRelative("Joint").objectReferenceValue != null ? defColor : Color.red;
+            rect.x = x;
+            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+            EditorGUI.ObjectField(
+                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("Joint"),
+                new GUIContent("Joint"));
+            GUI.color = defColor;
+
+            rect.x = x;
+            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+            EditorGUI.PropertyField(
+                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("Offset"), 
+                new GUIContent("Offset"));
+            
+            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+            EditorGUI.Slider(
+                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
+                property.FindPropertyRelative("Sharpness"), 
+                0, 1, new GUIContent("Sharpness"));
+
+            EditorGUI.EndProperty();
+        }
+    }
+    
     [CustomEditor(typeof(RealPuppet))]
     public class RealPuppetEditor : Editor
     {
@@ -48,25 +107,21 @@ namespace Thinko
             
             GUILayout.Space(10);
             
-            // Data Provider
-            _realPuppet.RealPuppetDataProvider = EditorGUILayout.ObjectField("Data Provider", _realPuppet.RealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
+            // Joints
+            GUILayout.Space(10);
+            GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
 
-            // Head
-            GUILayout.Space(10);
-            GUILayout.Label("HEAD", EditorStyles.whiteLargeLabel);
-            
-            _realPuppet.AnimateHead = EditorGUILayout.Toggle("Enable", _realPuppet.AnimateHead);
-            if (_realPuppet.AnimateHead)
+            // Add joint button
+            if (GUILayout.Button("Add Joint"))
             {
-                EditorGUI.indentLevel = 1;
-                _realPuppet.HeadNode = EditorGUILayout.ObjectField("Node", _realPuppet.HeadNode, typeof(Transform), true) as Transform;
-                _realPuppet.HeadRotationOffset = EditorGUILayout.Vector3Field("Rotation Offset", _realPuppet.HeadRotationOffset);
-                _realPuppet.HeadRotationSharpness = EditorGUILayout.Slider("Rotation Sharpness", _realPuppet.HeadRotationSharpness, 0, 1);
-                _realPuppet.DebugDrawRotation = EditorGUILayout.Toggle("Draw Rotation Gizmo", _realPuppet.DebugDrawRotation);
+                _realPuppet.PuppetJoints.Add(new RealPuppet.PuppetJoint()
+                {
+                    Enabled = true
+                });
             }
-            EditorGUI.indentLevel = 0;
             
-            GUILayout.Space(10);
+            // Joints list
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("PuppetJoints"), true);
             
             // Jaw
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
@@ -76,6 +131,7 @@ namespace Thinko
             if (_realPuppet.AnimateJaw)
             {
                 EditorGUI.indentLevel = 1;
+                _realPuppet.JawRealPuppetDataProvider = EditorGUILayout.ObjectField("Jaw Data Provider", _realPuppet.JawRealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
                 _realPuppet.JawNode = EditorGUILayout.ObjectField("Node", _realPuppet.JawNode, typeof(Transform), true) as Transform;
                 _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
                 _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
@@ -123,31 +179,53 @@ namespace Thinko
         {
             if (!_realPuppet.enabled)
                 return;
-
-
-            // Draw child and root nodes
-            if (_realPuppet.RootNode)
+            
+            
+            foreach (var puppetJoint in _realPuppet.PuppetJoints)
             {
-                if(_childNodes == null)
-                    _childNodes = _realPuppet.RootNode.GetComponentsInChildren<Transform>();
+                if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
                 
-                var handleSize = HandleUtility.GetHandleSize(Vector3.zero) * .1f;
-                foreach (var child in _childNodes)
+                var handleSize = HandleUtility.GetHandleSize(puppetJoint.Joint.position) * .1f;
+                Handles.CircleHandleCap(0, puppetJoint.Joint.position, Quaternion.identity, handleSize, EventType.Repaint);
+                
+                // Label
+                GUI.contentColor = Color.yellow;
+                Handles.Label(puppetJoint.Joint.position, puppetJoint.InputSource.ToString(), new GUIStyle()
                 {
-                    Handles.color = child == _realPuppet.RootNode ? Color.magenta : Color.yellow;
-                    Handles.CircleHandleCap(0, child.position, Quaternion.identity, handleSize, EventType.Repaint);
-                }
+                    fontSize = 20,
+                    alignment = TextAnchor.MiddleLeft,
+                    contentOffset = new Vector2(15, -10),
+                    normal = new GUIStyleState()
+                    {
+                        textColor = Color.yellow
+                    }
+                });
+                GUI.contentColor = Color.white;
             }
 
-            // Draw main nodes
-            if (_realPuppet.HeadNode)
-                DrawMainNode(_realPuppet.HeadNode, "Head", Color.yellow);
-
-            if (_realPuppet.ButtNode)
-                DrawMainNode(_realPuppet.ButtNode, "Butt", Color.yellow);
-
-            if (_realPuppet.JawNode)
-                DrawMainNode(_realPuppet.JawNode, "Jaw", Color.yellow);
+//            // Draw child and root nodes
+//            if (_realPuppet.RootNode)
+//            {
+//                if(_childNodes == null)
+//                    _childNodes = _realPuppet.RootNode.GetComponentsInChildren<Transform>();
+//                
+//                var handleSize = HandleUtility.GetHandleSize(Vector3.zero) * .1f;
+//                foreach (var child in _childNodes)
+//                {
+//                    Handles.color = child == _realPuppet.RootNode ? Color.magenta : Color.yellow;
+//                    Handles.CircleHandleCap(0, child.position, Quaternion.identity, handleSize, EventType.Repaint);
+//                }
+//            }
+//
+//            // Draw main nodes
+//            if (_realPuppet.HeadNode)
+//                DrawMainNode(_realPuppet.HeadNode, "Head", Color.yellow);
+//
+//            if (_realPuppet.ButtNode)
+//                DrawMainNode(_realPuppet.ButtNode, "Butt", Color.yellow);
+//
+//            if (_realPuppet.JawNode)
+//                DrawMainNode(_realPuppet.JawNode, "Jaw", Color.yellow);
         }
 
         private void DrawMainNode(Transform node, string nodeName, Color color)

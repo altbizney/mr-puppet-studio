@@ -1,90 +1,50 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Thinko
 {
-    [RequireComponent(typeof(Animator))]
     public class RealPuppet : MonoBehaviour
     {
-        public RealPuppetDataProvider RealPuppetDataProvider;
-        
-        [Header("Joints")]
-        public Transform RootNode;
-        public Transform ButtNode;
-        
-        [Header("Head")] 
-        public bool AnimateHead = true;
-        public Transform HeadNode;
-        public Vector3 HeadRotationOffset;
-        [Range(0f, 1f)]
-        public float HeadRotationSharpness = 0.5f;
+        [Serializable]
+        public class PuppetJoint
+        {
+            public bool Enabled = true;
+            public RealPuppetDataProvider RealPuppetDataProvider;
+            public Transform Joint;
+            public RealPuppetDataProvider.Source InputSource;
+            public Vector3 Offset;
+            [Range(0, 1)] public float Sharpness = 1;
+        }
 
-        public bool DebugDrawRotation;
+        [Header("Joints")] 
+        public List<PuppetJoint> PuppetJoints = new List<PuppetJoint>();
 
         [Header("Jaw")] 
+        public RealPuppetDataProvider JawRealPuppetDataProvider;
         public bool AnimateJaw = true;
         public Transform JawNode;
         public Transform JawInitialPose;
         public Transform JawExtremePose;
-        [Range(0, .3f)]
-        public float JawSmoothness = .15f;
+        [Range(0, .3f)] public float JawSmoothness = .15f;
         public float JawMin = 0;
         public float JawMax = 1023;
-        [ReadOnly]
-        public float JawGlove;
+        [ReadOnly] public float JawGlove;
 
         private float _jawNormalized;
         private Vector3 _jawCurrentVelocity;
 
-        private void Reset()
-        {
-            // Attempt to automatically find the nodes by their names
-            var children = gameObject.GetComponentsInChildren<Transform>();
-            foreach(var child in children)
-            {
-                if (StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "skeleton") < 2 ||
-                    StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "root") < 2)
-                {
-                    RootNode = child;
-                    continue;
-                }
-                
-                if (StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "head") < 2)
-                {
-                    HeadNode = child;
-                    continue;
-                }
-                
-                if (StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "butt") < 2 ||
-                    StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "tail") < 2)
-                {
-                    ButtNode = child;
-                    continue;
-                }
-                
-                if (StringComparison.DamerauLevenshteinDistance(child.name.ToLower(), "jaw") < 2)
-                {
-                    JawNode = child;
-                }
-            }
-        
-        }
-        
         private void Update()
         {
-            if (RealPuppetDataProvider == null)
+            foreach (var puppetJoint in PuppetJoints)
             {
-                Debug.LogWarning("No RealPuppetDataProvider available");
-                return;
+                if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
+                puppetJoint.Joint.localRotation = Quaternion.Slerp(puppetJoint.Joint.localRotation, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset), puppetJoint.Sharpness);
             }
-            
-            if (AnimateHead)
+
+            if (AnimateJaw && JawRealPuppetDataProvider != null)
             {
-                HeadNode.localRotation = Quaternion.Slerp(HeadNode.localRotation, RealPuppetDataProvider.Rotation * Quaternion.Euler(HeadRotationOffset), HeadRotationSharpness);
-            }
-            
-            if (AnimateJaw)
-            {
-                JawGlove = RealPuppetDataProvider.Jaw;
+                JawGlove = JawRealPuppetDataProvider.Jaw;
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
                 JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
                 JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
@@ -93,11 +53,12 @@ namespace Thinko
 
         private void OnDrawGizmos()
         {
-            if (RealPuppetDataProvider != null && AnimateHead && DebugDrawRotation)
+            foreach (var puppetJoint in PuppetJoints)
             {
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.forward, Color.blue, 0f, true);
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.up, Color.green, 0f, true);
-                Debug.DrawRay(HeadNode.position, RealPuppetDataProvider.Rotation * transform.right, Color.red, 0f, true);
+                if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
+                Debug.DrawRay(puppetJoint.Joint.position, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * transform.forward, Color.blue, 0f, true);
+                Debug.DrawRay(puppetJoint.Joint.position, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * transform.up, Color.green, 0f, true);
+                Debug.DrawRay(puppetJoint.Joint.position, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * transform.right, Color.red, 0f, true);
             }
         }
     }
