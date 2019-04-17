@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class TransformExtension
 {
@@ -36,5 +37,24 @@ public static class TransformExtension
 		if (current.parent == null)
 			return "/" + current.name;
 		return current.parent.GetPath() + "/" + current.name;
+	}
+	
+	public static Transform GetDeepestChild(this Transform parent)
+	{
+		Transform deepestChild = null;
+		foreach (Transform child in parent)
+		{
+			if (child.childCount == 0)
+			{
+				deepestChild = child;
+				return deepestChild;
+			}
+
+			deepestChild = GetDeepestChild(child);
+			if (deepestChild)
+				return deepestChild;
+		}
+
+		return deepestChild;
 	}
 }

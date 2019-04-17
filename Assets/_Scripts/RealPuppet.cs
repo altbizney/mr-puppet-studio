@@ -53,6 +53,7 @@ namespace Thinko
 
         private void OnDrawGizmos()
         {
+            if(!enabled) return;
             foreach (var puppetJoint in PuppetJoints)
             {
                 if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
