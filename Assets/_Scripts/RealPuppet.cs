@@ -16,13 +16,22 @@ namespace Thinko
             public Vector3 Offset;
             [Range(0, 1)] public float Sharpness = 1;
         }
+        
+        public enum PuppetJawAnimMode
+        {
+            BlendShape,
+            Transform
+        }
 
         [Header("Joints")] 
         public List<PuppetJoint> PuppetJoints = new List<PuppetJoint>();
 
         [Header("Jaw")] 
-        public RealPuppetDataProvider JawRealPuppetDataProvider;
         public bool AnimateJaw = true;
+        public RealPuppetDataProvider JawRealPuppetDataProvider;
+        public PuppetJawAnimMode JawAnimMode;
+        public SkinnedMeshRenderer JawMeshRenderer;
+        public int JawBlendShapeIndex;
         public Transform JawNode;
         public Transform JawInitialPose;
         public Transform JawExtremePose;
@@ -46,8 +55,18 @@ namespace Thinko
             {
                 JawGlove = JawRealPuppetDataProvider.Jaw;
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
-                JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
+
+                if (JawAnimMode == PuppetJawAnimMode.Transform)
+                {
+                    if(JawNode == null || JawInitialPose == null || JawExtremePose == null) return;
+                    JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                    JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
+                }
+                else
+                {
+                    if(JawMeshRenderer == null) return;
+                    JawMeshRenderer.SetBlendShapeWeight(JawBlendShapeIndex, _jawNormalized * 100f);
+                }
             }
         }
 

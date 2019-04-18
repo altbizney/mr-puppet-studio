@@ -322,8 +322,11 @@ MonoBehaviour:
     InputSource: 2
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 1
-  JawRealPuppetDataProvider: {fileID: 0}
   AnimateJaw: 1
+  JawRealPuppetDataProvider: {fileID: 551652324}
+  JawAnimMode: 0
+  JawMeshRenderer: {fileID: 625818655}
+  JawBlendShapeIndex: 0
   JawNode: {fileID: 0}
   JawInitialPose: {fileID: 0}
   JawExtremePose: {fileID: 0}
@@ -380,6 +383,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &625818655 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 13700000, guid: 81727bcdff4b44323aadd12e63796532,
+    type: 3}
+  m_PrefabInstance: {fileID: 1064341650}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &996356534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400070, guid: 790e7371eee6d44f3b8cf3cd3607ef75,

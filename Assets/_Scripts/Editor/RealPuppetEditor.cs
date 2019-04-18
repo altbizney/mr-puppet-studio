@@ -126,15 +126,46 @@ namespace Thinko
             // Jaw
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
+
+            EditorGUI.indentLevel++;
             
-            _realPuppet.AnimateJaw = EditorGUILayout.Toggle("Enable", _realPuppet.AnimateJaw);
+            EditorGUILayout.BeginHorizontal();
+            _realPuppet.AnimateJaw = EditorGUILayout.Toggle(_realPuppet.AnimateJaw, GUILayout.Width(35));
+            _realPuppet.JawRealPuppetDataProvider = EditorGUILayout.ObjectField(_realPuppet.JawRealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
+            EditorGUILayout.EndHorizontal();
+            
             if (_realPuppet.AnimateJaw)
             {
-                EditorGUI.indentLevel = 1;
-                _realPuppet.JawRealPuppetDataProvider = EditorGUILayout.ObjectField("Jaw Data Provider", _realPuppet.JawRealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
-                _realPuppet.JawNode = EditorGUILayout.ObjectField("Node", _realPuppet.JawNode, typeof(Transform), true) as Transform;
-                _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
-                _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
+                GUILayout.Space(10);    
+                EditorGUILayout.BeginHorizontal();
+                _realPuppet.JawAnimMode = (RealPuppet.PuppetJawAnimMode)EditorGUILayout.EnumPopup(_realPuppet.JawAnimMode, GUILayout.Width(150));
+
+                if (_realPuppet.JawAnimMode == RealPuppet.PuppetJawAnimMode.Transform)
+                {
+                    EditorGUILayout.BeginVertical();
+                    _realPuppet.JawNode = EditorGUILayout.ObjectField("Joint", _realPuppet.JawNode, typeof(Transform), true) as Transform;
+                    _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
+                    _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
+                    EditorGUILayout.EndVertical();
+                }
+                else
+                {
+                    EditorGUILayout.BeginVertical();
+                    _realPuppet.JawMeshRenderer = EditorGUILayout.ObjectField("SkinnedMesh Renderer", _realPuppet.JawMeshRenderer, typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
+
+                    if (_realPuppet.JawMeshRenderer != null)
+                    {
+                        var options = new string[_realPuppet.JawMeshRenderer.sharedMesh.blendShapeCount];
+                        for (var i = 0; i < options.Length; i++)
+                        {
+                            options[i] = i.ToString();
+                        }
+                        _realPuppet.JawBlendShapeIndex = EditorGUILayout.Popup("BlendShape Index", _realPuppet.JawBlendShapeIndex, options);
+                    }
+                    EditorGUILayout.EndVertical();
+                }
+                
+                EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
                 GUI.contentColor = Color.green;
@@ -164,7 +195,7 @@ namespace Thinko
                 GUILayout.Space(10);
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Anim Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
-            EditorGUI.indentLevel = 0;
+            EditorGUI.indentLevel--;
 
             serializedObject.ApplyModifiedProperties();
             
@@ -201,63 +232,6 @@ namespace Thinko
                     }
                 });
                 GUI.contentColor = Color.white;
-            }
-
-//            // Draw child and root nodes
-//            if (_realPuppet.RootNode)
-//            {
-//                if(_childNodes == null)
-//                    _childNodes = _realPuppet.RootNode.GetComponentsInChildren<Transform>();
-//                
-//                var handleSize = HandleUtility.GetHandleSize(Vector3.zero) * .1f;
-//                foreach (var child in _childNodes)
-//                {
-//                    Handles.color = child == _realPuppet.RootNode ? Color.magenta : Color.yellow;
-//                    Handles.CircleHandleCap(0, child.position, Quaternion.identity, handleSize, EventType.Repaint);
-//                }
-//            }
-//
-//            // Draw main nodes
-//            if (_realPuppet.HeadNode)
-//                DrawMainNode(_realPuppet.HeadNode, "Head", Color.yellow);
-//
-//            if (_realPuppet.ButtNode)
-//                DrawMainNode(_realPuppet.ButtNode, "Butt", Color.yellow);
-//
-//            if (_realPuppet.JawNode)
-//                DrawMainNode(_realPuppet.JawNode, "Jaw", Color.yellow);
-        }
-
-        private void DrawMainNode(Transform node, string nodeName, Color color)
-        {
-            var position = node.position;
-
-            // Label
-            GUI.contentColor = color;
-            Handles.Label(position, nodeName, new GUIStyle()
-            {
-                fontSize = 20,
-                alignment = TextAnchor.MiddleLeft,
-                contentOffset = new Vector2(15, -10),
-                normal = new GUIStyleState()
-                {
-                    textColor = Color.yellow
-                }
-            });
-
-            // Move handle
-            EditorGUI.BeginChangeCheck();
-            var newPos = Handles.FreeMoveHandle(
-                position,
-                Quaternion.identity,
-                HandleUtility.GetHandleSize(Vector3.zero) * .1f,
-                Vector3.zero,
-                Handles.SphereHandleCap);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(node, "Move");
-                node.position = newPos;
             }
         }
     }
