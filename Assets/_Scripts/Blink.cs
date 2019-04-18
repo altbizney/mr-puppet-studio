@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,14 +20,18 @@ public class Blink : MonoBehaviour
 
     public KeyCode ManualBlinkKey = KeyCode.Space;
 
+    public float OpenedValue = 1;
+    public float ClosedValue = 0;
+    
     [ReadOnly]
-    [Tooltip("1 is open, 0 is closed")]
     public float EyelidState = 1;
+
 
     private void OnEnable()
     {
         if (AutoBlink)
         {
+            EyelidState = OpenedValue;
             StartCoroutine(BlinkRoutine());
         }
     }
@@ -39,7 +41,7 @@ public class Blink : MonoBehaviour
         if (Input.GetKeyDown(ManualBlinkKey))
         {
             StopAllCoroutines();
-            StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkCloseDuration.x, BlinkCloseDuration.y), 0));
+            StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkCloseDuration.x, BlinkCloseDuration.y), ClosedValue));
         }
         
         if (Input.GetKeyUp(ManualBlinkKey))
@@ -54,11 +56,11 @@ public class Blink : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(BlinkInterval.x, BlinkInterval.y));
             
-            yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkCloseDuration.x, BlinkCloseDuration.y), 0));
+            yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkCloseDuration.x, BlinkCloseDuration.y), ClosedValue));
             
             yield return new WaitForSeconds(Random.Range(BlinkHoldDuration.x, BlinkHoldDuration.y));
             
-            yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkOpenDuration.x, BlinkOpenDuration.y), 1));
+            yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkOpenDuration.x, BlinkOpenDuration.y), OpenedValue));
         }
     }
     
@@ -77,7 +79,7 @@ public class Blink : MonoBehaviour
 
     private IEnumerator ManualOpenRoutine()
     {
-        yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkOpenDuration.x, BlinkOpenDuration.y), 1));
+        yield return StartCoroutine(TweenEyelidRoutine(Random.Range(BlinkOpenDuration.x, BlinkOpenDuration.y), OpenedValue));
         
         if(AutoBlink)
             StartCoroutine(BlinkRoutine());
