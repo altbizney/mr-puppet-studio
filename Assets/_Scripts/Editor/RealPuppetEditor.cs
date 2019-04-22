@@ -1,67 +1,11 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Thinko
 {
-    [CustomPropertyDrawer(typeof(RealPuppet.PuppetJoint))]
-    public class PuppetJointDrawer : PropertyDrawer
-    {
-        public override float GetPropertyHeight( SerializedProperty property, GUIContent label ) 
-        {
-            return EditorGUIUtility.singleLineHeight * 6;
-        }
-        
-        public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(rect, label, property);
-
-            var defColor = GUI.color;
-            
-            var x = rect.x;
-            rect.y += 10;
-            
-            EditorGUI.PropertyField(
-                new Rect(rect.x, rect.y, 35, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("Enabled"), GUIContent.none);
-            
-            GUI.color = property.FindPropertyRelative("RealPuppetDataProvider").objectReferenceValue != null ? defColor : Color.red;
-            rect.x += 35;
-            EditorGUI.PropertyField(
-                new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("RealPuppetDataProvider"), GUIContent.none);
-            GUI.color = defColor;
-            
-            rect.x += 200;
-            EditorGUI.PropertyField(
-                new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("InputSource"), GUIContent.none);
-            
-            GUI.color = property.FindPropertyRelative("Joint").objectReferenceValue != null ? defColor : Color.red;
-            rect.x = x;
-            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-            EditorGUI.ObjectField(
-                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("Joint"),
-                new GUIContent("Joint"));
-            GUI.color = defColor;
-
-            rect.x = x;
-            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-            EditorGUI.PropertyField(
-                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("Offset"), 
-                new GUIContent("Offset"));
-            
-            rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-            EditorGUI.Slider(
-                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), 
-                property.FindPropertyRelative("Sharpness"), 
-                0, 1, new GUIContent("Sharpness"));
-
-            EditorGUI.EndProperty();
-        }
-    }
-    
     [CustomEditor(typeof(RealPuppet))]
     public class RealPuppetEditor : Editor
     {
@@ -69,12 +13,19 @@ namespace Thinko
 
         private Transform[] _childNodes;
 
+        private ReorderableList _jointsList;
+        private ReorderableList _dynamicBonesList;
+
         private static float _playModeJawMin;
         private static float _playModeJawMax;
 
         private void OnEnable()
         {
             _realPuppet = target as RealPuppet;
+
+            _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
+            CreateDynamicBonesList();
+            CreateJointsList();
             
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
@@ -109,23 +60,30 @@ namespace Thinko
             
             // Joints
             GUILayout.Space(10);
+            GUI.color = Color.yellow;
             GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
-
-            // Add joint button
-            if (GUILayout.Button("Add Joint"))
+            GUI.color = Color.white;
+            
+            var joint = DropAreaGameObjectGUI("Drop Joint Bone Here".ToUpper());
+            if (joint != null)
             {
                 _realPuppet.PuppetJoints.Add(new RealPuppet.PuppetJoint()
                 {
-                    Enabled = true
+                    Enabled = true,
+                    Joint = joint.transform
                 });
+                Repaint();
             }
             
             // Joints list
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("PuppetJoints"), true);
+            GUILayout.Space(10);
+            _jointsList.DoLayoutList();
             
             // Jaw
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+            GUI.color = Color.yellow;
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
+            GUI.color = Color.white;
 
             EditorGUI.indentLevel++;
             
@@ -196,7 +154,30 @@ namespace Thinko
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Anim Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
             EditorGUI.indentLevel--;
-
+            
+            
+            // Limbs
+            GUILayout.Space(10);
+            GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+            GUI.color = Color.yellow;
+            GUILayout.Label("LIMBS", EditorStyles.whiteLargeLabel);
+            GUI.color = Color.white;
+            
+            var limb = DropAreaGameObjectGUI("Drop Limb Root Bone Here".ToUpper());
+            if (limb != null && limb.GetComponentInChildren<DynamicBone>() == null)
+            {
+                var dynamicBone = limb.AddComponent<DynamicBone>();
+                dynamicBone.m_Root = limb.transform;
+                _realPuppet.DynamicBones.Add(dynamicBone);
+                Repaint();
+            }
+            
+            GUILayout.Space(10);
+            _dynamicBonesList.DoLayoutList();
+            
+            
+            
+            // Apply changes
             serializedObject.ApplyModifiedProperties();
             
             if (EditorGUI.EndChangeCheck())
@@ -233,6 +214,167 @@ namespace Thinko
                 });
                 GUI.contentColor = Color.white;
             }
+        }
+        
+        private void CreateJointsList()
+        {
+            _jointsList = new ReorderableList(_realPuppet.PuppetJoints, typeof(RealPuppet.PuppetJoint), false, true, false, true);
+            _jointsList.drawElementCallback = (rect, index, isActive, isFocused) =>
+            {
+                var defColor = GUI.color;
+                
+                var x = rect.x;
+                rect.y += 2;
+                var element = _jointsList.list[index] as RealPuppet.PuppetJoint;
+                if (element == null)
+                    return;
+                
+                element.Enabled = EditorGUI.Toggle(
+                    new Rect(rect.x, rect.y, 35, EditorGUIUtility.singleLineHeight),
+                    element.Enabled);
+            
+                GUI.color = element.RealPuppetDataProvider != null ? defColor : Color.red;
+                rect.x += 35;
+                element.RealPuppetDataProvider = EditorGUI.ObjectField(
+                    new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight),
+                    element.RealPuppetDataProvider,
+                    typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
+                GUI.color = defColor;
+            
+                rect.x += 200;
+                element.InputSource = (RealPuppetDataProvider.Source)EditorGUI.EnumPopup(
+                    new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight), 
+                    element.InputSource);
+            
+                GUI.color = element.Joint != null ? defColor : Color.red;
+                rect.x = x;
+                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                element.Joint = EditorGUI.ObjectField(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Joint",
+                    element.Joint,
+                    typeof(Transform), true) as Transform;
+                GUI.color = defColor;
+
+                rect.x = x;
+                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                element.Offset = EditorGUI.Vector3Field(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Offset",
+                    element.Offset);
+            
+                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                element.Sharpness = EditorGUI.Slider(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Sharpness",
+                    element.Sharpness, 0, 1);
+                
+                // Divider
+                if (index < _jointsList.count - 1)
+                {
+                    rect.x = x;
+                    rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
+                    EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
+                }
+            };
+
+            _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
+            
+            _jointsList.elementHeight = 100;
+        }
+
+        private void CreateDynamicBonesList()
+        {
+            _dynamicBonesList = new ReorderableList(_realPuppet.DynamicBones, typeof(DynamicBone), false, true, false, true);
+            _dynamicBonesList.drawElementCallback = (rect, index, isActive, isFocused) =>
+            {
+                var x = rect.x;
+                rect.y += 2;
+                var element = _dynamicBonesList.list[index] as DynamicBone;
+                if (element == null)
+                    return;
+                
+                EditorGUI.BeginChangeCheck();
+                element.m_Root = EditorGUI.ObjectField(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Root Bone", element.m_Root, typeof(Transform), true) as Transform;
+            
+                rect.y += EditorGUIUtility.singleLineHeight;
+                element.m_Damping = EditorGUI.Slider(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Dampening",
+                    element.m_Damping, 0, 1);
+            
+                rect.y += EditorGUIUtility.singleLineHeight;
+                element.m_Elasticity = EditorGUI.Slider(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Elasticity",
+                    element.m_Elasticity, 0, 1);
+            
+                rect.y += EditorGUIUtility.singleLineHeight;
+                element.m_Stiffness = EditorGUI.Slider(
+                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                    "Stiffness",
+                    element.m_Stiffness, 0, 1);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    element.UpdateParameters();
+                }
+                
+                // Divider
+                if (index < _dynamicBonesList.count - 1)
+                {
+                    rect.x = x;
+                    rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
+                    EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
+                }
+            };
+
+            _dynamicBonesList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Limbs"); };
+            
+            _dynamicBonesList.onRemoveCallback = list =>
+            {
+                DestroyImmediate(_realPuppet.DynamicBones[list.index]);
+                ReorderableList.defaultBehaviours.DoRemoveButton(list);
+            };
+
+            _dynamicBonesList.elementHeight = 90;
+        }
+        
+        private static GameObject DropAreaGameObjectGUI(string message)
+        {
+            var evt = Event.current;
+            var dropArea = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
+            var style = new GUIStyle("box");
+            if (EditorGUIUtility.isProSkin)
+                style.normal.textColor = Color.white;
+            GUI.Box(dropArea, $"\n{message}", style);
+
+            switch (evt.type)
+            {
+                case EventType.DragUpdated:
+                case EventType.DragPerform:
+                    if (!dropArea.Contains(evt.mousePosition))
+                        return null;
+
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+                    if (evt.type == EventType.DragPerform)
+                    {
+                        DragAndDrop.AcceptDrag();
+
+                        foreach (var draggedObject in DragAndDrop.objectReferences)
+                        {
+                            if (!(draggedObject is GameObject go)) continue;
+                            
+                            return go;
+                        }
+                    }
+                    break;
+            }
+
+            return null;
         }
     }
 }

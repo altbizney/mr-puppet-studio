@@ -27,7 +27,7 @@ namespace Thinko
         public List<PuppetJoint> PuppetJoints = new List<PuppetJoint>();
 
         [Header("Jaw")] 
-        public bool AnimateJaw = true;
+        public bool AnimateJaw;
         public RealPuppetDataProvider JawRealPuppetDataProvider;
         public PuppetJawAnimMode JawAnimMode;
         public SkinnedMeshRenderer JawMeshRenderer;
@@ -42,6 +42,9 @@ namespace Thinko
 
         private float _jawNormalized;
         private Vector3 _jawCurrentVelocity;
+        
+        [Header("Limbs")]
+        public List<DynamicBone> DynamicBones = new List<DynamicBone>();
 
         private void Update()
         {
