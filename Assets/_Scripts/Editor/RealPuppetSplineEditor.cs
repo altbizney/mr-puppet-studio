@@ -27,6 +27,7 @@ namespace Thinko
         
         private void DrawJoint(Transform joint, string nodeName, Color color)
         {
+            if(joint == null) return;
             var position = joint.position;
 
             // Label

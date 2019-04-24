@@ -8,8 +8,11 @@ namespace Thinko
     {
         public Transform RootJoint;
         public List<Transform> Joints = new List<Transform>();
+        public bool UseExternalControlPoints;
+        public bool ApplySplineRotation;
 
         private List<Transform> _splineControls;
+        private Vector3[] _splineControlsPositions;
         private List<Vector3> _splineCurve = new List<Vector3>();
         private List<int> _inBetweenSamples = new List<int>();
         private List<Transform> _hierarchy = new List<Transform>();
@@ -19,41 +22,63 @@ namespace Thinko
             _hierarchy = RootJoint.GetComponentsInChildren<Transform>().ToList();
             
             // Create spline control points
-            var joints = new List<Transform>();
-            joints.Add(_hierarchy[0]);
-            joints.Add(_hierarchy[0]);
+            var allJoints = new List<Transform>();
+            allJoints.Add(_hierarchy[0]);
+            allJoints.Add(_hierarchy[0]);
             foreach (var j in Joints)
             {
-                joints.Add(j);
+                allJoints.Add(j);
             }
-            joints.Add(_hierarchy[_hierarchy.Count - 1]);
-            joints.Add(_hierarchy[_hierarchy.Count - 1]);
-            
-            _splineControls = new List<Transform>();
-            var count = 0;
-            foreach (var j in joints)
+            allJoints.Add(_hierarchy[_hierarchy.Count - 1]);
+            allJoints.Add(_hierarchy[_hierarchy.Count - 1]);
+
+            if (UseExternalControlPoints)
             {
-                var splineControl = new GameObject("SplineControl" + count).transform;
-                splineControl.position = j.position;
-                splineControl.rotation = j.rotation;
-                _splineControls.Add(splineControl);
-                count++;
+                _splineControls = new List<Transform>();
+                var count = 0;
+                foreach (var j in allJoints)
+                {
+                    var splineControl = new GameObject($"{gameObject.name} - SplineControl{count}").transform;
+                    splineControl.position = j.position;
+                    splineControl.rotation = j.rotation;
+                    _splineControls.Add(splineControl);
+                    count++;
+                }
+            }
+            else
+            {
+                _splineControls = allJoints;
             }
             
+            // Create spline control points positions list
+            _splineControlsPositions = new Vector3[_splineControls.Count];
+            for (var i = 0; i < _splineControlsPositions.Length; i++)
+            {
+                _splineControlsPositions[i] = Vector3.one * float.MaxValue;
+            }
+
             CalculateSamples();
         }
 
         private void Update()
         {
             // Get the spline control points positions
-            var splineControlsPositions = new List<Vector3>();
-            foreach (var j in _splineControls)
+            var hasUpdatedControls = false;
+            for (var i = 0; i < _splineControls.Count; i++)
             {
-                splineControlsPositions.Add(j.position);
+                var control = _splineControls[i];
+                if (_splineControlsPositions[i] != control.position)
+                {
+                    _splineControlsPositions[i] = control.position;
+                    hasUpdatedControls = true;
+                }
             }
             
+            // Return if the controls haven't changed
+            if(!hasUpdatedControls) return;
+            
             // Calculate the spline
-            CatmullRom(splineControlsPositions, out _splineCurve, _inBetweenSamples);
+            CatmullRom(_splineControlsPositions, out _splineCurve, _inBetweenSamples);
             
             // Calculate the rotations
             var positions = new Vector3[_splineCurve.Count];
@@ -83,7 +108,9 @@ namespace Thinko
             for (var i = 0; i < _splineCurve.Count; i++)
             {
                 _hierarchy[i].position = positions[i];
-//                _hierarchy[i].localRotation = rotations[i];
+                
+                if(ApplySplineRotation)
+                    _hierarchy[i].rotation = rotations[i];
             }
         }
 
