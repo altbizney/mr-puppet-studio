@@ -42,6 +42,8 @@ namespace Thinko
 
         private float _jawNormalized;
         private Vector3 _jawCurrentVelocity;
+        private float _jawCurrentVelocityF;
+        private float _jawSmoothed;
         
         [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
@@ -68,7 +70,8 @@ namespace Thinko
                 else
                 {
                     if(JawMeshRenderer == null) return;
-                    JawMeshRenderer.SetBlendShapeWeight(JawBlendShapeIndex, _jawNormalized * 100f);
+                    _jawSmoothed = Mathf.SmoothDamp(_jawSmoothed, _jawNormalized * 100f, ref _jawCurrentVelocityF, JawSmoothness);
+                    JawMeshRenderer.SetBlendShapeWeight(JawBlendShapeIndex, _jawSmoothed);
                 }
             }
         }

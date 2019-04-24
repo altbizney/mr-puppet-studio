@@ -126,9 +126,12 @@ namespace Thinko
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
-                GUI.contentColor = Color.green;
-                EditorGUILayout.LabelField($"Live Glove Value: {_realPuppet.JawGlove}");
-                GUI.contentColor = Color.white;
+                if (Application.isPlaying)
+                {
+                    GUI.contentColor = Color.green;
+                    EditorGUILayout.LabelField($"Input: {_realPuppet.JawGlove}");
+                    GUI.contentColor = Color.white;
+                }
                 
                 EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawMin = EditorGUILayout.FloatField("Min Glove Value", _realPuppet.JawMin);
@@ -151,7 +154,7 @@ namespace Thinko
                 EditorGUILayout.EndHorizontal();
                 
                 GUILayout.Space(10);
-                _realPuppet.JawSmoothness = EditorGUILayout.Slider("Anim Smoothness", _realPuppet.JawSmoothness, 0, .3f);
+                _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
             EditorGUI.indentLevel--;
             
@@ -268,19 +271,32 @@ namespace Thinko
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Sharpness",
                     element.Sharpness, 0, 1);
+
+                if (Application.isPlaying && element.RealPuppetDataProvider != null)
+                {
+                    GUI.color = Color.green;
+                    rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                    EditorGUI.PrefixLabel(
+                        new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                        new GUIContent($"Input: {element.RealPuppetDataProvider.GetInput(element.InputSource).eulerAngles}"));
+                    GUI.color = defColor;
+                }
                 
                 // Divider
                 if (index < _jointsList.count - 1)
                 {
                     rect.x = x;
                     rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
-                    EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
+                    EditorGUI.TextArea(
+                        new Rect(rect.x, rect.y, rect.width, 1),
+                        "", 
+                        GUI.skin.horizontalSlider);
                 }
             };
 
             _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
             
-            _jointsList.elementHeight = 100;
+            _jointsList.elementHeight = 120;
         }
 
         private void CreateDynamicBonesList()
