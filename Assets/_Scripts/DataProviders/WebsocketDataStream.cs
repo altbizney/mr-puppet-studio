@@ -66,7 +66,7 @@ namespace Thinko
                     else
                     {
                         // process packet
-                        _array = _data.Split('\t');
+                        _array = _data.Split(';');
 
                         // jaw
                         Jaw = int.Parse(_array[0]);

@@ -21,7 +21,7 @@ namespace Thinko
             
             foreach (var joint in _realPuppetSpline.Joints)
             {
-                DrawJoint(joint, joint.name, Color.yellow);
+//                DrawJoint(joint, joint.name, Color.yellow);
             }
         }
         
