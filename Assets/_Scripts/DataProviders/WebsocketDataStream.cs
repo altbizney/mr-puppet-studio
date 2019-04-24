@@ -12,11 +12,33 @@ namespace Thinko
         [Header("Debug")] public bool OutputData;
 
         private string _data;
-        private string[] _dataArr;
+        private string[] _array;
+        private string[] _wrist;
+        private string[] _elbow;
+        private string[] _shoulder;
+
+        private Quaternion WristRotation_curr = Quaternion.identity;
+        private Quaternion WristRotation_calib = Quaternion.identity;
+
+        private Quaternion ElbowRotation_curr = Quaternion.identity;
+        private Quaternion ElbowRotation_calib = Quaternion.identity;
+
+        private Quaternion ShoulderRotation_curr = Quaternion.identity;
+        private Quaternion ShoulderRotation_calib = Quaternion.identity;
+
 
         private void OnEnable()
         {
             StartCoroutine(GrabData());
+        }
+
+        private void Update(){
+            if (Input.GetKeyDown("space"))
+            {
+                WristRotation_calib = WristRotation_curr;
+                ElbowRotation_calib = ElbowRotation_curr;
+                ShoulderRotation_calib = ShoulderRotation_curr;
+            }
         }
 
         private IEnumerator GrabData()
@@ -29,7 +51,7 @@ namespace Thinko
             {
                 if (webSocket.error != null)
                 {
-                    Debug.LogError("Error: " + webSocket.error);
+                    Debug.LogError("[Websocket] " + webSocket.error);
                     break;
                 }
 
@@ -38,36 +60,35 @@ namespace Thinko
                 {
                     if (_data.StartsWith("DEBUG"))
                     {
+                        // output debug
                         Debug.Log(_data);
                     }
                     else
                     {
-                        _dataArr = _data.Split(',');
+                        // process packet
+                        _array = _data.Split('\t');
 
-                        if (_dataArr[0] == "E")
-                        {
-                            WristRotation = Quaternion.Euler(
-                                float.Parse(_dataArr[2]) * -1,
-                                float.Parse(_dataArr[1]),
-                                float.Parse(_dataArr[3])
-                            );
+                        // jaw
+                        Jaw = int.Parse(_array[0]);
 
-                            Jaw = int.Parse(_dataArr[4]);
+                        // rotations
+                        _wrist = _array[1].Split(',');
+                        _elbow = _array[2].Split(',');
+                        _shoulder = _array[3].Split(',');
+
+                        // initialize raw quaternions
+                        WristRotation_curr = new Quaternion(float.Parse(_wrist[0]),float.Parse(_wrist[1]),float.Parse(_wrist[2]),float.Parse(_wrist[3]));
+                        ElbowRotation_curr = new Quaternion(float.Parse(_elbow[0]),float.Parse(_elbow[1]),float.Parse(_elbow[2]),float.Parse(_elbow[3]));
+                        ShoulderRotation_curr = new Quaternion(float.Parse(_shoulder[0]),float.Parse(_shoulder[1]),float.Parse(_shoulder[2]),float.Parse(_shoulder[3]));
+
+                        // apply calibration
+                        WristRotation = WristRotation_curr * Quaternion.Inverse(WristRotation_calib);
+                        ElbowRotation = ElbowRotation_curr * Quaternion.Inverse(ElbowRotation_calib);
+                        ShoulderRotation = ShoulderRotation_curr * Quaternion.Inverse(ShoulderRotation_calib);
+
+                        if (OutputData) {
+                            Debug.Log($"Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
                         }
-                        else if (_dataArr[0] == "Q")
-                        {
-                            WristRotation = new Quaternion(
-                                float.Parse(_dataArr[1]),
-                                float.Parse(_dataArr[2]),
-                                float.Parse(_dataArr[3]),
-                                float.Parse(_dataArr[4])
-                            );
-
-                            Jaw = int.Parse(_dataArr[5]);
-                        }
-
-                        if (OutputData)
-                            Debug.Log($"WristRotation: {WristRotation} - Jaw: {Jaw}");
                     }
                 }
 
