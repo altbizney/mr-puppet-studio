@@ -58,6 +58,9 @@ namespace Thinko
             
             GUILayout.Space(10);
             
+            // Auto-create the spline
+            _realPuppet.AutoCreateSpline = EditorGUILayout.Toggle("Auto-Create Spline", _realPuppet.AutoCreateSpline);
+            
             // Joints
             GUILayout.Space(10);
             GUI.color = Color.yellow;

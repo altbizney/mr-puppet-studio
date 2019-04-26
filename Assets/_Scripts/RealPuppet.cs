@@ -16,18 +16,19 @@ namespace Thinko
             public Vector3 Offset;
             [Range(0, 1)] public float Sharpness = 1;
         }
-        
+
         public enum PuppetJawAnimMode
         {
             BlendShape,
             Transform
         }
 
+        public bool AutoCreateSpline = true;
+
         [Header("Joints")] 
         public List<PuppetJoint> PuppetJoints = new List<PuppetJoint>();
 
-        [Header("Jaw")] 
-        public bool AnimateJaw;
+        [Header("Jaw")] public bool AnimateJaw;
         public RealPuppetDataProvider JawRealPuppetDataProvider;
         public PuppetJawAnimMode JawAnimMode;
         public SkinnedMeshRenderer JawMeshRenderer;
@@ -44,9 +45,27 @@ namespace Thinko
         private Vector3 _jawCurrentVelocity;
         private float _jawCurrentVelocityF;
         private float _jawSmoothed;
-        
-        [Header("Limbs")]
+
+        [Header("Limbs")] 
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
+
+        private void Start()
+        {
+            // Automatically create and configure the spline component
+            if (AutoCreateSpline && PuppetJoints.Count > 1)
+            {
+                // Sort joints by "depth"
+                var orderedJoints = new List<PuppetJoint>(PuppetJoints);
+                orderedJoints.Sort((x, y) => GetChildDepth(x.Joint));
+
+                var spline = gameObject.AddComponent<RealPuppetSpline>();
+                spline.RootJoint = orderedJoints[0].Joint;
+                for (var i = 1; i < orderedJoints.Count; i++)
+                {
+                    spline.Joints.Add(orderedJoints[i].Joint);
+                }
+            }
+        }
 
         private void Update()
         {
@@ -63,13 +82,13 @@ namespace Thinko
 
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
-                    if(JawNode == null || JawInitialPose == null || JawExtremePose == null) return;
+                    if (JawNode == null || JawInitialPose == null || JawExtremePose == null) return;
                     JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
                     JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
                 }
                 else
                 {
-                    if(JawMeshRenderer == null) return;
+                    if (JawMeshRenderer == null) return;
                     _jawSmoothed = Mathf.SmoothDamp(_jawSmoothed, _jawNormalized * 100f, ref _jawCurrentVelocityF, JawSmoothness);
                     JawMeshRenderer.SetBlendShapeWeight(JawBlendShapeIndex, _jawSmoothed);
                 }
@@ -78,7 +97,7 @@ namespace Thinko
 
         private void OnDrawGizmos()
         {
-            if(!enabled) return;
+            if (!enabled) return;
             foreach (var puppetJoint in PuppetJoints)
             {
                 if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
@@ -86,6 +105,20 @@ namespace Thinko
                 Debug.DrawRay(puppetJoint.Joint.position, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * transform.up, Color.green, 0f, true);
                 Debug.DrawRay(puppetJoint.Joint.position, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * transform.right, Color.red, 0f, true);
             }
+        }
+
+        private static int GetChildDepth(Transform transf)
+        {
+            var count = 0;
+
+            var t = transf;
+            while (t.parent != null)
+            {
+                count++;
+                t = t.parent;
+            }
+
+            return count;
         }
     }
 }

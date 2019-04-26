@@ -312,6 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7cb2f499915454ab9e66c2c8ecaac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoCreateSpline: 1
   PuppetJoints:
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 551652324}
@@ -344,24 +345,6 @@ MonoBehaviour:
   JawMax: 300
   JawGlove: 0
   DynamicBones: []
---- !u!114 &126231023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126231021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9f02d73e8e484a47b2db6671da06e7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RootJoint: {fileID: 1690716111}
-  Joints:
-  - {fileID: 2138709748}
-  - {fileID: 1424198105}
-  UseExternalControlPoints: 0
-  ApplySplineRotation: 0
 --- !u!1 &551652323
 GameObject:
   m_ObjectHideFlags: 0
