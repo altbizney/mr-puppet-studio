@@ -279,9 +279,17 @@ namespace Thinko
                 {
                     GUI.color = Color.green;
                     rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                    EditorGUI.PrefixLabel(
+                    EditorGUI.LabelField(
                         new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                         new GUIContent($"Input: {element.RealPuppetDataProvider.GetInput(element.InputSource).eulerAngles}"));
+                    GUI.color = defColor;
+
+                    var calibData = element.RealPuppetDataProvider.GetCalibrationData(element.InputSource);
+                    GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
+                    rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                    EditorGUI.LabelField(
+                        new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                        new GUIContent($"System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}"));
                     GUI.color = defColor;
                 }
                 
@@ -299,7 +307,7 @@ namespace Thinko
 
             _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
             
-            _jointsList.elementHeight = 120;
+            _jointsList.elementHeight = Application.isPlaying ? 140 : 100;
         }
 
         private void CreateDynamicBonesList()
