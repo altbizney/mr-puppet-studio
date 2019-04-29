@@ -2,21 +2,22 @@
 
 namespace Thinko
 {
-    public class BlinkDrivenKeys : MonoBehaviour
+    public class BlinkDrivenKeys : Blink
     {
-        public Blink Blink;
-
         public DrivenKeys DrivenKeys;
 
         private void Start()
         {
-            if (Blink == null || DrivenKeys == null)
+            if (DrivenKeys == null)
+            {
+                Debug.LogWarning($"{name}:{GetType()} - No DrivenKeys defined");
                 enabled = false;
+            }
         }
 
         private void Update()
         {
-            DrivenKeys.Step = Blink.EyelidState;
+            DrivenKeys.Step = EyelidState;
         }
     }
 }

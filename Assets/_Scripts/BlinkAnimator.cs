@@ -1,29 +1,24 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Animation))]
-public class BlinkAnimator : MonoBehaviour
+namespace Thinko
 {
-    public Blink Blink;
-
-    private AnimationState _animState;
-
-    private void Awake()
+    [RequireComponent(typeof(Animation))]
+    public class BlinkAnimator : Blink
     {
-        var anim = GetComponent<Animation>();
-        foreach (AnimationState state in anim)
+        private AnimationState _animState;
+
+        private void Awake()
         {
-            _animState = state;
+            var anim = GetComponent<Animation>();
+            foreach (AnimationState state in anim)
+            {
+                _animState = state;
+            }
         }
-    }
 
-    private void Start()
-    {
-        if (Blink == null)
-            enabled = false;
-    }
-
-    private void Update()
-    {
-        _animState.normalizedTime = Blink.EyelidState.Remap(1, 0, 0, 1);
+        private void Update()
+        {
+            _animState.normalizedTime = EyelidState.Remap(1, 0, 0, 1);
+        }
     }
 }

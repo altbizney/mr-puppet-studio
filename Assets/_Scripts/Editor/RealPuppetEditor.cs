@@ -354,7 +354,10 @@ namespace Thinko
                 {
                     rect.x = x;
                     rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
-                    EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
+                    EditorGUI.TextArea(
+                        new Rect(rect.x, rect.y, rect.width, 1),
+                        "", 
+                        GUI.skin.horizontalSlider);
                 }
             };
 

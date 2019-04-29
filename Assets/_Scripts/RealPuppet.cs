@@ -14,7 +14,7 @@ namespace Thinko
             public Transform Joint;
             public RealPuppetDataProvider.Source InputSource;
             public Vector3 Offset;
-            [Range(0, 1)] public float Sharpness = 1;
+            [Range(0, 1)] public float Sharpness = .5f;
         }
 
         public enum PuppetJawAnimMode
@@ -42,6 +42,7 @@ namespace Thinko
         [ReadOnly] public float JawGlove;
 
         private float _jawNormalized;
+        private float _jawNormalizedSmoothed;
         private Vector3 _jawCurrentVelocity;
         private float _jawCurrentVelocityF;
         private float _jawSmoothed;
@@ -79,12 +80,13 @@ namespace Thinko
             {
                 JawGlove = JawRealPuppetDataProvider.Jaw;
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
+                _jawNormalizedSmoothed = Mathf.SmoothDamp(_jawNormalizedSmoothed, _jawNormalized, ref _jawCurrentVelocityF, JawSmoothness);
 
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null || JawInitialPose == null || JawExtremePose == null) return;
                     JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                    JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalized);
+                    JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalizedSmoothed);
                 }
                 else
                 {

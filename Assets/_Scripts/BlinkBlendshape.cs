@@ -1,24 +1,29 @@
-﻿using UnityEngine;
+﻿using Thinko;
+using UnityEngine;
 
-public class BlinkBlendshape : MonoBehaviour
+namespace Thinko
 {
-    public Blink Blink;
-
-    public SkinnedMeshRenderer SkinnedMeshRenderer;
-
-    public int BlendShapeIndex = 0;
-
-    public float BlendShapeMin = 0;
-    public float BlendShapeMax = 100;
-
-    private void Start()
+    public class BlinkBlendshape : Blink
     {
-        if (Blink == null || SkinnedMeshRenderer == null)
-            enabled = false;
-    }
+        public SkinnedMeshRenderer SkinnedMeshRenderer;
 
-    private void Update()
-    {
-        SkinnedMeshRenderer.SetBlendShapeWeight(BlendShapeIndex, Blink.EyelidState.Remap(0, 1, BlendShapeMin, BlendShapeMax));
+        public int BlendShapeIndex = 0;
+
+        public float BlendShapeMin = 0;
+        public float BlendShapeMax = 100;
+
+        private void Start()
+        {
+            if (SkinnedMeshRenderer == null)
+            {
+                Debug.LogWarning($"{name}:{GetType()} - No SkinnedMeshRenderer defined");
+                enabled = false;
+            }
+        }
+
+        private void Update()
+        {
+            SkinnedMeshRenderer.SetBlendShapeWeight(BlendShapeIndex, EyelidState.Remap(0, 1, BlendShapeMin, BlendShapeMax));
+        }
     }
 }
