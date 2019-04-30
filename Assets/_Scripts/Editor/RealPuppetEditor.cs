@@ -18,6 +18,7 @@ namespace Thinko
 
         private static float _playModeJawMin;
         private static float _playModeJawMax;
+        private static List<Quaternion> _playModeTPoses;
 
         private void OnEnable()
         {
@@ -42,11 +43,22 @@ namespace Thinko
             {
                 _playModeJawMin = _realPuppet.JawMin;
                 _playModeJawMax = _realPuppet.JawMax;
+                
+                _playModeTPoses = new List<Quaternion>();
+                foreach (var joint in _realPuppet.PuppetJoints)
+                {
+                    _playModeTPoses.Add(joint.TPose);
+                }
             }
             else if (obj == PlayModeStateChange.EnteredEditMode)
             {
                 _realPuppet.JawMin = _playModeJawMin;
                 _realPuppet.JawMax = _playModeJawMax;
+
+                for (var i = 0; i < _realPuppet.PuppetJoints.Count; i++)
+                {
+                    _realPuppet.PuppetJoints[i].TPose = _playModeTPoses[i];
+                }
             }
         }
 
@@ -82,7 +94,28 @@ namespace Thinko
             GUILayout.Space(10);
             _jointsList.DoLayoutList();
             
+            // Grab TPose button
+            GUI.enabled = Application.isPlaying;
+            if (GUILayout.Button("Grab Joints TPose"))
+            {
+                foreach (var j in _realPuppet.PuppetJoints)
+                {
+                    j.TPose = j.RealPuppetDataProvider.GetInput(j.InputSource);
+                }
+            }
+            GUI.enabled = true;
+            
+            // Reset TPose button
+            if (GUILayout.Button("Reset Joints TPose"))
+            {
+                foreach (var j in _realPuppet.PuppetJoints)
+                {
+                    j.TPose = Quaternion.identity;
+                }
+            }
+            
             // Jaw
+            GUILayout.Space(10);    
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUI.color = Color.yellow;
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
@@ -274,6 +307,19 @@ namespace Thinko
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Sharpness",
                     element.Sharpness, 0, 1);
+                
+                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
+                element.TPose.eulerAngles = EditorGUI.Vector3Field(
+                    new Rect(rect.x, rect.y, rect.width - 110, EditorGUIUtility.singleLineHeight),
+                    "TPose",
+                    element.TPose.eulerAngles);
+
+                GUI.enabled = Application.isPlaying;
+                if (GUI.Button(new Rect(rect.x + rect.width - 100, rect.y, 100, EditorGUIUtility.singleLineHeight), "Grab"))
+                {
+                    element.TPose = element.RealPuppetDataProvider.GetInput(element.InputSource);
+                }
+                GUI.enabled = true;
 
                 if (Application.isPlaying && element.RealPuppetDataProvider != null)
                 {
@@ -307,7 +353,7 @@ namespace Thinko
 
             _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
             
-            _jointsList.elementHeight = Application.isPlaying ? 140 : 100;
+            _jointsList.elementHeight = Application.isPlaying ? EditorGUIUtility.singleLineHeight * 11 : EditorGUIUtility.singleLineHeight * 8;
         }
 
         private void CreateDynamicBonesList()

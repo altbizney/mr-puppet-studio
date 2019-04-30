@@ -15,6 +15,7 @@ namespace Thinko
             public RealPuppetDataProvider.Source InputSource;
             public Vector3 Offset;
             [Range(0, 1)] public float Sharpness = .5f;
+            public Quaternion TPose = Quaternion.identity;
         }
 
         public enum PuppetJawAnimMode
@@ -73,7 +74,10 @@ namespace Thinko
             foreach (var puppetJoint in PuppetJoints)
             {
                 if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
-                puppetJoint.Joint.localRotation = Quaternion.Slerp(puppetJoint.Joint.localRotation, puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset), puppetJoint.Sharpness);
+                puppetJoint.Joint.localRotation = Quaternion.Slerp(
+                    puppetJoint.Joint.localRotation, 
+                    puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset) * Quaternion.Inverse(puppetJoint.TPose), 
+                    puppetJoint.Sharpness);
             }
 
             if (AnimateJaw && JawRealPuppetDataProvider != null)

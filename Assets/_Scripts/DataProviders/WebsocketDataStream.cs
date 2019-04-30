@@ -25,6 +25,8 @@ namespace Thinko
         private Quaternion ShoulderRotation_curr = Quaternion.identity;
         private Quaternion ShoulderRotation_calib = Quaternion.identity;
 
+        private float _lastUpdateTime;
+
 
         private void OnEnable()
         {
@@ -90,8 +92,10 @@ namespace Thinko
                         ElbowRotation = ElbowRotation_curr * Quaternion.Inverse(ElbowRotation_calib);
                         ShoulderRotation = ShoulderRotation_curr * Quaternion.Inverse(ShoulderRotation_calib);
 
-                        if (OutputData) {
-                            Debug.Log($"Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
+                        if (OutputData)
+                        {
+                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
+                            _lastUpdateTime = Time.time;
                         }
                     }
                 }

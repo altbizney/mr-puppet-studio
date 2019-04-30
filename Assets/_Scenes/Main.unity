@@ -646,18 +646,21 @@ MonoBehaviour:
     InputSource: 0
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 0.375
+    TPose: {x: 0, y: 0, z: 0, w: 1}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 551652324}
     Joint: {fileID: 2138709748}
     InputSource: 1
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 0.695
+    TPose: {x: 0, y: 0, z: 0, w: 1}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 551652324}
     Joint: {fileID: 1690716111}
     InputSource: 2
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 0.586
+    TPose: {x: 0, y: 0, z: 0, w: 1}
   AnimateJaw: 1
   JawRealPuppetDataProvider: {fileID: 551652324}
   JawAnimMode: 0
@@ -1627,7 +1630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &618283965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1710,6 +1713,7 @@ MonoBehaviour:
     InputSource: 0
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 0.378
+    TPose: {x: 0, y: 0, z: 0, w: 1}
   AnimateJaw: 1
   JawRealPuppetDataProvider: {fileID: 551652324}
   JawAnimMode: 1
