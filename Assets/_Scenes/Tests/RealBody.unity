@@ -1413,14 +1413,14 @@ MonoBehaviour:
     Offset: {x: 0, y: 0, z: 180}
     Sharpness: 1
     TPose: {x: 0, y: 0, z: 0, w: 0}
-  - Enabled: 0
+  - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 515182175}
     InputSource: 1
     Offset: {x: 0, y: 0, z: 180}
     Sharpness: 1
     TPose: {x: 0, y: 0, z: 0, w: 0}
-  - Enabled: 0
+  - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 1414892096}
     InputSource: 0
