@@ -1,12 +1,86 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Thinko
 {
     public class RealBody : MonoBehaviour
     {
+        [Serializable]
+        public class BodyJoint : RealPuppet.PuppetJoint
+        {
+            public GameObject ModelPrefab;
+            public Vector3 Size = Vector3.one;
+            [Range(0, 1)]
+            public float Pivot = 0f;
+        }
+
+        private class Bone
+        {
+            public Transform PivotTransf;
+            public Transform BoneTransf;
+        }
+        
+        public bool CreateArmParts;
         public bool SetLocalRotation;
-        public List<RealPuppet.PuppetJoint> PuppetJoints = new List<RealPuppet.PuppetJoint>();
+        public Transform Root;
+        public List<BodyJoint> PuppetJoints = new List<BodyJoint>();
+        
+        private readonly List<Bone> _bones = new List<Bone>();
+
+        private void Start()
+        {
+            if(!CreateArmParts) return;
+            
+            for (var i = 0; i < PuppetJoints.Count; i++)
+            {
+                var pivot = new GameObject($"Bone{i}Pivot").transform;
+                if (i > 0)
+                    pivot.SetParent(_bones[i - 1].PivotTransf, false);
+                else if (Root != null)
+                {
+                    pivot.SetParent(Root, true);
+                    pivot.localPosition = Vector3.zero;
+                }
+
+                var bone = Instantiate(PuppetJoints[i].ModelPrefab).transform;
+                bone.SetParent(pivot);
+
+                _bones.Add(new Bone
+                {
+                    PivotTransf = pivot,
+                    BoneTransf = bone
+                });
+            }
+            
+            AdjustBones();
+            
+            // Assign the newly created joints
+            for (var i = 0; i < PuppetJoints.Count; i++)
+            {
+                PuppetJoints[i].Joint = _bones[i].PivotTransf;
+            }
+        }
+
+        private void OnValidate()
+        {
+            AdjustBones();
+        }
+
+        private void AdjustBones()
+        {
+            for (var i = 0; i < _bones.Count; i++)
+            {
+                if (i > 0)
+                {
+                    _bones[i].PivotTransf.localPosition = new Vector3(0, -PuppetJoints[i - 1].Size.y);
+                }
+                
+                _bones[i].BoneTransf.localScale = PuppetJoints[i].Size;
+                _bones[i].BoneTransf.localPosition = new Vector3(0, (PuppetJoints[i].Pivot - .5f) * PuppetJoints[i].Size.y);
+                
+            }
+        }
 
         private void Update()
         {
