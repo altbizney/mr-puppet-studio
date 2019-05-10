@@ -11,8 +11,7 @@ namespace Thinko
         {
             public GameObject ModelPrefab;
             public Vector3 Size = Vector3.one;
-            [Range(0, 1)]
-            public float Pivot = 0f;
+            [Range(0, 1)] public float Pivot = 0f;
         }
 
         private class Bone
@@ -20,19 +19,19 @@ namespace Thinko
             public Transform PivotTransf;
             public Transform BoneTransf;
         }
-        
+
         public bool CreateArmParts;
         public bool SetLocalRotation;
         public Transform Root;
-        public List<BodyJoint> PuppetJoints = new List<BodyJoint>();
-        
+        public List<BodyJoint> BodyJoints = new List<BodyJoint>();
+
         private readonly List<Bone> _bones = new List<Bone>();
 
         private void Start()
         {
-            if(!CreateArmParts) return;
-            
-            for (var i = 0; i < PuppetJoints.Count; i++)
+            if (!CreateArmParts) return;
+
+            for (var i = 0; i < BodyJoints.Count; i++)
             {
                 var pivot = new GameObject($"Bone{i}Pivot").transform;
                 if (i > 0)
@@ -43,7 +42,7 @@ namespace Thinko
                     pivot.localPosition = Vector3.zero;
                 }
 
-                var bone = Instantiate(PuppetJoints[i].ModelPrefab).transform;
+                var bone = Instantiate(BodyJoints[i].ModelPrefab).transform;
                 bone.SetParent(pivot);
 
                 _bones.Add(new Bone
@@ -52,13 +51,13 @@ namespace Thinko
                     BoneTransf = bone
                 });
             }
-            
+
             AdjustBones();
-            
+
             // Assign the newly created joints
-            for (var i = 0; i < PuppetJoints.Count; i++)
+            for (var i = 0; i < BodyJoints.Count; i++)
             {
-                PuppetJoints[i].Joint = _bones[i].PivotTransf;
+                BodyJoints[i].Joint = _bones[i].PivotTransf;
             }
         }
 
@@ -73,35 +72,34 @@ namespace Thinko
             {
                 if (i > 0)
                 {
-                    _bones[i].PivotTransf.localPosition = new Vector3(0, -PuppetJoints[i - 1].Size.y);
+                    var prevBodyJoint = BodyJoints[i - 1];
+                    _bones[i].PivotTransf.localPosition = new Vector3(0, prevBodyJoint.Size.y - prevBodyJoint.Pivot * prevBodyJoint.Size.y);
                 }
-                
-                _bones[i].BoneTransf.localScale = PuppetJoints[i].Size;
-                _bones[i].BoneTransf.localPosition = new Vector3(0, (PuppetJoints[i].Pivot - .5f) * PuppetJoints[i].Size.y);
-                
+
+                var bodyJoint = BodyJoints[i];
+                _bones[i].BoneTransf.localScale = bodyJoint.Size;
+                _bones[i].BoneTransf.localPosition = new Vector3(0, (-bodyJoint.Pivot + .5f) * bodyJoint.Size.y);
             }
         }
 
         private void Update()
         {
-            foreach (var puppetJoint in PuppetJoints)
+            for (var i = 0; i < BodyJoints.Count; i++)
             {
-                if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
+                var bodyJoint = BodyJoints[i];
+                if (!bodyJoint.Enabled || bodyJoint.RealPuppetDataProvider == null || bodyJoint.Joint == null) continue;
+
+                var newRotation = SetLocalRotation ? bodyJoint.Joint.localRotation : bodyJoint.Joint.rotation;
+                
+                newRotation = Quaternion.Slerp(
+                    newRotation,
+                     bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource) * Quaternion.Euler(bodyJoint.Offset) * (i == 0 ? Quaternion.identity : bodyJoint.Joint.parent.localRotation),
+                    bodyJoint.Sharpness);
 
                 if (SetLocalRotation)
-                {
-                    puppetJoint.Joint.localRotation = Quaternion.Slerp(
-                        puppetJoint.Joint.localRotation, 
-                        Quaternion.Inverse(puppetJoint.Joint.parent.localRotation) * puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset), 
-                        puppetJoint.Sharpness);
-                }
+                    bodyJoint.Joint.localRotation = newRotation;
                 else
-                {
-                    puppetJoint.Joint.rotation = Quaternion.Slerp(
-                        puppetJoint.Joint.rotation, 
-                        puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset),// * Quaternion.Inverse(puppetJoint.TPose), 
-                        puppetJoint.Sharpness);
-                }
+                    bodyJoint.Joint.rotation = newRotation;
             }
         }
     }
