@@ -44,3 +44,8 @@ Assets/StreamingAssets/crashlytics-build.properties
 .idea
 Assets/Plugins/JetBrains/
 Assets/Plugins/JetBrains.meta
+
+# ProBuilder
+/Assets/ProBuilder\ Data
+/Assets/ProBuilder\ Data.meta
+/ProjectSettings/ProBuilderSettings.json
