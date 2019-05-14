@@ -1309,10 +1309,11 @@ MonoBehaviour:
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 1
     TPose: {x: 0, y: 0, z: 0, w: 0}
-    ModelPrefab: {fileID: 548618288063365535, guid: 0fd312b924ee4467283b8756aa41c201,
+    ModelPrefab: {fileID: 9181925186159066791, guid: daf57836dbfef4e1ca2706c6dfb5936a,
       type: 3}
-    Size: {x: 0.1, y: 0.3, z: 0.1}
+    Size: {x: 0.3, y: 0.11, z: 0.11}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 0}
@@ -1320,10 +1321,11 @@ MonoBehaviour:
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 1
     TPose: {x: 0, y: 0, z: 0, w: 0}
-    ModelPrefab: {fileID: 548618288063365535, guid: 0fd312b924ee4467283b8756aa41c201,
+    ModelPrefab: {fileID: 9181925186159066791, guid: daf57836dbfef4e1ca2706c6dfb5936a,
       type: 3}
-    Size: {x: 0.1, y: 0.25, z: 0.1}
+    Size: {x: 0.25, y: 0.1, z: 0.1}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 0}
@@ -1331,10 +1333,11 @@ MonoBehaviour:
     Offset: {x: 0, y: 0, z: 0}
     Sharpness: 1
     TPose: {x: 0, y: 0, z: 0, w: 0}
-    ModelPrefab: {fileID: 548618288063365535, guid: 0fd312b924ee4467283b8756aa41c201,
+    ModelPrefab: {fileID: 9181925186159066791, guid: daf57836dbfef4e1ca2706c6dfb5936a,
       type: 3}
-    Size: {x: 0.1, y: 0.15, z: 0.1}
+    Size: {x: 0.2, y: 0.05, z: 0.1}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
 --- !u!4 &1512627413
 Transform:
   m_ObjectHideFlags: 0
@@ -1463,13 +1466,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701325893}
-  m_LocalRotation: {x: 0.8426362, y: -0.17035851, z: -0.022366777, w: 0.51033515}
+  m_LocalRotation: {x: -0.9490079, y: -0.21662675, z: 0.21559902, w: -0.07729184}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1512627413}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 58.477, y: -156.13, z: -143.645}
+  m_LocalEulerAnglesHint: {x: 166.107, y: -337.229, z: -22.906006}
 --- !u!1 &1860309208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,6 +1532,7 @@ MonoBehaviour:
       type: 3}
     Size: {x: 0.3, y: 1.4, z: 0.3}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 515182175}
@@ -1540,6 +1544,7 @@ MonoBehaviour:
       type: 3}
     Size: {x: 0.2, y: 1.2, z: 0.2}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
   - Enabled: 1
     RealPuppetDataProvider: {fileID: 906036126}
     Joint: {fileID: 1414892096}
@@ -1551,3 +1556,4 @@ MonoBehaviour:
       type: 3}
     Size: {x: 0.4, y: 0.4, z: 0.4}
     Pivot: 0
+    PivotDirection: {x: -1, y: 0, z: 0}
