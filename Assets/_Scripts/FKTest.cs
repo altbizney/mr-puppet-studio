@@ -5,12 +5,12 @@ namespace Thinko
     public class FKTest : MonoBehaviour
     {
         public RealPuppetDataProvider RealPuppetDataProvider;
-        
+
         [Header("Joints")]
         public Transform WristNode;
         public Transform ElbowNode;
         public Transform ShoulderNode;
-        
+
         private void Update()
         {
             if (RealPuppetDataProvider == null)
@@ -20,11 +20,11 @@ namespace Thinko
             }
 
             // subtract parent quaternions down the chain
-            ShoulderNode.localRotation = RealPuppetDataProvider.ShoulderRotation;
-            ElbowNode.localRotation = RealPuppetDataProvider.ElbowRotation * Quaternion.Inverse(RealPuppetDataProvider.ShoulderRotation);
-            WristNode.localRotation = RealPuppetDataProvider.WristRotation * Quaternion.Inverse(RealPuppetDataProvider.ElbowRotation);
+            ShoulderNode.rotation = RealPuppetDataProvider.ShoulderRotation;
+            ElbowNode.rotation = RealPuppetDataProvider.ElbowRotation;// * Quaternion.Inverse(RealPuppetDataProvider.ShoulderRotation);
+            WristNode.rotation = RealPuppetDataProvider.WristRotation;// * Quaternion.Inverse(RealPuppetDataProvider.ElbowRotation);
         }
-        
+
         private void OnDrawGizmos()
         {
             if (RealPuppetDataProvider != null)
