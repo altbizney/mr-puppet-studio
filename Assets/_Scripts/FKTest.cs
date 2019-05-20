@@ -11,6 +11,10 @@ namespace Thinko
         public Transform ElbowNode;
         public Transform ShoulderNode;
 
+        private Quaternion WristTPose = Quaternion.identity;
+        private Quaternion ElbowTPose = Quaternion.identity;
+        private Quaternion ShoulderTPose = Quaternion.identity;
+
         private void Update()
         {
             if (RealPuppetDataProvider == null)
@@ -19,10 +23,16 @@ namespace Thinko
                 return;
             }
 
-            // subtract parent quaternions down the chain
-            ShoulderNode.rotation = RealPuppetDataProvider.ShoulderRotation;
-            ElbowNode.rotation = RealPuppetDataProvider.ElbowRotation;// * Quaternion.Inverse(RealPuppetDataProvider.ShoulderRotation);
-            WristNode.rotation = RealPuppetDataProvider.WristRotation;// * Quaternion.Inverse(RealPuppetDataProvider.ElbowRotation);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ShoulderTPose = RealPuppetDataProvider.ShoulderRotation;
+                ElbowTPose = RealPuppetDataProvider.ElbowRotation;
+                WristTPose = RealPuppetDataProvider.WristRotation;
+            }
+
+            ShoulderNode.rotation = RealPuppetDataProvider.ShoulderRotation * Quaternion.Inverse(ShoulderTPose);
+            ElbowNode.rotation = RealPuppetDataProvider.ElbowRotation * Quaternion.Inverse(ElbowTPose);
+            WristNode.rotation = RealPuppetDataProvider.WristRotation * Quaternion.Inverse(WristTPose);
         }
 
         private void OnDrawGizmos()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Thinko
@@ -13,6 +14,7 @@ namespace Thinko
             public Vector3 Size = Vector3.one;
             [Range(0, 1)] public float Pivot = 0f;
             public Vector3 PivotDirection = new Vector3(-1, 0, 0);
+            public Quaternion AttachPose;
         }
 
         private class Bone
@@ -21,25 +23,73 @@ namespace Thinko
             public Transform BoneTransf;
         }
 
-        public bool CreateArmParts;
-        public bool SetLocalRotation;
-        public Transform Root;
+        public bool CreateArmParts = true;
+
         public List<BodyJoint> BodyJoints = new List<BodyJoint>();
 
-        private readonly List<Bone> _bones = new List<Bone>();
+        private List<Bone> _bones = new List<Bone>();
 
         private void Start()
         {
-            if (!CreateArmParts) return;
+            if (CreateArmParts)
+                CreateArm();
+        }
 
+        private void OnValidate()
+        {
+            AdjustBones();
+        }
+
+        private void Update()
+        {
+            // Grab the TPose with keyboard
+            if (Input.GetKeyDown(KeyCode.Space))
+                GrabTPose();
+
+            // Apply the rotations
+            foreach (var bodyJoint in BodyJoints)
+            {
+                if (!bodyJoint.Enabled || bodyJoint.RealPuppetDataProvider == null || bodyJoint.Joint == null) continue;
+
+                bodyJoint.Joint.rotation = Quaternion.Slerp(
+                    bodyJoint.Joint.rotation,
+                    bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource) * Quaternion.Euler(bodyJoint.Offset) * Quaternion.Inverse(bodyJoint.TPose),
+                    bodyJoint.Sharpness);
+            }
+        }
+
+        [Button(ButtonSizes.Large)]
+        [GUIColor(0f, 1f, 0f)]
+        private void GrabTPose()
+        {
+            foreach (var bodyJoint in BodyJoints)
+            {
+                if(bodyJoint.RealPuppetDataProvider != null)
+                    bodyJoint.TPose = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
+            }
+        }
+        
+        [Button(ButtonSizes.Large)]
+        [GUIColor(0f, 1f, 0f)]
+        private void GrabAttachPose()
+        {
+            foreach (var bodyJoint in BodyJoints)
+            {
+                if(bodyJoint.RealPuppetDataProvider != null)
+                    bodyJoint.AttachPose = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
+            }
+        }
+
+        private void CreateArm()
+        {
             for (var i = 0; i < BodyJoints.Count; i++)
             {
                 var pivot = new GameObject($"Bone{i}Pivot").transform;
                 if (i > 0)
                     pivot.SetParent(_bones[i - 1].PivotTransf, false);
-                else if (Root != null)
+                else
                 {
-                    pivot.SetParent(Root, true);
+                    pivot.SetParent(transform, true);
                     pivot.localPosition = Vector3.zero;
                 }
 
@@ -61,12 +111,7 @@ namespace Thinko
                 BodyJoints[i].Joint = _bones[i].PivotTransf;
             }
         }
-
-        private void OnValidate()
-        {
-            AdjustBones();
-        }
-
+        
         private void AdjustBones()
         {
             for (var i = 0; i < _bones.Count; i++)
@@ -75,9 +120,9 @@ namespace Thinko
                 {
                     var prevBodyJoint = BodyJoints[i - 1];
                     _bones[i].PivotTransf.localPosition = Vector3.Scale(new Vector3(
-                            prevBodyJoint.Size.x - prevBodyJoint.Pivot * prevBodyJoint.Size.x,
-                            prevBodyJoint.Size.y - prevBodyJoint.Pivot * prevBodyJoint.Size.y,
-                            prevBodyJoint.Size.z - prevBodyJoint.Pivot * prevBodyJoint.Size.z),
+                            prevBodyJoint.Size.x,
+                            prevBodyJoint.Size.y,
+                            prevBodyJoint.Size.z),
                         prevBodyJoint.PivotDirection);
                 }
 
@@ -90,25 +135,19 @@ namespace Thinko
                     bodyJoint.PivotDirection);
             }
         }
-
-        private void Update()
+        
+        private void OnDrawGizmos()
         {
-            for (var i = 0; i < BodyJoints.Count; i++)
+            foreach (var bodyJoint in BodyJoints)
             {
-                var bodyJoint = BodyJoints[i];
-                if (!bodyJoint.Enabled || bodyJoint.RealPuppetDataProvider == null || bodyJoint.Joint == null) continue;
-
-                var newRotation = SetLocalRotation ? bodyJoint.Joint.localRotation : bodyJoint.Joint.rotation;
-
-                newRotation = Quaternion.Slerp(
-                    newRotation,
-                    bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource) * Quaternion.Euler(bodyJoint.Offset) * (i == 0 ? Quaternion.identity : Quaternion.Inverse(BodyJoints[i - 1].RealPuppetDataProvider.GetInput(BodyJoints[i - 1].InputSource))),
-                    bodyJoint.Sharpness);
-
-                if (SetLocalRotation)
-                    bodyJoint.Joint.localRotation = newRotation;
-                else
-                    bodyJoint.Joint.rotation = newRotation;
+                if(bodyJoint.RealPuppetDataProvider != null && bodyJoint.Joint != null && bodyJoint.Joint.gameObject.activeInHierarchy)
+                {
+                    var pos = bodyJoint.Joint.position;
+                    var rot = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
+                    Debug.DrawRay(pos, rot * transform.forward, Color.blue, 0f, true);
+                    Debug.DrawRay(pos, rot * transform.up, Color.green, 0f, true);
+                    Debug.DrawRay(pos, rot * transform.right, Color.red, 0f, true);
+                }
             }
         }
     }
