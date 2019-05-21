@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Thinko
@@ -8,146 +9,244 @@ namespace Thinko
     public class RealBody : MonoBehaviour
     {
         [Serializable]
-        public class BodyJoint : RealPuppet.PuppetJoint
+        public class Pose
         {
-            public GameObject ModelPrefab;
-            public Vector3 Size = Vector3.one;
-            [Range(0, 1)] public float Pivot = 0f;
-            public Vector3 PivotDirection = new Vector3(-1, 0, 0);
-            public Quaternion AttachPose;
+            public Quaternion ShoulderRotation = Quaternion.identity;
+            public Quaternion ElbowRotation = Quaternion.identity;
+            public Quaternion WristRotation = Quaternion.identity;
+
+            public void Set(Quaternion shoulder, Quaternion elbow, Quaternion wrist)
+            {
+                ShoulderRotation = shoulder;
+                ElbowRotation = elbow;
+                WristRotation = wrist;
+            }
         }
-
-        private class Bone
+        
+        public enum Direction
         {
-            public Transform PivotTransf;
-            public Transform BoneTransf;
+            PositiveX,
+            PositiveY,
+            PositiveZ,
+            NegativeX,
+            NegativeY,
+            NegativeZ
         }
+        
+        private readonly Pose _finalPose = new Pose();
+        public Pose FinalPose => _finalPose;
 
-        public bool CreateArmParts = true;
+        [Required]
+        public RealPuppetDataProvider DataProvider;
 
-        public List<BodyJoint> BodyJoints = new List<BodyJoint>();
+        public Direction ArmDirection = Direction.NegativeZ;
 
-        private List<Bone> _bones = new List<Bone>();
+        [Range(0, 1)]
+        public float ShoulderLength = 1f;
+        [Range(0, 1)]
+        public float ElbowLength = .75f;
+        [Range(0, 1)]
+        public float WristLength = .5f;
 
-        private void Start()
+        [Range(0, 1)]
+        public float Sharpness = .5f;
+
+        [HorizontalGroup("TPose")]
+        public Pose TPose = new Pose();
+        
+        [HorizontalGroup("AttachPose")]
+        public Pose AttachPose = new Pose();
+        
+        private Transform _shoulderJoint;
+        private Transform _elbowJoint;
+        private Transform _wristJoint;
+
+        private void Awake()
         {
-            if (CreateArmParts)
-                CreateArm();
+            _shoulderJoint = new GameObject("Shoulder").transform;
+            _shoulderJoint.SetParent(transform, false);
+            
+            _elbowJoint = new GameObject("Elbow").transform;
+            _elbowJoint.SetParent(_shoulderJoint);
+            
+            _wristJoint = new GameObject("Wrist").transform;
+            _wristJoint.SetParent(_elbowJoint);
+            
+            AdjustJointsPositions();
         }
 
         private void OnValidate()
         {
-            AdjustBones();
+            AdjustJointsPositions();
         }
 
         private void Update()
         {
-            // Grab the TPose with keyboard
-            if (Input.GetKeyDown(KeyCode.Space))
+            // Grab TPose
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.T))
                 GrabTPose();
-
-            // Apply the rotations
-            foreach (var bodyJoint in BodyJoints)
-            {
-                if (!bodyJoint.Enabled || bodyJoint.RealPuppetDataProvider == null || bodyJoint.Joint == null) continue;
-
-                bodyJoint.Joint.rotation = Quaternion.Slerp(
-                    bodyJoint.Joint.rotation,
-                    bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource) * Quaternion.Euler(bodyJoint.Offset) * Quaternion.Inverse(bodyJoint.TPose),
-                    bodyJoint.Sharpness);
-            }
+            
+            // Grab AttachPose
+            if (Input.GetKeyDown(KeyCode.A))
+                GrabAttachPose();
+            
+            // Rotate the joints
+            _shoulderJoint.rotation = Quaternion.Slerp(
+                _shoulderJoint.rotation,
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation),
+                Sharpness);
+            
+            _elbowJoint.rotation = Quaternion.Slerp(
+                _elbowJoint.rotation,
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation),
+                Sharpness);
+            
+            _wristJoint.rotation = Quaternion.Slerp(
+                _wristJoint.rotation,
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation),
+                Sharpness);
+            
+            // Calculate the final pose
+            _finalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(_shoulderJoint.rotation);
+            _finalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(_elbowJoint.rotation);
+            _finalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(_wristJoint.rotation);
         }
-
+        
         [Button(ButtonSizes.Large)]
+        [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
-        private void GrabTPose()
+        public void GrabTPose()
         {
-            foreach (var bodyJoint in BodyJoints)
-            {
-                if(bodyJoint.RealPuppetDataProvider != null)
-                    bodyJoint.TPose = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
-            }
+            TPose = GrabPose();
+        }
+        
+        [Button(ButtonSizes.Small, Name = "Clear")]
+        [HorizontalGroup("TPose", Width = .1f)]
+        public void ClearTPose()
+        {
+            TPose = new Pose();
         }
         
         [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
         [GUIColor(0f, 1f, 0f)]
-        private void GrabAttachPose()
+        public void GrabAttachPose()
         {
-            foreach (var bodyJoint in BodyJoints)
-            {
-                if(bodyJoint.RealPuppetDataProvider != null)
-                    bodyJoint.AttachPose = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
-            }
-        }
-
-        private void CreateArm()
-        {
-            for (var i = 0; i < BodyJoints.Count; i++)
-            {
-                var pivot = new GameObject($"Bone{i}Pivot").transform;
-                if (i > 0)
-                    pivot.SetParent(_bones[i - 1].PivotTransf, false);
-                else
-                {
-                    pivot.SetParent(transform, true);
-                    pivot.localPosition = Vector3.zero;
-                }
-
-                var bone = Instantiate(BodyJoints[i].ModelPrefab).transform;
-                bone.SetParent(pivot);
-
-                _bones.Add(new Bone
-                {
-                    PivotTransf = pivot,
-                    BoneTransf = bone
-                });
-            }
-
-            AdjustBones();
-
-            // Assign the newly created joints
-            for (var i = 0; i < BodyJoints.Count; i++)
-            {
-                BodyJoints[i].Joint = _bones[i].PivotTransf;
-            }
+            AttachPose = GrabPose();
         }
         
-        private void AdjustBones()
+        [Button(ButtonSizes.Small, Name = "Clear")]
+        [HorizontalGroup("AttachPose", Width = .1f)]
+        public void ClearAttachPose()
         {
-            for (var i = 0; i < _bones.Count; i++)
+            AttachPose = new Pose();
+        }
+        
+        private Pose GrabPose()
+        {
+            return new Pose
             {
-                if (i > 0)
-                {
-                    var prevBodyJoint = BodyJoints[i - 1];
-                    _bones[i].PivotTransf.localPosition = Vector3.Scale(new Vector3(
-                            prevBodyJoint.Size.x,
-                            prevBodyJoint.Size.y,
-                            prevBodyJoint.Size.z),
-                        prevBodyJoint.PivotDirection);
-                }
+                ShoulderRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder),
+                ElbowRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow),
+                WristRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist)
+            };
+        }
 
-                var bodyJoint = BodyJoints[i];
-                _bones[i].BoneTransf.localScale = bodyJoint.Size;
-                _bones[i].BoneTransf.localPosition = Vector3.Scale(new Vector3(
-                        bodyJoint.Pivot * bodyJoint.Size.x,
-                        bodyJoint.Pivot * bodyJoint.Size.y,
-                        bodyJoint.Pivot * bodyJoint.Size.z),
-                    bodyJoint.PivotDirection);
+        private void AdjustJointsPositions()
+        {
+            if(_elbowJoint != null)
+                _elbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
+            
+            if(_wristJoint != null)
+                _wristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
+        }
+
+        private Vector3 GetDirection(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.PositiveX:
+                    return new Vector3(1, 0, 0);
+                case Direction.PositiveY:
+                    return new Vector3(0, 1, 0);
+                case Direction.PositiveZ:
+                    return new Vector3(0, 0, 1);
+                case Direction.NegativeX:
+                    return new Vector3(-1, 0, 0);
+                case Direction.NegativeY:
+                    return new Vector3(0, -1, 0);
+                case Direction.NegativeZ:
+                    return new Vector3(0, 0, -1);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
             }
         }
         
         private void OnDrawGizmos()
         {
-            foreach (var bodyJoint in BodyJoints)
+            if(!Application.isPlaying) return;
+            
+            // Draw the input bones
+            DrawJointDirectionGizmo(_shoulderJoint);
+            DrawBoneGizmo(_shoulderJoint.position, _shoulderJoint.rotation, GetDirection(ArmDirection), ShoulderLength, Color.white);
+            DrawJointDirectionGizmo(_elbowJoint);
+            DrawBoneGizmo(_elbowJoint.position, _elbowJoint.rotation, GetDirection(ArmDirection), ElbowLength, Color.white);
+            DrawJointDirectionGizmo(_wristJoint);
+            DrawBoneGizmo(_wristJoint.position, _wristJoint.rotation, GetDirection(ArmDirection), WristLength, Color.white);
+            
+            void DrawJointDirectionGizmo(Transform transf)
             {
-                if(bodyJoint.RealPuppetDataProvider != null && bodyJoint.Joint != null && bodyJoint.Joint.gameObject.activeInHierarchy)
-                {
-                    var pos = bodyJoint.Joint.position;
-                    var rot = bodyJoint.RealPuppetDataProvider.GetInput(bodyJoint.InputSource);
-                    Debug.DrawRay(pos, rot * transform.forward, Color.blue, 0f, true);
-                    Debug.DrawRay(pos, rot * transform.up, Color.green, 0f, true);
-                    Debug.DrawRay(pos, rot * transform.right, Color.red, 0f, true);
-                }
+                var pos = transf.position;
+                var rot = transf.rotation;
+                var gizmoSize = HandleUtility.GetHandleSize(pos);
+                Debug.DrawRay(pos, rot * transf.forward * gizmoSize, Color.blue, 0f, true);
+                Debug.DrawRay(pos, rot * transf.up * gizmoSize, Color.green, 0f, true);
+                Debug.DrawRay(pos, rot * transf.right * gizmoSize, Color.red, 0f, true);
+            }
+            
+            void DrawBoneGizmo(Vector3 pos, Quaternion rot, Vector3 dir, float length, Color color)
+            {
+                Gizmos.DrawWireSphere(pos, HandleUtility.GetHandleSize(pos) * length * .1f);
+                Debug.DrawRay(pos, rot * dir * length, color, 0, true);
+            }
+        }
+    }
+
+    [CustomEditor(typeof(RealBody))]
+    public class RealBodyEditor : OdinEditor
+    {
+        private RealBody _realBody;
+
+        private static RealBody.Pose _tPose;
+        private static RealBody.Pose _attachedPose;
+        
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            _realBody = target as RealBody;
+            
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+        }
+
+        private void OnPlayModeStateChanged(PlayModeStateChange obj)
+        {
+            if (obj == PlayModeStateChange.ExitingPlayMode)
+            {
+                _tPose = _realBody.TPose;
+                _attachedPose = _realBody.AttachPose;
+            }
+            else if (obj == PlayModeStateChange.EnteredEditMode)
+            {
+                _realBody.TPose = _tPose;
+                _realBody.AttachPose = _attachedPose;
             }
         }
     }
