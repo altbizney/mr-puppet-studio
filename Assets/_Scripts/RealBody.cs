@@ -79,7 +79,7 @@ namespace Thinko
         {
             AdjustJointsPositions();
         }
-
+        
         private void Update()
         {
             // Grab TPose
@@ -234,6 +234,28 @@ namespace Thinko
             base.OnDisable();
             
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            // Calibration info
+            if(!Application.isPlaying) return;
+            var defColor = GUI.color;
+            
+            var calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Shoulder);
+            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
+            GUILayout.Box($"Shoulder - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
+            GUI.color = defColor;
+            calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Elbow);
+            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
+            GUILayout.Box($"Elbow - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
+            GUI.color = defColor;
+            calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Wrist);
+            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
+            GUILayout.Box($"Wrist - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
+            GUI.color = defColor;
         }
 
         private void OnPlayModeStateChanged(PlayModeStateChange obj)

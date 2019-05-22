@@ -57,4 +57,18 @@ public static class TransformExtension
 
 		return deepestChild;
 	}
+	
+	private static int GetChildDepth(this Transform transf)
+	{
+		var count = 0;
+
+		var t = transf;
+		while (t.parent != null)
+		{
+			count++;
+			t = t.parent;
+		}
+
+		return count;
+	}
 }

@@ -18,7 +18,6 @@ namespace Thinko
 
         private static float _playModeJawMin;
         private static float _playModeJawMax;
-        private static List<Quaternion> _playModeTPoses;
 
         private void OnEnable()
         {
@@ -26,7 +25,6 @@ namespace Thinko
 
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
-            CreateJointsList();
 
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
@@ -43,22 +41,11 @@ namespace Thinko
             {
                 _playModeJawMin = _realPuppet.JawMin;
                 _playModeJawMax = _realPuppet.JawMax;
-
-                _playModeTPoses = new List<Quaternion>();
-                foreach (var joint in _realPuppet.PuppetJoints)
-                {
-                    _playModeTPoses.Add(joint.TPose);
-                }
             }
             else if (obj == PlayModeStateChange.EnteredEditMode)
             {
                 _realPuppet.JawMin = _playModeJawMin;
                 _realPuppet.JawMax = _playModeJawMax;
-
-                for (var i = 0; i < _realPuppet.PuppetJoints.Count; i++)
-                {
-                    _realPuppet.PuppetJoints[i].TPose = _playModeTPoses[i];
-                }
             }
         }
 
@@ -70,48 +57,24 @@ namespace Thinko
 
             GUILayout.Space(10);
 
-            // Auto-create the spline
-            _realPuppet.AutoCreateSpline = EditorGUILayout.Toggle("Auto-Create Spline", _realPuppet.AutoCreateSpline);
-
+            var defColor = GUI.color;
+            
             // Joints
             GUILayout.Space(10);
             GUI.color = Color.yellow;
             GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
-            GUI.color = Color.white;
-
-            var joint = DropAreaGameObjectGUI("Drop Joint Bone Here".ToUpper());
-            if (joint != null)
-            {
-                _realPuppet.PuppetJoints.Add(new RealPuppet.PuppetJoint()
-                {
-                    Enabled = true,
-                    Joint = joint.transform
-                });
-                Repaint();
-            }
-
-            // Joints list
+            GUI.color = defColor;
+            
+            GUI.color = _realPuppet.RealBody != null ? defColor : Color.red;
+            _realPuppet.RealBody = EditorGUILayout.ObjectField("RealBody", _realPuppet.RealBody, typeof(RealBody), true) as RealBody;
+            GUI.color = defColor;
             GUILayout.Space(10);
-            _jointsList.DoLayoutList();
-
-            // Grab TPose button
-            GUI.enabled = Application.isPlaying;
-            if (GUILayout.Button("Grab Joints TPose"))
+            
+            if (_realPuppet.RealBody != null)
             {
-                foreach (var j in _realPuppet.PuppetJoints)
-                {
-                    j.TPose = j.RealPuppetDataProvider.GetInput(j.InputSource);
-                }
-            }
-            GUI.enabled = true;
-
-            // Reset TPose button
-            if (GUILayout.Button("Reset Joints TPose"))
-            {
-                foreach (var j in _realPuppet.PuppetJoints)
-                {
-                    j.TPose = Quaternion.identity;
-                }
+                _realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Shoulder Joint", _realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
+                _realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Elbow Joint", _realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
+                _realPuppet.WristJoint = EditorGUILayout.ObjectField("Wrist Joint", _realPuppet.WristJoint, typeof(Transform), true) as Transform;
             }
 
             // Jaw
@@ -119,7 +82,7 @@ namespace Thinko
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUI.color = Color.yellow;
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
-            GUI.color = Color.white;
+            GUI.color = defColor;
 
             EditorGUI.indentLevel++;
 
@@ -138,8 +101,8 @@ namespace Thinko
                 {
                     EditorGUILayout.BeginVertical();
                     _realPuppet.JawNode = EditorGUILayout.ObjectField("Joint", _realPuppet.JawNode, typeof(Transform), true) as Transform;
-                    // _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(float), true) as float;
-                    // _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(float), true) as float;
+                    _realPuppet.JawInitialPose = EditorGUILayout.FloatField("Initial Pose", _realPuppet.JawInitialPose);
+                    _realPuppet.JawExtremePose = EditorGUILayout.FloatField("Extreme Pose", _realPuppet.JawExtremePose);
                     EditorGUILayout.EndVertical();
                 }
                 else
@@ -166,7 +129,7 @@ namespace Thinko
                 {
                     GUI.contentColor = Color.green;
                     EditorGUILayout.LabelField($"Input: {_realPuppet.JawGlove}");
-                    GUI.contentColor = Color.white;
+                    GUI.contentColor = defColor;
                 }
 
                 EditorGUILayout.BeginHorizontal();
@@ -200,7 +163,7 @@ namespace Thinko
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUI.color = Color.yellow;
             GUILayout.Label("LIMBS", EditorStyles.whiteLargeLabel);
-            GUI.color = Color.white;
+            GUI.color = defColor;
 
             var limb = DropAreaGameObjectGUI("Drop Limb Root Bone Here".ToUpper());
             if (limb != null && limb.GetComponentInChildren<DynamicBone>() == null)
@@ -224,136 +187,6 @@ namespace Thinko
                 Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
                 EditorUtility.SetDirty(_realPuppet);
             }
-        }
-
-        private void OnSceneGUI()
-        {
-            if (!_realPuppet.enabled)
-                return;
-
-
-            foreach (var puppetJoint in _realPuppet.PuppetJoints)
-            {
-                if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
-
-                var handleSize = HandleUtility.GetHandleSize(puppetJoint.Joint.position) * .1f;
-                Handles.CircleHandleCap(0, puppetJoint.Joint.position, Quaternion.identity, handleSize, EventType.Repaint);
-
-                // Label
-                GUI.contentColor = Color.yellow;
-                Handles.Label(puppetJoint.Joint.position, puppetJoint.InputSource.ToString(), new GUIStyle()
-                {
-                    fontSize = 20,
-                    alignment = TextAnchor.MiddleLeft,
-                    contentOffset = new Vector2(15, -10),
-                    normal = new GUIStyleState()
-                    {
-                        textColor = Color.yellow
-                    }
-                });
-                GUI.contentColor = Color.white;
-            }
-        }
-
-        private void CreateJointsList()
-        {
-            _jointsList = new ReorderableList(_realPuppet.PuppetJoints, typeof(RealPuppet.PuppetJoint), false, true, false, true);
-            _jointsList.drawElementCallback = (rect, index, isActive, isFocused) =>
-            {
-                var defColor = GUI.color;
-
-                var x = rect.x;
-                rect.y += 2;
-                var element = _jointsList.list[index] as RealPuppet.PuppetJoint;
-                if (element == null)
-                    return;
-
-                element.Enabled = EditorGUI.Toggle(
-                    new Rect(rect.x, rect.y, 35, EditorGUIUtility.singleLineHeight),
-                    element.Enabled);
-
-                GUI.color = element.RealPuppetDataProvider != null ? defColor : Color.red;
-                rect.x += 35;
-                element.RealPuppetDataProvider = EditorGUI.ObjectField(
-                    new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight),
-                    element.RealPuppetDataProvider,
-                    typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
-                GUI.color = defColor;
-
-                rect.x += 200;
-                element.InputSource = (RealPuppetDataProvider.Source)EditorGUI.EnumPopup(
-                    new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight),
-                    element.InputSource);
-
-                GUI.color = element.Joint != null ? defColor : Color.red;
-                rect.x = x;
-                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                element.Joint = EditorGUI.ObjectField(
-                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                    "Joint",
-                    element.Joint,
-                    typeof(Transform), true) as Transform;
-                GUI.color = defColor;
-
-                rect.x = x;
-                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                element.Offset = EditorGUI.Vector3Field(
-                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                    "Offset",
-                    element.Offset);
-
-                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                element.Sharpness = EditorGUI.Slider(
-                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                    "Sharpness",
-                    element.Sharpness, 0, 1);
-
-                rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                element.TPose.eulerAngles = EditorGUI.Vector3Field(
-                    new Rect(rect.x, rect.y, rect.width - 110, EditorGUIUtility.singleLineHeight),
-                    "TPose",
-                    element.TPose.eulerAngles);
-
-                GUI.enabled = Application.isPlaying;
-                if (GUI.Button(new Rect(rect.x + rect.width - 100, rect.y, 100, EditorGUIUtility.singleLineHeight), "Grab"))
-                {
-                    element.TPose = element.RealPuppetDataProvider.GetInput(element.InputSource);
-                }
-                GUI.enabled = true;
-
-                if (Application.isPlaying && element.RealPuppetDataProvider != null)
-                {
-                    GUI.color = Color.green;
-                    rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                    EditorGUI.LabelField(
-                        new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                        new GUIContent($"Input: {element.RealPuppetDataProvider.GetInput(element.InputSource).eulerAngles}"));
-                    GUI.color = defColor;
-
-                    var calibData = element.RealPuppetDataProvider.GetCalibrationData(element.InputSource);
-                    GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
-                    rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
-                    EditorGUI.LabelField(
-                        new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                        new GUIContent($"System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}"));
-                    GUI.color = defColor;
-                }
-
-                // Divider
-                if (index < _jointsList.count - 1)
-                {
-                    rect.x = x;
-                    rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
-                    EditorGUI.TextArea(
-                        new Rect(rect.x, rect.y, rect.width, 1),
-                        "",
-                        GUI.skin.horizontalSlider);
-                }
-            };
-
-            _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
-
-            _jointsList.elementHeight = Application.isPlaying ? EditorGUIUtility.singleLineHeight * 11 : EditorGUIUtility.singleLineHeight * 8;
         }
 
         private void CreateDynamicBonesList()
