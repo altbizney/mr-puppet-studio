@@ -27,7 +27,7 @@ namespace Thinko
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
             CreateJointsList();
-            
+
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
@@ -43,7 +43,7 @@ namespace Thinko
             {
                 _playModeJawMin = _realPuppet.JawMin;
                 _playModeJawMax = _realPuppet.JawMax;
-                
+
                 _playModeTPoses = new List<Quaternion>();
                 foreach (var joint in _realPuppet.PuppetJoints)
                 {
@@ -65,20 +65,20 @@ namespace Thinko
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
-            
+
             serializedObject.Update();
-            
+
             GUILayout.Space(10);
-            
+
             // Auto-create the spline
             _realPuppet.AutoCreateSpline = EditorGUILayout.Toggle("Auto-Create Spline", _realPuppet.AutoCreateSpline);
-            
+
             // Joints
             GUILayout.Space(10);
             GUI.color = Color.yellow;
             GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
             GUI.color = Color.white;
-            
+
             var joint = DropAreaGameObjectGUI("Drop Joint Bone Here".ToUpper());
             if (joint != null)
             {
@@ -89,11 +89,11 @@ namespace Thinko
                 });
                 Repaint();
             }
-            
+
             // Joints list
             GUILayout.Space(10);
             _jointsList.DoLayoutList();
-            
+
             // Grab TPose button
             GUI.enabled = Application.isPlaying;
             if (GUILayout.Button("Grab Joints TPose"))
@@ -104,7 +104,7 @@ namespace Thinko
                 }
             }
             GUI.enabled = true;
-            
+
             // Reset TPose button
             if (GUILayout.Button("Reset Joints TPose"))
             {
@@ -113,24 +113,24 @@ namespace Thinko
                     j.TPose = Quaternion.identity;
                 }
             }
-            
+
             // Jaw
-            GUILayout.Space(10);    
+            GUILayout.Space(10);
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUI.color = Color.yellow;
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
             GUI.color = Color.white;
 
             EditorGUI.indentLevel++;
-            
+
             EditorGUILayout.BeginHorizontal();
             _realPuppet.AnimateJaw = EditorGUILayout.Toggle(_realPuppet.AnimateJaw, GUILayout.Width(35));
             _realPuppet.JawRealPuppetDataProvider = EditorGUILayout.ObjectField(_realPuppet.JawRealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
             EditorGUILayout.EndHorizontal();
-            
+
             if (_realPuppet.AnimateJaw)
             {
-                GUILayout.Space(10);    
+                GUILayout.Space(10);
                 EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawAnimMode = (RealPuppet.PuppetJawAnimMode)EditorGUILayout.EnumPopup(_realPuppet.JawAnimMode, GUILayout.Width(150));
 
@@ -138,8 +138,8 @@ namespace Thinko
                 {
                     EditorGUILayout.BeginVertical();
                     _realPuppet.JawNode = EditorGUILayout.ObjectField("Joint", _realPuppet.JawNode, typeof(Transform), true) as Transform;
-                    _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(Transform), true) as Transform;
-                    _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(Transform), true) as Transform;
+                    // _realPuppet.JawInitialPose = EditorGUILayout.ObjectField("Initial Pose", _realPuppet.JawInitialPose, typeof(float), true) as float;
+                    // _realPuppet.JawExtremePose = EditorGUILayout.ObjectField("Extreme Pose", _realPuppet.JawExtremePose, typeof(float), true) as float;
                     EditorGUILayout.EndVertical();
                 }
                 else
@@ -158,7 +158,7 @@ namespace Thinko
                     }
                     EditorGUILayout.EndVertical();
                 }
-                
+
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
@@ -168,7 +168,7 @@ namespace Thinko
                     EditorGUILayout.LabelField($"Input: {_realPuppet.JawGlove}");
                     GUI.contentColor = Color.white;
                 }
-                
+
                 EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawMin = EditorGUILayout.FloatField("Min Glove Value", _realPuppet.JawMin);
                 GUI.enabled = Application.isPlaying;
@@ -178,30 +178,30 @@ namespace Thinko
                 }
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
-                
+
                 EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawMax = EditorGUILayout.FloatField("Max Glove Value", _realPuppet.JawMax);
                 GUI.enabled = Application.isPlaying;
                 if (GUILayout.Button("Grab"))
                 {
-                    _realPuppet.JawMax = _realPuppet.JawGlove; 
+                    _realPuppet.JawMax = _realPuppet.JawGlove;
                 }
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
-                
+
                 GUILayout.Space(10);
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
             EditorGUI.indentLevel--;
-            
-            
+
+
             // Limbs
             GUILayout.Space(10);
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUI.color = Color.yellow;
             GUILayout.Label("LIMBS", EditorStyles.whiteLargeLabel);
             GUI.color = Color.white;
-            
+
             var limb = DropAreaGameObjectGUI("Drop Limb Root Bone Here".ToUpper());
             if (limb != null && limb.GetComponentInChildren<DynamicBone>() == null)
             {
@@ -210,18 +210,18 @@ namespace Thinko
                 _realPuppet.DynamicBones.Add(dynamicBone);
                 Repaint();
             }
-            
+
             GUILayout.Space(10);
             _dynamicBonesList.DoLayoutList();
-            
-            
-            
+
+
+
             // Apply changes
             serializedObject.ApplyModifiedProperties();
-            
+
             if (EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(_realPuppet, "Modified RealPuppet Component"); 
+                Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
                 EditorUtility.SetDirty(_realPuppet);
             }
         }
@@ -230,15 +230,15 @@ namespace Thinko
         {
             if (!_realPuppet.enabled)
                 return;
-            
-            
+
+
             foreach (var puppetJoint in _realPuppet.PuppetJoints)
             {
                 if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
-                
+
                 var handleSize = HandleUtility.GetHandleSize(puppetJoint.Joint.position) * .1f;
                 Handles.CircleHandleCap(0, puppetJoint.Joint.position, Quaternion.identity, handleSize, EventType.Repaint);
-                
+
                 // Label
                 GUI.contentColor = Color.yellow;
                 Handles.Label(puppetJoint.Joint.position, puppetJoint.InputSource.ToString(), new GUIStyle()
@@ -254,24 +254,24 @@ namespace Thinko
                 GUI.contentColor = Color.white;
             }
         }
-        
+
         private void CreateJointsList()
         {
             _jointsList = new ReorderableList(_realPuppet.PuppetJoints, typeof(RealPuppet.PuppetJoint), false, true, false, true);
             _jointsList.drawElementCallback = (rect, index, isActive, isFocused) =>
             {
                 var defColor = GUI.color;
-                
+
                 var x = rect.x;
                 rect.y += 2;
                 var element = _jointsList.list[index] as RealPuppet.PuppetJoint;
                 if (element == null)
                     return;
-                
+
                 element.Enabled = EditorGUI.Toggle(
                     new Rect(rect.x, rect.y, 35, EditorGUIUtility.singleLineHeight),
                     element.Enabled);
-            
+
                 GUI.color = element.RealPuppetDataProvider != null ? defColor : Color.red;
                 rect.x += 35;
                 element.RealPuppetDataProvider = EditorGUI.ObjectField(
@@ -279,12 +279,12 @@ namespace Thinko
                     element.RealPuppetDataProvider,
                     typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
                 GUI.color = defColor;
-            
+
                 rect.x += 200;
                 element.InputSource = (RealPuppetDataProvider.Source)EditorGUI.EnumPopup(
-                    new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight), 
+                    new Rect(rect.x, rect.y, rect.width - 235, EditorGUIUtility.singleLineHeight),
                     element.InputSource);
-            
+
                 GUI.color = element.Joint != null ? defColor : Color.red;
                 rect.x = x;
                 rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
@@ -301,13 +301,13 @@ namespace Thinko
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Offset",
                     element.Offset);
-            
+
                 rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
                 element.Sharpness = EditorGUI.Slider(
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Sharpness",
                     element.Sharpness, 0, 1);
-                
+
                 rect.y += EditorGUIUtility.singleLineHeight * 1.25f;
                 element.TPose.eulerAngles = EditorGUI.Vector3Field(
                     new Rect(rect.x, rect.y, rect.width - 110, EditorGUIUtility.singleLineHeight),
@@ -338,7 +338,7 @@ namespace Thinko
                         new GUIContent($"System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}"));
                     GUI.color = defColor;
                 }
-                
+
                 // Divider
                 if (index < _jointsList.count - 1)
                 {
@@ -346,13 +346,13 @@ namespace Thinko
                     rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
                     EditorGUI.TextArea(
                         new Rect(rect.x, rect.y, rect.width, 1),
-                        "", 
+                        "",
                         GUI.skin.horizontalSlider);
                 }
             };
 
             _jointsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Joints"); };
-            
+
             _jointsList.elementHeight = Application.isPlaying ? EditorGUIUtility.singleLineHeight * 11 : EditorGUIUtility.singleLineHeight * 8;
         }
 
@@ -366,24 +366,24 @@ namespace Thinko
                 var element = _dynamicBonesList.list[index] as DynamicBone;
                 if (element == null)
                     return;
-                
+
                 EditorGUI.BeginChangeCheck();
                 element.m_Root = EditorGUI.ObjectField(
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Root Bone", element.m_Root, typeof(Transform), true) as Transform;
-            
+
                 rect.y += EditorGUIUtility.singleLineHeight;
                 element.m_Damping = EditorGUI.Slider(
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Dampening",
                     element.m_Damping, 0, 1);
-            
+
                 rect.y += EditorGUIUtility.singleLineHeight;
                 element.m_Elasticity = EditorGUI.Slider(
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
                     "Elasticity",
                     element.m_Elasticity, 0, 1);
-            
+
                 rect.y += EditorGUIUtility.singleLineHeight;
                 element.m_Stiffness = EditorGUI.Slider(
                     new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
@@ -394,7 +394,7 @@ namespace Thinko
                 {
                     element.UpdateParameters();
                 }
-                
+
                 // Divider
                 if (index < _dynamicBonesList.count - 1)
                 {
@@ -402,13 +402,13 @@ namespace Thinko
                     rect.y += EditorGUIUtility.singleLineHeight * 1.5f;
                     EditorGUI.TextArea(
                         new Rect(rect.x, rect.y, rect.width, 1),
-                        "", 
+                        "",
                         GUI.skin.horizontalSlider);
                 }
             };
 
             _dynamicBonesList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Limbs"); };
-            
+
             _dynamicBonesList.onRemoveCallback = list =>
             {
                 DestroyImmediate(_realPuppet.DynamicBones[list.index]);
@@ -417,7 +417,7 @@ namespace Thinko
 
             _dynamicBonesList.elementHeight = 90;
         }
-        
+
         private static GameObject DropAreaGameObjectGUI(string message)
         {
             var evt = Event.current;
@@ -443,7 +443,7 @@ namespace Thinko
                         foreach (var draggedObject in DragAndDrop.objectReferences)
                         {
                             if (!(draggedObject is GameObject go)) continue;
-                            
+
                             return go;
                         }
                     }

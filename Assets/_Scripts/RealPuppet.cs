@@ -26,7 +26,7 @@ namespace Thinko
 
         public bool AutoCreateSpline = true;
 
-        [Header("Joints")] 
+        [Header("Joints")]
         public List<PuppetJoint> PuppetJoints = new List<PuppetJoint>();
 
         [Header("Jaw")] public bool AnimateJaw;
@@ -35,8 +35,8 @@ namespace Thinko
         public SkinnedMeshRenderer JawMeshRenderer;
         public int JawBlendShapeIndex;
         public Transform JawNode;
-        public Transform JawInitialPose;
-        public Transform JawExtremePose;
+        public float JawInitialPose = 0f;
+        public float JawExtremePose = 50f;
         [Range(0, .3f)] public float JawSmoothness = .15f;
         public float JawMin = 0;
         public float JawMax = 1023;
@@ -48,7 +48,7 @@ namespace Thinko
         private float _jawCurrentVelocityF;
         private float _jawSmoothed;
 
-        [Header("Limbs")] 
+        [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
 
         private void Start()
@@ -75,8 +75,8 @@ namespace Thinko
             {
                 if (!puppetJoint.Enabled || puppetJoint.RealPuppetDataProvider == null || puppetJoint.Joint == null) continue;
                 puppetJoint.Joint.localRotation = Quaternion.Slerp(
-                    puppetJoint.Joint.localRotation, 
-                    puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset) * Quaternion.Inverse(puppetJoint.TPose), 
+                    puppetJoint.Joint.localRotation,
+                    puppetJoint.RealPuppetDataProvider.GetInput(puppetJoint.InputSource) * Quaternion.Euler(puppetJoint.Offset) * Quaternion.Inverse(puppetJoint.TPose),
                     puppetJoint.Sharpness);
             }
 
@@ -89,8 +89,8 @@ namespace Thinko
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null || JawInitialPose == null || JawExtremePose == null) return;
-                    JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                    JawNode.localRotation = Quaternion.Lerp(JawInitialPose.localRotation, JawExtremePose.localRotation, _jawNormalizedSmoothed);
+                    // JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                    JawNode.localRotation = Quaternion.Lerp(Quaternion.Euler(0, 0, JawInitialPose), Quaternion.Euler(0, 0, JawExtremePose), _jawNormalizedSmoothed);
                 }
                 else
                 {
