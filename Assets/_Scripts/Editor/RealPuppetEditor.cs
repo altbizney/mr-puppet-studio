@@ -9,6 +9,14 @@ namespace Thinko
     [CustomEditor(typeof(RealPuppet))]
     public class RealPuppetEditor : Editor
     {
+        private class PuppetJawAnimDataEdit
+        {
+            public Vector3 OriginalPosition;
+            public Quaternion OriginalRotation;
+            public bool EditOpenPose;
+            public bool EditClosePose;
+        }
+        
         private RealPuppet _realPuppet;
 
         private Transform[] _childNodes;
@@ -19,12 +27,22 @@ namespace Thinko
         private static float _playModeJawMin;
         private static float _playModeJawMax;
 
+        private PuppetJawAnimDataEdit _jawAnimEdit;
+        private bool _editJawMode;
+        private bool _previewJawMode;
+        private float _jawStep;
+
         private void OnEnable()
         {
             _realPuppet = target as RealPuppet;
 
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
+            
+            if (_realPuppet.JawNode != null)
+            {
+                CreateJawEdit();
+            }
 
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
@@ -32,6 +50,8 @@ namespace Thinko
         private void OnDisable()
         {
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+
+            DisableJawEdit();
         }
 
         private void OnPlayModeStateChanged(PlayModeStateChange obj)
@@ -100,9 +120,50 @@ namespace Thinko
                 if (_realPuppet.JawAnimMode == RealPuppet.PuppetJawAnimMode.Transform)
                 {
                     EditorGUILayout.BeginVertical();
+                    EditorGUI.BeginChangeCheck();
                     _realPuppet.JawNode = EditorGUILayout.ObjectField("Joint", _realPuppet.JawNode, typeof(Transform), true) as Transform;
-                    _realPuppet.JawInitialPose = EditorGUILayout.FloatField("Initial Pose", _realPuppet.JawInitialPose);
-                    _realPuppet.JawExtremePose = EditorGUILayout.FloatField("Extreme Pose", _realPuppet.JawExtremePose);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        if (_realPuppet.JawNode != null)
+                        {
+                            CreateJawEdit();
+                        }
+                    }
+                    
+                    // Edit jaw
+                    if (_realPuppet.JawNode != null && _jawAnimEdit != null)
+                    {
+                        _editJawMode = _jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose;
+                        EditTransformButton("Edit Open Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.OpenPosition, ref _realPuppet.JawAnimData.OpenRotation, ref _jawAnimEdit.EditOpenPose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
+                        EditTransformButton("Edit Close Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.ClosePosition, ref _realPuppet.JawAnimData.CloseRotation, ref _jawAnimEdit.EditClosePose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
+                        
+                        // Preview
+                        EditorGUILayout.Space();
+                        GUI.enabled = !_editJawMode;
+                        GUI.color = _previewJawMode ? Color.green : Color.white;
+                        if (GUILayout.Button("PREVIEW"))
+                        {
+                            _previewJawMode = !_previewJawMode;
+
+                            if (_previewJawMode)
+                                JawStep(_jawStep);
+                            else
+                                DisableJawEdit();
+                        }
+                        GUI.enabled = true;
+                        GUI.color = Color.white;
+
+                        if (_previewJawMode)
+                        {
+                            EditorGUI.BeginChangeCheck();
+                            _jawStep = EditorGUILayout.Slider(_jawStep, 0, 1);
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                JawStep(_jawStep);
+                            }
+                        }
+                    }
+                    
                     EditorGUILayout.EndVertical();
                 }
                 else
@@ -186,6 +247,27 @@ namespace Thinko
             {
                 Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
                 EditorUtility.SetDirty(_realPuppet);
+            }
+        }
+        
+        private void OnSceneGUI()
+        {
+            if (!_realPuppet.enabled)
+                return;
+
+            // Draw jaw transform handle 
+            if (_jawAnimEdit != null && (_jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose))
+            {
+                EditorGUI.BeginChangeCheck();
+                var pos = _realPuppet.JawNode.TransformPoint(_realPuppet.JawNode.localPosition);
+                var rot = _realPuppet.JawNode.rotation;
+                Handles.TransformHandle(ref pos, ref rot);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(_realPuppet.JawNode, "Adjust jaw");
+                    _realPuppet.JawNode.localPosition = _realPuppet.JawNode.InverseTransformPoint(pos);
+                    _realPuppet.JawNode.rotation = rot;
+                }
             }
         }
 
@@ -284,6 +366,74 @@ namespace Thinko
             }
 
             return null;
+        }
+        
+        private void EditTransformButton(string button, ref Transform transf, ref Vector3 pos, ref Quaternion rot, ref bool edit, ref Vector3 originalPosition, ref Quaternion originalRotation)
+        {
+            GUI.enabled = (edit || !_editJawMode) && !_previewJawMode;
+
+            var defColor = GUI.color;
+            GUI.color = edit ? Color.green : Color.white;
+            
+            if (GUILayout.Button(button))
+            {
+                edit = !edit;
+                if (edit)
+                {
+                    originalPosition = transf.localPosition;
+                    originalRotation = transf.localRotation;
+                    transf.localPosition = pos;
+                    transf.localRotation = rot;
+                }
+                else
+                {
+                    var newPos = transf.localPosition;
+                    transf.localPosition = originalPosition;
+                    pos = newPos;
+                    var newRot = transf.localRotation;
+                    transf.localRotation = originalRotation;
+                    rot = newRot;
+                }
+            }
+
+            GUI.color = defColor;
+
+            GUI.enabled = !_previewJawMode;
+        }
+
+        private void CreateJawEdit()
+        {
+            _jawAnimEdit = new PuppetJawAnimDataEdit()
+            {
+                OriginalPosition = _realPuppet.JawNode.localPosition,
+                OriginalRotation = _realPuppet.JawNode.localRotation,
+            };
+
+            if (_realPuppet.JawAnimData == null)
+            {
+                _realPuppet.JawAnimData = new RealPuppet.PuppetJawAnimData()
+                {
+                    OpenPosition = _realPuppet.JawNode.localPosition,
+                    OpenRotation = _realPuppet.JawNode.localRotation,
+                    ClosePosition = _realPuppet.JawNode.localPosition,
+                    CloseRotation = _realPuppet.JawNode.localRotation
+                };
+            }
+        }
+        
+        private void DisableJawEdit()
+        {
+            if (_realPuppet.JawNode != null)
+            {
+                _realPuppet.JawNode.localPosition = _jawAnimEdit.OriginalPosition;
+                _realPuppet.JawNode.localRotation = _jawAnimEdit.OriginalRotation;
+            }
+        }
+        
+        private void JawStep(float step)
+        {
+            _realPuppet.JawNode.localPosition = Vector3.Lerp(_realPuppet.JawAnimData.OpenPosition, _realPuppet.JawAnimData.ClosePosition, step);
+            _realPuppet.JawNode.localRotation = Quaternion.Lerp(_realPuppet.JawAnimData.OpenRotation, _realPuppet.JawAnimData.CloseRotation, step);
         }
     }
 }

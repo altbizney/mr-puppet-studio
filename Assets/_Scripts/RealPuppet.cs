@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,6 +10,14 @@ namespace Thinko
         {
             BlendShape,
             Transform
+        }
+        
+        public class PuppetJawAnimData
+        {
+            public Vector3 OpenPosition = Vector3.zero;
+            public Quaternion OpenRotation = Quaternion.identity;
+            public Vector3 ClosePosition = Vector3.zero;
+            public Quaternion CloseRotation = Quaternion.identity;
         }
         
         [Required]
@@ -26,8 +33,7 @@ namespace Thinko
         public SkinnedMeshRenderer JawMeshRenderer;
         public int JawBlendShapeIndex;
         public Transform JawNode;
-        public float JawInitialPose = 0f;
-        public float JawExtremePose = 50f;
+        public PuppetJawAnimData JawAnimData;
         [Range(0, .3f)] public float JawSmoothness = .15f;
         public float JawMin = 0;
         public float JawMax = 1023;
@@ -64,8 +70,8 @@ namespace Thinko
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null) return;
-                    // JawNode.position = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawInitialPose.position, JawExtremePose.position, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                    JawNode.localRotation = Quaternion.Lerp(Quaternion.Euler(0, 0, JawInitialPose), Quaternion.Euler(0, 0, JawExtremePose), _jawNormalizedSmoothed);
+                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawAnimData.OpenPosition, JawAnimData.ClosePosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                    JawNode.localRotation = Quaternion.Lerp(JawAnimData.OpenRotation, JawAnimData.CloseRotation, _jawNormalizedSmoothed);
                 }
                 else
                 {
