@@ -409,7 +409,10 @@ namespace Thinko
                 OriginalRotation = _realPuppet.JawNode.localRotation,
             };
 
-            if (_realPuppet.JawAnimData == null)
+            if (_realPuppet.JawAnimData.ClosePosition == Vector3.zero &&
+                _realPuppet.JawAnimData.CloseRotation == Quaternion.identity && 
+                _realPuppet.JawAnimData.OpenPosition == Vector3.zero && 
+                _realPuppet.JawAnimData.OpenRotation == Quaternion.identity)
             {
                 _realPuppet.JawAnimData = new RealPuppet.PuppetJawAnimData()
                 {

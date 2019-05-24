@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Thinko
             Transform
         }
         
+        [Serializable]
         public class PuppetJawAnimData
         {
             public Vector3 OpenPosition = Vector3.zero;
@@ -70,7 +72,7 @@ namespace Thinko
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null) return;
-                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.position, Vector3.Lerp(JawAnimData.OpenPosition, JawAnimData.ClosePosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.localPosition, Vector3.Lerp(JawAnimData.OpenPosition, JawAnimData.ClosePosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
                     JawNode.localRotation = Quaternion.Lerp(JawAnimData.OpenRotation, JawAnimData.CloseRotation, _jawNormalizedSmoothed);
                 }
                 else
