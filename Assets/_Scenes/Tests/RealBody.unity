@@ -326,7 +326,10 @@ MonoBehaviour:
   RealBody: {fileID: 1512627412}
   ShoulderJoint: {fileID: 0}
   ElbowJoint: {fileID: 0}
-  WristJoint: {fileID: 0}
+  WristJoint: {fileID: 1620323815}
+  ShoulderOffset: {x: 0, y: 0, z: 0}
+  ElbowOffset: {x: 0, y: 0, z: 0}
+  WristOffset: {x: 0, y: 0, z: 180}
   AnimateJaw: 1
   JawRealPuppetDataProvider: {fileID: 906036126}
   JawAnimMode: 1
@@ -350,7 +353,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 98553998}
-  m_LocalRotation: {x: -0.07799467, y: -0, z: -0, w: 0.99695385}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.435, y: 1.703, z: -0.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -893,37 +896,37 @@ PrefabInstance:
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9778152
+      value: 0.9999275
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.011461065
+      value: -0.011968106
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0036400151
+      value: 0.0011704862
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.20912404
+      value: 0.00066260993
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5739008
+      value: -1.5738893
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.0343866
+      value: -1.0343904
       objectReference: {fileID: 0}
     - target: {fileID: -3069604979615447665, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.9647427e-16
+      value: 0.00000195764
       objectReference: {fileID: 0}
     - target: {fileID: -5115012209749511076, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
@@ -983,7 +986,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 177.25401
+      value: 179.996
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b8c57a317f8fc4f75b9219bc3d0f822b,
         type: 3}
@@ -2024,18 +2027,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DataProvider: {fileID: 906036126}
   ArmDirection: 5
-  ShoulderLength: 1
-  ElbowLength: 0.75
-  WristLength: 0.5
+  ShoulderLength: 0.315
+  ElbowLength: 0.294
+  WristLength: 0.207
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: 0.0839, y: -0.0638, z: 0.9918, w: -0.0728}
-    ElbowRotation: {x: -0.0565, y: -0.0024, z: 0.9954, w: 0.0768}
-    WristRotation: {x: 0.0576, y: 0.0724, z: -0.9938, w: -0.0623}
+    ShoulderRotation: {x: -0.5098, y: 0.5635, z: 0.3766, w: 0.5297}
+    ElbowRotation: {x: -0.4541, y: 0.4865, z: 0.4465, w: 0.5981}
+    WristRotation: {x: -0.7234, y: -0.1454, z: 0.6747, w: 0.0164}
   AttachPose:
-    ShoulderRotation: {x: 0.0811, y: -0.0681, z: 0.992, w: -0.069}
-    ElbowRotation: {x: -0.0587, y: -0.0064, z: 0.9949, w: 0.0813}
-    WristRotation: {x: 0.061, y: 0.0754, z: -0.993, w: -0.0663}
+    ShoulderRotation: {x: -0.6321, y: 0.5121, z: 0.0327, w: 0.5806}
+    ElbowRotation: {x: -0.3018, y: -0.4749, z: 0.4006, w: 0.7231}
+    WristRotation: {x: -0.8997, y: -0.3886, z: -0.1183, w: 0.1602}
 --- !u!4 &1512627413
 Transform:
   m_ObjectHideFlags: 0

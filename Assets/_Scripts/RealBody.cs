@@ -32,9 +32,8 @@ namespace Thinko
             NegativeY,
             NegativeZ
         }
-        
-        private readonly Pose _finalPose = new Pose();
-        public Pose FinalPose => _finalPose;
+
+        public Pose FinalPose { get; } = new Pose();
 
         [Required]
         public RealPuppetDataProvider DataProvider;
@@ -107,9 +106,9 @@ namespace Thinko
                 Sharpness);
             
             // Calculate the final pose
-            _finalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(_shoulderJoint.rotation);
-            _finalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(_elbowJoint.rotation);
-            _finalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(_wristJoint.rotation);
+            FinalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(_shoulderJoint.rotation);
+            FinalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(_elbowJoint.rotation);
+            FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(_wristJoint.rotation);
         }
         
         [Button(ButtonSizes.Large)]
@@ -117,6 +116,7 @@ namespace Thinko
         [GUIColor(0f, 1f, 0f)]
         public void GrabTPose()
         {
+            Debug.Log("Grabbed T-Pose");
             TPose = GrabPose();
         }
         
@@ -132,6 +132,7 @@ namespace Thinko
         [GUIColor(0f, 1f, 0f)]
         public void GrabAttachPose()
         {
+            Debug.Log("Grabbed Attach-Pose");
             AttachPose = GrabPose();
         }
         

@@ -29,6 +29,10 @@ namespace Thinko
         public Transform ElbowJoint;
         public Transform WristJoint;
 
+        public Vector3 ShoulderOffset;
+        public Vector3 ElbowOffset;
+        public Vector3 WristOffset;
+
         [Header("Jaw")] public bool AnimateJaw;
         public RealPuppetDataProvider JawRealPuppetDataProvider;
         public PuppetJawAnimMode JawAnimMode;
@@ -54,13 +58,13 @@ namespace Thinko
         {
             // Joints
             if (ShoulderJoint)
-                ShoulderJoint.localRotation = RealBody.FinalPose.ShoulderRotation;
+                ShoulderJoint.localRotation = RealBody.FinalPose.ShoulderRotation * Quaternion.Euler(ShoulderOffset);
                 
             if (ElbowJoint)
-                ElbowJoint.localRotation = RealBody.FinalPose.ElbowRotation;
+                ElbowJoint.localRotation = RealBody.FinalPose.ElbowRotation * Quaternion.Euler(ElbowOffset);
                 
             if (WristJoint)
-                WristJoint.localRotation = RealBody.FinalPose.WristRotation;
+                WristJoint.rotation = RealBody.FinalPose.WristRotation * Quaternion.Euler(WristOffset);
             
             // Jaw
             if (AnimateJaw && JawRealPuppetDataProvider != null)
@@ -72,8 +76,8 @@ namespace Thinko
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null) return;
-                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.localPosition, Vector3.Lerp(JawAnimData.OpenPosition, JawAnimData.ClosePosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                    JawNode.localRotation = Quaternion.Lerp(JawAnimData.OpenRotation, JawAnimData.CloseRotation, _jawNormalizedSmoothed);
+                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.localPosition, Vector3.Lerp(JawAnimData.ClosePosition, JawAnimData.OpenPosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
+                    JawNode.localRotation = Quaternion.Lerp(JawAnimData.CloseRotation, JawAnimData.OpenRotation, _jawNormalizedSmoothed);
                 }
                 else
                 {

@@ -93,8 +93,28 @@ namespace Thinko
             if (_realPuppet.RealBody != null)
             {
                 _realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Shoulder Joint", _realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
+                if (_realPuppet.ShoulderJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    _realPuppet.ShoulderOffset = EditorGUILayout.Vector3Field("Shoulder Offset", _realPuppet.ShoulderOffset);
+                    EditorGUI.indentLevel--;
+                }
+                
                 _realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Elbow Joint", _realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
+                if (_realPuppet.ElbowJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    _realPuppet.ElbowOffset = EditorGUILayout.Vector3Field("Elbow Offset", _realPuppet.ElbowOffset);
+                    EditorGUI.indentLevel--;
+                }
+
                 _realPuppet.WristJoint = EditorGUILayout.ObjectField("Wrist Joint", _realPuppet.WristJoint, typeof(Transform), true) as Transform;
+                if (_realPuppet.WristJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    _realPuppet.WristOffset = EditorGUILayout.Vector3Field("Wrist Offset", _realPuppet.WristOffset);
+                    EditorGUI.indentLevel--;
+                }
             }
 
             // Jaw
