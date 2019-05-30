@@ -10,7 +10,7 @@ namespace Thinko
         [MenuItem("Thinko/Real Studio")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(RealStudioWindow), false, "Real Studio");
+            GetWindow<RealStudioWindow>(false, "Real Studio").Show();
         }
 
         private void OnGUI()
@@ -20,13 +20,25 @@ namespace Thinko
             // Header
             EditorGUILayout.LabelField("Real Studio", _headerStyle);
 
-            // Drop Area
-            var go = DropAreaGUI();
+            var puppet = FindObjectOfType<RealPuppet>();
 
-            // Add the RealPuppet editor
-            if (go == null) return;
-            if (go.GetComponentInChildren<RealPuppet>() == null)
-                go.AddComponent<RealPuppet>();
+            if (puppet == null)
+            {
+                // Drop Area
+                var go = PuppetModelDropAreaGUI();
+                if (go == null) return;
+                if (go.GetComponentInChildren<RealPuppet>() == null)
+                    go.AddComponent<RealPuppet>();
+            }
+            else
+            {
+                // Data Provider
+                DataProviderGUI();
+            }
+            
+            
+            // Repaint
+            if (GUI.changed) Repaint();
         }
 
         private void CreateStyles()
@@ -46,14 +58,14 @@ namespace Thinko
             }
         }
 
-        private static GameObject DropAreaGUI()
+        private static GameObject PuppetModelDropAreaGUI()
         {
             var evt = Event.current;
             var dropArea = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
             var style = new GUIStyle("box");
             if (EditorGUIUtility.isProSkin)
                 style.normal.textColor = Color.white;
-            GUI.Box(dropArea, "\nDROP FBX HERE", style);
+            GUI.Box(dropArea, "\nDROP PUPPET MODEL HERE", style);
 
             switch (evt.type)
             {
@@ -87,10 +99,14 @@ namespace Thinko
                             else
                             {
                                 // On project, instantiate
-                                var prefab = PrefabUtility.InstantiatePrefab(go);
-                                prefab.name = go.name;
-                                var gameObject = prefab as GameObject;
+                                var gameObject = Instantiate(go);
+                                gameObject.name = go.name;
                                 gameObject.transform.localScale = Vector3.one;
+                                
+                                // Some models might import cameras, so we just make sure to get rid of them
+                                foreach (var cam in gameObject.GetComponentsInChildren<Camera>())
+                                    DestroyImmediate(cam.gameObject);
+                                
                                 return gameObject;
                             }
                         }
@@ -99,6 +115,33 @@ namespace Thinko
             }
 
             return null;
+        }
+
+        private static void DataProviderGUI()
+        {
+            GUILayout.Label ("Data Provider", EditorStyles.boldLabel);
+
+            var dataProvider = FindObjectOfType<WebsocketDataStream>(); 
+            if (dataProvider == null)
+            {
+                if (GUILayout.Button("Create Data Provider"))
+                {
+                    var dataProviderGO = new GameObject("WebsocketDataStream");
+                    dataProviderGO.AddComponent<WebsocketDataStream>();
+                }
+            }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Select DataProvider", GUILayout.Width(120)))
+                {
+                    Selection.activeGameObject = dataProvider.gameObject;
+                }
+
+                dataProvider.WebsocketUri = EditorGUILayout.TextField("Websocket Uri", dataProvider.WebsocketUri, GUILayout.ExpandWidth(false));
+                dataProvider.OutputData = EditorGUILayout.Toggle("Output Data", dataProvider.OutputData, GUILayout.ExpandWidth(false));
+                GUILayout.EndHorizontal();
+            }
         }
     }
 }
