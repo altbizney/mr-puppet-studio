@@ -55,21 +55,21 @@ namespace Thinko
         
         [HorizontalGroup("AttachPose")]
         public Pose AttachPose = new Pose();
-        
-        private Transform _shoulderJoint;
-        private Transform _elbowJoint;
-        private Transform _wristJoint;
+
+        public Transform ShoulderJoint { get; private set; }
+        public Transform ElbowJoint { get; private set; }
+        public Transform WristJoint { get; private set; }
 
         private void Awake()
         {
-            _shoulderJoint = new GameObject("Shoulder").transform;
-            _shoulderJoint.SetParent(transform, false);
+            ShoulderJoint = new GameObject("Shoulder").transform;
+            ShoulderJoint.SetParent(transform, false);
             
-            _elbowJoint = new GameObject("Elbow").transform;
-            _elbowJoint.SetParent(_shoulderJoint);
+            ElbowJoint = new GameObject("Elbow").transform;
+            ElbowJoint.SetParent(ShoulderJoint);
             
-            _wristJoint = new GameObject("Wrist").transform;
-            _wristJoint.SetParent(_elbowJoint);
+            WristJoint = new GameObject("Wrist").transform;
+            WristJoint.SetParent(ElbowJoint);
             
             AdjustJointsPositions();
         }
@@ -90,25 +90,25 @@ namespace Thinko
                 GrabAttachPose();
             
             // Rotate the joints
-            _shoulderJoint.rotation = Quaternion.Slerp(
-                _shoulderJoint.rotation,
+            ShoulderJoint.rotation = Quaternion.Slerp(
+                ShoulderJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation),
                 Sharpness);
             
-            _elbowJoint.rotation = Quaternion.Slerp(
-                _elbowJoint.rotation,
+            ElbowJoint.rotation = Quaternion.Slerp(
+                ElbowJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation),
                 Sharpness);
             
-            _wristJoint.rotation = Quaternion.Slerp(
-                _wristJoint.rotation,
+            WristJoint.rotation = Quaternion.Slerp(
+                WristJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation),
                 Sharpness);
             
             // Calculate the final pose
-            FinalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(_shoulderJoint.rotation);
-            FinalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(_elbowJoint.rotation);
-            FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(_wristJoint.rotation);
+            FinalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(ShoulderJoint.rotation);
+            FinalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(ElbowJoint.rotation);
+            FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(WristJoint.rotation);
         }
         
         [Button(ButtonSizes.Large)]
@@ -155,11 +155,11 @@ namespace Thinko
 
         private void AdjustJointsPositions()
         {
-            if(_elbowJoint != null)
-                _elbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
+            if(ElbowJoint != null)
+                ElbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
             
-            if(_wristJoint != null)
-                _wristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
+            if(WristJoint != null)
+                WristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
         }
 
         private Vector3 GetDirection(Direction dir)
@@ -188,12 +188,12 @@ namespace Thinko
             if(!Application.isPlaying) return;
             
             // Draw the input bones
-            DrawJointDirectionGizmo(_shoulderJoint);
-            DrawBoneGizmo(_shoulderJoint.position, _shoulderJoint.rotation, GetDirection(ArmDirection), ShoulderLength, Color.white);
-            DrawJointDirectionGizmo(_elbowJoint);
-            DrawBoneGizmo(_elbowJoint.position, _elbowJoint.rotation, GetDirection(ArmDirection), ElbowLength, Color.white);
-            DrawJointDirectionGizmo(_wristJoint);
-            DrawBoneGizmo(_wristJoint.position, _wristJoint.rotation, GetDirection(ArmDirection), WristLength, Color.white);
+            DrawJointDirectionGizmo(ShoulderJoint);
+            DrawBoneGizmo(ShoulderJoint.position, ShoulderJoint.rotation, GetDirection(ArmDirection), ShoulderLength, Color.white);
+            DrawJointDirectionGizmo(ElbowJoint);
+            DrawBoneGizmo(ElbowJoint.position, ElbowJoint.rotation, GetDirection(ArmDirection), ElbowLength, Color.white);
+            DrawJointDirectionGizmo(WristJoint);
+            DrawBoneGizmo(WristJoint.position, WristJoint.rotation, GetDirection(ArmDirection), WristLength, Color.white);
             
             void DrawJointDirectionGizmo(Transform transf)
             {

@@ -36,6 +36,9 @@ namespace Thinko
         {
             _realPuppet = target as RealPuppet;
 
+            if (_realPuppet.RealBody == null)
+                _realPuppet.RealBody = FindObjectOfType<RealBody>();
+
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
             

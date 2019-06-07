@@ -54,18 +54,20 @@ namespace Thinko
         [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
 
+        private void Start()
+        {
+            if (ShoulderJoint)
+                ShoulderJoint.SetParent(RealBody.ShoulderJoint);
+            
+            if (ElbowJoint)
+                ElbowJoint.SetParent(RealBody.ElbowJoint);
+            
+            if (WristJoint)
+                WristJoint.SetParent(RealBody.WristJoint, false);
+        }
+
         private void Update()
         {
-            // Joints
-            if (ShoulderJoint)
-                ShoulderJoint.localRotation = RealBody.FinalPose.ShoulderRotation * Quaternion.Euler(ShoulderOffset);
-                
-            if (ElbowJoint)
-                ElbowJoint.localRotation = RealBody.FinalPose.ElbowRotation * Quaternion.Euler(ElbowOffset);
-                
-            if (WristJoint)
-                WristJoint.rotation = RealBody.FinalPose.WristRotation * Quaternion.Euler(WristOffset);
-            
             // Jaw
             if (AnimateJaw && JawRealPuppetDataProvider != null)
             {

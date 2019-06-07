@@ -20,8 +20,8 @@ namespace Thinko
             // Header
             EditorGUILayout.LabelField("Real Studio", _headerStyle);
 
+            RealPuppetDataProvider dataProvider = null;
             var puppet = FindObjectOfType<RealPuppet>();
-
             if (puppet == null)
             {
                 // Drop Area
@@ -33,9 +33,16 @@ namespace Thinko
             else
             {
                 // Data Provider
-                DataProviderGUI();
+                dataProvider = DataProviderGUI();
             }
             
+            // RealBody
+            if(dataProvider == null) return;
+            var realBody = RealBodyGUI(dataProvider);
+            
+            // RealPuppet
+            if(realBody == null) return;
+            RealPuppetGUI();
             
             // Repaint
             if (GUI.changed) Repaint();
@@ -87,28 +94,23 @@ namespace Thinko
                             
                             // Does the GameObject have a SkinnedMeshRenderer?
                             if(!go.GetComponentInChildren<SkinnedMeshRenderer>()) continue;
-                                
-                            // If the GameObject a model?
-                            if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.Model) continue;
                             
                             if (PrefabUtility.GetPrefabInstanceStatus(go) == PrefabInstanceStatus.Connected)
                             {
                                 // Already on stage
                                 return go;
                             }
-                            else
-                            {
-                                // On project, instantiate
-                                var gameObject = Instantiate(go);
-                                gameObject.name = go.name;
-                                gameObject.transform.localScale = Vector3.one;
+
+                            // On project, instantiate
+                            var gameObject = Instantiate(go);
+                            gameObject.name = go.name;
+                            gameObject.transform.localScale = Vector3.one;
                                 
-                                // Some models might import cameras, so we just make sure to get rid of them
-                                foreach (var cam in gameObject.GetComponentsInChildren<Camera>())
-                                    DestroyImmediate(cam.gameObject);
+                            // Some models might import cameras, so we just make sure to get rid of them
+                            foreach (var cam in gameObject.GetComponentsInChildren<Camera>())
+                                DestroyImmediate(cam.gameObject);
                                 
-                                return gameObject;
-                            }
+                            return gameObject;
                         }
                     }
                     break;
@@ -117,31 +119,79 @@ namespace Thinko
             return null;
         }
 
-        private static void DataProviderGUI()
+        private static RealPuppetDataProvider DataProviderGUI()
         {
-            GUILayout.Label ("Data Provider", EditorStyles.boldLabel);
-
             var dataProvider = FindObjectOfType<WebsocketDataStream>(); 
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label ("Data Provider", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            if (dataProvider != null)
+            {
+                if (GUILayout.Button(">", GUILayout.Width(30)))
+                {
+                    Selection.activeGameObject = dataProvider.gameObject;
+                }
+            }
+            GUILayout.EndHorizontal();
+
             if (dataProvider == null)
             {
                 if (GUILayout.Button("Create Data Provider"))
                 {
                     var dataProviderGO = new GameObject("WebsocketDataStream");
-                    dataProviderGO.AddComponent<WebsocketDataStream>();
+                    dataProvider = dataProviderGO.AddComponent<WebsocketDataStream>();
                 }
             }
-            else
-            {
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Select DataProvider", GUILayout.Width(120)))
-                {
-                    Selection.activeGameObject = dataProvider.gameObject;
-                }
 
-                dataProvider.WebsocketUri = EditorGUILayout.TextField("Websocket Uri", dataProvider.WebsocketUri, GUILayout.ExpandWidth(false));
-                dataProvider.OutputData = EditorGUILayout.Toggle("Output Data", dataProvider.OutputData, GUILayout.ExpandWidth(false));
-                GUILayout.EndHorizontal();
+            return dataProvider;
+        }
+        
+        private static RealBody RealBodyGUI(RealPuppetDataProvider dataProvider)
+        {
+            GUILayout.Space(10);
+            
+            var realBody = FindObjectOfType<RealBody>(); 
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Label ("Real Body", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            if (realBody != null)
+            {
+                if (GUILayout.Button(">", GUILayout.Width(30)))
+                {
+                    Selection.activeGameObject = realBody.gameObject;
+                }
             }
+            GUILayout.EndHorizontal();
+
+            if (realBody == null)
+            {
+                if (GUILayout.Button("Create RealBody"))
+                {
+                    var realBodyGO = new GameObject("RealBody");
+                    realBody = realBodyGO.AddComponent<RealBody>();
+                    realBody.DataProvider = dataProvider;
+                }
+            }
+
+            return realBody;
+        }
+        
+        private static void RealPuppetGUI()
+        {
+            GUILayout.Space(10);
+            
+            var realPuppet = FindObjectOfType<RealPuppet>(); 
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Label ("Real Puppet", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            if (realPuppet != null)
+            {
+                if (GUILayout.Button(">", GUILayout.Width(30)))
+                {
+                    Selection.activeGameObject = realPuppet.gameObject;
+                }
+            }
+            GUILayout.EndHorizontal();
         }
     }
 }
