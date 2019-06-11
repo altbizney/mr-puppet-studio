@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -371,6 +371,47 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295607671}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &439494626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7430250030634450374, guid: e6c4b03a3e6004e0397a80beda9d1a83,
+    type: 3}
+  m_PrefabInstance: {fileID: 7430250030588685640}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &439494627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439494626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af7cb2f499915454ab9e66c2c8ecaac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RealBody: {fileID: 1512627412}
+  ShoulderJoint: {fileID: 0}
+  ElbowJoint: {fileID: 0}
+  WristJoint: {fileID: 1693407692}
+  ShoulderOffset: {x: 0, y: 0, z: 0}
+  ElbowOffset: {x: 0, y: 0, z: 0}
+  WristOffset: {x: 0, y: 180, z: 0}
+  AnimateJaw: 0
+  JawRealPuppetDataProvider: {fileID: 0}
+  JawAnimMode: 0
+  JawMeshRenderer: {fileID: 0}
+  JawBlendShapeIndex: 0
+  JawNode: {fileID: 0}
+  JawAnimData:
+    OpenPosition: {x: 0, y: 0, z: 0}
+    OpenRotation: {x: 0, y: 0, z: 0, w: 1}
+    ClosePosition: {x: 0, y: 0, z: 0}
+    CloseRotation: {x: 0, y: 0, z: 0, w: 1}
+  JawSmoothness: 0.15
+  JawMin: 0
+  JawMax: 1023
+  JawGlove: 0
+  DynamicBones: []
 --- !u!1 &556370756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,6 +1891,12 @@ Transform:
   m_Father: {fileID: 604071277}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1693407692 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7430250031116370095, guid: e6c4b03a3e6004e0397a80beda9d1a83,
+    type: 3}
+  m_PrefabInstance: {fileID: 7430250030588685640}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1722106208
 GameObject:
   m_ObjectHideFlags: 0

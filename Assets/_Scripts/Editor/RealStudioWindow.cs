@@ -172,6 +172,21 @@ namespace Thinko
                     realBody.DataProvider = dataProvider;
                 }
             }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                GUI.enabled = Application.isPlaying;
+                if (GUILayout.Button("Grab TPose"))
+                {
+                    realBody.GrabTPose();
+                }
+                if (GUILayout.Button("Grab Attach Pose"))
+                {
+                    realBody.GrabAttachPose();
+                }
+                GUI.enabled = true;
+                GUILayout.EndHorizontal();
+            }
 
             return realBody;
         }
@@ -192,6 +207,13 @@ namespace Thinko
                 }
             }
             GUILayout.EndHorizontal();
+            
+            if (realPuppet != null)
+            {
+                realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Attach to Shoulder", realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
+                realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Attach to Elbow", realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
+                realPuppet.WristJoint = EditorGUILayout.ObjectField("Attach to Wrist", realPuppet.WristJoint, typeof(Transform), true) as Transform;
+            }
         }
     }
 }

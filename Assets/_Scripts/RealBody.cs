@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Thinko
 {
+    [InitializeOnLoadAttribute]
     public class RealBody : MonoBehaviour
     {
         [Serializable]
@@ -59,6 +60,35 @@ namespace Thinko
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
+        
+        static RealBody()
+        {
+            // We need this so we can keep the changes made during play time
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+        
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                var realBody = FindObjectOfType<RealBody>();
+                if(realBody== null) return;
+                
+                realBody.TPose = new Pose()
+                {
+                    ShoulderRotation = PlayerPrefsX.GetQuaternion(TPoseShoulderRotationKey),
+                    ElbowRotation = PlayerPrefsX.GetQuaternion(TPoseElbowRotationKey),
+                    WristRotation = PlayerPrefsX.GetQuaternion(TPoseWristRotationKey)
+                };
+                
+                realBody.AttachPose = new Pose()
+                {
+                    ShoulderRotation = PlayerPrefsX.GetQuaternion(AttachPoseShoulderRotationKey),
+                    ElbowRotation = PlayerPrefsX.GetQuaternion(AttachPoseElbowRotationKey),
+                    WristRotation = PlayerPrefsX.GetQuaternion(AttachPoseWristRotationKey)
+                };
+            }
+        }
 
         private void Awake()
         {
@@ -110,14 +140,22 @@ namespace Thinko
             FinalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(ElbowJoint.rotation);
             FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(WristJoint.rotation);
         }
+
+        private const string TPoseShoulderRotationKey = "shoulderRotationTPose";
+        private const string TPoseElbowRotationKey = "elbowRotationTPose";
+        private const string TPoseWristRotationKey = "wristRotationTPose";
         
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
         public void GrabTPose()
         {
-            Debug.Log("Grabbed T-Pose");
-            TPose = GrabPose();
+            var pose = GrabPose();
+            TPose = pose;
+            
+            PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
+            PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
+            PlayerPrefsX.SetQuaternion(TPoseWristRotationKey, pose.WristRotation);
         }
         
         [Button(ButtonSizes.Small, Name = "Clear")]
@@ -127,13 +165,21 @@ namespace Thinko
             TPose = new Pose();
         }
         
+        private const string AttachPoseShoulderRotationKey = "shoulderRotationAttachPose";
+        private const string AttachPoseElbowRotationKey = "elbowRotationAttachPose";
+        private const string AttachPoseWristRotationKey = "wristRotationAttachPose";
+        
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("AttachPose")]
         [GUIColor(0f, 1f, 0f)]
         public void GrabAttachPose()
         {
-            Debug.Log("Grabbed Attach-Pose");
-            AttachPose = GrabPose();
+            var pose = GrabPose();
+            AttachPose = pose;
+            
+            PlayerPrefsX.SetQuaternion(AttachPoseShoulderRotationKey, pose.ShoulderRotation);
+            PlayerPrefsX.SetQuaternion(AttachPoseElbowRotationKey, pose.ElbowRotation);
+            PlayerPrefsX.SetQuaternion(AttachPoseWristRotationKey, pose.WristRotation);
         }
         
         [Button(ButtonSizes.Small, Name = "Clear")]
@@ -217,24 +263,12 @@ namespace Thinko
     public class RealBodyEditor : OdinEditor
     {
         private RealBody _realBody;
-
-        private static RealBody.Pose _tPose;
-        private static RealBody.Pose _attachedPose;
         
         protected override void OnEnable()
         {
             base.OnEnable();
             
             _realBody = target as RealBody;
-            
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            
-            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
         }
 
         public override void OnInspectorGUI()
@@ -257,20 +291,6 @@ namespace Thinko
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Wrist - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
-        }
-
-        private void OnPlayModeStateChanged(PlayModeStateChange obj)
-        {
-            if (obj == PlayModeStateChange.ExitingPlayMode)
-            {
-                _tPose = _realBody.TPose;
-                _attachedPose = _realBody.AttachPose;
-            }
-            else if (obj == PlayModeStateChange.EnteredEditMode)
-            {
-                _realBody.TPose = _tPose;
-                _realBody.AttachPose = _attachedPose;
-            }
         }
     }
 }
