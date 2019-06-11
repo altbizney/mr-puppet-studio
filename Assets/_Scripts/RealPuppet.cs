@@ -57,13 +57,36 @@ namespace Thinko
         private void Start()
         {
             if (ShoulderJoint)
-                ShoulderJoint.SetParent(RealBody.ShoulderJoint);
+            {
+                ShoulderJoint.SetParent(RealBody.ShoulderJoint, false);
+                ShoulderJoint.localRotation = Quaternion.Euler(ShoulderOffset);
+            }
+
+            if (ElbowJoint)
+            {
+                ElbowJoint.SetParent(RealBody.ElbowJoint, false);
+                ElbowJoint.localRotation = Quaternion.Euler(ElbowOffset);
+            }
+
+            if (WristJoint)
+            {
+                WristJoint.SetParent(RealBody.WristJoint, false);
+                WristJoint.localRotation = Quaternion.Euler(WristOffset);
+            }
+        }
+
+        private void OnValidate()
+        {
+            if(!Application.isPlaying) return;
+            
+            if (ShoulderJoint)
+                ShoulderJoint.localRotation = Quaternion.Euler(ShoulderOffset);
             
             if (ElbowJoint)
-                ElbowJoint.SetParent(RealBody.ElbowJoint);
+                ElbowJoint.localRotation = Quaternion.Euler(ElbowOffset);
             
             if (WristJoint)
-                WristJoint.SetParent(RealBody.WristJoint, false);
+                WristJoint.localRotation = Quaternion.Euler(WristOffset);
         }
 
         private void Update()

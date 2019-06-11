@@ -28,7 +28,7 @@ namespace Thinko
                 var go = PuppetModelDropAreaGUI();
                 if (go == null) return;
                 if (go.GetComponentInChildren<RealPuppet>() == null)
-                    go.AddComponent<RealPuppet>();
+                    Undo.AddComponent<RealPuppet>(go);
             }
             else
             {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -32,12 +31,29 @@ namespace Thinko
         private bool _previewJawMode;
         private float _jawStep;
 
+        private SerializedProperty _shoulderJointProperty;
+        private SerializedProperty _shoulderOffsetProperty;
+        private SerializedProperty _elbowJointProperty;
+        private SerializedProperty _elbowOffsetProperty;
+        private SerializedProperty _wristJointProperty;
+        private SerializedProperty _wristOffsetProperty;
+
         private void OnEnable()
         {
             _realPuppet = target as RealPuppet;
 
+            _shoulderJointProperty = serializedObject.FindProperty("ShoulderJoint");
+            _shoulderOffsetProperty = serializedObject.FindProperty("ShoulderOffset");
+            _elbowJointProperty = serializedObject.FindProperty("ElbowJoint");
+            _elbowOffsetProperty = serializedObject.FindProperty("ElbowOffset");
+            _wristJointProperty = serializedObject.FindProperty("WristJoint");
+            _wristOffsetProperty = serializedObject.FindProperty("WristOffset");
+
             if (_realPuppet.RealBody == null)
                 _realPuppet.RealBody = FindObjectOfType<RealBody>();
+            
+            if(_realPuppet.JawRealPuppetDataProvider == null)
+                _realPuppet.JawRealPuppetDataProvider = FindObjectOfType<RealPuppetDataProvider>();
 
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
@@ -95,29 +111,9 @@ namespace Thinko
             
             if (_realPuppet.RealBody != null)
             {
-                _realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Shoulder Joint", _realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
-                if (_realPuppet.ShoulderJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    _realPuppet.ShoulderOffset = EditorGUILayout.Vector3Field("Shoulder Offset", _realPuppet.ShoulderOffset);
-                    EditorGUI.indentLevel--;
-                }
-                
-                _realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Elbow Joint", _realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
-                if (_realPuppet.ElbowJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    _realPuppet.ElbowOffset = EditorGUILayout.Vector3Field("Elbow Offset", _realPuppet.ElbowOffset);
-                    EditorGUI.indentLevel--;
-                }
-
-                _realPuppet.WristJoint = EditorGUILayout.ObjectField("Wrist Joint", _realPuppet.WristJoint, typeof(Transform), true) as Transform;
-                if (_realPuppet.WristJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    _realPuppet.WristOffset = EditorGUILayout.Vector3Field("Wrist Offset", _realPuppet.WristOffset);
-                    EditorGUI.indentLevel--;
-                }
+                JointGUI(_shoulderJointProperty, _shoulderOffsetProperty);
+                JointGUI(_elbowJointProperty, _elbowOffsetProperty);
+                JointGUI(_wristJointProperty, _wristOffsetProperty);
             }
 
             // Jaw
@@ -271,6 +267,15 @@ namespace Thinko
                 Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
                 EditorUtility.SetDirty(_realPuppet);
             }
+        }
+
+        private void JointGUI(SerializedProperty jointProperty, SerializedProperty jointOffsetProperty)
+        {
+            EditorGUILayout.PropertyField(jointProperty);
+            if (jointProperty.objectReferenceValue == null) return;
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(jointOffsetProperty);
+            EditorGUI.indentLevel--;
         }
         
         private void OnSceneGUI()
