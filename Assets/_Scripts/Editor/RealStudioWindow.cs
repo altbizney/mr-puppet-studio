@@ -122,9 +122,11 @@ namespace Thinko
         private static RealPuppetDataProvider DataProviderGUI()
         {
             var dataProvider = FindObjectOfType<WebsocketDataStream>(); 
-
+            
+            GUILayout.BeginVertical("HelpBox");
+ 
             GUILayout.BeginHorizontal();
-            GUILayout.Label ("Data Provider", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            GUILayout.Label ("DATA PROVIDER", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
             if (dataProvider != null)
             {
                 if (GUILayout.Button(">", GUILayout.Width(30)))
@@ -132,16 +134,29 @@ namespace Thinko
                     Selection.activeGameObject = dataProvider.gameObject;
                 }
             }
-            GUILayout.EndHorizontal();
-
-            if (dataProvider == null)
+            else
             {
-                if (GUILayout.Button("Create Data Provider"))
+                if (GUILayout.Button("Create"))
                 {
                     var dataProviderGO = new GameObject("WebsocketDataStream");
                     dataProvider = dataProviderGO.AddComponent<WebsocketDataStream>();
                 }
             }
+            GUILayout.EndHorizontal();
+
+            if (dataProvider != null)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.BeginVertical("GroupBox");
+
+                dataProvider.WebsocketUri = EditorGUILayout.TextField("Websocket Uri", dataProvider.WebsocketUri);
+                dataProvider.OutputData = EditorGUILayout.Toggle("Output Data", dataProvider.OutputData);
+ 
+                GUILayout.EndVertical ();
+                GUILayout.EndHorizontal();
+            }
+ 
+            GUILayout.EndVertical ();
 
             return dataProvider;
         }
@@ -152,8 +167,9 @@ namespace Thinko
             
             var realBody = FindObjectOfType<RealBody>(); 
             
+            GUILayout.BeginVertical("HelpBox");
             GUILayout.BeginHorizontal();
-            GUILayout.Label ("Real Body", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            GUILayout.Label ("REAL BODY", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
             if (realBody != null)
             {
                 if (GUILayout.Button(">", GUILayout.Width(30)))
@@ -161,19 +177,21 @@ namespace Thinko
                     Selection.activeGameObject = realBody.gameObject;
                 }
             }
-            GUILayout.EndHorizontal();
-
-            if (realBody == null)
+            else
             {
-                if (GUILayout.Button("Create RealBody"))
+                if (GUILayout.Button("Create"))
                 {
                     var realBodyGO = new GameObject("RealBody");
                     realBody = realBodyGO.AddComponent<RealBody>();
                     realBody.DataProvider = dataProvider;
                 }
             }
-            else
+            GUILayout.EndHorizontal();
+ 
+            if (realBody != null)
             {
+                GUILayout.BeginHorizontal();
+                GUILayout.BeginVertical("GroupBox");
                 GUILayout.BeginHorizontal();
                 GUI.enabled = Application.isPlaying;
                 if (GUILayout.Button("Grab TPose"))
@@ -186,8 +204,12 @@ namespace Thinko
                 }
                 GUI.enabled = true;
                 GUILayout.EndHorizontal();
+                GUILayout.EndVertical ();
+                GUILayout.EndHorizontal();
             }
-
+ 
+            GUILayout.EndVertical ();
+            
             return realBody;
         }
         
@@ -195,10 +217,11 @@ namespace Thinko
         {
             GUILayout.Space(10);
             
-            var realPuppet = FindObjectOfType<RealPuppet>(); 
+            var realPuppet = FindObjectOfType<RealPuppet>();
             
+            GUILayout.BeginVertical("HelpBox");
             GUILayout.BeginHorizontal();
-            GUILayout.Label ("Real Puppet", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            GUILayout.Label ("REAL PUPPET", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
             if (realPuppet != null)
             {
                 if (GUILayout.Button(">", GUILayout.Width(30)))
@@ -207,13 +230,39 @@ namespace Thinko
                 }
             }
             GUILayout.EndHorizontal();
-            
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical("GroupBox");
+ 
             if (realPuppet != null)
             {
                 realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Attach to Shoulder", realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
+                if (realPuppet.ShoulderJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    realPuppet.ShoulderOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.ShoulderOffset);
+                    EditorGUI.indentLevel--;
+                }
+                
                 realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Attach to Elbow", realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
+                if (realPuppet.ElbowJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    realPuppet.ElbowOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.ElbowOffset);
+                    EditorGUI.indentLevel--;
+                }
+                
                 realPuppet.WristJoint = EditorGUILayout.ObjectField("Attach to Wrist", realPuppet.WristJoint, typeof(Transform), true) as Transform;
+                if (realPuppet.WristJoint != null)
+                {
+                    EditorGUI.indentLevel++;
+                    realPuppet.WristOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.WristOffset);
+                    EditorGUI.indentLevel--;
+                }
             }
+ 
+            GUILayout.EndVertical ();
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical ();
         }
     }
 }

@@ -56,6 +56,12 @@ namespace Thinko
 
         private void Start()
         {
+            if (RealBody == null)
+                RealBody = FindObjectOfType<RealBody>();
+
+            if (JawRealPuppetDataProvider == null)
+                JawRealPuppetDataProvider = FindObjectOfType<RealPuppetDataProvider>();
+            
             if (ShoulderJoint)
             {
                 ShoulderJoint.SetParent(RealBody.ShoulderJoint, false);
@@ -92,7 +98,7 @@ namespace Thinko
         private void Update()
         {
             // Jaw
-            if (AnimateJaw && JawRealPuppetDataProvider != null)
+            if (AnimateJaw)
             {
                 JawGlove = JawRealPuppetDataProvider.Jaw;
                 _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
