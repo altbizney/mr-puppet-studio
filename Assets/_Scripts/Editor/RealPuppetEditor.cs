@@ -150,17 +150,27 @@ namespace Thinko
                     }
                     
                     // Edit jaw
+                    EditorGUILayout.BeginHorizontal();
                     if (_realPuppet.JawNode != null && _jawAnimEdit != null)
                     {
                         _editJawMode = _jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose;
+                        EditorGUILayout.BeginVertical();
                         EditTransformButton("Edit Open Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.OpenPosition, ref _realPuppet.JawAnimData.OpenRotation, ref _jawAnimEdit.EditOpenPose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
                         EditTransformButton("Edit Close Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.ClosePosition, ref _realPuppet.JawAnimData.CloseRotation, ref _jawAnimEdit.EditClosePose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
-                        
+                        EditorGUILayout.EndVertical();
                         // Preview
-                        EditorGUILayout.Space();
-                        GUI.enabled = !_editJawMode;
+                        GUI.enabled = !_editJawMode && !Application.isPlaying;
+                        if (_previewJawMode)
+                        {
+                            EditorGUI.BeginChangeCheck();
+                            _jawStep = EditorGUILayout.Slider(_jawStep, 0, 1);
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                JawStep(_jawStep);
+                            }
+                        }
                         GUI.color = _previewJawMode ? Color.green : Color.white;
-                        if (GUILayout.Button("PREVIEW"))
+                        if (GUILayout.Button("PREVIEW", GUILayout.ExpandHeight(true)))
                         {
                             _previewJawMode = !_previewJawMode;
 
@@ -172,17 +182,9 @@ namespace Thinko
                         GUI.enabled = true;
                         GUI.color = Color.white;
 
-                        if (_previewJawMode)
-                        {
-                            EditorGUI.BeginChangeCheck();
-                            _jawStep = EditorGUILayout.Slider(_jawStep, 0, 1);
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                JawStep(_jawStep);
-                            }
-                        }
+                        
                     }
-                    
+                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
                 }
                 else
@@ -398,7 +400,7 @@ namespace Thinko
         
         private void EditTransformButton(string button, ref Transform transf, ref Vector3 pos, ref Quaternion rot, ref bool edit, ref Vector3 originalPosition, ref Quaternion originalRotation)
         {
-            GUI.enabled = (edit || !_editJawMode) && !_previewJawMode;
+            GUI.enabled = (edit || !_editJawMode) && !_previewJawMode && !Application.isPlaying;
 
             var defColor = GUI.color;
             GUI.color = edit ? Color.green : Color.white;
