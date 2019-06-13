@@ -111,14 +111,6 @@ namespace Thinko
         
         private void Update()
         {
-            // Grab TPose
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.T))
-                GrabTPose();
-            
-            // Grab AttachPose
-            if (Input.GetKeyDown(KeyCode.A))
-                GrabAttachPose();
-            
             // Rotate the joints
             ShoulderJoint.rotation = Quaternion.Slerp(
                 ShoulderJoint.rotation,

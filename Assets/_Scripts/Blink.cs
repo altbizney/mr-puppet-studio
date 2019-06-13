@@ -15,7 +15,7 @@ namespace Thinko
 
         [MinMaxSlider(.01f, .2f)] public Vector2 BlinkHoldDuration = new Vector2(.05f, .1f);
 
-        public KeyCode ManualBlinkKey = KeyCode.Space;
+        public KeyCode ManualBlinkKey = KeyCode.B;
 
         public float OpenedValue = 1;
         public float ClosedValue = 0;
