@@ -289,13 +289,13 @@ namespace Thinko
             if (_jawAnimEdit != null && (_jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose))
             {
                 EditorGUI.BeginChangeCheck();
-                var pos = _realPuppet.JawNode.TransformPoint(_realPuppet.JawNode.localPosition);
+                var pos = _realPuppet.JawNode.position;
                 var rot = _realPuppet.JawNode.rotation;
                 Handles.TransformHandle(ref pos, ref rot);
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(_realPuppet.JawNode, "Adjust jaw");
-                    _realPuppet.JawNode.localPosition = _realPuppet.JawNode.InverseTransformPoint(pos);
+                    _realPuppet.JawNode.position = pos;
                     _realPuppet.JawNode.rotation = rot;
                 }
             }
@@ -414,6 +414,7 @@ namespace Thinko
                     originalRotation = transf.localRotation;
                     transf.localPosition = pos;
                     transf.localRotation = rot;
+                    Tools.hidden = true; // Hides the default gizmos so they don't get in the way
                 }
                 else
                 {
@@ -423,6 +424,7 @@ namespace Thinko
                     var newRot = transf.localRotation;
                     transf.localRotation = originalRotation;
                     rot = newRot;
+                    Tools.hidden = false;
                 }
             }
 
