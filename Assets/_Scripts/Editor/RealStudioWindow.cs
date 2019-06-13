@@ -192,8 +192,8 @@ namespace Thinko
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.BeginVertical("GroupBox");
-                GUILayout.BeginHorizontal();
                 GUI.enabled = Application.isPlaying;
+                GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Grab TPose"))
                 {
                     realBody.GrabTPose();
@@ -202,8 +202,18 @@ namespace Thinko
                 {
                     realBody.GrabAttachPose();
                 }
-                GUI.enabled = true;
                 GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Grab Jaw Closed"))
+                {
+                    realBody.GrabJawClosed();
+                }
+                if (GUILayout.Button("Grab Jaw Opened"))
+                {
+                    realBody.GrabJawOpened();
+                }
+                GUILayout.EndHorizontal();
+                GUI.enabled = true;
                 GUILayout.EndVertical ();
                 GUILayout.EndHorizontal();
             }

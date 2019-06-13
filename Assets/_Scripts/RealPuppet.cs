@@ -41,9 +41,6 @@ namespace Thinko
         public Transform JawNode;
         public PuppetJawAnimData JawAnimData;
         [Range(0, .3f)] public float JawSmoothness = .15f;
-        public float JawMin = 0;
-        public float JawMax = 1023;
-        [ReadOnly] public float JawGlove;
 
         private float _jawNormalized;
         private float _jawNormalizedSmoothed;
@@ -100,8 +97,7 @@ namespace Thinko
             // Jaw
             if (AnimateJaw)
             {
-                JawGlove = JawRealPuppetDataProvider.Jaw;
-                _jawNormalized = Mathf.InverseLerp(JawMin, JawMax, JawGlove);
+                _jawNormalized = Mathf.InverseLerp(RealBody.JawClosed, RealBody.JawOpened, RealBody.DataProvider.Jaw);
                 _jawNormalizedSmoothed = Mathf.SmoothDamp(_jawNormalizedSmoothed, _jawNormalized, ref _jawCurrentVelocityF, JawSmoothness);
 
                 if (JawAnimMode == PuppetJawAnimMode.Transform)

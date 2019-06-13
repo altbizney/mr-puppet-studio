@@ -56,6 +56,12 @@ namespace Thinko
         
         [HorizontalGroup("AttachPose")]
         public Pose AttachPose = new Pose();
+        
+        [HorizontalGroup("JawClosed")]
+        public float JawClosed = 0;
+        
+        [HorizontalGroup("JawOpened")]
+        public float JawOpened = 1023;
 
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
@@ -87,6 +93,9 @@ namespace Thinko
                     ElbowRotation = PlayerPrefsX.GetQuaternion(AttachPoseElbowRotationKey),
                     WristRotation = PlayerPrefsX.GetQuaternion(AttachPoseWristRotationKey)
                 };
+
+                realBody.JawClosed = PlayerPrefs.GetFloat(JawClosedKey);
+                realBody.JawOpened = PlayerPrefs.GetFloat(JawOpenedKey);
             }
         }
 
@@ -107,6 +116,15 @@ namespace Thinko
         private void OnValidate()
         {
             AdjustJointsPositions();
+        }
+        
+        private void AdjustJointsPositions()
+        {
+            if(ElbowJoint != null)
+                ElbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
+            
+            if(WristJoint != null)
+                WristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
         }
         
         private void Update()
@@ -133,6 +151,7 @@ namespace Thinko
             FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(WristJoint.rotation);
         }
 
+        // TPose
         private const string TPoseShoulderRotationKey = "shoulderRotationTPose";
         private const string TPoseElbowRotationKey = "elbowRotationTPose";
         private const string TPoseWristRotationKey = "wristRotationTPose";
@@ -157,6 +176,7 @@ namespace Thinko
             TPose = new Pose();
         }
         
+        // Attach Pose
         private const string AttachPoseShoulderRotationKey = "shoulderRotationAttachPose";
         private const string AttachPoseElbowRotationKey = "elbowRotationAttachPose";
         private const string AttachPoseWristRotationKey = "wristRotationAttachPose";
@@ -190,14 +210,29 @@ namespace Thinko
                 WristRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist)
             };
         }
-
-        private void AdjustJointsPositions()
+        
+        // Jaw Closed
+        private const string JawClosedKey = "jawClosed";
+        
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("JawClosed")]
+        [GUIColor(0f, 1f, 0f)]
+        public void GrabJawClosed()
         {
-            if(ElbowJoint != null)
-                ElbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
-            
-            if(WristJoint != null)
-                WristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
+            JawClosed = DataProvider.Jaw;
+            PlayerPrefs.SetFloat(JawClosedKey, JawClosed);
+        }
+        
+        // Jaw Opened
+        private const string JawOpenedKey = "jawOpened";
+        
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("JawOpened")]
+        [GUIColor(0f, 1f, 0f)]
+        public void GrabJawOpened()
+        {
+            JawOpened = DataProvider.Jaw;
+            PlayerPrefs.SetFloat(JawOpenedKey, JawOpened);
         }
 
         private Vector3 GetDirection(Direction dir)
@@ -267,10 +302,12 @@ namespace Thinko
         {
             base.OnInspectorGUI();
 
-            // Calibration info
             if(!Application.isPlaying) return;
             var defColor = GUI.color;
             
+            // Calibration info
+            GUILayout.Space(10);
+            GUILayout.Label ("CALIBRATION", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
             var calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Shoulder);
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Shoulder - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
@@ -283,6 +320,11 @@ namespace Thinko
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Wrist - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
+            
+            // Jaw value
+            GUILayout.Space(10);
+            GUILayout.Label ("JAW", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            GUILayout.Box($"Jaw - {_realBody.DataProvider.Jaw}");
         }
     }
 }

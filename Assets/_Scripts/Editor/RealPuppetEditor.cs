@@ -62,30 +62,11 @@ namespace Thinko
             {
                 CreateJawEdit();
             }
-
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
         private void OnDisable()
         {
-            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
-
             DisableJawEdit();
-        }
-
-        private void OnPlayModeStateChanged(PlayModeStateChange obj)
-        {
-            // Save play mode jaw values
-            if (obj == PlayModeStateChange.ExitingPlayMode)
-            {
-                _playModeJawMin = _realPuppet.JawMin;
-                _playModeJawMax = _realPuppet.JawMax;
-            }
-            else if (obj == PlayModeStateChange.EnteredEditMode)
-            {
-                _realPuppet.JawMin = _playModeJawMin;
-                _realPuppet.JawMax = _playModeJawMax;
-            }
         }
 
         public override void OnInspectorGUI()
@@ -203,35 +184,6 @@ namespace Thinko
                     }
                     EditorGUILayout.EndVertical();
                 }
-
-                EditorGUILayout.EndHorizontal();
-
-                GUILayout.Space(10);
-                if (Application.isPlaying)
-                {
-                    GUI.contentColor = Color.green;
-                    EditorGUILayout.LabelField($"Input: {_realPuppet.JawGlove}");
-                    GUI.contentColor = defColor;
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                _realPuppet.JawMin = EditorGUILayout.FloatField("Min Glove Value", _realPuppet.JawMin);
-                GUI.enabled = Application.isPlaying;
-                if (GUILayout.Button("Grab"))
-                {
-                    _realPuppet.JawMin = _realPuppet.JawGlove;
-                }
-                GUI.enabled = true;
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.BeginHorizontal();
-                _realPuppet.JawMax = EditorGUILayout.FloatField("Max Glove Value", _realPuppet.JawMax);
-                GUI.enabled = Application.isPlaying;
-                if (GUILayout.Button("Grab"))
-                {
-                    _realPuppet.JawMax = _realPuppet.JawGlove;
-                }
-                GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
