@@ -76,8 +76,14 @@ namespace Thinko
             serializedObject.Update();
 
             GUILayout.Space(10);
-
             var defColor = GUI.color;
+            
+            
+            // RealBody
+            GUI.color = _realPuppet.RealBody != null ? defColor : Color.red;
+            _realPuppet.RealBody = EditorGUILayout.ObjectField("RealBody", _realPuppet.RealBody, typeof(RealBody), true) as RealBody;
+            GUI.color = defColor;
+            
             
             // Joints
             GUILayout.Space(10);
@@ -85,18 +91,28 @@ namespace Thinko
             GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
             GUI.color = defColor;
             
-            GUI.color = _realPuppet.RealBody != null ? defColor : Color.red;
-            _realPuppet.RealBody = EditorGUILayout.ObjectField("RealBody", _realPuppet.RealBody, typeof(RealBody), true) as RealBody;
-            GUI.color = defColor;
-            GUILayout.Space(10);
+            JointGUI(_shoulderJointProperty, _shoulderOffsetProperty);
+            JointGUI(_elbowJointProperty, _elbowOffsetProperty);
+            JointGUI(_wristJointProperty, _wristOffsetProperty);
             
-            if (_realPuppet.RealBody != null)
+            // Try to automatically find the joints
+            if (_realPuppet.ShoulderJoint == null || _realPuppet.ElbowJoint == null || _realPuppet.WristJoint == null)
             {
-                JointGUI(_shoulderJointProperty, _shoulderOffsetProperty);
-                JointGUI(_elbowJointProperty, _elbowOffsetProperty);
-                JointGUI(_wristJointProperty, _wristOffsetProperty);
+                var transforms = _realPuppet.GetComponentsInChildren<Transform>();
+                foreach (var t in transforms)
+                {
+                    if (_realPuppet.ShoulderJoint == null && t.name.ToLower().Contains("shoulder"))
+                        _realPuppet.ShoulderJoint = t;
+                    
+                    if (_realPuppet.ElbowJoint == null && t.name.ToLower().Contains("elbow"))
+                        _realPuppet.ElbowJoint = t;
+                    
+                    if (_realPuppet.WristJoint == null && t.name.ToLower().Contains("wrist"))
+                        _realPuppet.WristJoint = t;
+                }
             }
 
+            
             // Jaw
             GUILayout.Space(10);
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
@@ -117,6 +133,7 @@ namespace Thinko
                 EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawAnimMode = (RealPuppet.PuppetJawAnimMode)EditorGUILayout.EnumPopup(_realPuppet.JawAnimMode, GUILayout.Width(150));
 
+                // Jaw Transform mode
                 if (_realPuppet.JawAnimMode == RealPuppet.PuppetJawAnimMode.Transform)
                 {
                     EditorGUILayout.BeginVertical();
@@ -125,12 +142,22 @@ namespace Thinko
                     if (EditorGUI.EndChangeCheck())
                     {
                         if (_realPuppet.JawNode != null)
-                        {
                             CreateJawEdit();
+                    }
+
+                    // Try to automatically find the jaw transform
+                    if (_realPuppet.JawNode == null)
+                    {
+                        var transforms = _realPuppet.GetComponentsInChildren<Transform>();
+                        foreach (var t in transforms)
+                        {
+                            if (!t.name.ToLower().Contains("jaw")) continue;
+                            _realPuppet.JawNode = t;
+                            break;
                         }
                     }
                     
-                    // Edit jaw
+                    // Edit jaw opened and closed transformations
                     EditorGUILayout.BeginHorizontal();
                     if (_realPuppet.JawNode != null && _jawAnimEdit != null)
                     {
@@ -168,6 +195,7 @@ namespace Thinko
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
                 }
+                // Jaw BlendShape mode
                 else
                 {
                     EditorGUILayout.BeginVertical();
@@ -181,6 +209,19 @@ namespace Thinko
                             options[i] = i.ToString();
                         }
                         _realPuppet.JawBlendShapeIndex = EditorGUILayout.Popup("BlendShape Index", _realPuppet.JawBlendShapeIndex, options);
+                    }
+                    else
+                    {
+                        // Try to automatically find the jaw skinned mesh renderer
+                        var skinnedMeshRenderers = _realPuppet.GetComponentsInChildren<SkinnedMeshRenderer>();
+                        foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
+                        {
+                            if (skinnedMeshRenderer.gameObject.name.ToLower().Contains("jaw"))
+                            {
+                                _realPuppet.JawMeshRenderer = skinnedMeshRenderer;
+                                break;
+                            }
+                        }
                     }
                     EditorGUILayout.EndVertical();
                 }
@@ -410,7 +451,7 @@ namespace Thinko
         
         private void DisableJawEdit()
         {
-            if (_realPuppet.JawNode != null)
+            if (_realPuppet != null && _realPuppet.JawNode != null && _jawAnimEdit != null)
             {
                 _realPuppet.JawNode.localPosition = _jawAnimEdit.OriginalPosition;
                 _realPuppet.JawNode.localRotation = _jawAnimEdit.OriginalRotation;
