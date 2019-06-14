@@ -193,16 +193,10 @@ namespace Thinko
                 GUILayout.BeginHorizontal();
                 GUILayout.BeginVertical("GroupBox");
                 GUI.enabled = Application.isPlaying;
-                GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Grab TPose"))
                 {
                     realBody.GrabTPose();
                 }
-                if (GUILayout.Button("Grab Attach Pose"))
-                {
-                    realBody.GrabAttachPose();
-                }
-                GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Grab Jaw Closed"))
                 {
@@ -242,7 +236,7 @@ namespace Thinko
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical("GroupBox");
- 
+            
             if (realPuppet != null)
             {
                 realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Attach to Shoulder", realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
@@ -269,6 +263,9 @@ namespace Thinko
                     EditorGUI.indentLevel--;
                 }
             }
+            
+            if(GUI.changed)
+                realPuppet.OnValidate();
  
             GUILayout.EndVertical ();
             GUILayout.EndHorizontal();

@@ -54,9 +54,6 @@ namespace Thinko
         [HorizontalGroup("TPose")]
         public Pose TPose = new Pose();
         
-        [HorizontalGroup("AttachPose")]
-        public Pose AttachPose = new Pose();
-        
         [HorizontalGroup("JawClosed")]
         public float JawClosed = 0;
         
@@ -85,13 +82,6 @@ namespace Thinko
                     ShoulderRotation = PlayerPrefsX.GetQuaternion(TPoseShoulderRotationKey),
                     ElbowRotation = PlayerPrefsX.GetQuaternion(TPoseElbowRotationKey),
                     WristRotation = PlayerPrefsX.GetQuaternion(TPoseWristRotationKey)
-                };
-                
-                realBody.AttachPose = new Pose()
-                {
-                    ShoulderRotation = PlayerPrefsX.GetQuaternion(AttachPoseShoulderRotationKey),
-                    ElbowRotation = PlayerPrefsX.GetQuaternion(AttachPoseElbowRotationKey),
-                    WristRotation = PlayerPrefsX.GetQuaternion(AttachPoseWristRotationKey)
                 };
 
                 realBody.JawClosed = PlayerPrefs.GetFloat(JawClosedKey);
@@ -146,9 +136,9 @@ namespace Thinko
                 Sharpness);
             
             // Calculate the final pose
-            FinalPose.ShoulderRotation = AttachPose.ShoulderRotation * Quaternion.Inverse(ShoulderJoint.rotation);
-            FinalPose.ElbowRotation = AttachPose.ElbowRotation * Quaternion.Inverse(ElbowJoint.rotation);
-            FinalPose.WristRotation = AttachPose.WristRotation * Quaternion.Inverse(WristJoint.rotation);
+            FinalPose.ShoulderRotation = ShoulderJoint.rotation;
+            FinalPose.ElbowRotation = ElbowJoint.rotation;
+            FinalPose.WristRotation = WristJoint.rotation;
         }
 
         // TPose
@@ -174,31 +164,6 @@ namespace Thinko
         public void ClearTPose()
         {
             TPose = new Pose();
-        }
-        
-        // Attach Pose
-        private const string AttachPoseShoulderRotationKey = "shoulderRotationAttachPose";
-        private const string AttachPoseElbowRotationKey = "elbowRotationAttachPose";
-        private const string AttachPoseWristRotationKey = "wristRotationAttachPose";
-        
-        [Button(ButtonSizes.Large)]
-        [HorizontalGroup("AttachPose")]
-        [GUIColor(0f, 1f, 0f)]
-        public void GrabAttachPose()
-        {
-            var pose = GrabPose();
-            AttachPose = pose;
-            
-            PlayerPrefsX.SetQuaternion(AttachPoseShoulderRotationKey, pose.ShoulderRotation);
-            PlayerPrefsX.SetQuaternion(AttachPoseElbowRotationKey, pose.ElbowRotation);
-            PlayerPrefsX.SetQuaternion(AttachPoseWristRotationKey, pose.WristRotation);
-        }
-        
-        [Button(ButtonSizes.Small, Name = "Clear")]
-        [HorizontalGroup("AttachPose", Width = .1f)]
-        public void ClearAttachPose()
-        {
-            AttachPose = new Pose();
         }
         
         private Pose GrabPose()

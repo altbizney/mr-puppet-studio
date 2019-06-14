@@ -78,7 +78,7 @@ namespace Thinko
             }
         }
 
-        private void OnValidate()
+        public void OnValidate()
         {
             if(!Application.isPlaying) return;
             
