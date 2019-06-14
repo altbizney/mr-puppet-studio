@@ -6,7 +6,7 @@ namespace Thinko
     public class RealStudioWindow : EditorWindow
     {
         private static GUIStyle _headerStyle;
-
+        
         [MenuItem("Thinko/Real Studio")]
         public static void ShowWindow()
         {
@@ -46,6 +46,12 @@ namespace Thinko
             
             // Repaint
             if (GUI.changed) Repaint();
+        }
+
+        private void Update()
+        {
+            if (EditorApplication.isPlaying)
+                Repaint();
         }
 
         private void CreateStyles()
@@ -190,26 +196,34 @@ namespace Thinko
  
             if (realBody != null)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.BeginVertical("GroupBox");
                 GUI.enabled = Application.isPlaying;
-                if (GUILayout.Button("Grab TPose"))
-                {
-                    realBody.GrabTPose();
-                }
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Grab Jaw Closed"))
-                {
-                    realBody.GrabJawClosed();
-                }
-                if (GUILayout.Button("Grab Jaw Opened"))
-                {
-                    realBody.GrabJawOpened();
-                }
+                    GUILayout.BeginVertical("GroupBox");
+                        if (GUILayout.Button("Grab TPose"))
+                        {
+                            realBody.GrabTPose();
+                        }
+                        GUILayout.Space(10);
+                        GUILayout.BeginHorizontal();
+                            if (GUILayout.Button("Grab Jaw Closed"))
+                            {
+                                realBody.GrabJawClosed();
+                            }
+                            if (GUILayout.Button("Grab Jaw Opened"))
+                            {
+                                realBody.GrabJawOpened();
+                            }
+                        GUILayout.EndHorizontal();
+                         
+                        // Jaw "progress bar"
+                        EditorGUI.ProgressBar( 
+                            EditorGUILayout.GetControlRect( false, 20 ), 
+                            Mathf.InverseLerp(realBody.JawClosed, realBody.JawOpened, realBody.DataProvider.Jaw),
+                            $"{realBody.DataProvider.Jaw}" );
+                        
+                    GUILayout.EndVertical ();
                 GUILayout.EndHorizontal();
                 GUI.enabled = true;
-                GUILayout.EndVertical ();
-                GUILayout.EndHorizontal();
             }
  
             GUILayout.EndVertical ();
