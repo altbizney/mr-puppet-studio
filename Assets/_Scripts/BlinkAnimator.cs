@@ -16,8 +16,10 @@ namespace Thinko
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+            
             _animState.normalizedTime = EyelidState.Remap(1, 0, 0, 1);
         }
     }

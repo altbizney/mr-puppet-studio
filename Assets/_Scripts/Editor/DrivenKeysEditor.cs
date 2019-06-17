@@ -12,24 +12,23 @@ namespace Thinko
         {
             public float OriginalBlendShapeValue;
         }
-        
+
         private class TransformEditState
         {
-            public bool EditInitPosition;
-            public bool EditEndPosition;
-//            public bool EditInitRotation;
-//            public bool EditEndRotation;
-            public Vector3 OriginalPos;
+            public bool EditInit;
+            public bool EditEnd;
+            public Vector3 OriginalPosition;
+            public Quaternion OriginalRotation;
         }
 
         private DrivenKeys _drivenKeys;
 
         private ReorderableList _blendshapesList;
         private List<BlendShapeEditState> _blendShapeEditStates;
-        
-        private ReorderableList _transformsList;
-        private List<TransformEditState> _transformEditStates;
 
+        private ReorderableList _transformsList;
+
+        private List<TransformEditState> _transformEditStates;
         private bool _editTransformMode;
         private bool _previewMode;
         private float _step;
@@ -40,7 +39,7 @@ namespace Thinko
 
             // BlendShapes List
             CreateBlendShapesList();
-            
+
             CreateBlendShapesEditState();
 
 
@@ -57,11 +56,14 @@ namespace Thinko
                 if (_drivenKeys.BlendShapeKeys[i].SkinnedMeshRenderer != null)
                     _drivenKeys.BlendShapeKeys[i].SkinnedMeshRenderer.SetBlendShapeWeight(_drivenKeys.BlendShapeKeys[i].BlendShapeIndex, _blendShapeEditStates[i].OriginalBlendShapeValue);
             }
-            
+
             for (var i = 0; i < _drivenKeys.TransformKeys.Count; i++)
             {
                 if (_drivenKeys.TransformKeys[i].Transform != null)
-                    _drivenKeys.TransformKeys[i].Transform.localPosition = _transformEditStates[i].OriginalPos;
+                {
+                    _drivenKeys.TransformKeys[i].Transform.localPosition = _transformEditStates[i].OriginalPosition;
+                    _drivenKeys.TransformKeys[i].Transform.localRotation = _transformEditStates[i].OriginalRotation;
+                }
             }
         }
 
@@ -96,15 +98,15 @@ namespace Thinko
 
             // Transforms List
             _transformsList.DoLayoutList();
-            
+
             // Edit transforms mode
             _editTransformMode = false;
             foreach (var transformEditState in _transformEditStates)
             {
-                if (transformEditState.EditInitPosition || transformEditState.EditEndPosition)// || transformEditState.EditInitRotation || transformEditState.EditEndRotation)
+                if (transformEditState.EditInit || transformEditState.EditEnd)
                     _editTransformMode = true;
             }
-            
+
             GUI.enabled = true;
 
             // Preview
@@ -120,6 +122,7 @@ namespace Thinko
                 else
                     OnDisable();
             }
+
             GUI.enabled = true;
             GUI.color = Color.white;
 
@@ -151,46 +154,56 @@ namespace Thinko
                 if (transf.Transform == null) continue;
 
                 // Draw position handle 
-                if (_transformEditStates[count].EditInitPosition || _transformEditStates[count].EditEndPosition)
+                if (_transformEditStates[count].EditInit || _transformEditStates[count].EditEnd)
                 {
                     EditorGUI.BeginChangeCheck();
-                    var newPos = Handles.PositionHandle(transf.Transform.position, transf.Transform.rotation);
+                    var pos = transf.Transform.position;
+                    var rot = transf.Transform.rotation;
+                    Handles.TransformHandle(ref pos, ref rot);
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(transf.Transform, "Move");
-                        transf.Transform.position = newPos;
+                        transf.Transform.position = pos;
+                        transf.Transform.rotation = rot;
                     }
                 }
 
                 count++;
             }
         }
-
-        private void EditPositionButton(Rect rect, ref Transform elementTransform, ref Vector3 elementPos, ref bool editPosition, ref Vector3 originalPosition)
+        
+        private void EditPositionButton(string buttonLabel, Rect rect, ref Transform transf, ref Vector3 pos, ref Quaternion rot, ref bool edit, ref Vector3 originalPosition, ref Quaternion originalRotation)
         {
-            GUI.enabled = (editPosition || !_editTransformMode) && !_previewMode;
+            GUI.enabled = (edit || !_editTransformMode) && !_previewMode;
 
             var defColor = GUI.color;
-            GUI.color = editPosition ? Color.green : Color.white;
-            
+            GUI.color = edit ? Color.green : Color.white;
+
             if (GUI.Button(new Rect(
                     rect.x + rect.width - 100,
                     rect.y,
                     100,
                     EditorGUIUtility.singleLineHeight),
-                "Edit"))
+                buttonLabel))
             {
-                editPosition = !editPosition;
-                if (editPosition)
+                edit = !edit;
+                if (edit)
                 {
-                    originalPosition = elementTransform.localPosition;
-                    elementTransform.localPosition = elementPos;
+                    originalPosition = transf.localPosition;
+                    originalRotation = transf.localRotation;
+                    transf.localPosition = pos;
+                    transf.localRotation = rot;
+                    Tools.hidden = true; // Hides the default gizmos so they don't get in the way
                 }
                 else
                 {
-                    var newPos = elementTransform.localPosition;
-                    elementTransform.localPosition = originalPosition;
-                    elementPos = newPos;
+                    var newPos = transf.localPosition;
+                    transf.localPosition = originalPosition;
+                    pos = newPos;
+                    var newRot = transf.localRotation;
+                    transf.localRotation = originalRotation;
+                    rot = newRot;
+                    Tools.hidden = false;
                 }
             }
 
@@ -221,7 +234,7 @@ namespace Thinko
                     element.SkinnedMeshRenderer,
                     typeof(SkinnedMeshRenderer),
                     true) as SkinnedMeshRenderer;
-                
+
                 // BlendShape values
                 // Index
                 rect.x = x;
@@ -231,13 +244,14 @@ namespace Thinko
                         rect.y,
                         90,
                         EditorGUIUtility.singleLineHeight),
-                    new GUIContent("BlendShape: Index", ""));
+                    new GUIContent("BlendShape:", ""));
                 rect.x += 110;
                 var options = new string[element.SkinnedMeshRenderer.sharedMesh.blendShapeCount];
                 for (var i = 0; i < options.Length; i++)
                 {
-                    options[i] = i.ToString();
+                    options[i] = element.SkinnedMeshRenderer.sharedMesh.GetBlendShapeName(i);
                 }
+
                 element.BlendShapeIndex = EditorGUI.Popup(new Rect(
                         rect.x,
                         rect.y,
@@ -245,8 +259,8 @@ namespace Thinko
                         EditorGUIUtility.singleLineHeight),
                     element.BlendShapeIndex,
                     options);
-                
-                
+
+
                 // Setup values
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -254,11 +268,11 @@ namespace Thinko
                         element.BlendShapeIndex = element.SkinnedMeshRenderer.sharedMesh.blendShapeCount - 1;
                     else if (element.BlendShapeIndex < 0)
                         element.BlendShapeIndex = 0;
-                    
-                    if(element.SkinnedMeshRenderer != null)
+
+                    if (element.SkinnedMeshRenderer != null)
                         _blendShapeEditStates[index].OriginalBlendShapeValue = element.SkinnedMeshRenderer.GetBlendShapeWeight(element.BlendShapeIndex);
                 }
-                
+
                 // Min
                 rect.x = x + rect.width / 3 + 10;
                 EditorGUI.PrefixLabel(new Rect(
@@ -289,7 +303,7 @@ namespace Thinko
                         rect.width / 3 - 50,
                         EditorGUIUtility.singleLineHeight),
                     element.BlendShapeMax);
-                
+
                 // Divider
                 if (index < _blendshapesList.count - 1)
                 {
@@ -300,7 +314,7 @@ namespace Thinko
             };
 
             _blendshapesList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "BlendShapes"); };
-            
+
             _blendshapesList.onRemoveCallback = list =>
             {
                 _blendShapeEditStates.RemoveAt(list.index);
@@ -351,7 +365,8 @@ namespace Thinko
                     Undo.RecordObject(element.Transform, "Transform set");
                     element.InitPosition = element.Transform.localPosition;
                     element.EndPosition = element.Transform.localPosition;
-                    _transformEditStates[index].OriginalPos = element.Transform.localPosition;
+                    _transformEditStates[index].OriginalPosition = element.Transform.localPosition;
+                    _transformEditStates[index].OriginalRotation = element.Transform.localRotation;
                 }
 
                 if (element.Transform == null)
@@ -368,7 +383,7 @@ namespace Thinko
                     "Start Position",
                     element.InitPosition);
 
-                EditPositionButton(rect, ref element.Transform, ref element.InitPosition, ref _transformEditStates[index].EditInitPosition, ref _transformEditStates[index].OriginalPos);
+                EditPositionButton("Edit", rect, ref element.Transform, ref element.InitPosition, ref element.InitRotation, ref _transformEditStates[index].EditInit, ref _transformEditStates[index].OriginalPosition, ref _transformEditStates[index].OriginalRotation);
 
                 // End Position
                 rect.x = x;
@@ -381,8 +396,8 @@ namespace Thinko
                     "End Position",
                     element.EndPosition);
 
-                EditPositionButton(rect, ref element.Transform, ref element.EndPosition, ref _transformEditStates[index].EditEndPosition, ref _transformEditStates[index].OriginalPos);
-                
+                EditPositionButton("Edit", rect, ref element.Transform, ref element.EndPosition, ref element.EndRotation, ref _transformEditStates[index].EditEnd, ref _transformEditStates[index].OriginalPosition, ref _transformEditStates[index].OriginalRotation);
+
                 // Divider
                 if (index < _transformsList.count - 1)
                 {
@@ -411,7 +426,8 @@ namespace Thinko
                 if (tk.Transform == null) continue;
                 _transformEditStates.Add(new TransformEditState()
                 {
-                    OriginalPos = tk.Transform.localPosition
+                    OriginalPosition = tk.Transform.localPosition,
+                    OriginalRotation = tk.Transform.localRotation
                 });
             }
         }

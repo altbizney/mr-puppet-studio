@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor;
+using UnityEngine;
 
 namespace Thinko
 {
+    [RequireComponent(typeof(DrivenKeys))]
     public class BlinkDrivenKeys : Blink
     {
         public DrivenKeys DrivenKeys;
@@ -15,9 +18,21 @@ namespace Thinko
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+            
             DrivenKeys.Step = EyelidState;
+        }
+    }
+
+    [CustomEditor(typeof(BlinkDrivenKeys))]
+    public class BlinkDrivenKeysEditor : Editor
+    {
+        private void OnEnable()
+        {
+            var drivenKeys = target as BlinkDrivenKeys;
+            drivenKeys.DrivenKeys = drivenKeys.GetComponent<DrivenKeys>();
         }
     }
 }

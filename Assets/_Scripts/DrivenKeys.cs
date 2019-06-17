@@ -21,8 +21,8 @@ namespace Thinko
             public Transform Transform;
             public Vector3 InitPosition;
             public Vector3 EndPosition;
-            public Quaternion InitRotation;
-            public Quaternion EndRotation;
+            public Quaternion InitRotation = Quaternion.identity;
+            public Quaternion EndRotation = Quaternion.identity;
         }
 
         public List<BlendShapeKey> BlendShapeKeys = new List<BlendShapeKey>();
@@ -54,7 +54,7 @@ namespace Thinko
             {
                 if (transformKey.Transform == null) continue;
                 transformKey.Transform.localPosition = Vector3.Lerp(transformKey.InitPosition, transformKey.EndPosition, step);
-//                transformKey.Transform.rotation = Quaternion.Lerp(transformKey.InitRotation, transformKey.EndRotation, step);
+                transformKey.Transform.localRotation = Quaternion.Lerp(transformKey.InitRotation, transformKey.EndRotation, step);
             }
         }
     }

@@ -15,10 +15,12 @@ namespace Thinko
 
         [MinMaxSlider(.01f, .2f)] public Vector2 BlinkHoldDuration = new Vector2(.05f, .1f);
 
+        public bool Invert;
+
         public KeyCode ManualBlinkKey = KeyCode.B;
 
-        public float OpenedValue = 1;
-        public float ClosedValue = 0;
+        private float OpenedValue => Invert ? 1 : 0;
+        private float ClosedValue => Invert ? 0 : 1;
 
         [ReadOnly] public float EyelidState = 1;
 
@@ -32,7 +34,7 @@ namespace Thinko
             }
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (Input.GetKeyDown(ManualBlinkKey))
             {

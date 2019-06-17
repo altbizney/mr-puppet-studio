@@ -280,6 +280,10 @@ namespace Thinko
                 GUILayout.Space(10);
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
+            else
+            {
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         public static void JointGUI(SerializedObject serializedObject, SerializedProperty jointProperty, SerializedProperty jointOffsetProperty)

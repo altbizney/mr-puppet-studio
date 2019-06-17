@@ -9,8 +9,8 @@ namespace Thinko
     {
         public enum PuppetJawAnimMode
         {
+            Transform,
             BlendShape,
-            Transform
         }
         
         [Serializable]

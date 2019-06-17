@@ -21,8 +21,10 @@ namespace Thinko
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+            
             SkinnedMeshRenderer.SetBlendShapeWeight(BlendShapeIndex, EyelidState.Remap(0, 1, BlendShapeMin, BlendShapeMax));
         }
     }

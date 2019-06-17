@@ -32,7 +32,7 @@ namespace Thinko
             var puppet = FindObjectOfType<RealPuppet>();
             
             // Serialized properties
-            if (puppet != null && _shoulderJointProperty == null)
+            if (puppet != null)
             {
                 _realPuppetSerializedObject = new SerializedObject(puppet);
                 _shoulderJointProperty = _realPuppetSerializedObject.FindProperty("ShoulderJoint");
@@ -275,9 +275,55 @@ namespace Thinko
             
             if (realPuppet != null)
             {
+                // Joints
+                GUILayout.Label("JOINTS", EditorStyles.boldLabel);
+                
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _shoulderJointProperty, _shoulderOffsetProperty);
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _elbowJointProperty, _elbowOffsetProperty);
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _wristJointProperty, _wristOffsetProperty);
+                
+                // Jaw
+                GUILayout.Space(10);
+                GUILayout.Label("JAW", EditorStyles.boldLabel);
+                realPuppet.AnimateJaw = EditorGUILayout.Toggle("Animate Jaw", realPuppet.AnimateJaw);
+                
+                // Blink
+                GUILayout.Space(10);
+                GUILayout.Label("BLINK", EditorStyles.boldLabel);
+                if (realPuppet.GetComponentInChildren<Blink>() == null)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Blink w/ Driven Keys"))
+                    {
+                        realPuppet.gameObject.AddComponent<BlinkDrivenKeys>();
+                    }
+                    if (GUILayout.Button("Blink w/ Animator"))
+                    {
+                        realPuppet.gameObject.AddComponent<BlinkAnimator>();
+                    }
+                    if (GUILayout.Button("Blink w/ Blendshape"))
+                    {
+                        realPuppet.gameObject.AddComponent<BlinkBlendshape>();
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                else
+                {
+                    if (GUILayout.Button("Remove Blink"))
+                    {
+                        var blink = realPuppet.gameObject.GetComponentInChildren<Blink>();
+                        Animation anim = null;
+                        DrivenKeys drivenKeys = null;
+                        if (blink != null)
+                        {
+                            anim = blink.GetComponent<Animation>();
+                            drivenKeys = blink.GetComponent<DrivenKeys>();
+                        }
+                        DestroyImmediate(blink);
+                        if(anim != null) DestroyImmediate(anim);
+                        if(drivenKeys != null) DestroyImmediate(drivenKeys);
+                    }
+                }
             }
             
             if(GUI.changed)
