@@ -20,7 +20,6 @@ namespace Thinko
 
         private Transform[] _childNodes;
 
-        private ReorderableList _jointsList;
         private ReorderableList _dynamicBonesList;
 
         private PuppetJawAnimDataEdit _jawAnimEdit;
@@ -106,10 +105,70 @@ namespace Thinko
                 }
             }
 
-            
-            // Jaw
+            // Separator
             GUILayout.Space(10);
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+            
+            // Jaw
+            DrawJawGUI();
+
+            // Separator
+            GUILayout.Space(10);
+            GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
+            
+            // Limbs
+            GUI.color = Color.yellow;
+            GUILayout.Label("LIMBS", EditorStyles.whiteLargeLabel);
+            GUI.color = defColor;
+
+            var limb = DropAreaGameObjectGUI("Drop Limb Root Bone Here".ToUpper());
+            if (limb != null && limb.GetComponentInChildren<DynamicBone>() == null)
+            {
+                var dynamicBone = limb.AddComponent<DynamicBone>();
+                dynamicBone.m_Root = limb.transform;
+                _realPuppet.DynamicBones.Add(dynamicBone);
+                Repaint();
+            }
+
+            GUILayout.Space(10);
+            _dynamicBonesList.DoLayoutList();
+
+
+
+            // Apply changes
+            serializedObject.ApplyModifiedProperties();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
+                EditorUtility.SetDirty(_realPuppet);
+            }
+        }
+        
+        private void OnSceneGUI()
+        {
+            if (!_realPuppet.enabled)
+                return;
+
+            // Draw jaw transform handle 
+            if (_jawAnimEdit != null && (_jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose))
+            {
+                EditorGUI.BeginChangeCheck();
+                var pos = _realPuppet.JawNode.position;
+                var rot = _realPuppet.JawNode.rotation;
+                Handles.TransformHandle(ref pos, ref rot);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(_realPuppet.JawNode, "Adjust jaw");
+                    _realPuppet.JawNode.position = pos;
+                    _realPuppet.JawNode.rotation = rot;
+                }
+            }
+        }
+
+        private void DrawJawGUI()
+        {
+            var defColor = GUI.color;
             GUI.color = Color.yellow;
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
             GUI.color = defColor;
@@ -147,15 +206,17 @@ namespace Thinko
                     }
                     
                     // Edit jaw opened and closed transformations
-                    EditorGUILayout.BeginVertical();
-                    EditorGUILayout.BeginHorizontal();
                     if (_realPuppet.JawNode != null && _jawAnimEdit != null)
                     {
+                        EditorGUILayout.BeginVertical();
+                        EditorGUILayout.BeginHorizontal();
+                        
                         _editJawMode = _jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose;
                         EditorGUILayout.BeginVertical();
                         EditTransformButton("Edit Open Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.OpenPosition, ref _realPuppet.JawAnimData.OpenRotation, ref _jawAnimEdit.EditOpenPose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
                         EditTransformButton("Edit Close Pose", ref _realPuppet.JawNode, ref _realPuppet.JawAnimData.ClosePosition, ref _realPuppet.JawAnimData.CloseRotation, ref _jawAnimEdit.EditClosePose, ref _jawAnimEdit.OriginalPosition, ref _jawAnimEdit.OriginalRotation);
                         EditorGUILayout.EndVertical();
+                        
                         // Preview
                         GUI.enabled = !_editJawMode && !Application.isPlaying;
                         if (_previewJawMode)
@@ -179,9 +240,10 @@ namespace Thinko
                         }
                         GUI.enabled = true;
                         GUI.color = Color.white;
+                        
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndVertical();
                     }
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.EndVertical();
                 }
                 // Jaw BlendShape mode
                 else
@@ -218,36 +280,6 @@ namespace Thinko
                 GUILayout.Space(10);
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
-
-            // Limbs
-            GUILayout.Space(10);
-            GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
-            GUI.color = Color.yellow;
-            GUILayout.Label("LIMBS", EditorStyles.whiteLargeLabel);
-            GUI.color = defColor;
-
-            var limb = DropAreaGameObjectGUI("Drop Limb Root Bone Here".ToUpper());
-            if (limb != null && limb.GetComponentInChildren<DynamicBone>() == null)
-            {
-                var dynamicBone = limb.AddComponent<DynamicBone>();
-                dynamicBone.m_Root = limb.transform;
-                _realPuppet.DynamicBones.Add(dynamicBone);
-                Repaint();
-            }
-
-            GUILayout.Space(10);
-            _dynamicBonesList.DoLayoutList();
-
-
-
-            // Apply changes
-            serializedObject.ApplyModifiedProperties();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(_realPuppet, "Modified RealPuppet Component");
-                EditorUtility.SetDirty(_realPuppet);
-            }
         }
 
         public static void JointGUI(SerializedObject serializedObject, SerializedProperty jointProperty, SerializedProperty jointOffsetProperty)
@@ -264,27 +296,6 @@ namespace Thinko
                 serializedObject.ApplyModifiedProperties();
         }
         
-        private void OnSceneGUI()
-        {
-            if (!_realPuppet.enabled)
-                return;
-
-            // Draw jaw transform handle 
-            if (_jawAnimEdit != null && (_jawAnimEdit.EditOpenPose || _jawAnimEdit.EditClosePose))
-            {
-                EditorGUI.BeginChangeCheck();
-                var pos = _realPuppet.JawNode.position;
-                var rot = _realPuppet.JawNode.rotation;
-                Handles.TransformHandle(ref pos, ref rot);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RecordObject(_realPuppet.JawNode, "Adjust jaw");
-                    _realPuppet.JawNode.position = pos;
-                    _realPuppet.JawNode.rotation = rot;
-                }
-            }
-        }
-
         private void CreateDynamicBonesList()
         {
             _dynamicBonesList = new ReorderableList(_realPuppet.DynamicBones, typeof(DynamicBone), false, true, false, true);
