@@ -23,9 +23,6 @@ namespace Thinko
         private ReorderableList _jointsList;
         private ReorderableList _dynamicBonesList;
 
-        private static float _playModeJawMin;
-        private static float _playModeJawMax;
-
         private PuppetJawAnimDataEdit _jawAnimEdit;
         private bool _editJawMode;
         private bool _previewJawMode;
@@ -81,16 +78,16 @@ namespace Thinko
             _realPuppet.RealBody = EditorGUILayout.ObjectField("RealBody", _realPuppet.RealBody, typeof(RealBody), true) as RealBody;
             GUI.color = defColor;
             
+            GUILayout.Space(10);
             
             // Joints
-            GUILayout.Space(10);
             GUI.color = Color.yellow;
             GUILayout.Label("JOINTS", EditorStyles.whiteLargeLabel);
             GUI.color = defColor;
             
-            JointGUI(_shoulderJointProperty, _shoulderOffsetProperty);
-            JointGUI(_elbowJointProperty, _elbowOffsetProperty);
-            JointGUI(_wristJointProperty, _wristOffsetProperty);
+            JointGUI(serializedObject, _shoulderJointProperty, _shoulderOffsetProperty);
+            JointGUI(serializedObject, _elbowJointProperty, _elbowOffsetProperty);
+            JointGUI(serializedObject, _wristJointProperty, _wristOffsetProperty);
             
             // Try to automatically find the joints
             if (_realPuppet.ShoulderJoint == null || _realPuppet.ElbowJoint == null || _realPuppet.WristJoint == null)
@@ -253,13 +250,18 @@ namespace Thinko
             }
         }
 
-        private void JointGUI(SerializedProperty jointProperty, SerializedProperty jointOffsetProperty)
+        public static void JointGUI(SerializedObject serializedObject, SerializedProperty jointProperty, SerializedProperty jointOffsetProperty)
         {
+            EditorGUI.BeginChangeCheck();
+            
             EditorGUILayout.PropertyField(jointProperty);
             if (jointProperty.objectReferenceValue == null) return;
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(jointOffsetProperty);
             EditorGUI.indentLevel--;
+            
+            if(EditorGUI.EndChangeCheck())
+                serializedObject.ApplyModifiedProperties();
         }
         
         private void OnSceneGUI()

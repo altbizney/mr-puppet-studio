@@ -6,6 +6,14 @@ namespace Thinko
     public class RealStudioWindow : EditorWindow
     {
         private static GUIStyle _headerStyle;
+
+        private SerializedObject _realPuppetSerializedObject;
+        private SerializedProperty _shoulderJointProperty;
+        private SerializedProperty _shoulderOffsetProperty;
+        private SerializedProperty _elbowJointProperty;
+        private SerializedProperty _elbowOffsetProperty;
+        private SerializedProperty _wristJointProperty;
+        private SerializedProperty _wristOffsetProperty;
         
         [MenuItem("Thinko/Real Studio")]
         public static void ShowWindow()
@@ -22,6 +30,20 @@ namespace Thinko
 
             RealPuppetDataProvider dataProvider = null;
             var puppet = FindObjectOfType<RealPuppet>();
+            
+            // Serialized properties
+            if (puppet != null && _shoulderJointProperty == null)
+            {
+                _realPuppetSerializedObject = new SerializedObject(puppet);
+                _shoulderJointProperty = _realPuppetSerializedObject.FindProperty("ShoulderJoint");
+                _shoulderOffsetProperty = _realPuppetSerializedObject.FindProperty("ShoulderOffset");
+                _elbowJointProperty = _realPuppetSerializedObject.FindProperty("ElbowJoint");
+                _elbowOffsetProperty = _realPuppetSerializedObject.FindProperty("ElbowOffset");
+                _wristJointProperty = _realPuppetSerializedObject.FindProperty("WristJoint");
+                _wristOffsetProperty = _realPuppetSerializedObject.FindProperty("WristOffset");
+            }
+            
+            // RealPuppet
             if (puppet == null)
             {
                 // Drop Area
@@ -231,7 +253,7 @@ namespace Thinko
             return realBody;
         }
         
-        private static void RealPuppetGUI()
+        private void RealPuppetGUI()
         {
             GUILayout.Space(10);
             
@@ -253,29 +275,9 @@ namespace Thinko
             
             if (realPuppet != null)
             {
-                realPuppet.ShoulderJoint = EditorGUILayout.ObjectField("Attach to Shoulder", realPuppet.ShoulderJoint, typeof(Transform), true) as Transform;
-                if (realPuppet.ShoulderJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    realPuppet.ShoulderOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.ShoulderOffset);
-                    EditorGUI.indentLevel--;
-                }
-                
-                realPuppet.ElbowJoint = EditorGUILayout.ObjectField("Attach to Elbow", realPuppet.ElbowJoint, typeof(Transform), true) as Transform;
-                if (realPuppet.ElbowJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    realPuppet.ElbowOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.ElbowOffset);
-                    EditorGUI.indentLevel--;
-                }
-                
-                realPuppet.WristJoint = EditorGUILayout.ObjectField("Attach to Wrist", realPuppet.WristJoint, typeof(Transform), true) as Transform;
-                if (realPuppet.WristJoint != null)
-                {
-                    EditorGUI.indentLevel++;
-                    realPuppet.WristOffset = EditorGUILayout.Vector3Field("Offset", realPuppet.WristOffset);
-                    EditorGUI.indentLevel--;
-                }
+                RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _shoulderJointProperty, _shoulderOffsetProperty);
+                RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _elbowJointProperty, _elbowOffsetProperty);
+                RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _wristJointProperty, _wristOffsetProperty);
             }
             
             if(GUI.changed)
