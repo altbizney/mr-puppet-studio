@@ -285,11 +285,6 @@ namespace Thinko
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Wrist - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
-            
-            // Jaw value
-            GUILayout.Space(10);
-            GUILayout.Label ("JAW", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
-            GUILayout.Box($"Jaw - {_realBody.DataProvider.Jaw}");
         }
     }
 }

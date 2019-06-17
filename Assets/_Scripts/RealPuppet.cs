@@ -34,7 +34,6 @@ namespace Thinko
         public Vector3 WristOffset;
 
         [Header("Jaw")] public bool AnimateJaw;
-        public RealPuppetDataProvider JawRealPuppetDataProvider;
         public PuppetJawAnimMode JawAnimMode;
         public SkinnedMeshRenderer JawMeshRenderer;
         public int JawBlendShapeIndex;
@@ -55,9 +54,6 @@ namespace Thinko
         {
             if (RealBody == null)
                 RealBody = FindObjectOfType<RealBody>();
-
-            if (JawRealPuppetDataProvider == null)
-                JawRealPuppetDataProvider = FindObjectOfType<RealPuppetDataProvider>();
             
             if (ShoulderJoint)
             {

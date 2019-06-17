@@ -51,9 +51,6 @@ namespace Thinko
 
             if (_realPuppet.RealBody == null)
                 _realPuppet.RealBody = FindObjectOfType<RealBody>();
-            
-            if(_realPuppet.JawRealPuppetDataProvider == null)
-                _realPuppet.JawRealPuppetDataProvider = FindObjectOfType<RealPuppetDataProvider>();
 
             _realPuppet.DynamicBones = _realPuppet.GetComponentsInChildren<DynamicBone>().ToList();
             CreateDynamicBonesList();
@@ -120,25 +117,19 @@ namespace Thinko
             GUILayout.Label("JAW", EditorStyles.whiteLargeLabel);
             GUI.color = defColor;
 
-            EditorGUI.indentLevel++;
-
             EditorGUILayout.BeginHorizontal();
             _realPuppet.AnimateJaw = EditorGUILayout.Toggle(_realPuppet.AnimateJaw, GUILayout.Width(35));
-            _realPuppet.JawRealPuppetDataProvider = EditorGUILayout.ObjectField(_realPuppet.JawRealPuppetDataProvider, typeof(RealPuppetDataProvider), true) as RealPuppetDataProvider;
-            EditorGUILayout.EndHorizontal();
-
             if (_realPuppet.AnimateJaw)
             {
                 GUILayout.Space(10);
-                EditorGUILayout.BeginHorizontal();
                 _realPuppet.JawAnimMode = (RealPuppet.PuppetJawAnimMode)EditorGUILayout.EnumPopup(_realPuppet.JawAnimMode, GUILayout.Width(150));
 
                 // Jaw Transform mode
                 if (_realPuppet.JawAnimMode == RealPuppet.PuppetJawAnimMode.Transform)
                 {
-                    EditorGUILayout.BeginVertical();
                     EditorGUI.BeginChangeCheck();
-                    _realPuppet.JawNode = EditorGUILayout.ObjectField("Joint", _realPuppet.JawNode, typeof(Transform), true) as Transform;
+                    _realPuppet.JawNode = EditorGUILayout.ObjectField(_realPuppet.JawNode, typeof(Transform), true) as Transform;
+                    EditorGUILayout.EndHorizontal();
                     if (EditorGUI.EndChangeCheck())
                     {
                         if (_realPuppet.JawNode != null)
@@ -153,11 +144,13 @@ namespace Thinko
                         {
                             if (!t.name.ToLower().Contains("jaw")) continue;
                             _realPuppet.JawNode = t;
+                            CreateJawEdit();
                             break;
                         }
                     }
                     
                     // Edit jaw opened and closed transformations
+                    EditorGUILayout.BeginVertical();
                     EditorGUILayout.BeginHorizontal();
                     if (_realPuppet.JawNode != null && _jawAnimEdit != null)
                     {
@@ -189,8 +182,6 @@ namespace Thinko
                         }
                         GUI.enabled = true;
                         GUI.color = Color.white;
-
-                        
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
@@ -199,8 +190,9 @@ namespace Thinko
                 else
                 {
                     EditorGUILayout.BeginVertical();
-                    _realPuppet.JawMeshRenderer = EditorGUILayout.ObjectField("SkinnedMesh Renderer", _realPuppet.JawMeshRenderer, typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
-
+                    _realPuppet.JawMeshRenderer = EditorGUILayout.ObjectField(_realPuppet.JawMeshRenderer, typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
+                    EditorGUILayout.EndHorizontal();
+                    
                     if (_realPuppet.JawMeshRenderer != null)
                     {
                         var options = new string[_realPuppet.JawMeshRenderer.sharedMesh.blendShapeCount];
@@ -225,13 +217,10 @@ namespace Thinko
                     }
                     EditorGUILayout.EndVertical();
                 }
-                EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
             }
-            EditorGUI.indentLevel--;
-
 
             // Limbs
             GUILayout.Space(10);
