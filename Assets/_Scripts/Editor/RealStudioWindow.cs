@@ -5,6 +5,8 @@ namespace Thinko
 {
     public class RealStudioWindow : EditorWindow
     {
+        public static bool ShowHelp = true;
+        
         private static GUIStyle _headerStyle;
 
         private SerializedObject _realPuppetSerializedObject;
@@ -24,12 +26,24 @@ namespace Thinko
         private void OnGUI()
         {
             CreateStyles();
-
-            // Header
-            EditorGUILayout.LabelField("Real Studio", _headerStyle);
-
             RealPuppetDataProvider dataProvider = null;
             var puppet = FindObjectOfType<RealPuppet>();
+            
+            // Header
+            EditorGUILayout.LabelField("Real Studio", _headerStyle);
+            
+            // Help button
+            var defColor = GUI.color;
+            GUI.color = ShowHelp ? Color.green : defColor;
+            var rect = GUILayoutUtility.GetLastRect();
+            if (GUI.Button(new Rect(rect.width - 30, rect.y, 30, 30), "?"))
+            {
+                ShowHelp = !ShowHelp;
+                var editors = Resources.FindObjectsOfTypeAll<EditorWindow>();
+                foreach (var editor in editors)
+                    editor.Repaint();
+            }
+            GUI.color = defColor;
             
             // Serialized properties
             if (puppet != null)
@@ -47,6 +61,9 @@ namespace Thinko
             if (puppet == null)
             {
                 // Drop Area
+                if(ShowHelp)
+                    EditorGUILayout.HelpBox("Step 1: Drag your model or prefab to the area below.", MessageType.Info);
+                
                 var go = PuppetModelDropAreaGUI();
                 if (go == null) return;
                 if (go.GetComponentInChildren<RealPuppet>() == null)
@@ -151,6 +168,9 @@ namespace Thinko
         {
             var dataProvider = FindObjectOfType<WebsocketDataStream>(); 
             
+            if(dataProvider == null && ShowHelp)
+                EditorGUILayout.HelpBox("Step 2: Create the websocket data stream reader.", MessageType.Info);
+            
             GUILayout.BeginVertical("HelpBox");
  
             GUILayout.BeginHorizontal();
@@ -195,6 +215,9 @@ namespace Thinko
             
             var realBody = FindObjectOfType<RealBody>(); 
             
+            if(realBody == null && ShowHelp)
+                EditorGUILayout.HelpBox("Step 3: Create the RealBody component which handles the conversion of the websocket data into an usable format and applies it to a simulated arm.", MessageType.Info);
+            
             GUILayout.BeginVertical("HelpBox");
             GUILayout.BeginHorizontal();
             GUILayout.Label ("REAL BODY", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
@@ -218,9 +241,14 @@ namespace Thinko
  
             if (realBody != null)
             {
-                GUI.enabled = Application.isPlaying;
                 GUILayout.BeginHorizontal();
                     GUILayout.BeginVertical("GroupBox");
+                        
+                        if(ShowHelp)
+                            EditorGUILayout.HelpBox("During Play mode, click the buttons below to record the default poses.", MessageType.Info);
+                        
+                        GUI.enabled = Application.isPlaying;
+                        
                         if (GUILayout.Button("Grab TPose"))
                         {
                             realBody.GrabTPose();
@@ -259,6 +287,9 @@ namespace Thinko
             
             var realPuppet = FindObjectOfType<RealPuppet>();
             
+            if(realPuppet != null && ShowHelp)
+                EditorGUILayout.HelpBox("The RealPuppet component handles the look and behaviour of the puppet 3D model and grabs its movement information from the RealBody component.", MessageType.Info);
+            
             GUILayout.BeginVertical("HelpBox");
             GUILayout.BeginHorizontal();
             GUILayout.Label ("REAL PUPPET", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
@@ -278,6 +309,9 @@ namespace Thinko
                 // Joints
                 GUILayout.Label("JOINTS", EditorStyles.boldLabel);
                 
+                if(ShowHelp)
+                    EditorGUILayout.HelpBox("Assign the puppet bones that you want to attach to the corresponding joint.", MessageType.Info);
+                
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _shoulderJointProperty, _shoulderOffsetProperty);
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _elbowJointProperty, _elbowOffsetProperty);
                 RealPuppetEditor.JointGUI(_realPuppetSerializedObject, _wristJointProperty, _wristOffsetProperty);
@@ -285,11 +319,19 @@ namespace Thinko
                 // Jaw
                 GUILayout.Space(10);
                 GUILayout.Label("JAW", EditorStyles.boldLabel);
+                
+                if(ShowHelp)
+                    EditorGUILayout.HelpBox("Toggle the jaw animation. You need to edit the RealPuppet component directly to configure it.", MessageType.Info);
+                
                 realPuppet.AnimateJaw = EditorGUILayout.Toggle("Animate Jaw", realPuppet.AnimateJaw);
                 
                 // Blink
                 GUILayout.Space(10);
                 GUILayout.Label("BLINK", EditorStyles.boldLabel);
+                
+                if(ShowHelp)
+                    EditorGUILayout.HelpBox("Add or remove one of the various blinking methods.", MessageType.Info);
+                
                 if (realPuppet.GetComponentInChildren<Blink>() == null)
                 {
                     EditorGUILayout.BeginHorizontal();

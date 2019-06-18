@@ -73,28 +73,19 @@ namespace Thinko
             serializedObject.Update();
 
             GUI.enabled = !_previewMode;
-
-            // Add blendshape button
-            if (GUILayout.Button("Add BlendShape"))
-            {
-                _drivenKeys.BlendShapeKeys.Add(new DrivenKeys.BlendShapeKey()
-                {
-                    SkinnedMeshRenderer = _drivenKeys.GetComponentInChildren<SkinnedMeshRenderer>()
-                });
-                _blendShapeEditStates.Add(new BlendShapeEditState());
-            }
+            
+            EditorGUILayout.Space();
+            
+            if(RealStudioWindow.ShowHelp)
+                EditorGUILayout.HelpBox("Add the SkinnedMeshRenderers that cointain the Blendshapes that should animate on blinking.", MessageType.Info);
 
             // Blendshapes List
             _blendshapesList.DoLayoutList();
+            
+            if(RealStudioWindow.ShowHelp)
+                EditorGUILayout.HelpBox("Add the Transforms that should animate on blinking. Set their Start and End position and rotation. You probably just want to edit the End pose.", MessageType.Info);
 
-
-            // Add transform button
             EditorGUILayout.Space();
-            if (GUILayout.Button("Add Transform"))
-            {
-                _drivenKeys.TransformKeys.Add(new DrivenKeys.TransformKey());
-                _transformEditStates.Add(new TransformEditState());
-            }
 
             // Transforms List
             _transformsList.DoLayoutList();
@@ -214,7 +205,7 @@ namespace Thinko
 
         private void CreateBlendShapesList()
         {
-            _blendshapesList = new ReorderableList(_drivenKeys.BlendShapeKeys, typeof(DrivenKeys.BlendShapeKey), false, true, false, true);
+            _blendshapesList = new ReorderableList(_drivenKeys.BlendShapeKeys, typeof(DrivenKeys.BlendShapeKey), false, true, true, true);
             _blendshapesList.drawElementCallback = (rect, index, isActive, isFocused) =>
             {
                 var x = rect.x;
@@ -315,6 +306,15 @@ namespace Thinko
 
             _blendshapesList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "BlendShapes"); };
 
+            _blendshapesList.onAddCallback = list =>
+            {
+                _drivenKeys.BlendShapeKeys.Add(new DrivenKeys.BlendShapeKey()
+                {
+                    SkinnedMeshRenderer = _drivenKeys.GetComponentInChildren<SkinnedMeshRenderer>()
+                });
+                _blendShapeEditStates.Add(new BlendShapeEditState());
+            };
+            
             _blendshapesList.onRemoveCallback = list =>
             {
                 _blendShapeEditStates.RemoveAt(list.index);
@@ -339,7 +339,7 @@ namespace Thinko
 
         private void CreateTransformsList()
         {
-            _transformsList = new ReorderableList(_drivenKeys.TransformKeys, typeof(DrivenKeys.TransformKey), false, true, false, true);
+            _transformsList = new ReorderableList(_drivenKeys.TransformKeys, typeof(DrivenKeys.TransformKey), false, true, true, true);
             _transformsList.drawElementCallback = (rect, index, isActive, isFocused) =>
             {
                 var x = rect.x;
@@ -409,6 +409,12 @@ namespace Thinko
 
             _transformsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Transforms"); };
 
+            _transformsList.onAddCallback = list =>
+            {
+                _drivenKeys.TransformKeys.Add(new DrivenKeys.TransformKey());
+                _transformEditStates.Add(new TransformEditState());
+            };
+            
             _transformsList.onRemoveCallback = list =>
             {
                 _transformEditStates.RemoveAt(list.index);
