@@ -278,7 +278,11 @@ namespace Thinko
                 }
 
                 GUILayout.Space(10);
+                
+                EditorGUI.BeginChangeCheck();
                 _realPuppet.JawSmoothness = EditorGUILayout.Slider("Smoothness", _realPuppet.JawSmoothness, 0, .3f);
+                if (EditorGUI.EndChangeCheck())
+                    PlayerPrefs.SetFloat(RealPuppet.JawSmoothnessKey, _realPuppet.JawSmoothness);
             }
             else
             {

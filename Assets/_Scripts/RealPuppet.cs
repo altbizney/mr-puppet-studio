@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace Thinko
@@ -49,6 +50,25 @@ namespace Thinko
 
         [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
+        
+        public const string JawSmoothnessKey = "jawSmoothness";
+        
+        static RealPuppet()
+        {
+            // We need this so we can keep the changes made during play time
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+        
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                var realPuppet = FindObjectOfType<RealPuppet>();
+                if(realPuppet== null) return;
+                
+                realPuppet.JawSmoothness = PlayerPrefs.GetFloat(JawSmoothnessKey);
+            }
+        }
 
         private void Start()
         {
