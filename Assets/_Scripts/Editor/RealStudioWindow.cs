@@ -5,7 +5,7 @@ namespace Thinko
 {
     public class RealStudioWindow : EditorWindow
     {
-        public static bool ShowHelp = true;
+        public static bool ShowHelp = false;
         
         private static GUIStyle _headerStyle;
 
