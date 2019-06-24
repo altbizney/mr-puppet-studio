@@ -295,7 +295,12 @@ namespace Thinko
             EditorGUI.BeginChangeCheck();
             
             EditorGUILayout.PropertyField(jointProperty);
-            if (jointProperty.objectReferenceValue == null) return;
+            if (jointProperty.objectReferenceValue == null)
+            {
+                serializedObject.ApplyModifiedProperties();
+                return;
+            }
+            
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(jointOffsetProperty);
             EditorGUI.indentLevel--;
