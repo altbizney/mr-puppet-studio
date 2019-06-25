@@ -42,8 +42,8 @@ namespace Thinko
         public PuppetJawAnimData JawAnimData;
         [Range(0, .3f)] public float JawSmoothness = .15f;
 
-        private float _jawNormalized;
-        private float _jawNormalizedSmoothed;
+        private float _jawPercentage;
+        private float _jawPercentageSmoothed;
         private Vector3 _jawCurrentVelocity;
         private float _jawCurrentVelocityF;
         private float _jawSmoothed;
@@ -112,19 +112,26 @@ namespace Thinko
             // Jaw
             if (AnimateJaw)
             {
-                _jawNormalized = Mathf.InverseLerp(RealBody.JawClosed, RealBody.JawOpened, RealBody.DataProvider.Jaw);
-                _jawNormalizedSmoothed = Mathf.SmoothDamp(_jawNormalizedSmoothed, _jawNormalized, ref _jawCurrentVelocityF, JawSmoothness);
-
+                _jawPercentage = (RealBody.DataProvider.Jaw - RealBody.JawClosed) / RealBody.JawOpened;
+                _jawPercentageSmoothed = Mathf.SmoothDamp(_jawPercentageSmoothed, _jawPercentage, ref _jawCurrentVelocityF, JawSmoothness);
+                
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null) return;
-                    JawNode.localPosition = Vector3.SmoothDamp(JawNode.localPosition, Vector3.Lerp(JawAnimData.ClosePosition, JawAnimData.OpenPosition, _jawNormalized), ref _jawCurrentVelocity, JawSmoothness);
-                    JawNode.localRotation = Quaternion.Lerp(JawAnimData.CloseRotation, JawAnimData.OpenRotation, _jawNormalizedSmoothed);
+                    JawNode.localPosition = Vector3.SmoothDamp(
+                        JawNode.localPosition, 
+                        Vector3.LerpUnclamped(JawAnimData.ClosePosition, JawAnimData.OpenPosition, _jawPercentage),
+                        ref _jawCurrentVelocity, 
+                        JawSmoothness);
+                    JawNode.localRotation = Quaternion.LerpUnclamped(
+                        JawAnimData.CloseRotation, 
+                        JawAnimData.OpenRotation,
+                        _jawPercentageSmoothed);
                 }
                 else
                 {
                     if (JawMeshRenderer == null) return;
-                    _jawSmoothed = Mathf.SmoothDamp(_jawSmoothed, _jawNormalized * 100f, ref _jawCurrentVelocityF, JawSmoothness);
+                    _jawSmoothed = Mathf.SmoothDamp(_jawSmoothed, _jawPercentage * 100f, ref _jawCurrentVelocityF, JawSmoothness);
                     JawMeshRenderer.SetBlendShapeWeight(JawBlendShapeIndex, _jawSmoothed);
                 }
             }
