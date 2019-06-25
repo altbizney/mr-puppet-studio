@@ -1,9 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Camera))]
-[ExecuteInEditMode]
 public class SelfieCamera : MonoBehaviour
 {
     public bool FlipHorizontal;

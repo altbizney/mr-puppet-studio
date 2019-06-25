@@ -47,11 +47,10 @@ namespace Thinko
         private Vector3 _jawCurrentVelocity;
         private float _jawCurrentVelocityF;
         private float _jawSmoothed;
+        public const string JawSmoothnessKey = "jawSmoothness";
 
         [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
-        
-        public const string JawSmoothnessKey = "jawSmoothness";
         
         static RealPuppet()
         {
