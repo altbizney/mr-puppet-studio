@@ -89,21 +89,21 @@ namespace Thinko
             JointGUI(serializedObject, _wristJointProperty, _wristOffsetProperty);
             
             // Try to automatically find the joints
-            if (_realPuppet.ShoulderJoint == null || _realPuppet.ElbowJoint == null || _realPuppet.WristJoint == null)
-            {
-                var transforms = _realPuppet.GetComponentsInChildren<Transform>();
-                foreach (var t in transforms)
-                {
-                    if (_realPuppet.ShoulderJoint == null && t.name.ToLower().Contains("shoulder"))
-                        _realPuppet.ShoulderJoint = t;
-                    
-                    if (_realPuppet.ElbowJoint == null && t.name.ToLower().Contains("elbow"))
-                        _realPuppet.ElbowJoint = t;
-                    
-                    if (_realPuppet.WristJoint == null && t.name.ToLower().Contains("wrist"))
-                        _realPuppet.WristJoint = t;
-                }
-            }
+//            if (_realPuppet.ShoulderJoint == null || _realPuppet.ElbowJoint == null || _realPuppet.WristJoint == null)
+//            {
+//                var transforms = _realPuppet.GetComponentsInChildren<Transform>();
+//                foreach (var t in transforms)
+//                {
+//                    if (_realPuppet.ShoulderJoint == null && t.name.ToLower().Contains("shoulder"))
+//                        _realPuppet.ShoulderJoint = t;
+//                    
+//                    if (_realPuppet.ElbowJoint == null && t.name.ToLower().Contains("elbow"))
+//                        _realPuppet.ElbowJoint = t;
+//                    
+//                    if (_realPuppet.WristJoint == null && t.name.ToLower().Contains("wrist"))
+//                        _realPuppet.WristJoint = t;
+//                }
+//            }
 
             // Separator
             GUILayout.Space(10);

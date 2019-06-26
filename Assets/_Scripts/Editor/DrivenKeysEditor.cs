@@ -365,6 +365,8 @@ namespace Thinko
                     Undo.RecordObject(element.Transform, "Transform set");
                     element.InitPosition = element.Transform.localPosition;
                     element.EndPosition = element.Transform.localPosition;
+                    element.InitRotation = element.Transform.localRotation;
+                    element.EndRotation = element.Transform.localRotation;
                     _transformEditStates[index].OriginalPosition = element.Transform.localPosition;
                     _transformEditStates[index].OriginalRotation = element.Transform.localRotation;
                 }
