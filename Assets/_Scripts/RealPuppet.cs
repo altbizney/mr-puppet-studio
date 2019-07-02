@@ -13,7 +13,7 @@ namespace Thinko
             Transform,
             BlendShape,
         }
-        
+
         [Serializable]
         public class PuppetJawAnimData
         {
@@ -22,7 +22,7 @@ namespace Thinko
             public Vector3 ClosePosition = Vector3.zero;
             public Quaternion CloseRotation = Quaternion.identity;
         }
-        
+
         [Required]
         public RealBody RealBody;
 
@@ -51,20 +51,20 @@ namespace Thinko
 
         [Header("Limbs")]
         public List<DynamicBone> DynamicBones = new List<DynamicBone>();
-        
+
         static RealPuppet()
         {
             // We need this so we can keep the changes made during play time
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
-        
+
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.EnteredEditMode)
             {
                 var realPuppet = FindObjectOfType<RealPuppet>();
-                if(realPuppet== null) return;
-                
+                if (realPuppet == null) return;
+
                 realPuppet.JawSmoothness = PlayerPrefs.GetFloat(JawSmoothnessKey);
             }
         }
@@ -73,7 +73,7 @@ namespace Thinko
         {
             if (RealBody == null)
                 RealBody = FindObjectOfType<RealBody>();
-            
+
             if (ShoulderJoint)
             {
                 ShoulderJoint.SetParent(RealBody.ShoulderJoint, false);
@@ -95,14 +95,14 @@ namespace Thinko
 
         public void OnValidate()
         {
-            if(!Application.isPlaying) return;
-            
+            if (!Application.isPlaying) return;
+
             if (ShoulderJoint)
                 ShoulderJoint.localRotation = Quaternion.Euler(ShoulderOffset);
-            
+
             if (ElbowJoint)
                 ElbowJoint.localRotation = Quaternion.Euler(ElbowOffset);
-            
+
             if (WristJoint)
                 WristJoint.localRotation = Quaternion.Euler(WristOffset);
         }
@@ -114,17 +114,17 @@ namespace Thinko
             {
                 _jawPercentage = (RealBody.DataProvider.Jaw - RealBody.JawClosed) / RealBody.JawOpened;
                 _jawPercentageSmoothed = Mathf.SmoothDamp(_jawPercentageSmoothed, _jawPercentage, ref _jawCurrentVelocityF, JawSmoothness);
-                
+
                 if (JawAnimMode == PuppetJawAnimMode.Transform)
                 {
                     if (JawNode == null) return;
                     JawNode.localPosition = Vector3.SmoothDamp(
-                        JawNode.localPosition, 
+                        JawNode.localPosition,
                         Vector3.LerpUnclamped(JawAnimData.ClosePosition, JawAnimData.OpenPosition, _jawPercentage),
-                        ref _jawCurrentVelocity, 
+                        ref _jawCurrentVelocity,
                         JawSmoothness);
                     JawNode.localRotation = Quaternion.LerpUnclamped(
-                        JawAnimData.CloseRotation, 
+                        JawAnimData.CloseRotation,
                         JawAnimData.OpenRotation,
                         _jawPercentageSmoothed);
                 }

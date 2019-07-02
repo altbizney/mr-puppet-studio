@@ -878,7 +878,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &975154282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,7 +886,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975154281}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d871936425fa34b63b8c7c34d40a933e, type: 3}
   m_Name: 
@@ -898,9 +898,9 @@ MonoBehaviour:
   WristLength: 0.5
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: 0.784, y: 0.2463, z: -0.1936, w: 0.5359}
-    ElbowRotation: {x: 0.2401, y: 0.5873, z: 0.7295, w: -0.2553}
-    WristRotation: {x: 0.8348, y: 0.3984, z: -0.3025, w: -0.2301}
+    ShoulderRotation: {x: 0.9163, y: 0.1584, z: 0.3656, w: 0.0399}
+    ElbowRotation: {x: 0.9792, y: 0.1454, z: -0.0878, w: 0.1113}
+    WristRotation: {x: 0.9613, y: 0.018, z: 0.2745, w: -0.0134}
   JawClosed: 130
   JawOpened: 269
 --- !u!4 &975154283
@@ -2105,8 +2105,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7519555726377337942, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
-      propertyPath: DataProvider
+      propertyPath: MrPuppet
       value: 
-      objectReference: {fileID: 948557130}
+      objectReference: {fileID: 975154282}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f906e07ae7114af697d048bd82854e2, type: 3}

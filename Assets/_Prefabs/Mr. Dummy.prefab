@@ -310,12 +310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47142c10de2714e6a94df62766dda510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DataProvider: {fileID: 0}
+  MrPuppet: {fileID: 0}
   ShoulderJoint: {fileID: 6679511693728731055}
   ElbowJoint: {fileID: 6679511692926730677}
   WristJoint: {fileID: 6679511693773998756}
-  JawTop: {fileID: 0}
-  JawBottom: {fileID: 0}
+  JawTop: {fileID: 6679511693083482606}
+  JawBottom: {fileID: 6679511693385292720}
 --- !u!1 &6679511693083482607
 GameObject:
   m_ObjectHideFlags: 0
