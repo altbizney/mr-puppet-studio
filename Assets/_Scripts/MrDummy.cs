@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Thinko
 {
-    public class Dummy : MonoBehaviour
+    public class MrDummy : MonoBehaviour
     {
         [Required]
         public RealPuppetDataProvider DataProvider;
