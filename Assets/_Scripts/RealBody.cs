@@ -24,22 +24,10 @@ namespace Thinko
             }
         }
 
-        public enum Direction
-        {
-            PositiveX,
-            PositiveY,
-            PositiveZ,
-            NegativeX,
-            NegativeY,
-            NegativeZ
-        }
-
         public Pose FinalPose { get; } = new Pose();
 
         [Required]
         public RealPuppetDataProvider DataProvider;
-
-        public Direction ArmDirection = Direction.NegativeZ;
 
         [Range(0, 1)]
         public float ShoulderLength = 1f;
@@ -111,10 +99,10 @@ namespace Thinko
         private void AdjustJointsPositions()
         {
             if (ElbowJoint != null)
-                ElbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
+                ElbowJoint.localPosition = Vector3.right * ShoulderLength;
 
             if (WristJoint != null)
-                WristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
+                WristJoint.localPosition = Vector3.right * ElbowLength;
         }
 
         private void Update()
@@ -198,56 +186,6 @@ namespace Thinko
         {
             JawOpened = DataProvider.Jaw;
             PlayerPrefs.SetFloat(JawOpenedKey, JawOpened);
-        }
-
-        private Vector3 GetDirection(Direction dir)
-        {
-            switch (dir)
-            {
-                case Direction.PositiveX:
-                    return new Vector3(1, 0, 0);
-                case Direction.PositiveY:
-                    return new Vector3(0, 1, 0);
-                case Direction.PositiveZ:
-                    return new Vector3(0, 0, 1);
-                case Direction.NegativeX:
-                    return new Vector3(-1, 0, 0);
-                case Direction.NegativeY:
-                    return new Vector3(0, -1, 0);
-                case Direction.NegativeZ:
-                    return new Vector3(0, 0, -1);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (!Application.isPlaying) return;
-
-            // Draw the input bones
-            DrawJointDirectionGizmo(ShoulderJoint);
-            DrawBoneGizmo(ShoulderJoint.position, ShoulderJoint.rotation, GetDirection(ArmDirection), ShoulderLength, Color.white);
-            DrawJointDirectionGizmo(ElbowJoint);
-            DrawBoneGizmo(ElbowJoint.position, ElbowJoint.rotation, GetDirection(ArmDirection), ElbowLength, Color.white);
-            DrawJointDirectionGizmo(WristJoint);
-            DrawBoneGizmo(WristJoint.position, WristJoint.rotation, GetDirection(ArmDirection), WristLength, Color.white);
-
-            void DrawJointDirectionGizmo(Transform transf)
-            {
-                var pos = transf.position;
-                var rot = transf.rotation;
-                var gizmoSize = HandleUtility.GetHandleSize(pos);
-                Debug.DrawRay(pos, rot * transf.forward * gizmoSize, Color.blue, 0f, true);
-                Debug.DrawRay(pos, rot * transf.up * gizmoSize, Color.green, 0f, true);
-                Debug.DrawRay(pos, rot * transf.right * gizmoSize, Color.red, 0f, true);
-            }
-
-            void DrawBoneGizmo(Vector3 pos, Quaternion rot, Vector3 dir, float length, Color color)
-            {
-                Gizmos.DrawWireSphere(pos, HandleUtility.GetHandleSize(pos) * length * .1f);
-                Debug.DrawRay(pos, rot * dir * length, color, 0, true);
-            }
         }
     }
 
