@@ -14,8 +14,8 @@ namespace Thinko
         public Transform ShoulderJoint;
         public Transform ElbowJoint;
         public Transform WristJoint;
-        public Transform JawTop;
-        public Transform JawBottom;
+
+        public Transform JawJoint;
 
         private void Update()
         {
@@ -23,6 +23,8 @@ namespace Thinko
             ShoulderJoint.localRotation = MrPuppet.FinalPose.ShoulderRotation;
             ElbowJoint.localRotation = MrPuppet.FinalPose.ElbowRotation;
             WristJoint.localRotation = MrPuppet.FinalPose.WristRotation;
+
+            JawJoint.localEulerAngles = Vector3.forward * Mathf.LerpAngle(0f, -45.0f, 0.5f);
         }
     }
 }

@@ -33,8 +33,6 @@ namespace Thinko
         public float ShoulderLength = 1f;
         [Range(0, 1)]
         public float ElbowLength = .75f;
-        [Range(0, 1)]
-        public float WristLength = .5f;
 
         [Range(0, 1)]
         public float Sharpness = .5f;

@@ -892,15 +892,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataProvider: {fileID: 948557130}
-  ArmDirection: 5
   ShoulderLength: 1
   ElbowLength: 0.75
-  WristLength: 0.5
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: 0.9163, y: 0.1584, z: 0.3656, w: 0.0399}
-    ElbowRotation: {x: 0.9792, y: 0.1454, z: -0.0878, w: 0.1113}
-    WristRotation: {x: 0.9613, y: 0.018, z: 0.2745, w: -0.0134}
+    ShoulderRotation: {x: 0.7903, y: 0.1135, z: 0.6003, w: 0.0471}
+    ElbowRotation: {x: 0.9837, y: 0.1262, z: 0.0306, w: 0.1244}
+    WristRotation: {x: 0.912, y: 0.0156, z: 0.4097, w: -0.0103}
   JawClosed: 130
   JawOpened: 269
 --- !u!4 &975154283
