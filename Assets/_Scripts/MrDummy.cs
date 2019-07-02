@@ -9,7 +9,7 @@ namespace Thinko
     public class MrDummy : MonoBehaviour
     {
         [Required]
-        public RealPuppetDataProvider DataProvider;
+        public RealBody MrPuppet;
 
         public Transform ShoulderJoint;
         public Transform ElbowJoint;
@@ -20,11 +20,9 @@ namespace Thinko
         private void Update()
         {
             // Rotate the joints
-            ShoulderJoint.localRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder);
-            ElbowJoint.localRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow);
-            WristJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist);
-
-            // TODO: apply tpose
+            ShoulderJoint.localRotation = MrPuppet.FinalPose.ShoulderRotation;
+            ElbowJoint.localRotation = MrPuppet.FinalPose.ElbowRotation;
+            WristJoint.localRotation = MrPuppet.FinalPose.WristRotation;
         }
     }
 }
