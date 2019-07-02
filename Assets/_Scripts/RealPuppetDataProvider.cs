@@ -22,7 +22,7 @@ namespace Thinko
 
             public bool IsCalibrated => System == 3 && Gyro == 3 && Accelerometer == 3 && Magnetometer == 3;
         }
-        
+
         public enum Source
         {
             Wrist,
@@ -49,7 +49,7 @@ namespace Thinko
             return q;
         }
 
-        public SensorCalibrationData GetCalibrationData(Source source)
+        public SensorCalibrationData GetSensorCalibrationData(Source source)
         {
             switch (source)
             {
@@ -62,25 +62,25 @@ namespace Thinko
             }
             return null;
         }
-        
+
         [ReadOnly]
         public Quaternion WristRotation;
 
         public SensorCalibrationData WristCalibrationData;
-        
+
         [ReadOnly]
         public Quaternion ElbowRotation;
-        
+
         public SensorCalibrationData ElbowCalibrationData;
-        
+
         [ReadOnly]
         public Quaternion ShoulderRotation;
-        
+
         public SensorCalibrationData ShoulderCalibrationData;
-        
+
         [ReadOnly]
         public float Jaw;
-        
+
         private void Awake()
         {
             WristCalibrationData = new SensorCalibrationData();

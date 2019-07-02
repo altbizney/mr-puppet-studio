@@ -23,7 +23,7 @@ namespace Thinko
                 WristRotation = wrist;
             }
         }
-        
+
         public enum Direction
         {
             PositiveX,
@@ -53,30 +53,30 @@ namespace Thinko
 
         [HorizontalGroup("TPose")]
         public Pose TPose = new Pose();
-        
+
         [HorizontalGroup("JawClosed")]
         public float JawClosed = 0;
-        
+
         [HorizontalGroup("JawOpened")]
         public float JawOpened = 1023;
 
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
-        
+
         static RealBody()
         {
             // We need this so we can keep the changes made during play time
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
-        
+
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.EnteredEditMode)
             {
                 var realBody = FindObjectOfType<RealBody>();
-                if(realBody== null) return;
-                
+                if (realBody == null) return;
+
                 realBody.TPose = new Pose()
                 {
                     ShoulderRotation = PlayerPrefsX.GetQuaternion(TPoseShoulderRotationKey),
@@ -93,13 +93,13 @@ namespace Thinko
         {
             ShoulderJoint = new GameObject("Shoulder").transform;
             ShoulderJoint.SetParent(transform, false);
-            
+
             ElbowJoint = new GameObject("Elbow").transform;
             ElbowJoint.SetParent(ShoulderJoint);
-            
+
             WristJoint = new GameObject("Wrist").transform;
             WristJoint.SetParent(ElbowJoint);
-            
+
             AdjustJointsPositions();
         }
 
@@ -107,16 +107,16 @@ namespace Thinko
         {
             AdjustJointsPositions();
         }
-        
+
         private void AdjustJointsPositions()
         {
-            if(ElbowJoint != null)
+            if (ElbowJoint != null)
                 ElbowJoint.localPosition = GetDirection(ArmDirection) * ShoulderLength;
-            
-            if(WristJoint != null)
+
+            if (WristJoint != null)
                 WristJoint.localPosition = GetDirection(ArmDirection) * ElbowLength;
         }
-        
+
         private void Update()
         {
             // Rotate the joints
@@ -124,17 +124,17 @@ namespace Thinko
                 ShoulderJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation),
                 Sharpness);
-            
+
             ElbowJoint.rotation = Quaternion.Slerp(
                 ElbowJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation),
                 Sharpness);
-            
+
             WristJoint.rotation = Quaternion.Slerp(
                 WristJoint.rotation,
                 DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation),
                 Sharpness);
-            
+
             // Calculate the final pose
             FinalPose.ShoulderRotation = ShoulderJoint.rotation;
             FinalPose.ElbowRotation = ElbowJoint.rotation;
@@ -145,7 +145,7 @@ namespace Thinko
         private const string TPoseShoulderRotationKey = "shoulderRotationTPose";
         private const string TPoseElbowRotationKey = "elbowRotationTPose";
         private const string TPoseWristRotationKey = "wristRotationTPose";
-        
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
@@ -153,19 +153,19 @@ namespace Thinko
         {
             var pose = GrabPose();
             TPose = pose;
-            
+
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
             PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
             PlayerPrefsX.SetQuaternion(TPoseWristRotationKey, pose.WristRotation);
         }
-        
+
         [Button(ButtonSizes.Small, Name = "Clear")]
         [HorizontalGroup("TPose", Width = .1f)]
         public void ClearTPose()
         {
             TPose = new Pose();
         }
-        
+
         private Pose GrabPose()
         {
             return new Pose
@@ -175,10 +175,10 @@ namespace Thinko
                 WristRotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist)
             };
         }
-        
+
         // Jaw Closed
         private const string JawClosedKey = "jawClosed";
-        
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("JawClosed")]
         [GUIColor(0f, 1f, 0f)]
@@ -187,10 +187,10 @@ namespace Thinko
             JawClosed = DataProvider.Jaw;
             PlayerPrefs.SetFloat(JawClosedKey, JawClosed);
         }
-        
+
         // Jaw Opened
         private const string JawOpenedKey = "jawOpened";
-        
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("JawOpened")]
         [GUIColor(0f, 1f, 0f)]
@@ -220,11 +220,11 @@ namespace Thinko
                     throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
             }
         }
-        
+
         private void OnDrawGizmos()
         {
-            if(!Application.isPlaying) return;
-            
+            if (!Application.isPlaying) return;
+
             // Draw the input bones
             DrawJointDirectionGizmo(ShoulderJoint);
             DrawBoneGizmo(ShoulderJoint.position, ShoulderJoint.rotation, GetDirection(ArmDirection), ShoulderLength, Color.white);
@@ -232,7 +232,7 @@ namespace Thinko
             DrawBoneGizmo(ElbowJoint.position, ElbowJoint.rotation, GetDirection(ArmDirection), ElbowLength, Color.white);
             DrawJointDirectionGizmo(WristJoint);
             DrawBoneGizmo(WristJoint.position, WristJoint.rotation, GetDirection(ArmDirection), WristLength, Color.white);
-            
+
             void DrawJointDirectionGizmo(Transform transf)
             {
                 var pos = transf.position;
@@ -242,7 +242,7 @@ namespace Thinko
                 Debug.DrawRay(pos, rot * transf.up * gizmoSize, Color.green, 0f, true);
                 Debug.DrawRay(pos, rot * transf.right * gizmoSize, Color.red, 0f, true);
             }
-            
+
             void DrawBoneGizmo(Vector3 pos, Quaternion rot, Vector3 dir, float length, Color color)
             {
                 Gizmos.DrawWireSphere(pos, HandleUtility.GetHandleSize(pos) * length * .1f);
@@ -255,11 +255,11 @@ namespace Thinko
     public class RealBodyEditor : OdinEditor
     {
         private RealBody _realBody;
-        
+
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             _realBody = target as RealBody;
         }
 
@@ -267,21 +267,21 @@ namespace Thinko
         {
             base.OnInspectorGUI();
 
-            if(!Application.isPlaying) return;
+            if (!Application.isPlaying) return;
             var defColor = GUI.color;
-            
+
             // Calibration info
             GUILayout.Space(10);
-            GUILayout.Label ("CALIBRATION", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
-            var calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Shoulder);
+            GUILayout.Label("CALIBRATION", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
+            var calibData = _realBody.DataProvider.GetSensorCalibrationData(RealPuppetDataProvider.Source.Shoulder);
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Shoulder - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
-            calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Elbow);
+            calibData = _realBody.DataProvider.GetSensorCalibrationData(RealPuppetDataProvider.Source.Elbow);
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Elbow - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
-            calibData = _realBody.DataProvider.GetCalibrationData(RealPuppetDataProvider.Source.Wrist);
+            calibData = _realBody.DataProvider.GetSensorCalibrationData(RealPuppetDataProvider.Source.Wrist);
             GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
             GUILayout.Box($"Wrist - System: {calibData.System}  Gyro: {calibData.Gyro}  Accl: {calibData.Accelerometer}  Mag:  {calibData.Magnetometer}");
             GUI.color = defColor;
