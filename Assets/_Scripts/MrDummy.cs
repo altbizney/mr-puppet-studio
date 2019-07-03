@@ -20,9 +20,9 @@ namespace Thinko
         private void Update()
         {
             // Rotate the joints
-            ShoulderJoint.localRotation = MrPuppet.FinalPose.ShoulderRotation;
-            ElbowJoint.localRotation = MrPuppet.FinalPose.ElbowRotation;
-            WristJoint.localRotation = MrPuppet.FinalPose.WristRotation;
+            ShoulderJoint.rotation = MrPuppet.FinalPose.ShoulderRotation;
+            ElbowJoint.rotation = MrPuppet.FinalPose.ElbowRotation;
+            WristJoint.rotation = MrPuppet.FinalPose.WristRotation;
 
             JawJoint.localEulerAngles = Vector3.forward * Mathf.LerpAngle(0f, -45.0f, 0.5f);
         }
