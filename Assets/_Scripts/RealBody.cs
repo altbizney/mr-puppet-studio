@@ -50,6 +50,8 @@ namespace Thinko
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
 
+        public Vector3 OffsetRotation;
+
         static RealBody()
         {
             // We need this so we can keep the changes made during play time
@@ -108,17 +110,17 @@ namespace Thinko
             // Rotate the joints
             ShoulderJoint.rotation = Quaternion.Slerp(
                 ShoulderJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation),
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation) * Quaternion.Euler(OffsetRotation),
                 Sharpness);
 
             ElbowJoint.rotation = Quaternion.Slerp(
                 ElbowJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation),
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation) * Quaternion.Euler(OffsetRotation),
                 Sharpness);
 
             WristJoint.rotation = Quaternion.Slerp(
                 WristJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation),
+                DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation) * Quaternion.Euler(OffsetRotation),
                 Sharpness);
 
             // Calculate the final pose
@@ -139,6 +141,8 @@ namespace Thinko
         {
             var pose = GrabPose();
             TPose = pose;
+            
+            OffsetRotation = new Vector3(0, ShoulderJoint.rotation.eulerAngles.y, 0);
 
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
             PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
