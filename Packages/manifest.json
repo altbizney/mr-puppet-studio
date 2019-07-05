@@ -1,10 +1,9 @@
 {
   "dependencies": {
+    "com.luispedrofonseca.lpf-unity-tools": "https://github.com/luispedrofonseca/lpf-unity-tools.git",
     "com.unity.cinemachine": "2.3.4",
     "com.unity.package-manager-ui": "2.1.2",
-    "com.unity.probuilder": "4.0.5",
-    "com.unity.quicksearch": "1.2.7-preview",
-    "com.unity.recorder": "2.0.1-preview.1",
+    "com.unity.quicksearch": "1.2.8-preview",
     "com.unity.render-pipelines.core": "5.7.2",
     "com.unity.render-pipelines.lightweight": "5.7.2",
     "com.unity.shadergraph": "5.7.2",
@@ -38,5 +37,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.luispedrofonseca.lpf-unity-tools": {
+      "hash": "3fc8bfe69851ede2723c783747db7667413b322b",
+      "revision": "HEAD"
+    }
   }
 }
