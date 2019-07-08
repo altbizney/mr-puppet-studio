@@ -196,6 +196,27 @@ namespace Thinko
             JawOpened = DataProvider.Jaw;
             PlayerPrefs.SetFloat(JawOpenedKey, JawOpened);
         }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying) return;
+
+            Gizmos.color = Color.yellow;
+
+            // shoulder
+            Gizmos.DrawWireSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.1f);
+            Gizmos.DrawLine(ShoulderJoint.position, ElbowJoint.position);
+
+            // elbow
+            Gizmos.DrawWireSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.1f);
+            Gizmos.DrawLine(ElbowJoint.position, WristJoint.position);
+
+            // wrist
+            Gizmos.DrawWireSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.1f);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(WristJoint.position, WristJoint.right * 0.25f);
+        }
     }
 
     [CustomEditor(typeof(RealBody))]

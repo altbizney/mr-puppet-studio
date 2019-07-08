@@ -154,9 +154,9 @@ MonoBehaviour:
   ElbowLength: 0.75
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: -0.0507, y: -0.4805, z: 0.872, w: 0.0786}
-    ElbowRotation: {x: 0.2612, y: -0.2453, z: 0.9334, w: 0.0172}
-    WristRotation: {x: -0.2478, y: 0.0551, z: -0.915, w: 0.3134}
+    ShoulderRotation: {x: -0.0545, y: -0.4792, z: 0.8724, w: 0.0794}
+    ElbowRotation: {x: 0.2585, y: -0.244, z: 0.9344, w: 0.0218}
+    WristRotation: {x: -0.2477, y: 0.0533, z: -0.9167, w: 0.3088}
   JawClosed: 117
   JawOpened: 568
   JawPercent: 0
@@ -186,6 +186,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mr. Dummy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679511693021612165, guid: 8f906e07ae7114af697d048bd82854e2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
@@ -593,17 +598,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.47364923
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1541346
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
@@ -613,12 +618,12 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}

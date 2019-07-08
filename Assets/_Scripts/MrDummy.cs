@@ -24,7 +24,7 @@ namespace Thinko
             ElbowJoint.rotation = MrPuppet.FinalPose.ElbowRotation;
             WristJoint.rotation = MrPuppet.FinalPose.WristRotation;
 
-            JawJoint.localEulerAngles = Vector3.forward * Mathf.LerpAngle(0f, -45.0f, 0.5f);
+            JawJoint.localEulerAngles = Vector3.forward * Mathf.LerpAngle(0f, -45.0f, MrPuppet.JawPercent);
         }
     }
 }
