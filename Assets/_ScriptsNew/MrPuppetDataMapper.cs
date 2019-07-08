@@ -41,6 +41,7 @@ namespace Thinko.MrPuppet
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
 
+        [Required]
         public MrPuppetHubConnection HubConnection;
 
         public Pose TPose;
