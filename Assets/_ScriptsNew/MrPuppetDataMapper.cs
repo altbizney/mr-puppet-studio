@@ -26,9 +26,13 @@ namespace Thinko.MrPuppet
 
         public Pose TPose;
         
+        public int JawOpened = 1023;
+        public int JawClosed = 0;
+        
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
+        [DisableIf("CaptureButtonsEnabled")]
         public void GrabTPose()
         {
             TPose = new Pose
@@ -46,7 +50,38 @@ namespace Thinko.MrPuppet
             TPose = new Pose();
         }
         
-        // The section below is solely to keep the changes made during play time 
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("Jaw")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableIf("CaptureButtonsEnabled")]
+        public void GrabJawOpened()
+        {
+            JawOpened = HubConnection.Jaw;
+        }
+        
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("Jaw")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableIf("CaptureButtonsEnabled")]
+        public void GrabJawClosed()
+        {
+            JawClosed = HubConnection.Jaw;
+        }
+
+        [Button(ButtonSizes.Small, Name = "Clear")]
+        [HorizontalGroup("Jaw", Width = .1f)]
+        public void ClearJaw()
+        {
+            JawClosed = 0;
+            JawOpened = 1023;
+        }
+
+        private bool CaptureButtonsEnabled()
+        {
+            return !Application.isPlaying;
+        }
+        
+        // The section below is used to store the changes made at runtime 
         static MrPuppetDataMapper()
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
@@ -55,6 +90,8 @@ namespace Thinko.MrPuppet
         private const string TPoseShoulderRotationKey = "shoulderRotationTPose";
         private const string TPoseElbowRotationKey = "elbowRotationTPose";
         private const string TPoseWristRotationKey = "wristRotationTPose";
+        private const string JawClosedKey = "jawClosed";
+        private const string JawOpenedKey = "jawOpened";
         
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
@@ -69,12 +106,18 @@ namespace Thinko.MrPuppet
                     ElbowRotation = PlayerPrefsX.GetQuaternion(TPoseElbowRotationKey),
                     WristRotation = PlayerPrefsX.GetQuaternion(TPoseWristRotationKey)
                 };
+
+                dataMapper.JawOpened = PlayerPrefs.GetInt(JawOpenedKey);
+                dataMapper.JawClosed = PlayerPrefs.GetInt(JawClosedKey);
             }
             else if (state == PlayModeStateChange.ExitingPlayMode)
             {
                 PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, dataMapper.TPose.ShoulderRotation);
                 PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, dataMapper.TPose.ElbowRotation);
                 PlayerPrefsX.SetQuaternion(TPoseWristRotationKey, dataMapper.TPose.WristRotation);
+                
+                PlayerPrefs.SetInt(JawOpenedKey, dataMapper.JawOpened);
+                PlayerPrefs.SetInt(JawClosedKey, dataMapper.JawClosed);
             }
         }
     }

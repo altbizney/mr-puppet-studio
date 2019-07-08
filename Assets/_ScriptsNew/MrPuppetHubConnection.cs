@@ -40,7 +40,7 @@ namespace Thinko.MrPuppet
         public Quaternion ShoulderRotation;
 
         [ReadOnly]
-        public float Jaw;
+        public int Jaw;
 
         [Header("Debug")]
         public bool OutputData = false;
