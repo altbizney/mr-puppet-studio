@@ -46,6 +46,8 @@ namespace Thinko
         [HorizontalGroup("JawOpened")]
         public float JawOpened = 1023;
 
+        public float JawPercent = 0f;
+
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
@@ -127,6 +129,10 @@ namespace Thinko
             FinalPose.ShoulderRotation = ShoulderJoint.rotation;
             FinalPose.ElbowRotation = ElbowJoint.rotation;
             FinalPose.WristRotation = WristJoint.rotation;
+
+            // Calculate jaw amount (unclamped 0-1)
+            // TODO: move to e.g. DataMapper
+            JawPercent = 0f + (((DataProvider.Jaw - JawClosed) / (JawOpened - JawClosed)) * (1f - 0f));
         }
 
         // TPose
@@ -141,7 +147,7 @@ namespace Thinko
         {
             var pose = GrabPose();
             TPose = pose;
-            
+
             OffsetRotation = new Vector3(0, ShoulderJoint.rotation.eulerAngles.y, 0);
 
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
