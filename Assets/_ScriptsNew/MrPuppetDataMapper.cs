@@ -36,24 +36,56 @@ namespace Thinko.MrPuppet
 
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
         public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
+        
+        public Transform ShoulderJoint { get; private set; }
+        public Transform ElbowJoint { get; private set; }
+        public Transform WristJoint { get; private set; }
 
         public MrPuppetHubConnection HubConnection;
 
         public Pose TPose;
 
+        [Range(0, 1023)]
         public int JawOpened = 1023;
+        [Range(0, 1023)]
         public int JawClosed = 0;
+
+        [Range(.2f, .4f)]
+        public float ArmLength = .3f;
+        [Range(.2f, .4f)]
+        public float ForearmLength = .3f;
         
         private Pose _finalPose;
 
         private void Awake()
         {
             _finalPose = new Pose();
+            
+            ShoulderJoint = new GameObject("Shoulder").transform;
+            ShoulderJoint.SetParent(transform, false);
+
+            ElbowJoint = new GameObject("Elbow").transform;
+            ElbowJoint.SetParent(ShoulderJoint);
+
+            WristJoint = new GameObject("Wrist").transform;
+            WristJoint.SetParent(ElbowJoint);
         }
 
         private void OnValidate()
         {
             if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+        }
+        
+        private void Update()
+        {
+            var finalPose = FinalPose;
+
+            // Position and Rotate the joints
+            ShoulderJoint.rotation = finalPose.ShoulderRotation;
+            ElbowJoint.rotation = finalPose.ElbowRotation;
+            ElbowJoint.localPosition = Vector3.right * ArmLength;
+            WristJoint.rotation = finalPose.WristRotation;
+            WristJoint.localPosition = Vector3.right * ForearmLength;
         }
 
         [Button(ButtonSizes.Large)]
@@ -119,6 +151,8 @@ namespace Thinko.MrPuppet
         private const string TPoseWristRotationKey = "wristRotationTPose";
         private const string JawClosedKey = "jawClosed";
         private const string JawOpenedKey = "jawOpened";
+        private const string ArmLengthKey = "armLength";
+        private const string ForearmLengthKey = "forearmLength";
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
@@ -136,6 +170,9 @@ namespace Thinko.MrPuppet
 
                 dataMapper.JawOpened = PlayerPrefs.GetInt(JawOpenedKey);
                 dataMapper.JawClosed = PlayerPrefs.GetInt(JawClosedKey);
+
+                dataMapper.ArmLength = PlayerPrefs.GetFloat(ArmLengthKey);
+                dataMapper.ForearmLength = PlayerPrefs.GetFloat(ForearmLengthKey);
             }
             else if (state == PlayModeStateChange.ExitingPlayMode)
             {
@@ -145,6 +182,9 @@ namespace Thinko.MrPuppet
 
                 PlayerPrefs.SetInt(JawOpenedKey, dataMapper.JawOpened);
                 PlayerPrefs.SetInt(JawClosedKey, dataMapper.JawClosed);
+                
+                PlayerPrefs.SetFloat(ArmLengthKey, dataMapper.ArmLength);
+                PlayerPrefs.SetFloat(ForearmLengthKey, dataMapper.ForearmLength);
             }
         }
     }
