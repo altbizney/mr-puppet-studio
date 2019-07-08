@@ -375,9 +375,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HubConnection: {fileID: 315370550}
   TPose:
-    ShoulderRotation: {x: 0.0031, y: -0.1999, z: -0.4457, w: -0.8726}
-    ElbowRotation: {x: 0.035, y: 0.6292, z: -0.048, w: -0.775}
-    WristRotation: {x: 0.1213, y: 0.519, z: 0.1071, w: -0.8393}
+    ShoulderRotation: {x: 0, y: 0, z: 0, w: 0}
+    ElbowRotation: {x: 0, y: 0, z: 0, w: 0}
+    WristRotation: {x: 0, y: 0, z: 0, w: 0}
+  JawOpened: 253
+  JawClosed: 12
 --- !u!4 &1451674929
 Transform:
   m_ObjectHideFlags: 0

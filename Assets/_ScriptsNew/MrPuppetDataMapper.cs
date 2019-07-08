@@ -19,16 +19,43 @@ namespace Thinko.MrPuppet
             WristRotation = wrist;
         }
     }
-    
+
     public class MrPuppetDataMapper : MonoBehaviour
     {
+        public Pose FinalPose
+        {
+            get
+            {
+                _finalPose.Set(
+                    HubConnection.ShoulderRotation * Quaternion.Inverse(TPose.ShoulderRotation),
+                    HubConnection.ElbowRotation * Quaternion.Inverse(TPose.ElbowRotation),
+                    HubConnection.WristRotation * Quaternion.Inverse(TPose.WristRotation));
+                return _finalPose;
+            }
+        }
+
+        // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
+        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
+
         public MrPuppetHubConnection HubConnection;
 
         public Pose TPose;
-        
+
         public int JawOpened = 1023;
         public int JawClosed = 0;
         
+        private Pose _finalPose;
+
+        private void Awake()
+        {
+            _finalPose = new Pose();
+        }
+
+        private void OnValidate()
+        {
+            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+        }
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
@@ -49,7 +76,7 @@ namespace Thinko.MrPuppet
         {
             TPose = new Pose();
         }
-        
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
@@ -58,7 +85,7 @@ namespace Thinko.MrPuppet
         {
             JawOpened = HubConnection.Jaw;
         }
-        
+
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
@@ -80,7 +107,7 @@ namespace Thinko.MrPuppet
         {
             return !Application.isPlaying;
         }
-        
+
         // The section below is used to store the changes made at runtime 
         static MrPuppetDataMapper()
         {
@@ -92,12 +119,12 @@ namespace Thinko.MrPuppet
         private const string TPoseWristRotationKey = "wristRotationTPose";
         private const string JawClosedKey = "jawClosed";
         private const string JawOpenedKey = "jawOpened";
-        
+
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             var dataMapper = FindObjectOfType<MrPuppetDataMapper>();
             if (dataMapper == null) return;
-            
+
             if (state == PlayModeStateChange.EnteredEditMode)
             {
                 dataMapper.TPose = new Pose()
@@ -115,7 +142,7 @@ namespace Thinko.MrPuppet
                 PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, dataMapper.TPose.ShoulderRotation);
                 PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, dataMapper.TPose.ElbowRotation);
                 PlayerPrefsX.SetQuaternion(TPoseWristRotationKey, dataMapper.TPose.WristRotation);
-                
+
                 PlayerPrefs.SetInt(JawOpenedKey, dataMapper.JawOpened);
                 PlayerPrefs.SetInt(JawClosedKey, dataMapper.JawClosed);
             }
