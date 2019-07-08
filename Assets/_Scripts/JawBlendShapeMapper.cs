@@ -8,7 +8,7 @@ namespace Thinko.MrPuppet
     public class JawBlendShapeMapper : MonoBehaviour
     {
         [Serializable]
-        public class BlendShape
+        public class BlendShapeMap
         {
             public float inputMin = 0f;
             public float inputMax = 1f;
@@ -36,7 +36,7 @@ namespace Thinko.MrPuppet
         // TODO: read from e.g. DataMapper
         public RealBody MrPuppet;
 
-        public List<BlendShape> maps = new List<BlendShape>();
+        public List<BlendShapeMap> maps = new List<BlendShapeMap>();
 
         void Update()
         {
