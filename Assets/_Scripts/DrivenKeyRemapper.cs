@@ -8,7 +8,8 @@ namespace Thinko.MrPuppet
     public class DrivenKeyRemapper : MonoBehaviour
     {
         [Serializable]
-        public class Key {
+        public class Key
+        {
             public float inputMin = 0f;
             public float inputMax = 1f;
 
@@ -17,19 +18,21 @@ namespace Thinko.MrPuppet
 
             public float output = 0f;
 
-            public void Step (float driver) {
+            public void Step(float driver)
+            {
                 output = Mathf.Lerp(outputMin, outputMax, Mathf.InverseLerp(inputMin, inputMax, driver));
             }
         }
 
-        [Range(0f,1f)]
+        [Range(0f, 1f)]
         public float driver = 0f;
 
         public List<Key> keys = new List<Key>();
 
         void Update()
         {
-            foreach (var key in keys) {
+            foreach (var key in keys)
+            {
                 key.Step(driver);
             }
         }
