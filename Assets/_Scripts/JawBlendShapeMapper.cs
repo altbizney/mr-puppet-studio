@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Thinko.MrPuppet
 {
-    public class DrivenKeyRemapper : MonoBehaviour
+    public class JawBlendShapeMapper : MonoBehaviour
     {
         [Serializable]
-        public class Key
+        public class BlendShape
         {
             public float inputMin = 0f;
             public float inputMax = 1f;
@@ -16,12 +16,13 @@ namespace Thinko.MrPuppet
             public float outputMin = 0f;
             public float outputMax = 1f;
 
-            public float output = 0f;
+            private float output = 0f;
 
+            // TODO: nice UI for picking blend shape
             public SkinnedMeshRenderer skinnedMeshRenderer;
             public int blendShapeIndex = 0;
 
-            public void Step(float driver)
+            public void Update(float driver)
             {
                 output = Mathf.Lerp(outputMin, outputMax, Mathf.InverseLerp(inputMin, inputMax, driver));
 
@@ -32,18 +33,16 @@ namespace Thinko.MrPuppet
             }
         }
 
+        // TODO: read from e.g. DataMapper
         public RealBody MrPuppet;
 
-        // [Range(0f, 1f)]
-        // public float driver = 0f;
-
-        public List<Key> keys = new List<Key>();
+        public List<BlendShape> maps = new List<BlendShape>();
 
         void Update()
         {
-            foreach (var key in keys)
+            foreach (var map in maps)
             {
-                key.Step(MrPuppet.JawPercent);
+                map.Update(MrPuppet.JawPercent);
             }
         }
     }

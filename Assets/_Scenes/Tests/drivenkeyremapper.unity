@@ -173,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062670800
 GameObject:
@@ -258,79 +258,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1318639695
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1318639697}
-  - component: {fileID: 1318639696}
-  m_Layer: 0
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1318639696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318639695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MrPuppet: {fileID: 451960925}
-  keys:
-  - inputMin: 0
-    inputMax: 0.5
-    outputMin: 100
-    outputMax: 0
-    output: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 1
-  - inputMin: 0.5
-    inputMax: 1
-    outputMin: 0
-    outputMax: 100
-    output: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 2
-  - inputMin: 0
-    inputMax: 0.5
-    outputMin: 100
-    outputMax: 0
-    output: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 4
-  - inputMin: 0.5
-    inputMax: 1
-    outputMin: 0
-    outputMax: 100
-    output: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 3
---- !u!4 &1318639697
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318639695}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1366452794
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +306,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1672478153
 GameObject:
@@ -478,6 +405,44 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1931658016}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1691377497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691377496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MrPuppet: {fileID: 451960925}
+  maps:
+  - inputMin: 0
+    inputMax: 0.5
+    outputMin: 100
+    outputMax: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 1
+  - inputMin: 0.5
+    inputMax: 1
+    outputMin: 0
+    outputMax: 100
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 2
+  - inputMin: 0
+    inputMax: 0.5
+    outputMin: 100
+    outputMax: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 4
+  - inputMin: 0
+    inputMax: 0.5
+    outputMin: 0
+    outputMax: 100
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 3
 --- !u!114 &1691377499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7cb2f499915454ab9e66c2c8ecaac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RealBody: {fileID: 0}
+  RealBody: {fileID: 451960925}
   ShoulderJoint: {fileID: 0}
   ElbowJoint: {fileID: 0}
   WristJoint: {fileID: 0}
@@ -559,7 +524,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
