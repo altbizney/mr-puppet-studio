@@ -132,6 +132,7 @@ namespace Thinko
 
             // Calculate jaw amount (unclamped 0-1)
             // TODO: move to e.g. DataMapper
+            // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
             JawPercent = 0f + (((DataProvider.Jaw - JawClosed) / (JawOpened - JawClosed)) * (1f - 0f));
         }
 
