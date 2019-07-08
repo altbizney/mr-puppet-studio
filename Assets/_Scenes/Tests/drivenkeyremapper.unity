@@ -120,6 +120,61 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &451960924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 451960926}
+  - component: {fileID: 451960925}
+  m_Layer: 0
+  m_Name: RealBody
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &451960925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451960924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d871936425fa34b63b8c7c34d40a933e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DataProvider: {fileID: 1366452795}
+  ShoulderLength: 1
+  ElbowLength: 0.75
+  Sharpness: 0.5
+  TPose:
+    ShoulderRotation: {x: -0.051, y: -0.4814, z: 0.8715, w: 0.0775}
+    ElbowRotation: {x: 0.2605, y: -0.2462, z: 0.9334, w: 0.0156}
+    WristRotation: {x: -0.2468, y: 0.0557, z: -0.9147, w: 0.3154}
+  JawClosed: 117
+  JawOpened: 568
+  JawPercent: 0
+  OffsetRotation: {x: 0, y: 0, z: 0}
+--- !u!4 &451960926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451960924}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062670800
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062670800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: -0.5, y: 0.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -232,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  driver: 0
+  MrPuppet: {fileID: 451960925}
   keys:
   - inputMin: 0
     inputMax: 0.5
@@ -275,6 +330,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1366452794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366452796}
+  - component: {fileID: 1366452795}
+  m_Layer: 0
+  m_Name: WebsocketDataStream
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1366452795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366452794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff19e3f8f5054cb68a3fb0caa11d9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WristRotation: {x: 0, y: 0, z: 0, w: 0}
+  ElbowRotation: {x: 0, y: 0, z: 0, w: 0}
+  ShoulderRotation: {x: 0, y: 0, z: 0, w: 0}
+  Jaw: 0
+  WebsocketUri: ws://localhost:3000
+  OutputData: 0
+  FixQuaternions: 1
+--- !u!4 &1366452796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366452794}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1672478153
 GameObject:
@@ -367,6 +472,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1691377496 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1931658016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1691377499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691377496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af7cb2f499915454ab9e66c2c8ecaac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RealBody: {fileID: 0}
+  ShoulderJoint: {fileID: 0}
+  ElbowJoint: {fileID: 0}
+  WristJoint: {fileID: 0}
+  ShoulderOffset: {x: 0, y: 0, z: 0}
+  ElbowOffset: {x: 0, y: 0, z: 0}
+  WristOffset: {x: 0, y: 0, z: 0}
+  AnimateJaw: 0
+  JawAnimMode: 0
+  JawMeshRenderer: {fileID: 0}
+  JawBlendShapeIndex: 0
+  JawNode: {fileID: 0}
+  JawAnimData:
+    OpenPosition: {x: 0, y: 0, z: 0}
+    OpenRotation: {x: 0, y: 0, z: 0, w: 1}
+    ClosePosition: {x: 0, y: 0, z: 0}
+    CloseRotation: {x: 0, y: 0, z: 0, w: 1}
+  JawSmoothness: 0
+  DynamicBones: []
 --- !u!1001 &1931658016
 PrefabInstance:
   m_ObjectHideFlags: 0

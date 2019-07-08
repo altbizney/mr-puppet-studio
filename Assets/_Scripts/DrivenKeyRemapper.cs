@@ -32,8 +32,10 @@ namespace Thinko.MrPuppet
             }
         }
 
-        [Range(0f, 1f)]
-        public float driver = 0f;
+        public RealBody MrPuppet;
+
+        // [Range(0f, 1f)]
+        // public float driver = 0f;
 
         public List<Key> keys = new List<Key>();
 
@@ -41,7 +43,7 @@ namespace Thinko.MrPuppet
         {
             foreach (var key in keys)
             {
-                key.Step(driver);
+                key.Step(MrPuppet.JawPercent);
             }
         }
     }
