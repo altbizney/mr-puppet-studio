@@ -18,9 +18,17 @@ namespace Thinko.MrPuppet
 
             public float output = 0f;
 
+            public SkinnedMeshRenderer skinnedMeshRenderer;
+            public int blendShapeIndex = 0;
+
             public void Step(float driver)
             {
                 output = Mathf.Lerp(outputMin, outputMax, Mathf.InverseLerp(inputMin, inputMax, driver));
+
+                if (blendShapeIndex < skinnedMeshRenderer.sharedMesh.blendShapeCount)
+                {
+                    skinnedMeshRenderer.SetBlendShapeWeight(blendShapeIndex, output);
+                }
             }
         }
 

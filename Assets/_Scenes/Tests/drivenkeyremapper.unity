@@ -239,11 +239,29 @@ MonoBehaviour:
     outputMin: 100
     outputMax: 0
     output: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 1
   - inputMin: 0.5
     inputMax: 1
     outputMin: 0
     outputMax: 100
     output: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 2
+  - inputMin: 0
+    inputMax: 0.5
+    outputMin: 100
+    outputMax: 0
+    output: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 4
+  - inputMin: 0.5
+    inputMax: 1
+    outputMin: 0
+    outputMax: 100
+    output: 0
+    skinnedMeshRenderer: {fileID: 1931658017}
+    blendShapeIndex: 3
 --- !u!4 &1318639697
 Transform:
   m_ObjectHideFlags: 0
@@ -349,3 +367,103 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1931658016
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -927199367670048503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_Name
+      value: scrubdaddy
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.47364923
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.49999997
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1541346
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c5fbbb266baac4f80a0af0f6ba9993a7, type: 3}
+--- !u!137 &1931658017 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1931658016}
+  m_PrefabAsset: {fileID: 0}
