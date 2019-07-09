@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Thinko
+namespace MrPuppet
 {
     public class DrivenKeys : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace Thinko
             public float BlendShapeMin = 0;
             public float BlendShapeMax = 100;
         }
-        
+
         [Serializable]
         public class TransformKey
         {
@@ -28,9 +28,9 @@ namespace Thinko
         public List<BlendShapeKey> BlendShapeKeys = new List<BlendShapeKey>();
         public List<TransformKey> TransformKeys = new List<TransformKey>();
 
-        [Range(0, 1)] 
+        [Range(0, 1)]
         public float Step;
-        
+
         private float _previousStep;
 
         private void Update()
@@ -46,7 +46,7 @@ namespace Thinko
         {
             foreach (var blendShapeKey in BlendShapeKeys)
             {
-                if(blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
+                if (blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
                     blendShapeKey.SkinnedMeshRenderer.SetBlendShapeWeight(blendShapeKey.BlendShapeIndex, step.Remap(0, 1, blendShapeKey.BlendShapeMin, blendShapeKey.BlendShapeMax));
             }
 

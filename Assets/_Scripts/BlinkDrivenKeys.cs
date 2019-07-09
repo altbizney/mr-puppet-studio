@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Thinko
+namespace MrPuppet
 {
     [RequireComponent(typeof(DrivenKeys))]
     public class BlinkDrivenKeys : Blink
@@ -21,7 +21,7 @@ namespace Thinko
         protected override void Update()
         {
             base.Update();
-            
+
             DrivenKeys.Step = EyelidState;
         }
     }

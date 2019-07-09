@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace Thinko.MrPuppet
+namespace MrPuppet
 {
     public class JawBlendShapeMapper : MonoBehaviour
     {
@@ -74,9 +74,8 @@ namespace Thinko.MrPuppet
             // End fake generic/static
         }
 
-        // TODO: read from e.g. DataMapper
         [Required]
-        public RealBody DataMapper;
+        public MrPuppetDataMapper DataMapper;
 
         [Required]
         public SkinnedMeshRenderer skinnedMeshRenderer;

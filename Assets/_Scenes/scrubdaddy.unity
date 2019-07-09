@@ -120,159 +120,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &451960924
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 451960926}
-  - component: {fileID: 451960925}
-  m_Layer: 0
-  m_Name: RealBody
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &451960925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 451960924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d871936425fa34b63b8c7c34d40a933e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DataProvider: {fileID: 1366452795}
-  ShoulderLength: 1
-  ElbowLength: 0.75
-  Sharpness: 7
-  TPose:
-    ShoulderRotation: {x: 0.024748756, y: -0.03733524, z: -0.99829334, w: 0.036769554}
-    ElbowRotation: {x: -0.07622611, y: -0.021637518, z: -0.0038183813, w: -0.9968791}
-    WristRotation: {x: -0.06795294, y: 0.29359072, z: -0.953392, w: -0.016687717}
-  JawClosed: 122
-  JawOpened: 531
-  JawPercent: 0
---- !u!4 &451960926
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 451960924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &546116764
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6679511693021612165, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_Name
-      value: Mr. Dummy
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612165, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693934618892, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693934618897, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.989
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693728731055, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6679511693728731055, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7519555726377337942, guid: 8f906e07ae7114af697d048bd82854e2,
-        type: 3}
-      propertyPath: MrPuppet
-      value: 
-      objectReference: {fileID: 451960925}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8f906e07ae7114af697d048bd82854e2, type: 3}
 --- !u!1 &1062670800
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,9 +212,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1366452796}
+  - component: {fileID: 1366452797}
   - component: {fileID: 1366452795}
   m_Layer: 0
-  m_Name: WebsocketDataStream
+  m_Name: "\u2022 MrPuppet"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -382,16 +230,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1366452794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff19e3f8f5054cb68a3fb0caa11d9d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d53d716a4071412b829f2fb5d017c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WristRotation: {x: 0, y: 0, z: 0, w: 0}
-  ElbowRotation: {x: 0, y: 0, z: 0, w: 0}
-  ShoulderRotation: {x: 0, y: 0, z: 0, w: 0}
-  Jaw: 0
-  WebsocketUri: ws://localhost:3000
-  OutputData: 0
-  FixQuaternions: 1
+  HubConnection: {fileID: 1366452797}
+  TPose:
+    ShoulderRotation: {x: 0, y: 0, z: 0, w: 1}
+    ElbowRotation: {x: 0, y: 0, z: 0, w: 1}
+    WristRotation: {x: 0, y: 0, z: 0, w: 1}
+  JawOpened: 1023
+  JawClosed: 0
+  ArmLength: 1
+  ForearmLength: 1
 --- !u!4 &1366452796
 Transform:
   m_ObjectHideFlags: 0
@@ -406,6 +256,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366452797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366452794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db90f0ad1b00e4db181993984668c077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WebsocketUri: ws://localhost:3000
+  FixRightHandedQuaternions: 1
+  FixInvertedElbowSensor: 1
+  FixSwappedXYAxis: 1
+  WristRotation: {x: 0, y: 0, z: 0, w: 0}
+  ElbowRotation: {x: 0, y: 0, z: 0, w: 0}
+  ShoulderRotation: {x: 0, y: 0, z: 0, w: 0}
+  Jaw: 0
+  OutputData: 0
 --- !u!1 &1672478153
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DataMapper: {fileID: 451960925}
+  DataMapper: {fileID: 1366452795}
   skinnedMeshRenderer: {fileID: 1931658017}
   smoothTime: 0.02
   maps:
@@ -551,67 +422,6 @@ MonoBehaviour:
     spring: 1
     springStiffness: 100
     springDamping: 10
---- !u!114 &1691377498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691377496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44724accd1b1746d293a34931c166d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoBlink: 1
-  BlinkInterval: {x: 1, y: 3}
-  BlinkCloseDuration: {x: 0.05, y: 0.1}
-  BlinkOpenDuration: {x: 0.05, y: 0.1}
-  BlinkHoldDuration: {x: 0.05, y: 0.1}
-  Invert: 0
-  ManualBlinkKey: 98
-  EyelidState: 1
-  SkinnedMeshRenderer: {fileID: 1931658017}
-  BlendShapeIndex: 0
-  BlendShapeMin: 0
-  BlendShapeMax: 100
---- !u!114 &1691377499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691377496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7cb2f499915454ab9e66c2c8ecaac3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RealBody: {fileID: 451960925}
-  ShoulderJoint: {fileID: 0}
-  ElbowJoint: {fileID: 0}
-  WristJoint: {fileID: 1691377501}
-  ShoulderOffset: {x: 0, y: 0, z: 0}
-  ElbowOffset: {x: 0, y: 0, z: 0}
-  WristOffset: {x: 0, y: 0, z: 0}
-  AnimateJaw: 0
-  JawAnimMode: 0
-  JawMeshRenderer: {fileID: 0}
-  JawBlendShapeIndex: 0
-  JawNode: {fileID: 0}
-  JawAnimData:
-    OpenPosition: {x: 0, y: 0, z: 0}
-    OpenRotation: {x: 0, y: 0, z: 0, w: 1}
-    ClosePosition: {x: 0, y: 0, z: 0}
-    CloseRotation: {x: 0, y: 0, z: 0, w: 1}
-  JawSmoothness: 0
-  DynamicBones: []
---- !u!4 &1691377501 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1931658016}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1931658016
 PrefabInstance:
   m_ObjectHideFlags: 0

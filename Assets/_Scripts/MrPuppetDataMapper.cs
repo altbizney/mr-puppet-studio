@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
-namespace Thinko.MrPuppet
+namespace MrPuppet
 {
     [Serializable]
     public class Pose
@@ -22,18 +22,6 @@ namespace Thinko.MrPuppet
 
     public class MrPuppetDataMapper : MonoBehaviour
     {
-        public Pose FinalPose
-        {
-            get
-            {
-                _finalPose.Set(
-                    HubConnection.ShoulderRotation * Quaternion.Inverse(TPose.ShoulderRotation),
-                    HubConnection.ElbowRotation * Quaternion.Inverse(TPose.ElbowRotation),
-                    HubConnection.WristRotation * Quaternion.Inverse(TPose.WristRotation));
-                return _finalPose;
-            }
-        }
-
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
         public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
 
@@ -51,17 +39,13 @@ namespace Thinko.MrPuppet
         [Range(0f, 1023f)]
         public float JawClosed = 0f;
 
-        [Range(.2f, .4f)]
-        public float ArmLength = .3f;
-        [Range(.2f, .4f)]
-        public float ForearmLength = .3f;
-        
-        private Pose _finalPose;
+        [Range(.2f, 4f)]
+        public float ArmLength = 1f;
+        [Range(.2f, 4f)]
+        public float ForearmLength = 1f;
 
         private void Awake()
         {
-            _finalPose = new Pose();
-            
             ShoulderJoint = new GameObject("Shoulder").transform;
             ShoulderJoint.SetParent(transform, false);
 
@@ -79,14 +63,14 @@ namespace Thinko.MrPuppet
 
         private void Update()
         {
-            var finalPose = FinalPose;
+            // apply rotations (subtracting TPose)
+            ShoulderJoint.rotation = HubConnection.ShoulderRotation * Quaternion.Inverse(TPose.ShoulderRotation);
 
-            // Position and Rotate the joints
-            ShoulderJoint.rotation = finalPose.ShoulderRotation;
-            ElbowJoint.rotation = finalPose.ElbowRotation;
-            ElbowJoint.localPosition = Vector3.right * ArmLength;
-            WristJoint.rotation = finalPose.WristRotation;
-            WristJoint.localPosition = Vector3.right * ForearmLength;
+            ElbowJoint.localPosition = Vector3.back * ArmLength;
+            ElbowJoint.rotation = HubConnection.ElbowRotation * Quaternion.Inverse(TPose.ElbowRotation);
+
+            WristJoint.localPosition = Vector3.back * ForearmLength;
+            WristJoint.rotation = HubConnection.WristRotation * Quaternion.Inverse(TPose.WristRotation);
         }
 
         [Button(ButtonSizes.Large)]
@@ -103,7 +87,7 @@ namespace Thinko.MrPuppet
             };
         }
 
-        [Button(ButtonSizes.Small, Name = "Clear")]
+        [Button(ButtonSizes.Large, Name = "Clear")]
         [HorizontalGroup("TPose", Width = .1f)]
         public void ClearTPose()
         {
@@ -128,7 +112,7 @@ namespace Thinko.MrPuppet
             JawClosed = HubConnection.Jaw;
         }
 
-        [Button(ButtonSizes.Small, Name = "Clear")]
+        [Button(ButtonSizes.Large, Name = "Clear")]
         [HorizontalGroup("Jaw", Width = .1f)]
         public void ClearJaw()
         {
@@ -140,6 +124,28 @@ namespace Thinko.MrPuppet
         {
             return !Application.isPlaying;
         }
+
+        private void OnDrawGizmos()
+        {
+            if (!Application.isPlaying) return;
+
+            Gizmos.color = Color.yellow;
+
+            // shoulder
+            Gizmos.DrawWireSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.1f);
+            Gizmos.DrawLine(ShoulderJoint.position, ElbowJoint.position);
+
+            // elbow
+            Gizmos.DrawWireSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.1f);
+            Gizmos.DrawLine(ElbowJoint.position, WristJoint.position);
+
+            // wrist
+            Gizmos.DrawWireSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.1f);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(WristJoint.position, WristJoint.forward * -0.25f);
+        }
+
 
         // The section below is used to store the changes made at runtime 
         static MrPuppetDataMapper()

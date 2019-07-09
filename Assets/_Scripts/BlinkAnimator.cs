@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Thinko
+namespace MrPuppet
 {
     [RequireComponent(typeof(Animation))]
     public class BlinkAnimator : Blink
@@ -19,7 +19,7 @@ namespace Thinko
         protected override void Update()
         {
             base.Update();
-            
+
             _animState.normalizedTime = EyelidState.Remap(1, 0, 0, 1);
         }
     }

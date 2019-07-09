@@ -1,7 +1,6 @@
-﻿using Thinko;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Thinko
+namespace MrPuppet
 {
     public class BlinkBlendshape : Blink
     {
@@ -24,7 +23,7 @@ namespace Thinko
         protected override void Update()
         {
             base.Update();
-            
+
             SkinnedMeshRenderer.SetBlendShapeWeight(BlendShapeIndex, EyelidState.Remap(0, 1, BlendShapeMin, BlendShapeMax));
         }
     }

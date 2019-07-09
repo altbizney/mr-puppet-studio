@@ -5,7 +5,7 @@ using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Thinko.MrPuppet
+namespace MrPuppet
 {
     public class SensorCalibrationData
     {
@@ -27,10 +27,20 @@ namespace Thinko.MrPuppet
 
     public class MrPuppetHubConnection : MonoBehaviour
     {
+        [Header("Hub")]
         public string WebsocketUri = "ws://localhost:3000";
-        public bool FixQuaternions = true;
 
-        [ReadOnly]
+        [Header("Adjustments")]
+        [Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
+        public bool FixRightHandedQuaternions = true;
+
+        [Tooltip("Fixes the elbow sensor being mounted upside down (relative to the shoulder/wrist)")]
+        public bool FixInvertedElbowSensor = true;
+
+        [Tooltip("Fixes the X and Y axises being flipped")]
+        public bool FixSwappedXYAxis = true;
+
+        [ReadOnly, Header("Sensors")]
         public Quaternion WristRotation;
 
         [ReadOnly]
@@ -105,7 +115,7 @@ namespace Thinko.MrPuppet
                         _shoulder = _array[3].Split(',');
 
                         // initialize raw quaternions
-                        if (FixQuaternions) // fixes quaternion coordinate space (BNO055 → Unity)
+                        if (FixRightHandedQuaternions)
                         {
                             WristRotation = new Quaternion(-float.Parse(_wrist[3]), -float.Parse(_wrist[1]), -float.Parse(_wrist[2]), float.Parse(_wrist[0]));
                             ElbowRotation = new Quaternion(-float.Parse(_elbow[3]), -float.Parse(_elbow[1]), -float.Parse(_elbow[2]), float.Parse(_elbow[0]));
@@ -116,6 +126,18 @@ namespace Thinko.MrPuppet
                             WristRotation = new Quaternion(float.Parse(_wrist[0]), float.Parse(_wrist[1]), float.Parse(_wrist[2]), float.Parse(_wrist[3]));
                             ElbowRotation = new Quaternion(float.Parse(_elbow[0]), float.Parse(_elbow[1]), float.Parse(_elbow[2]), float.Parse(_elbow[3]));
                             ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
+                        }
+
+                        if (FixSwappedXYAxis)
+                        {
+                            ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
+                            ElbowRotation *= Quaternion.Euler(0, -90f, 0);
+                            WristRotation *= Quaternion.Euler(0, -90f, 0);
+                        }
+
+                        if (FixInvertedElbowSensor)
+                        {
+                            ElbowRotation *= Quaternion.Euler(0, 180f, 0);
                         }
 
                         // grab calibration info

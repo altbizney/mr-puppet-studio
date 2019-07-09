@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Thinko
+namespace MrPuppet
 {
     public abstract class Blink : MonoBehaviour
     {
