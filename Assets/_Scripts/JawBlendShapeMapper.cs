@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace Thinko.MrPuppet
 {
@@ -10,6 +10,10 @@ namespace Thinko.MrPuppet
         [Serializable]
         public class BlendShapeMap
         {
+            [Header("Blend Shape")]
+            // TODO: nice UI for picking blend shape
+            public int blendShapeIndex = 0;
+
             public float inputMin = 0f;
             public float inputMax = 1f;
 
@@ -17,36 +21,75 @@ namespace Thinko.MrPuppet
             public float outputMax = 1f;
 
             private float velocity = 0f;
+            private float normalized = 0f;
             private float output = 0f;
 
-            // TODO: nice UI for picking blend shape
-            public SkinnedMeshRenderer skinnedMeshRenderer;
-            public int blendShapeIndex = 0;
+            public bool spring = false;
+            [ShowIf("spring"), MinValue(0f)]
+            public float springStiffness = 0f;
+            [ShowIf("spring"), MinValue(0f)]
+            public float springDamping = 0f;
 
-            public void Update(float driver, float smoothTime)
+            public void Update(float driver, float smoothTime, SkinnedMeshRenderer skinnedMeshRenderer)
             {
-                output = Mathf.SmoothDamp(output, Mathf.Lerp(outputMin, outputMax, Mathf.InverseLerp(inputMin, inputMax, driver)), ref velocity, smoothTime);
+                // remap input driver to output range
+                normalized = Mathf.Lerp(outputMin, outputMax, Mathf.InverseLerp(inputMin, inputMax, driver));
+
+                if (spring)
+                {
+                    output = SpringFloat(output, normalized, ref velocity, springStiffness, springDamping);
+                }
+                else
+                {
+                    output = Mathf.SmoothDamp(output, normalized, ref velocity, smoothTime);
+                }
 
                 if (blendShapeIndex < skinnedMeshRenderer.sharedMesh.blendShapeCount)
                 {
                     skinnedMeshRenderer.SetBlendShapeWeight(blendShapeIndex, output);
                 }
             }
+
+            // TODO: make generic/static
+            private float SpringFloat(float current, float target, ref float velocity, float stiffness = 1f, float damping = 0.1f, float maxVelocity = Mathf.Infinity)
+            {
+                float dampingFactor = Mathf.Max(0f, 1f - damping * Time.smoothDeltaTime);
+                float acceleration = (target - current) * stiffness * Time.smoothDeltaTime;
+                velocity = velocity * dampingFactor + acceleration;
+
+                if (maxVelocity < Mathf.Infinity)
+                    velocity = Mathf.Clamp(velocity, -maxVelocity, maxVelocity);
+
+                current += velocity * Time.smoothDeltaTime;
+
+                if (Mathf.Abs(current - target) < 0.01f && Mathf.Abs(velocity) < 0.01f)
+                {
+                    current = target;
+                    velocity = 0f;
+                }
+
+                return current;
+            }
+            // End fake generic/static
         }
 
         // TODO: read from e.g. DataMapper
-        public RealBody MrPuppet;
+        [Required]
+        public RealBody DataMapper;
 
-        public List<BlendShapeMap> maps = new List<BlendShapeMap>();
+        [Required]
+        public SkinnedMeshRenderer skinnedMeshRenderer;
 
         [Range(0f, 0.5f)]
-        public float smoothTime = 0.01f;
+        public float smoothTime = 0.02f;
+
+        public List<BlendShapeMap> maps = new List<BlendShapeMap>();
 
         void Update()
         {
             foreach (var map in maps)
             {
-                map.Update(MrPuppet.JawPercent, smoothTime);
+                map.Update(DataMapper.JawPercent, smoothTime, skinnedMeshRenderer);
             }
         }
     }
