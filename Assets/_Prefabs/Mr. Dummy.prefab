@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7338103156276644675}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Jaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 6679511691859808149}
   - component: {fileID: 6679511691859808151}
   - component: {fileID: 6679511691859808148}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 6679511692772299100}
   - component: {fileID: 6679511692772299102}
   - component: {fileID: 6679511692772299103}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: ShoulderGeo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 6679511692892355172}
   - component: {fileID: 6679511692892355174}
   - component: {fileID: 6679511692892355175}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6679511692926730677}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Elbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6679511693021612164}
   - component: {fileID: 7519555726377337942}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Mr. Dummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 6679511693083482606}
   - component: {fileID: 7519555726072579820}
   - component: {fileID: 7519555726072579821}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: JawTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 6679511693385292720}
   - component: {fileID: 7519555725456345250}
   - component: {fileID: 7519555725456345251}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: JawBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 6679511693632614589}
   - component: {fileID: 6679511693632614591}
   - component: {fileID: 6679511693632614588}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: ElbowGeo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -586,7 +586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6679511693728731055}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6679511693728731052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6679511692772299100}
@@ -618,7 +618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6679511693773998756}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Wrist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 6679511693934618897}
   - component: {fileID: 6679511693934618894}
   - component: {fileID: 6679511693934618895}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6679511693934618892}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1.5000001, z: 0.30000004}
   m_Children:
   - {fileID: 6679511692892355172}
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 7519555725326223056}
   - component: {fileID: 7519555725326223062}
   - component: {fileID: 7519555725326223063}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
