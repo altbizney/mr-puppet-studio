@@ -75,6 +75,14 @@ namespace Thinko
                             ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
                         }
 
+                        // swap x/z
+                        ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
+                        ElbowRotation *= Quaternion.Euler(0, -90f, 0);
+                        WristRotation *= Quaternion.Euler(0, -90f, 0);
+
+                        // elbow sensor is mounted backwards
+                        ElbowRotation *= Quaternion.Euler(0, 180f, 0);
+
                         // grab calibration info
                         WristCalibrationData.Set(int.Parse(_wrist[4]), int.Parse(_wrist[5]), int.Parse(_wrist[6]), int.Parse(_wrist[7]));
                         ElbowCalibrationData.Set(int.Parse(_elbow[4]), int.Parse(_elbow[5]), int.Parse(_elbow[6]), int.Parse(_elbow[7]));
@@ -82,7 +90,7 @@ namespace Thinko
 
                         if (OutputData)
                         {
-                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
+                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation.eulerAngles} ElbowRotation: {ElbowRotation.eulerAngles} ShoulderRotation: {ShoulderRotation.eulerAngles}");
                             _lastUpdateTime = Time.time;
                         }
                     }

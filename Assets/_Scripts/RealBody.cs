@@ -46,6 +46,8 @@ namespace Thinko
         [HorizontalGroup("JawOpened")]
         public float JawOpened = 1023;
 
+        public float JawPercent = 0f;
+
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
@@ -99,34 +101,28 @@ namespace Thinko
         private void AdjustJointsPositions()
         {
             if (ElbowJoint != null)
-                ElbowJoint.localPosition = Vector3.right * ShoulderLength;
+                ElbowJoint.localPosition = Vector3.back * ShoulderLength;
 
             if (WristJoint != null)
-                WristJoint.localPosition = Vector3.right * ElbowLength;
+                WristJoint.localPosition = Vector3.back * ElbowLength;
         }
 
         private void Update()
         {
             // Rotate the joints
-            ShoulderJoint.rotation = Quaternion.Slerp(
-                ShoulderJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation) * Quaternion.Euler(OffsetRotation),
-                Sharpness);
-
-            ElbowJoint.rotation = Quaternion.Slerp(
-                ElbowJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation) * Quaternion.Euler(OffsetRotation),
-                Sharpness);
-
-            WristJoint.rotation = Quaternion.Slerp(
-                WristJoint.rotation,
-                DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation) * Quaternion.Euler(OffsetRotation),
-                Sharpness);
+            ShoulderJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation);
+            ElbowJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation);
+            WristJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation);
 
             // Calculate the final pose
             FinalPose.ShoulderRotation = ShoulderJoint.rotation;
             FinalPose.ElbowRotation = ElbowJoint.rotation;
             FinalPose.WristRotation = WristJoint.rotation;
+
+            // Calculate jaw amount (unclamped 0-1)
+            // TODO: move to e.g. DataMapper
+            // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
+            JawPercent = 0f + (((DataProvider.Jaw - JawClosed) / (JawOpened - JawClosed)) * (1f - 0f));
         }
 
         // TPose
@@ -141,8 +137,8 @@ namespace Thinko
         {
             var pose = GrabPose();
             TPose = pose;
-            
-            OffsetRotation = new Vector3(0, ShoulderJoint.rotation.eulerAngles.y, 0);
+
+            OffsetRotation = new Vector3(0f, ShoulderJoint.rotation.eulerAngles.y, 0f);
 
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
             PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
@@ -188,6 +184,27 @@ namespace Thinko
         {
             JawOpened = DataProvider.Jaw;
             PlayerPrefs.SetFloat(JawOpenedKey, JawOpened);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying) return;
+
+            Gizmos.color = Color.yellow;
+
+            // shoulder
+            Gizmos.DrawWireSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.1f);
+            Gizmos.DrawLine(ShoulderJoint.position, ElbowJoint.position);
+
+            // elbow
+            Gizmos.DrawWireSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.1f);
+            Gizmos.DrawLine(ElbowJoint.position, WristJoint.position);
+
+            // wrist
+            Gizmos.DrawWireSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.1f);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(WristJoint.position, WristJoint.forward * 0.25f);
         }
     }
 
