@@ -52,7 +52,7 @@ namespace Thinko
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
 
-        public Vector3 OffsetRotation;
+        // public Vector3 OffsetRotation
 
         static RealBody()
         {
@@ -138,7 +138,7 @@ namespace Thinko
             var pose = GrabPose();
             TPose = pose;
 
-            OffsetRotation = new Vector3(0f, ShoulderJoint.rotation.eulerAngles.y, 0f);
+            // OffsetRotation = new Vector3(0f, ShoulderJoint.rotation.eulerAngles.y, 0f);
 
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
             PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
