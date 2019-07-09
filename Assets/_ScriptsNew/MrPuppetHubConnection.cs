@@ -125,7 +125,7 @@ namespace Thinko.MrPuppet
 
                         if (OutputData)
                         {
-                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation} ElbowRotation: {ElbowRotation} ShoulderRotation: {ShoulderRotation}");
+                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation.eulerAngles} ElbowRotation: {ElbowRotation.eulerAngles} ShoulderRotation: {ShoulderRotation.eulerAngles}");
                             _lastUpdateTime = Time.time;
                         }
                     }
