@@ -34,7 +34,6 @@ namespace Thinko
         [Range(0, 1)]
         public float ElbowLength = .75f;
 
-        [Range(0, 1)]
         public float Sharpness = .5f;
 
         [HorizontalGroup("TPose")]
@@ -52,7 +51,7 @@ namespace Thinko
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
 
-        public Vector3 OffsetRotation;
+        // public Vector3 OffsetRotation
 
         static RealBody()
         {
@@ -110,9 +109,9 @@ namespace Thinko
         private void Update()
         {
             // Rotate the joints
-            ShoulderJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation);
-            ElbowJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation);
-            WristJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation);
+            ShoulderJoint.rotation = Quaternion.Slerp(ShoulderJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation), Sharpness * Time.deltaTime);
+            ElbowJoint.rotation = Quaternion.Slerp(ElbowJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation), Sharpness * Time.deltaTime);
+            WristJoint.rotation = Quaternion.Slerp(WristJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation), Sharpness * Time.deltaTime);
 
             // Calculate the final pose
             FinalPose.ShoulderRotation = ShoulderJoint.rotation;
@@ -138,7 +137,7 @@ namespace Thinko
             var pose = GrabPose();
             TPose = pose;
 
-            OffsetRotation = new Vector3(0f, ShoulderJoint.rotation.eulerAngles.y, 0f);
+            // OffsetRotation = new Vector3(0f, ShoulderJoint.rotation.eulerAngles.y, 0f);
 
             PlayerPrefsX.SetQuaternion(TPoseShoulderRotationKey, pose.ShoulderRotation);
             PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, pose.ElbowRotation);
