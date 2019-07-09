@@ -154,11 +154,11 @@ MonoBehaviour:
   ElbowLength: 0.75
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: -0.0545, y: -0.4792, z: 0.8724, w: 0.0794}
-    ElbowRotation: {x: 0.2585, y: -0.244, z: 0.9344, w: 0.0218}
-    WristRotation: {x: -0.2477, y: 0.0533, z: -0.9167, w: 0.3088}
-  JawClosed: 117
-  JawOpened: 568
+    ShoulderRotation: {x: -0.7918, y: 0.059, z: 0.604, w: -0.0687}
+    ElbowRotation: {x: 0.3834, y: 0.0765, z: 0.9203, w: 0.0134}
+    WristRotation: {x: -0.6785, y: -0.0046, z: 0.7346, w: 0.007}
+  JawClosed: 123
+  JawOpened: 401
   JawPercent: 0
   OffsetRotation: {x: 0, y: 0, z: 0}
 --- !u!4 &451960926
@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 6679511693021612165, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
@@ -245,6 +245,26 @@ PrefabInstance:
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679511693934618892, guid: 8f906e07ae7114af697d048bd82854e2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679511693934618897, guid: 8f906e07ae7114af697d048bd82854e2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.989
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679511693728731055, guid: 8f906e07ae7114af697d048bd82854e2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679511693728731055, guid: 8f906e07ae7114af697d048bd82854e2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7519555726377337942, guid: 8f906e07ae7114af697d048bd82854e2,
