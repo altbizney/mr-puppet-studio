@@ -39,7 +39,8 @@ namespace Thinko.MrPuppet
 
         public List<BlendShapeMap> maps = new List<BlendShapeMap>();
 
-        public float smoothTime = 0.3f;
+        [Range(0f, 0.5f)]
+        public float smoothTime = 0.01f;
 
         void Update()
         {

@@ -154,13 +154,12 @@ MonoBehaviour:
   ElbowLength: 0.75
   Sharpness: 0.5
   TPose:
-    ShoulderRotation: {x: -0.7918, y: 0.059, z: 0.604, w: -0.0687}
-    ElbowRotation: {x: 0.3834, y: 0.0765, z: 0.9203, w: 0.0134}
-    WristRotation: {x: -0.6785, y: -0.0046, z: 0.7346, w: 0.007}
-  JawClosed: 123
-  JawOpened: 401
+    ShoulderRotation: {x: -0.0010606676, y: 0.017324116, z: -0.9996368, w: -0.018596908}
+    ElbowRotation: {x: -0.05154806, y: -0.028072082, z: -0.49433836, w: 0.8672664}
+    WristRotation: {x: -0.021213224, y: -0.3014396, z: 0.9507758, w: -0.069225766}
+  JawClosed: 122
+  JawOpened: 531
   JawPercent: 0
-  OffsetRotation: {x: 0, y: 0, z: 0}
 --- !u!4 &451960926
 Transform:
   m_ObjectHideFlags: 0
@@ -215,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
@@ -225,7 +224,7 @@ PrefabInstance:
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6679511693021612164, guid: 8f906e07ae7114af697d048bd82854e2,
         type: 3}
@@ -542,6 +541,7 @@ MonoBehaviour:
     outputMax: 100
     skinnedMeshRenderer: {fileID: 1931658017}
     blendShapeIndex: 3
+  smoothTime: 0.1
 --- !u!114 &1691377498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
   WristJoint: {fileID: 1691377501}
   ShoulderOffset: {x: 0, y: 0, z: 0}
   ElbowOffset: {x: 0, y: 0, z: 0}
-  WristOffset: {x: 0, y: 90, z: 0}
+  WristOffset: {x: 0, y: 0, z: 0}
   AnimateJaw: 0
   JawAnimMode: 0
   JawMeshRenderer: {fileID: 0}
@@ -668,31 +668,6 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[1]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[2]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[3]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7561110372842451503, guid: c5fbbb266baac4f80a0af0f6ba9993a7,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[4]
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
