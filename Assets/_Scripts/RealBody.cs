@@ -34,7 +34,6 @@ namespace Thinko
         [Range(0, 1)]
         public float ElbowLength = .75f;
 
-        [Range(0, 1)]
         public float Sharpness = .5f;
 
         [HorizontalGroup("TPose")]
@@ -110,9 +109,9 @@ namespace Thinko
         private void Update()
         {
             // Rotate the joints
-            ShoulderJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation);
-            ElbowJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation);
-            WristJoint.rotation = DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation);
+            ShoulderJoint.rotation = Quaternion.Slerp(ShoulderJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Shoulder) * Quaternion.Inverse(TPose.ShoulderRotation), Sharpness * Time.deltaTime);
+            ElbowJoint.rotation = Quaternion.Slerp(ElbowJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Elbow) * Quaternion.Inverse(TPose.ElbowRotation), Sharpness * Time.deltaTime);
+            WristJoint.rotation = Quaternion.Slerp(WristJoint.rotation, DataProvider.GetInput(RealPuppetDataProvider.Source.Wrist) * Quaternion.Inverse(TPose.WristRotation), Sharpness * Time.deltaTime);
 
             // Calculate the final pose
             FinalPose.ShoulderRotation = ShoulderJoint.rotation;

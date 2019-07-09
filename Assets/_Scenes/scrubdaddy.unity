@@ -152,11 +152,11 @@ MonoBehaviour:
   DataProvider: {fileID: 1366452795}
   ShoulderLength: 1
   ElbowLength: 0.75
-  Sharpness: 0.5
+  Sharpness: 5
   TPose:
-    ShoulderRotation: {x: -0.0010606676, y: 0.017324116, z: -0.9996368, w: -0.018596908}
-    ElbowRotation: {x: -0.05154806, y: -0.028072082, z: -0.49433836, w: 0.8672664}
-    WristRotation: {x: -0.021213224, y: -0.3014396, z: 0.9507758, w: -0.069225766}
+    ShoulderRotation: {x: 0.61525357, y: 0.09001469, z: -0.7829793, w: 0.018031219}
+    ElbowRotation: {x: 0.011667262, y: -0.96307945, z: -0.005161879, w: -0.2689834}
+    WristRotation: {x: -0.01053589, y: 0.4422246, z: 0.013364318, w: 0.8967528}
   JawClosed: 122
   JawOpened: 531
   JawPercent: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
     outputMax: 100
     skinnedMeshRenderer: {fileID: 1931658017}
     blendShapeIndex: 3
-  smoothTime: 0.1
+  smoothTime: 0.05
 --- !u!114 &1691377498
 MonoBehaviour:
   m_ObjectHideFlags: 0
