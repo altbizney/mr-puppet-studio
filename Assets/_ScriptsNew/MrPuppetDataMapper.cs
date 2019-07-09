@@ -36,7 +36,7 @@ namespace Thinko.MrPuppet
 
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
         public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
-        
+
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
@@ -46,10 +46,10 @@ namespace Thinko.MrPuppet
 
         public Pose TPose;
 
-        [Range(0, 1023)]
-        public int JawOpened = 1023;
-        [Range(0, 1023)]
-        public int JawClosed = 0;
+        [Range(0f, 1023f)]
+        public float JawOpened = 1023f;
+        [Range(0f, 1023f)]
+        public float JawClosed = 0f;
 
         [Range(.2f, .4f)]
         public float ArmLength = .3f;
@@ -76,7 +76,7 @@ namespace Thinko.MrPuppet
         {
             if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
         }
-        
+
         private void Update()
         {
             var finalPose = FinalPose;
@@ -132,8 +132,8 @@ namespace Thinko.MrPuppet
         [HorizontalGroup("Jaw", Width = .1f)]
         public void ClearJaw()
         {
-            JawClosed = 0;
-            JawOpened = 1023;
+            JawClosed = 0f;
+            JawOpened = 1023f;
         }
 
         private bool CaptureButtonsEnabled()
@@ -169,8 +169,8 @@ namespace Thinko.MrPuppet
                     WristRotation = PlayerPrefsX.GetQuaternion(TPoseWristRotationKey)
                 };
 
-                dataMapper.JawOpened = PlayerPrefs.GetInt(JawOpenedKey);
-                dataMapper.JawClosed = PlayerPrefs.GetInt(JawClosedKey);
+                dataMapper.JawOpened = PlayerPrefs.GetFloat(JawOpenedKey);
+                dataMapper.JawClosed = PlayerPrefs.GetFloat(JawClosedKey);
 
                 dataMapper.ArmLength = PlayerPrefs.GetFloat(ArmLengthKey);
                 dataMapper.ForearmLength = PlayerPrefs.GetFloat(ForearmLengthKey);
@@ -181,9 +181,9 @@ namespace Thinko.MrPuppet
                 PlayerPrefsX.SetQuaternion(TPoseElbowRotationKey, dataMapper.TPose.ElbowRotation);
                 PlayerPrefsX.SetQuaternion(TPoseWristRotationKey, dataMapper.TPose.WristRotation);
 
-                PlayerPrefs.SetInt(JawOpenedKey, dataMapper.JawOpened);
-                PlayerPrefs.SetInt(JawClosedKey, dataMapper.JawClosed);
-                
+                PlayerPrefs.SetFloat(JawOpenedKey, dataMapper.JawOpened);
+                PlayerPrefs.SetFloat(JawClosedKey, dataMapper.JawClosed);
+
                 PlayerPrefs.SetFloat(ArmLengthKey, dataMapper.ArmLength);
                 PlayerPrefs.SetFloat(ForearmLengthKey, dataMapper.ForearmLength);
             }

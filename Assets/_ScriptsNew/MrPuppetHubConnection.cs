@@ -24,12 +24,12 @@ namespace Thinko.MrPuppet
 
         public bool IsCalibrated => System == 3 && Gyro == 3 && Accelerometer == 3 && Magnetometer == 3;
     }
-    
+
     public class MrPuppetHubConnection : MonoBehaviour
     {
         public string WebsocketUri = "ws://localhost:3000";
         public bool FixQuaternions = true;
-        
+
         [ReadOnly]
         public Quaternion WristRotation;
 
@@ -40,7 +40,7 @@ namespace Thinko.MrPuppet
         public Quaternion ShoulderRotation;
 
         [ReadOnly]
-        public int Jaw;
+        public float Jaw;
 
         [Header("Debug")]
         public bool OutputData = false;
@@ -97,7 +97,7 @@ namespace Thinko.MrPuppet
                         _array = _data.Split(';');
 
                         // jaw
-                        Jaw = int.Parse(_array[0]);
+                        Jaw = float.Parse(_array[0]);
 
                         // rotations
                         _wrist = _array[1].Split(',');
@@ -137,7 +137,7 @@ namespace Thinko.MrPuppet
             webSocket.Close();
         }
     }
-    
+
     [CustomEditor(typeof(MrPuppetHubConnection))]
     public class MrPuppetHubConnectionEditor : OdinEditor
     {
