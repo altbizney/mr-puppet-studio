@@ -25,6 +25,8 @@ namespace MrPuppet
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
         public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
 
+        public enum Joint { Shoulder, Elbow, Wrist };
+
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
@@ -71,6 +73,21 @@ namespace MrPuppet
 
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = HubConnection.WristRotation * Quaternion.Inverse(TPose.WristRotation);
+        }
+
+        public Transform GetJoint(Joint joint)
+        {
+            switch (joint)
+            {
+                case Joint.Shoulder:
+                    return ShoulderJoint;
+                case Joint.Elbow:
+                    return ElbowJoint;
+                case Joint.Wrist:
+                    return WristJoint;
+            }
+
+            throw new ArgumentException("Invalid Joint");
         }
 
         [Button(ButtonSizes.Large)]

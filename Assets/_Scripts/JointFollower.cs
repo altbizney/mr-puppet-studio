@@ -4,10 +4,12 @@ using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
-    public class WristFollower : MonoBehaviour
+    public class JointFollower : MonoBehaviour
     {
         [Required]
         public MrPuppetDataMapper DataMapper;
+
+        public MrPuppetDataMapper.Joint Joint = MrPuppetDataMapper.Joint.Wrist;
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -23,9 +25,8 @@ namespace MrPuppet
 
         private void Update()
         {
-            // TODO: convert to JointFollower and make this dynamic
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, DataMapper.WristJoint.rotation, RotationSpeed * Time.deltaTime);
-            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.WristJoint.position, ref PositionVelocity, PositionSpeed);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, DataMapper.GetJoint(Joint).rotation, RotationSpeed * Time.smoothDeltaTime);
+            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.GetJoint(Joint).position, ref PositionVelocity, PositionSpeed);
         }
     }
 }

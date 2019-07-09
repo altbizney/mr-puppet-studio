@@ -373,7 +373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 1366452795}
-  RotationSpeed: 7
+  Joint: 2
+  RotationSpeed: 15
   PositionSpeed: 0.1
 --- !u!1001 &1931658016
 PrefabInstance:
