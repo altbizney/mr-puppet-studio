@@ -27,9 +27,9 @@ namespace Thinko.MrPuppet
 
             public bool spring = false;
             [ShowIf("spring"), MinValue(0f)]
-            public float springStiffness = 0f;
+            public float springStiffness = 100f;
             [ShowIf("spring"), MinValue(0f)]
-            public float springDamping = 0f;
+            public float springDamping = 10f;
 
             public void Update(float driver, float smoothTime, SkinnedMeshRenderer skinnedMeshRenderer)
             {

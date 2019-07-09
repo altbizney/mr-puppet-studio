@@ -154,9 +154,9 @@ MonoBehaviour:
   ElbowLength: 0.75
   Sharpness: 7
   TPose:
-    ShoulderRotation: {x: 0.05529578, y: -0.05423509, z: -0.9964549, w: -0.034860365}
-    ElbowRotation: {x: -0.11575338, y: 0.16030106, z: 0.095530115, w: -0.97559524}
-    WristRotation: {x: -0.078700975, y: 0.3833226, z: -0.8775902, w: -0.2768323}
+    ShoulderRotation: {x: 0.024748756, y: -0.03733524, z: -0.99829334, w: 0.036769554}
+    ElbowRotation: {x: -0.07622611, y: -0.021637518, z: -0.0038183813, w: -0.9968791}
+    WristRotation: {x: -0.06795294, y: 0.29359072, z: -0.953392, w: -0.016687717}
   JawClosed: 122
   JawOpened: 531
   JawPercent: 0
@@ -350,7 +350,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062670800}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4.3, y: 0.03, z: -0.62}
+  m_LocalPosition: {x: 3.18, y: 0.03, z: -0.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -515,33 +515,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MrPuppet: {fileID: 451960925}
+  DataMapper: {fileID: 451960925}
+  skinnedMeshRenderer: {fileID: 1931658017}
+  smoothTime: 0.02
   maps:
-  - inputMin: 0
+  - blendShapeIndex: 1
+    inputMin: 0
     inputMax: 0.5
     outputMin: 100
     outputMax: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 1
-  - inputMin: 0.5
+    spring: 0
+    springStiffness: 0
+    springDamping: 0
+  - blendShapeIndex: 2
+    inputMin: 0.5
     inputMax: 1
     outputMin: 0
     outputMax: 100
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 2
-  - inputMin: 0
+    spring: 0
+    springStiffness: 0
+    springDamping: 0
+  - blendShapeIndex: 4
+    inputMin: 0
     inputMax: 0.5
     outputMin: 100
     outputMax: 0
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 4
-  - inputMin: 0
+    spring: 1
+    springStiffness: 100
+    springDamping: 10
+  - blendShapeIndex: 3
+    inputMin: 0
     inputMax: 0.5
     outputMin: 0
     outputMax: 100
-    skinnedMeshRenderer: {fileID: 1931658017}
-    blendShapeIndex: 3
-  smoothTime: 0.02
+    spring: 1
+    springStiffness: 100
+    springDamping: 10
 --- !u!114 &1691377498
 MonoBehaviour:
   m_ObjectHideFlags: 0
