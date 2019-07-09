@@ -10,8 +10,9 @@ namespace Thinko.MrPuppet
         [Serializable]
         public class BlendShapeMap
         {
-            [Header("Blend Shape")]
-            // TODO: nice UI for picking blend shape
+            public ValueDropdownList<int> blendShapeNames = new ValueDropdownList<int>();
+
+            [ValueDropdown("blendShapeNames"), LabelText("Blend Shape")]
             public int blendShapeIndex = 0;
 
             public float inputMin = 0f;
@@ -83,7 +84,22 @@ namespace Thinko.MrPuppet
         [Range(0f, 0.5f)]
         public float smoothTime = 0.02f;
 
+        [ShowIf("skinnedMeshRenderer")]
         public List<BlendShapeMap> maps = new List<BlendShapeMap>();
+
+        void OnValidate()
+        {
+            if (!skinnedMeshRenderer) return;
+
+            foreach (var map in maps)
+            {
+                map.blendShapeNames.Clear();
+                for (var i = 0; i < skinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
+                {
+                    map.blendShapeNames.Add(skinnedMeshRenderer.sharedMesh.GetBlendShapeName(i), i);
+                }
+            }
+        }
 
         void Update()
         {
