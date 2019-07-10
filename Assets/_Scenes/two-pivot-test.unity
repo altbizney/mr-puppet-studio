@@ -713,7 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 916351949}
-  Base: {fileID: 399310273}
+  Hip: {fileID: 399310273}
   Butt: {fileID: 399310273}
   Neck: {fileID: 552330727}
 --- !u!114 &916351949 stripped
@@ -979,12 +979,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 119533608}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1556777470 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400006, guid: 3e4d415a5eecb4f799966adfec8ff772,
-    type: 3}
-  m_PrefabInstance: {fileID: 119533608}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1556777471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,7 +992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 916351949}
-  Base: {fileID: 1556777470}
+  Hip: {fileID: 0}
   Butt: {fileID: 1884206272}
   Neck: {fileID: 187336043}
 --- !u!1 &1642928557
