@@ -146,19 +146,27 @@ namespace MrPuppet
         {
             if (!Application.isPlaying) return;
 
-            Gizmos.color = Color.yellow;
+            // joints
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.05f);
+            Gizmos.DrawSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.05f);
+            Gizmos.DrawSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.05f);
 
-            // shoulder
-            Gizmos.DrawWireSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.1f);
+            // bones
+            Gizmos.color = Color.blue;
             Gizmos.DrawLine(ShoulderJoint.position, ElbowJoint.position);
-
-            // elbow
-            Gizmos.DrawWireSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.1f);
             Gizmos.DrawLine(ElbowJoint.position, WristJoint.position);
 
-            // wrist
-            Gizmos.DrawWireSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.1f);
+            // axises
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.up * -0.125f);
+            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.up * -0.125f);
 
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.right * -0.125f);
+            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.right * -0.125f);
+
+            // jaw
             Gizmos.color = Color.red;
             Gizmos.DrawRay(WristJoint.position, WristJoint.forward * -0.25f);
         }
