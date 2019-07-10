@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace MrPuppet
 {
-    public abstract class Blink : MonoBehaviour
+    [RequireComponent(typeof(DrivenKeys))]
+    public class Blink : MonoBehaviour
     {
         public bool AutoBlink = true;
 
@@ -24,7 +25,8 @@ namespace MrPuppet
         private float ClosedValue => Invert ? 0 : 1;
 
         [ReadOnly] public float EyelidState = 1;
-
+        
+        [Required] public DrivenKeys DrivenKeys;
 
         private void OnEnable()
         {
@@ -47,6 +49,8 @@ namespace MrPuppet
             {
                 StartCoroutine(ManualOpenRoutine());
             }
+            
+            DrivenKeys.Step = EyelidState;
         }
 
         private IEnumerator BlinkRoutine()
