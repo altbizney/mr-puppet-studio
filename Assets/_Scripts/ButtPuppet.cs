@@ -38,7 +38,7 @@ namespace MrPuppet
         {
             if (AttachPose != null)
             {
-                transform.rotation = Quaternion.Inverse(AttachPose.ElbowRotation) * DataMapper.ElbowJoint.rotation;
+                transform.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPose.ElbowRotation);
             }
         }
     }
