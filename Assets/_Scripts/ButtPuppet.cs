@@ -9,7 +9,12 @@ namespace MrPuppet
         [Required]
         public MrPuppetDataMapper DataMapper;
 
+        private Vector3 AttachPositionShoulder;
         private Pose AttachPose;
+
+        public Transform Base;
+        public Transform Butt;
+        public Transform Neck;
 
         private void OnValidate()
         {
@@ -26,6 +31,8 @@ namespace MrPuppet
         [DisableIf("CaptureButtonsEnabled")]
         public void GrabAttachPose()
         {
+            AttachPositionShoulder = DataMapper.ShoulderJoint.position;
+
             AttachPose = new Pose
             {
                 ShoulderRotation = DataMapper.ShoulderJoint.rotation,
@@ -38,7 +45,9 @@ namespace MrPuppet
         {
             if (AttachPose != null)
             {
-                transform.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPose.ElbowRotation);
+                Base.position = DataMapper.ElbowJoint.position - AttachPositionShoulder;
+                Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPose.ElbowRotation);
+                Neck.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPose.WristRotation);
             }
         }
     }
