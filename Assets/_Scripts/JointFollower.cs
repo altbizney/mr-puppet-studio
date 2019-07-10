@@ -11,6 +11,9 @@ namespace MrPuppet
 
         public MrPuppetDataMapper.Joint Joint = MrPuppetDataMapper.Joint.Wrist;
 
+        public bool FollowPosition = true;
+        public bool FollowRotation = true;
+
         [MinValue(0f)]
         public float RotationSpeed = 7f;
         [MinValue(0f)]
@@ -25,8 +28,15 @@ namespace MrPuppet
 
         private void Update()
         {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, DataMapper.GetJoint(Joint).rotation, RotationSpeed * Time.smoothDeltaTime);
-            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.GetJoint(Joint).position, ref PositionVelocity, PositionSpeed);
+            if (FollowRotation)
+            {
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, DataMapper.GetJoint(Joint).rotation, RotationSpeed * Time.smoothDeltaTime);
+            }
+
+            if (FollowPosition)
+            {
+                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.GetJoint(Joint).position, ref PositionVelocity, PositionSpeed);
+            }
         }
     }
 }
