@@ -14,6 +14,10 @@ namespace MrPuppet
         private Quaternion AttachPoseWristRotation;
         private Vector3 AttachPoseElbowPosition;
 
+        private Vector3 BindPoseButtPosition;
+        private Quaternion BindPoseButtRotation;
+        private Quaternion BindPoseNeckRotation;
+
         public Transform Butt;
         public Transform Neck;
 
@@ -42,12 +46,17 @@ namespace MrPuppet
             AttachPoseWristRotation = DataMapper.WristJoint.rotation;
         }
 
+        private void Awake()
+        {
+            BindPoseButtPosition = Butt.position;
+        }
+
         private void Update()
         {
             if (AttachPoseSet)
             {
-                // apply position delta
-                Butt.position = DataMapper.ElbowJoint.position - AttachPoseElbowPosition;
+                // apply position delta to bind pose
+                Butt.position = BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
 
                 // apply rotation deltas
                 Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation);
