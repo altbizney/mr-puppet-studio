@@ -147,7 +147,7 @@ namespace MrPuppet
             if (!Application.isPlaying) return;
 
             // joints
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.05f);
             Gizmos.DrawSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.05f);
             Gizmos.DrawSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.05f);
