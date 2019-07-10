@@ -9,8 +9,10 @@ namespace MrPuppet
         [Required]
         public MrPuppetDataMapper DataMapper;
 
-        private Pose AttachPose;
-        private Vector3 AttachPosePositionElbow;
+        private bool AttachPoseSet = false;
+        private Quaternion AttachPoseElbowRotation;
+        private Quaternion AttachPoseWristRotation;
+        private Vector3 AttachPoseElbowPosition;
 
         public Transform Butt;
         public Transform Neck;
@@ -30,23 +32,26 @@ namespace MrPuppet
         [DisableIf("CaptureButtonsEnabled")]
         public void GrabAttachPose()
         {
-            AttachPosePositionElbow = DataMapper.ElbowJoint.position;
+            AttachPoseSet = true;
 
-            AttachPose = new Pose
-            {
-                ShoulderRotation = DataMapper.ShoulderJoint.rotation,
-                ElbowRotation = DataMapper.ElbowJoint.rotation,
-                WristRotation = DataMapper.WristJoint.rotation
-            };
+            // grab the attach position of the elbow joint
+            AttachPoseElbowPosition = DataMapper.ElbowJoint.position;
+
+            // grab the attach rotation of the joints
+            AttachPoseElbowRotation = DataMapper.ElbowJoint.rotation;
+            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
         }
 
         private void Update()
         {
-            if (AttachPose != null)
+            if (AttachPoseSet)
             {
-                Butt.position = DataMapper.ElbowJoint.position - AttachPosePositionElbow;
-                Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPose.ElbowRotation);
-                Neck.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPose.WristRotation);
+                // apply position delta
+                Butt.position = DataMapper.ElbowJoint.position - AttachPoseElbowPosition;
+
+                // apply rotation deltas
+                Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation);
+                Neck.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation);
             }
         }
     }
