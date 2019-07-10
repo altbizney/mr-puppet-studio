@@ -12,7 +12,7 @@ namespace MrPuppet
         private Vector3 AttachPositionShoulder;
         private Pose AttachPose;
 
-        public Transform Base;
+        public Transform Hip;
         public Transform Butt;
         public Transform Neck;
 
@@ -45,7 +45,7 @@ namespace MrPuppet
         {
             if (AttachPose != null)
             {
-                Base.position = DataMapper.ElbowJoint.position - AttachPositionShoulder;
+                Hip.position = DataMapper.ElbowJoint.position - AttachPositionShoulder;
                 Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPose.ElbowRotation);
                 Neck.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPose.WristRotation);
             }
