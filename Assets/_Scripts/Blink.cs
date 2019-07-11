@@ -544,12 +544,12 @@ namespace MrPuppet
                 EditPositionButton("Edit", rect, ref element.Transform, ref element.EndPosition, ref element.EndRotation, ref _transformEditStates[index].EditEnd, ref _transformEditStates[index].OriginalPosition, ref _transformEditStates[index].OriginalRotation);
 
                 // Divider
-                // if (index < _transformsList.count - 1)
-                // {
-                //     rect.x = x;
-                //     rect.y += EditorGUIUtility.singleLineHeight * 2f;
-                //     EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
-                // }
+                if (index < _transformsList.count - 1)
+                {
+                    rect.x = x;
+                    rect.y += EditorGUIUtility.singleLineHeight * 2f;
+                    EditorGUI.TextArea(rect, "", GUI.skin.horizontalSlider);
+                }
             };
 
             _transformsList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Transforms"); };
