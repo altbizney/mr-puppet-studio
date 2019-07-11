@@ -553,7 +553,7 @@ MonoBehaviour:
     OpenRotation: {x: -0.009916878, y: 0.006801783, z: 0.4832127, w: 0.87542045}
     ClosePosition: {x: -1.5738893, y: -1.0343904, z: 0.00000195764}
     CloseRotation: {x: -0.011968106, y: 0.0011704862, z: 0.00066260993, w: 0.9999275}
-  SmoothTime: 0.079
+  SmoothTime: 0
 --- !u!114 &1852561806 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
