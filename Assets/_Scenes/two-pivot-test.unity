@@ -483,7 +483,7 @@ PrefabInstance:
     - target: {fileID: 548618288063365535, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
@@ -682,6 +682,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 139547735}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &690789386 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 710303648}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &710303648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -693,6 +699,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: lucius
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.9508362
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -17.160372
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2426082
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644456400268280679, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644456400268280679, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5750617521806328984, guid: 65e60c96f329f4a53a481d5e73a461cb,
         type: 3}
@@ -749,6 +780,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3255246910732970148, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000,
+        type: 0}
     - target: {fileID: 8009412575362994604, guid: 65e60c96f329f4a53a481d5e73a461cb,
         type: 3}
       propertyPath: m_Icon
@@ -770,6 +807,37 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 710303648}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &710303650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710303649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc6b281542f478f8d4918024455cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoBlink: 1
+  BlinkInterval: {x: 1, y: 3}
+  BlinkCloseDuration: {x: 0.05, y: 0.1}
+  BlinkOpenDuration: {x: 0.05, y: 0.1}
+  BlinkHoldDuration: {x: 0.05, y: 0.1}
+  Invert: 0
+  ManualBlinkKey: 98
+  Step: 1
+  BlendShapeKeys:
+  - SkinnedMeshRenderer: {fileID: 1813420904}
+    BlendShapeIndex: 0
+    BlendShapeMin: 0
+    BlendShapeMax: 100
+  TransformKeys:
+  - Transform: {fileID: 690789386}
+    InitPosition: {x: 1.9508362, y: -17.160372, z: 0.2426082}
+    EndPosition: {x: 1.9506731, y: -32.35932, z: 0.24261856}
+    InitRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+    EndRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
 --- !u!4 &710303651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6941774409753706413, guid: 65e60c96f329f4a53a481d5e73a461cb,
@@ -1265,7 +1333,7 @@ PrefabInstance:
     - target: {fileID: 548618288063365535, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
@@ -1494,6 +1562,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
     type: 3}
   m_PrefabInstance: {fileID: 1816803893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1813420904 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2644456400268280679, guid: 65e60c96f329f4a53a481d5e73a461cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 710303648}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1816803893
 PrefabInstance:
