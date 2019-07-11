@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -46,8 +47,8 @@ namespace MrPuppet
 
         [HideInInspector] public float Step = 1;
 
-        public List<BlendShapeKey> BlendShapeKeys = new List<BlendShapeKey>();
-        public List<TransformKey> TransformKeys = new List<TransformKey>();
+        [HideInInspector] public List<BlendShapeKey> BlendShapeKeys = new List<BlendShapeKey>();
+        [HideInInspector] public List<TransformKey> TransformKeys = new List<TransformKey>();
 
         private float OpenedValue => Invert ? 1 : 0;
         private float ClosedValue => Invert ? 0 : 1;
@@ -136,7 +137,7 @@ namespace MrPuppet
     }
 
     [CustomEditor(typeof(Blink))]
-    public class BlinkEditor : Editor
+    public class BlinkEditor : OdinEditor
     {
         private class BlendShapeEditState
         {
@@ -163,8 +164,10 @@ namespace MrPuppet
         private bool _previewMode;
         private float _step;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             _blink = target as Blink;
 
             // BlendShapes List
@@ -179,8 +182,10 @@ namespace MrPuppet
             CreateTransformsEditState();
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             for (var i = 0; i < _blink.BlendShapeKeys.Count; i++)
             {
                 if (_blink.BlendShapeKeys[i].SkinnedMeshRenderer != null)
