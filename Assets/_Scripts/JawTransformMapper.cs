@@ -76,6 +76,7 @@ namespace MrPuppet
 
             if (state == PlayModeStateChange.EnteredEditMode)
             {
+                Undo.RecordObject(jawTransformMapper, "Undo JawTransformMapper");
                 jawTransformMapper.SmoothTime = PlayerPrefs.GetFloat(JawSmoothTimeKey);
             }
             else if (state == PlayModeStateChange.ExitingPlayMode)

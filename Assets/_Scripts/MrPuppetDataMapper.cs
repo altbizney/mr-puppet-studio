@@ -208,6 +208,7 @@ namespace MrPuppet
 
             if (state == PlayModeStateChange.EnteredEditMode)
             {
+                Undo.RecordObject(dataMapper, "Undo DataMapper");
                 dataMapper.TPose = new Pose()
                 {
                     ShoulderRotation = PlayerPrefsX.GetQuaternion(TPoseShoulderRotationKey),
