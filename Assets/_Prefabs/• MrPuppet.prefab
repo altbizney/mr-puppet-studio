@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: "\u2022 MrPuppet"
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -67,10 +67,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HubConnection: {fileID: 180394980541420895}
   TPose:
-    ShoulderRotation: {x: 0, y: 0, z: 0, w: 1}
-    ElbowRotation: {x: 0, y: 0, z: 0, w: 1}
-    WristRotation: {x: 0, y: 0, z: 0, w: 1}
-  JawOpened: 1023
-  JawClosed: 0
+    ShoulderRotation: {x: -0.014424969, y: -0.12374368, z: -0.9922122, w: 0.0007071082}
+    ElbowRotation: {x: 0.07353913, y: -0.043557763, z: -0.5873229, w: 0.80482894}
+    WristRotation: {x: -0.015414914, y: -0.25788185, z: 0.9608167, w: -0.10076271}
+  JawOpened: 359
+  JawClosed: 123
   ArmLength: 1
   ForearmLength: 1
