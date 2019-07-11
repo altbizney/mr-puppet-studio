@@ -146,29 +146,44 @@ namespace MrPuppet
         {
             if (!Application.isPlaying) return;
 
-            // joints
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(ShoulderJoint.position, HandleUtility.GetHandleSize(ShoulderJoint.position) * 0.05f);
-            Gizmos.DrawSphere(ElbowJoint.position, HandleUtility.GetHandleSize(ElbowJoint.position) * 0.05f);
-            Gizmos.DrawSphere(WristJoint.position, HandleUtility.GetHandleSize(WristJoint.position) * 0.05f);
+            // body
+            Gizmos.color = Color.grey;
+            Gizmos.DrawCube(new Vector3(0f, -0.5f, 0.5f), new Vector3(0.5f, 1.5f, 1f));
+            Gizmos.DrawCube(new Vector3(0f, 0.4f, 0.5f), Vector3.one * 0.33f);
 
-            // bones
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(ShoulderJoint.position, ElbowJoint.position);
-            Gizmos.DrawLine(ElbowJoint.position, WristJoint.position);
+            Gizmos.color = Color.white;
+
+            // shoulder
+            Gizmos.matrix = ShoulderJoint.localToWorldMatrix;
+            Gizmos.DrawWireCube(new Vector3(0f, 0f, ArmLength * -0.5f), new Vector3(0.25f, 0.25f, ArmLength));
+
+            // eblow
+            Gizmos.matrix = ElbowJoint.localToWorldMatrix;
+            Gizmos.DrawWireCube(new Vector3(0f, 0f, ForearmLength * -0.5f), new Vector3(0.25f, 0.25f, ForearmLength));
+
+            // jaw
+            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(Mathf.Lerp(0f, 45f, JawPercent) * 0.5f, 0f, 0f), Vector3.one);
+            Gizmos.DrawWireCube(new Vector3(0f, 0.0625f, -0.25f), new Vector3(0.25f, 0.125f, 0.5f));
+            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(Mathf.Lerp(0f, 45f, JawPercent) * -0.5f, 0f, 0f), Vector3.one);
+            Gizmos.DrawWireCube(new Vector3(0f, -0.0625f, -0.25f), new Vector3(0.25f, 0.125f, 0.5f));
+
+            Gizmos.matrix = Matrix4x4.identity;
 
             // axises
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.up * -0.125f);
-            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.up * -0.125f);
+            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.up * 0.25f);
+            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.up * 0.25f);
+            Gizmos.DrawRay(WristJoint.position, WristJoint.up * 0.25f);
 
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.right * -0.125f);
-            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.right * -0.125f);
+            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.right * 0.25f);
+            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.right * 0.25f);
+            Gizmos.DrawRay(WristJoint.position, WristJoint.right * 0.25f);
 
-            // jaw
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(WristJoint.position, WristJoint.forward * -0.25f);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(ShoulderJoint.position, ShoulderJoint.forward * 0.25f);
+            Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.forward * 0.25f);
+            Gizmos.DrawRay(WristJoint.position, WristJoint.forward * 0.25f);
         }
 
 
