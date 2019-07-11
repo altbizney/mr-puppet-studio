@@ -146,6 +146,11 @@ namespace MrPuppet
         {
             if (!Application.isPlaying) return;
 
+            // body
+            Gizmos.color = Color.grey;
+            Gizmos.DrawCube(new Vector3(0f, -0.5f, 0.5f), new Vector3(0.5f, 1.5f, 1f));
+            Gizmos.DrawCube(new Vector3(0f, 0.4f, 0.5f), Vector3.one * 0.33f);
+
             Gizmos.color = Color.white;
 
             // shoulder
