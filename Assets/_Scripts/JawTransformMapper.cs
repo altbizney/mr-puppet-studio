@@ -34,6 +34,11 @@ namespace MrPuppet
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
 
+        private void OnValidate()
+        {
+            if (DataMapper == null) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+        }
+
         private void Update()
         {
             // TODO: should JawPercent be smoothed, and/or position and rotation?
