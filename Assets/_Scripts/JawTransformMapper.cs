@@ -36,6 +36,8 @@ namespace MrPuppet
 
         private void Update()
         {
+            // TODO: should JawPercent be smoothed, and/or position and rotation?
+
             JawJoint.localPosition = Vector3.SmoothDamp(
                 JawJoint.localPosition,
                 Vector3.LerpUnclamped(AnimData.ClosePosition, AnimData.OpenPosition, DataMapper.JawPercent),
@@ -51,7 +53,7 @@ namespace MrPuppet
 
         private void OnJawJointAssigned()
         {
-            if(JawJoint == null) return;
+            if (JawJoint == null) return;
             AnimData = new JawAnimData()
             {
                 OpenPosition = JawJoint.localPosition,
@@ -121,7 +123,7 @@ namespace MrPuppet
         {
             base.OnDisable();
 
-            if(_editJawMode || _previewJawMode)
+            if (_editJawMode || _previewJawMode)
                 ResetJawTransform();
         }
 
