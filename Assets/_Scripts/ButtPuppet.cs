@@ -49,6 +49,8 @@ namespace MrPuppet
         private void Awake()
         {
             BindPoseButtPosition = Butt.position;
+            BindPoseButtRotation = Butt.rotation;
+            BindPoseNeckRotation = Neck.rotation;
         }
 
         private void Update()
@@ -58,9 +60,9 @@ namespace MrPuppet
                 // apply position delta to bind pose
                 Butt.position = BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
 
-                // apply rotation deltas
-                Butt.rotation = DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation);
-                Neck.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation);
+                // apply rotation deltas to bind pose
+                Butt.rotation = (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation;
+                Neck.rotation = (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation;
             }
         }
     }
