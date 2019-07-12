@@ -26,14 +26,14 @@ namespace MrPuppet
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        private bool CaptureButtonsEnabled()
+        private bool ApplicationIsPlaying()
         {
-            return !Application.isPlaying;
+            return Application.isPlaying;
         }
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
-        [DisableIf("CaptureButtonsEnabled")]
+        [EnableIf(nameof(ApplicationIsPlaying))]
         public void GrabAttachPose()
         {
             AttachPoseSet = true;

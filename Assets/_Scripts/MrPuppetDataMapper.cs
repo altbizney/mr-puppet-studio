@@ -93,7 +93,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableIf("CaptureButtonsEnabled")]
+        [EnableIf(nameof(ApplicationIsPlaying))]
         public void GrabTPose()
         {
             TPose = new Pose
@@ -114,7 +114,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableIf("CaptureButtonsEnabled")]
+        [EnableIf(nameof(ApplicationIsPlaying))]
         public void GrabJawOpened()
         {
             JawOpened = HubConnection.Jaw;
@@ -123,7 +123,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableIf("CaptureButtonsEnabled")]
+        [EnableIf(nameof(ApplicationIsPlaying))]
         public void GrabJawClosed()
         {
             JawClosed = HubConnection.Jaw;
@@ -137,9 +137,9 @@ namespace MrPuppet
             JawOpened = 1023f;
         }
 
-        private bool CaptureButtonsEnabled()
+        private bool ApplicationIsPlaying()
         {
-            return !Application.isPlaying;
+            return Application.isPlaying;
         }
 
         private void OnDrawGizmos()
