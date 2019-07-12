@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -194,18 +194,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
---- !u!114 &164865262 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-    type: 3}
-  m_PrefabInstance: {fileID: 164865261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d53d716a4071412b829f2fb5d017c97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &710303648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217,26 +205,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: lucius
-      objectReference: {fileID: 0}
-    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.9508362
-      objectReference: {fileID: 0}
-    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -17.160372
-      objectReference: {fileID: 0}
-    - target: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.2426082
-      objectReference: {fileID: 0}
-    - target: {fileID: 2644456400268280679, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5750617521806328984, guid: 65e60c96f329f4a53a481d5e73a461cb,
         type: 3}
@@ -293,67 +261,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4957880057908176115, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: DataMapper
-      value: 
-      objectReference: {fileID: 164865262}
-    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
-        type: 3}
-      propertyPath: DataMapper
-      value: 
-      objectReference: {fileID: 164865262}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65e60c96f329f4a53a481d5e73a461cb, type: 3}
---- !u!1 &710303649 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5750617521805908152, guid: 65e60c96f329f4a53a481d5e73a461cb,
-    type: 3}
-  m_PrefabInstance: {fileID: 710303648}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &710303650 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7103439666655783436, guid: 65e60c96f329f4a53a481d5e73a461cb,
-    type: 3}
-  m_PrefabInstance: {fileID: 710303648}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &710303651 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2644456400268280679, guid: 65e60c96f329f4a53a481d5e73a461cb,
-    type: 3}
-  m_PrefabInstance: {fileID: 710303648}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &710303652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 710303649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afdc6b281542f478f8d4918024455cb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoBlink: 1
-  BlinkInterval: {x: 1, y: 3}
-  BlinkCloseDuration: {x: 0.05, y: 0.1}
-  BlinkOpenDuration: {x: 0.05, y: 0.1}
-  BlinkHoldDuration: {x: 0.05, y: 0.1}
-  Invert: 0
-  ManualBlinkKey: 98
-  Step: 1
-  BlendShapeKeys:
-  - SkinnedMeshRenderer: {fileID: 710303651}
-    BlendShapeIndex: 0
-    BlendShapeMin: 0
-    BlendShapeMax: 100
-  TransformKeys:
-  - Transform: {fileID: 710303650}
-    InitPosition: {x: 1.9508362, y: -17.160372, z: 0.2426082}
-    EndPosition: {x: 1.9506731, y: -25.142307, z: 0.24261856}
-    InitRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-    EndRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
 --- !u!1 &1642928557
 GameObject:
   m_ObjectHideFlags: 0
