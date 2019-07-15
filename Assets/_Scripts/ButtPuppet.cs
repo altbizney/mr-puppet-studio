@@ -142,20 +142,20 @@ namespace MrPuppet
 
         private void OnDrawGizmos()
         {
-            Debug.DrawRay(Butt.position, Butt.up * 0.5f, Color.green, 0f, false);
-            Debug.DrawRay(Neck.position, Neck.up * 0.5f, Color.green, 0f, false);
+            if (Butt) Debug.DrawRay(Butt.position, Butt.up * 0.5f, Color.green, 0f, false);
+            if (Neck) Debug.DrawRay(Neck.position, Neck.up * 0.5f, Color.green, 0f, false);
             foreach (var influence in WeightedInfluences)
-                Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
+                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
 
-            Debug.DrawRay(Butt.position, Butt.right * 0.5f, Color.red, 0f, false);
-            Debug.DrawRay(Neck.position, Neck.right * 0.5f, Color.red, 0f, false);
+            if (Butt) Debug.DrawRay(Butt.position, Butt.right * 0.5f, Color.red, 0f, false);
+            if (Neck) Debug.DrawRay(Neck.position, Neck.right * 0.5f, Color.red, 0f, false);
             foreach (var influence in WeightedInfluences)
-                Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
+                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
 
-            Debug.DrawRay(Butt.position, Butt.forward * 0.5f, Color.blue, 0f, false);
-            Debug.DrawRay(Neck.position, Neck.forward * 0.5f, Color.blue, 0f, false);
+            if (Butt) Debug.DrawRay(Butt.position, Butt.forward * 0.5f, Color.blue, 0f, false);
+            if (Neck) Debug.DrawRay(Neck.position, Neck.forward * 0.5f, Color.blue, 0f, false);
             foreach (var influence in WeightedInfluences)
-                Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
+                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
         }
     }
 }
