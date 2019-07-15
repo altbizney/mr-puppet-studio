@@ -67,7 +67,9 @@ namespace MrPuppet
         private Quaternion BindPoseNeckRotation;
 
         public Transform Butt;
+        private Transform ButtProxy;
         public Transform Neck;
+        private Transform NeckProxy;
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -102,23 +104,32 @@ namespace MrPuppet
             AttachPoseWristRotation = DataMapper.WristJoint.rotation;
 
             // send attach poses to weighted infleunces
-            foreach (var influence in WeightedInfluences)
-            {
-                influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
-            }
+            // foreach (var influence in WeightedInfluences)
+            // {
+            //     influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
+            // }
         }
 
         private void Awake()
         {
+            // clone proxy geo
+            ButtProxy = new GameObject("ButtProxy").transform;
+            ButtProxy.SetPositionAndRotation(Butt.position, Butt.rotation);
+            ButtProxy.SetParent(Butt.parent, false);
+
+            NeckProxy = new GameObject("NeckProxy").transform;
+            NeckProxy.SetPositionAndRotation(Neck.position, Neck.rotation);
+            NeckProxy.SetParent(Neck.parent, false);
+
             BindPoseButtPosition = Butt.localPosition;
             BindPoseButtRotation = Butt.rotation;
             BindPoseNeckRotation = Neck.rotation;
 
             // snapshot bind poses of weighted influence targets
-            foreach (var influence in WeightedInfluences)
-            {
-                influence.SnapshotBind();
-            }
+            // foreach (var influence in WeightedInfluences)
+            // {
+            //     influence.SnapshotBind();
+            // }
         }
 
         private void Update()
@@ -126,36 +137,46 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                Butt.localPosition = Vector3.SmoothDamp(Butt.localPosition, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                ButtProxy.localPosition = Vector3.SmoothDamp(ButtProxy.localPosition, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                Butt.rotation = Quaternion.Slerp(Butt.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
-                Neck.rotation = Quaternion.Slerp(Neck.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation, RotationSpeed * Time.smoothDeltaTime);
+                ButtProxy.rotation = Quaternion.Slerp(ButtProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
+                NeckProxy.rotation = Quaternion.Slerp(NeckProxy.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation, RotationSpeed * Time.smoothDeltaTime);
 
                 // apply weighted influences
-                foreach (var influence in WeightedInfluences)
-                {
-                    influence.Update(DataMapper, RotationSpeed);
-                }
+                // foreach (var influence in WeightedInfluences)
+                // {
+                //     influence.Update(DataMapper, RotationSpeed);
+                // }
             }
+        }
+
+        private void LateUpdate()
+        {
+            if (!(ButtProxy && NeckProxy)) return;
+
+            Butt.position = Butt.position - (BindPoseButtPosition - ButtProxy.position);
+
+            // Butt.rotation = ButtProxy.rotation;
+            // Neck.rotation = NeckProxy.rotation;
         }
 
         private void OnDrawGizmos()
         {
-            if (Butt) Debug.DrawRay(Butt.position, Butt.up * 0.5f, Color.green, 0f, false);
-            if (Neck) Debug.DrawRay(Neck.position, Neck.up * 0.5f, Color.green, 0f, false);
-            foreach (var influence in WeightedInfluences)
-                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
+            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.up * 0.5f, Color.green, 0f, false);
+            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.up * 0.5f, Color.green, 0f, false);
+            // foreach (var influence in WeightedInfluences)
+            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
 
-            if (Butt) Debug.DrawRay(Butt.position, Butt.right * 0.5f, Color.red, 0f, false);
-            if (Neck) Debug.DrawRay(Neck.position, Neck.right * 0.5f, Color.red, 0f, false);
-            foreach (var influence in WeightedInfluences)
-                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
+            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.right * 0.5f, Color.red, 0f, false);
+            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.right * 0.5f, Color.red, 0f, false);
+            // foreach (var influence in WeightedInfluences)
+            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
 
-            if (Butt) Debug.DrawRay(Butt.position, Butt.forward * 0.5f, Color.blue, 0f, false);
-            if (Neck) Debug.DrawRay(Neck.position, Neck.forward * 0.5f, Color.blue, 0f, false);
-            foreach (var influence in WeightedInfluences)
-                if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
+            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.forward * 0.5f, Color.blue, 0f, false);
+            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.forward * 0.5f, Color.blue, 0f, false);
+            // foreach (var influence in WeightedInfluences)
+            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
         }
     }
 }
