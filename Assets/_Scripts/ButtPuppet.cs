@@ -19,6 +19,7 @@ namespace MrPuppet
             private Quaternion attach;
             private Quaternion bind;
             private Quaternion full;
+            private Quaternion weighted;
 
             public void SnapshotBind()
             {
@@ -38,13 +39,18 @@ namespace MrPuppet
                 }
             }
 
-            public void Update(MrPuppetDataMapper DataMapper)
+            public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed)
             {
                 if (!target) return;
 
+                // calculate fully blended extent
                 full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(attach)) * bind;
 
-                target.rotation = Quaternion.Slerp(bind, full, amount);
+                // calculate weighted rotation
+                weighted = Quaternion.Slerp(bind, full, amount);
+
+                // apply with smoothing
+                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.smoothDeltaTime);
             }
         }
 
@@ -129,7 +135,7 @@ namespace MrPuppet
                 // applky weighted influences
                 foreach (var influence in WeightedInfluences)
                 {
-                    influence.Update(DataMapper);
+                    influence.Update(DataMapper, RotationSpeed);
                 }
             }
         }
