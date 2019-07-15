@@ -110,7 +110,7 @@ namespace MrPuppet
 
         private void Awake()
         {
-            BindPoseButtPosition = Butt.position;
+            BindPoseButtPosition = Butt.localPosition;
             BindPoseButtRotation = Butt.rotation;
             BindPoseNeckRotation = Neck.rotation;
 
@@ -126,7 +126,7 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                Butt.position = Vector3.SmoothDamp(Butt.position, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                Butt.localPosition = Vector3.SmoothDamp(Butt.localPosition, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
                 Butt.rotation = Quaternion.Slerp(Butt.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
