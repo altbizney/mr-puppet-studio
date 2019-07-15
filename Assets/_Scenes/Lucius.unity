@@ -321,8 +321,55 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[0].amount
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[0].joint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[0].target
+      value: 
+      objectReference: {fileID: 1609607695}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[1].amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[1].target
+      value: 
+      objectReference: {fileID: 1321898644}
+    - target: {fileID: 5625544818986703388, guid: 65e60c96f329f4a53a481d5e73a461cb,
+        type: 3}
+      propertyPath: influences.Array.data[1].joint
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65e60c96f329f4a53a481d5e73a461cb, type: 3}
+--- !u!4 &1321898644 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 346699079371092919, guid: 65e60c96f329f4a53a481d5e73a461cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 710303648}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1609607695 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8427340794059027876, guid: 65e60c96f329f4a53a481d5e73a461cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 710303648}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1642928557
 GameObject:
   m_ObjectHideFlags: 0
