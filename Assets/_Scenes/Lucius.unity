@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -191,6 +191,66 @@ PrefabInstance:
         type: 3}
       propertyPath: ArmLength
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.x
+      value: 0.05614428
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.y
+      value: 0.034153257
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.z
+      value: -0.9974448
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.w
+      value: 0.026940769
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.x
+      value: 0.108470224
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.y
+      value: 0.043274935
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.z
+      value: -0.99306077
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.w
+      value: 0.009333807
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.x
+      value: -0.009828771
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.y
+      value: -0.0009192389
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.z
+      value: 0.99991965
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.w
+      value: 0.0089802565
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
