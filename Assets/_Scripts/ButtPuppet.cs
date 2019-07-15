@@ -21,6 +21,12 @@ namespace MrPuppet
         public Transform Butt;
         public Transform Neck;
 
+        [MinValue(0f)]
+        public float RotationSpeed = 7f;
+        [MinValue(0f)]
+        public float PositionSpeed = 0.1f;
+        private Vector3 PositionVelocity;
+
         private void OnValidate()
         {
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -58,11 +64,11 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                Butt.position = BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
+                Butt.position = Vector3.SmoothDamp(Butt.position, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                Butt.rotation = (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation;
-                Neck.rotation = (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation;
+                Butt.rotation = Quaternion.Slerp(Butt.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
+                Neck.rotation = Quaternion.Slerp(Neck.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation, RotationSpeed * Time.smoothDeltaTime);
             }
         }
     }
