@@ -132,12 +132,30 @@ namespace MrPuppet
                 Butt.rotation = Quaternion.Slerp(Butt.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
                 Neck.rotation = Quaternion.Slerp(Neck.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation, RotationSpeed * Time.smoothDeltaTime);
 
-                // applky weighted influences
+                // apply weighted influences
                 foreach (var influence in WeightedInfluences)
                 {
                     influence.Update(DataMapper, RotationSpeed);
                 }
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Debug.DrawRay(Butt.position, Butt.up * 0.5f, Color.green, 0f, false);
+            Debug.DrawRay(Neck.position, Neck.up * 0.5f, Color.green, 0f, false);
+            foreach (var influence in WeightedInfluences)
+                Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
+
+            Debug.DrawRay(Butt.position, Butt.right * 0.5f, Color.red, 0f, false);
+            Debug.DrawRay(Neck.position, Neck.right * 0.5f, Color.red, 0f, false);
+            foreach (var influence in WeightedInfluences)
+                Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
+
+            Debug.DrawRay(Butt.position, Butt.forward * 0.5f, Color.blue, 0f, false);
+            Debug.DrawRay(Neck.position, Neck.forward * 0.5f, Color.blue, 0f, false);
+            foreach (var influence in WeightedInfluences)
+                Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
         }
     }
 }
