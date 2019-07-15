@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 0}
-  Butt: {fileID: 3872186404376667697}
-  Neck: {fileID: 5847184105110612523}
+  Hip: {fileID: 3872186404376667697}
+  Head: {fileID: 5847184105110612523}
   WeightedInfluences:
   - joint: 2
     target: {fileID: 906695963290809056}
@@ -91,7 +91,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 9e24ade76d454421581acef9d7735755, type: 2}
+      objectReference: {fileID: 9100000, guid: 19fad9c5727fe4c2fa266cacadc8789a, type: 2}
     - target: {fileID: -4216859302048453862, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
       propertyPath: m_LocalPosition.x

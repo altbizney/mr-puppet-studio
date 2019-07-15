@@ -57,19 +57,21 @@ namespace MrPuppet
         [Required]
         public MrPuppetDataMapper DataMapper;
 
+        // performer attach position
         private bool AttachPoseSet = false;
         private Quaternion AttachPoseElbowRotation;
         private Quaternion AttachPoseWristRotation;
         private Vector3 AttachPoseElbowPosition;
 
-        private Vector3 BindPoseButtPosition;
-        private Quaternion BindPoseButtRotation;
-        private Quaternion BindPoseNeckRotation;
+        // spawn position of proxy geo
+        private Vector3 HipProxySpawnPosition;
+        private Quaternion HipProxySpawnRotation;
+        private Quaternion HeadProxySpawnRotation;
 
-        public Transform Butt;
-        private Transform ButtProxy;
-        public Transform Neck;
-        private Transform NeckProxy;
+        public Transform Hip;
+        public Transform Head;
+        private Transform HipProxy;
+        private Transform HeadProxy;
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -113,17 +115,17 @@ namespace MrPuppet
         private void Awake()
         {
             // clone proxy geo
-            ButtProxy = new GameObject("ButtProxy").transform;
-            ButtProxy.SetPositionAndRotation(Butt.position, Butt.rotation);
-            ButtProxy.SetParent(Butt.parent, false);
+            HipProxy = new GameObject(Hip.name + ":Proxy").transform;
+            HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
+            HipProxy.SetParent(Hip.parent, false);
 
-            NeckProxy = new GameObject("NeckProxy").transform;
-            NeckProxy.SetPositionAndRotation(Neck.position, Neck.rotation);
-            NeckProxy.SetParent(Neck.parent, false);
+            HeadProxy = new GameObject(Head.name + ":Proxy").transform;
+            HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
+            HeadProxy.SetParent(Head.parent, false);
 
-            BindPoseButtPosition = Butt.localPosition;
-            BindPoseButtRotation = Butt.rotation;
-            BindPoseNeckRotation = Neck.rotation;
+            HipProxySpawnPosition = Hip.localPosition;
+            HipProxySpawnRotation = Hip.rotation;
+            HeadProxySpawnRotation = Head.rotation;
 
             // snapshot bind poses of weighted influence targets
             // foreach (var influence in WeightedInfluences)
@@ -137,11 +139,11 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                ButtProxy.localPosition = Vector3.SmoothDamp(ButtProxy.localPosition, BindPoseButtPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                HipProxy.localPosition = Vector3.SmoothDamp(HipProxy.localPosition, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                ButtProxy.rotation = Quaternion.Slerp(ButtProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * BindPoseButtRotation, RotationSpeed * Time.smoothDeltaTime);
-                NeckProxy.rotation = Quaternion.Slerp(NeckProxy.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * BindPoseNeckRotation, RotationSpeed * Time.smoothDeltaTime);
+                HipProxy.rotation = Quaternion.Slerp(HipProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
+                HeadProxy.rotation = Quaternion.Slerp(HeadProxy.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
 
                 // apply weighted influences
                 // foreach (var influence in WeightedInfluences)
@@ -153,30 +155,28 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
-            if (!(ButtProxy && NeckProxy)) return;
+            if (!(HipProxy && HeadProxy)) return;
 
-            Butt.position = Butt.position - (BindPoseButtPosition - ButtProxy.position);
+            Hip.localPosition = Hip.localPosition - (HipProxySpawnPosition - HipProxy.localPosition);
 
-            // Butt.rotation = ButtProxy.rotation;
-            // Neck.rotation = NeckProxy.rotation;
+            // WIP: this basically is world-relative. also sort of busted on head....
+            // Hip.rotation = Hip.rotation * (HipProxy.rotation * Quaternion.Inverse(HipProxySpawnRotation));
+            // Head.rotation = Head.rotation * (HeadProxy.localRotation * Quaternion.Inverse(HeadProxySpawnRotation));
         }
 
         private void OnDrawGizmos()
         {
-            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.up * 0.5f, Color.green, 0f, false);
-            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.up * 0.5f, Color.green, 0f, false);
-            // foreach (var influence in WeightedInfluences)
-            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
+            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.up * 0.5f, Color.green, 0f, false);
+            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.up * 0.5f, Color.green, 0f, false);
+            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
 
-            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.right * 0.5f, Color.red, 0f, false);
-            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.right * 0.5f, Color.red, 0f, false);
-            // foreach (var influence in WeightedInfluences)
-            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
+            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.right * 0.5f, Color.red, 0f, false);
+            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.right * 0.5f, Color.red, 0f, false);
+            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
 
-            if (ButtProxy) Debug.DrawRay(ButtProxy.position, ButtProxy.forward * 0.5f, Color.blue, 0f, false);
-            if (NeckProxy) Debug.DrawRay(NeckProxy.position, NeckProxy.forward * 0.5f, Color.blue, 0f, false);
-            // foreach (var influence in WeightedInfluences)
-            //     if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
+            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.forward * 0.5f, Color.blue, 0f, false);
+            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.forward * 0.5f, Color.blue, 0f, false);
+            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
         }
     }
 }
