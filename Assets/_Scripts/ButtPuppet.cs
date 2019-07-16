@@ -12,18 +12,23 @@ namespace MrPuppet
         {
             public MrPuppetDataMapper.Joint joint;
             public Transform target;
+            private Transform proxy;
 
             [Range(0f, 1f)]
             public float amount = 1f;
 
             private Quaternion attach;
-            private Quaternion bind;
+            private Quaternion spawn;
             private Quaternion full;
             private Quaternion weighted;
 
-            public void SnapshotBind()
+            public void SnapshotSpawn()
             {
-                bind = target.rotation;
+                proxy = new GameObject("Proxy:" + target.name).transform;
+                proxy.SetPositionAndRotation(target.position, target.rotation);
+                proxy.SetParent(target.parent, false);
+
+                spawn = target.rotation;
             }
 
             public void SnapshotAttach(Quaternion elbow, Quaternion wrist)
@@ -44,13 +49,22 @@ namespace MrPuppet
                 if (!target) return;
 
                 // calculate fully blended extent
-                full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(attach)) * bind;
+                full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(attach)) * spawn;
 
                 // calculate weighted rotation
-                weighted = Quaternion.Slerp(bind, full, amount);
+                weighted = Quaternion.Slerp(spawn, full, amount);
 
                 // apply with smoothing
-                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.smoothDeltaTime);
+                proxy.rotation = Quaternion.Slerp(proxy.rotation, weighted, RotationSpeed * Time.smoothDeltaTime);
+            }
+
+            public void OnDrawGizmos()
+            {
+                if (!proxy) return;
+
+                Debug.DrawRay(proxy.position, proxy.up * 0.5f, Color.green, 0f, false);
+                Debug.DrawRay(proxy.position, proxy.right * 0.5f, Color.red, 0f, false);
+                Debug.DrawRay(proxy.position, proxy.forward * 0.5f, Color.blue, 0f, false);
             }
         }
 
@@ -106,20 +120,20 @@ namespace MrPuppet
             AttachPoseWristRotation = DataMapper.WristJoint.rotation;
 
             // send attach poses to weighted infleunces
-            // foreach (var influence in WeightedInfluences)
-            // {
-            //     influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
-            // }
+            foreach (var influence in WeightedInfluences)
+            {
+                influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
+            }
         }
 
         private void Awake()
         {
             // clone proxy geo
-            HipProxy = new GameObject(Hip.name + ":Proxy").transform;
+            HipProxy = new GameObject("Proxy:" + Hip.name).transform;
             HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
             HipProxy.SetParent(Hip.parent, false);
 
-            HeadProxy = new GameObject(Head.name + ":Proxy").transform;
+            HeadProxy = new GameObject("Proxy:" + Head.name).transform;
             HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
             HeadProxy.SetParent(Head.parent, false);
 
@@ -128,10 +142,10 @@ namespace MrPuppet
             HeadProxySpawnRotation = Head.rotation;
 
             // snapshot bind poses of weighted influence targets
-            // foreach (var influence in WeightedInfluences)
-            // {
-            //     influence.SnapshotBind();
-            // }
+            foreach (var influence in WeightedInfluences)
+            {
+                influence.SnapshotSpawn();
+            }
         }
 
         private void Update()
@@ -146,10 +160,10 @@ namespace MrPuppet
                 HeadProxy.rotation = Quaternion.Slerp(HeadProxy.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
 
                 // apply weighted influences
-                // foreach (var influence in WeightedInfluences)
-                // {
-                //     influence.Update(DataMapper, RotationSpeed);
-                // }
+                foreach (var influence in WeightedInfluences)
+                {
+                    influence.Update(DataMapper, RotationSpeed);
+                }
             }
         }
 
@@ -173,15 +187,14 @@ namespace MrPuppet
         {
             if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.up * 0.5f, Color.green, 0f, false);
             if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.up * 0.5f, Color.green, 0f, false);
-            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.up * 0.5f, Color.green, 0f, false);
 
             if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.right * 0.5f, Color.red, 0f, false);
             if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.right * 0.5f, Color.red, 0f, false);
-            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.right * 0.5f, Color.red, 0f, false);
 
             if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.forward * 0.5f, Color.blue, 0f, false);
             if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.forward * 0.5f, Color.blue, 0f, false);
-            // foreach (var influence in WeightedInfluences) if (influence.target) Debug.DrawRay(influence.target.position, influence.target.forward * 0.5f, Color.blue, 0f, false);
+
+            foreach (var influence in WeightedInfluences) influence.OnDrawGizmos();
         }
     }
 }
