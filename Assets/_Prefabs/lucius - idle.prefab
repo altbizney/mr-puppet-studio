@@ -92,20 +92,25 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 19fad9c5727fe4c2fa266cacadc8789a, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.53
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4.43
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}

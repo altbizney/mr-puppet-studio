@@ -123,7 +123,7 @@ namespace MrPuppet
             HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
             HeadProxy.SetParent(Head.parent, false);
 
-            HipProxySpawnPosition = Hip.localPosition;
+            HipProxySpawnPosition = Hip.position;
             HipProxySpawnRotation = Hip.rotation;
             HeadProxySpawnRotation = Head.rotation;
 
@@ -139,7 +139,7 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                HipProxy.localPosition = Vector3.SmoothDamp(HipProxy.localPosition, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                HipProxy.position = Vector3.SmoothDamp(HipProxy.position, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
                 HipProxy.rotation = Quaternion.Slerp(HipProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
@@ -153,11 +153,16 @@ namespace MrPuppet
             }
         }
 
+        // REMINDER: Change = Quaternion.Inverse(Last) * Current;
+
         private void LateUpdate()
         {
             if (!(HipProxy && HeadProxy)) return;
 
-            Hip.localPosition = Hip.localPosition - (HipProxySpawnPosition - HipProxy.localPosition);
+            Hip.position = Hip.position - (HipProxySpawnPosition - HipProxy.position);
+
+            Hip.rotation = Hip.rotation * (Quaternion.Inverse(Hip.rotation) * HipProxy.rotation);
+            Head.rotation = Head.rotation * (Quaternion.Inverse(Head.rotation) * HeadProxy.rotation);
 
             // WIP: this basically is world-relative. also sort of busted on head....
             // Hip.rotation = Hip.rotation * (HipProxy.rotation * Quaternion.Inverse(HipProxySpawnRotation));
