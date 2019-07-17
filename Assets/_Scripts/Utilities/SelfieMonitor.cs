@@ -3,16 +3,21 @@ using UnityEditor;
 
 public class SelfieMonitor : EditorWindow
 {
-    private string RenderTextureAssetPath = "Assets/_Textures/SelfieRenderer.renderTexture";
     private float PlaybackFPS = 24f;
     private float LastFrameTime = 0.0f;
 
+    private string RenderTextureAssetPath = "Assets/_Textures/SelfieRenderer.renderTexture";
     private RenderTexture Texture;
+
+    private float imgRatio = 0f;
+    private float containerRatio = 0f;
+    private float finalWidth = 0f;
+    private float finalHeight = 0f;
 
     [MenuItem("Tools/Selfie Monitor")]
     private static void Init()
     {
-        SelfieMonitor window = (SelfieMonitor)EditorWindow.GetWindow(typeof(SelfieMonitor));
+        SelfieMonitor window = ScriptableObject.CreateInstance(typeof(SelfieMonitor)) as SelfieMonitor;
         window.Show();
     }
 
@@ -20,7 +25,22 @@ public class SelfieMonitor : EditorWindow
     {
         if (Texture)
         {
-            EditorGUI.DrawPreviewTexture(new Rect(position.width, 0f, -position.width, (Texture.height / Texture.width) * position.width), Texture);
+            // https://stackoverflow.com/a/10285523
+            imgRatio = ((float)Texture.height / (float)Texture.width);
+            containerRatio = (position.height / position.width);
+
+            if (containerRatio > imgRatio)
+            {
+                finalHeight = position.height;
+                finalWidth = (position.height / imgRatio);
+            }
+            else
+            {
+                finalWidth = position.width;
+                finalHeight = (position.width * imgRatio);
+            }
+
+            EditorGUI.DrawPreviewTexture(new Rect(finalWidth, 0f, -finalWidth, finalHeight), Texture);
         }
         else
         {
