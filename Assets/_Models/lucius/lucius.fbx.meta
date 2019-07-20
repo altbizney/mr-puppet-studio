@@ -811,6 +811,31 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: lucius_unity_rig_model_body
+    second: {fileID: 2100000, guid: 0a3d1661efb164a2d84404bd9881f536, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lucius_unity_rig_model_eye
+    second: {fileID: 2100000, guid: 3d6b8d411a3944e869a127b64a7a2aaf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lucius_unity_rig_model_pasted__eye
+    second: {fileID: 2100000, guid: 3d6b8d411a3944e869a127b64a7a2aaf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lucius_unity_rig_model_tooth1
+    second: {fileID: 2100000, guid: a725fc4d453754ca6bb634b8cf1cdb48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lucius_unity_rig_model_toungue
+    second: {fileID: 2100000, guid: 5d00583dc100b45309a984b3f5423a5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: model_body
     second: {fileID: 2100000, guid: 0a3d1661efb164a2d84404bd9881f536, type: 2}
   - first:
