@@ -229,62 +229,62 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.x
-      value: -0.024960881
+      value: -0.11978387
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.y
-      value: 0.105217494
+      value: 0.59736377
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.z
-      value: 0.9846462
+      value: 0.7919596
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.w
-      value: -0.13675445
+      value: -0.04016367
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.x
-      value: -0.06788227
+      value: 0.39428273
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.y
-      value: 0.024960848
+      value: -0.59446466
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.z
-      value: 0.6140515
+      value: -0.33856267
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.w
-      value: -0.7859492
+      value: 0.61355656
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.x
-      value: 0.024112338
+      value: -0.5529575
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.y
-      value: -0.19098954
+      value: -0.08626701
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.z
-      value: 0.9812521
+      value: 0.6987629
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.w
-      value: -0.0071417834
+      value: -0.44547725
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
@@ -1043,6 +1043,65 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.ClosePosition.x
+      value: 5.013966
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.ClosePosition.z
+      value: 5.068056
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.CloseRotation.x
+      value: -0.531807
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.CloseRotation.y
+      value: 0.49131647
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.CloseRotation.z
+      value: 0.47331914
+      objectReference: {fileID: 0}
+    - target: {fileID: 399512806, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
+      propertyPath: AnimData.CloseRotation.w
+      value: 0.5017554
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.48428047
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5382219
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.51753265
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4560149
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.0161476
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.15919635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489916753406370435, guid: ee60fcb54272447bdb783254221ade6f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.0673313
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
