@@ -14,6 +14,8 @@ public class SelfieMonitor : EditorWindow
     private float finalWidth = 0f;
     private float finalHeight = 0f;
 
+    // private MrPuppet.Blink Blinker;
+
     [MenuItem("Tools/Selfie Monitor")]
     private static void Init()
     {
@@ -61,6 +63,7 @@ public class SelfieMonitor : EditorWindow
     private void OnEnable()
     {
         Texture = AssetDatabase.LoadAssetAtPath(RenderTextureAssetPath, typeof(RenderTexture)) as RenderTexture;
+        // Blinker = GameObject.Find("lucius - idle").GetComponent<MrPuppet.Blink>();
     }
 
     private void OnDisable()
