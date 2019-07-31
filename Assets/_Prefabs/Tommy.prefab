@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8522032940912473547}
   - component: {fileID: 8522032940912473524}
+  - component: {fileID: 1920597055}
   m_Layer: 0
   m_Name: Tommy
   m_TagString: Untagged
@@ -50,6 +51,30 @@ MonoBehaviour:
   WeightedInfluences: []
   RotationSpeed: 7
   PositionSpeed: 0.1
+--- !u!114 &1920597055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8522032940912473546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2112727bc79074d43ac29279e00c0a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DataMapper: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 5705652367648086482}
+  smoothTime: 0.02
+  maps:
+  - blendShapeIndex: 0
+    inputMin: 0
+    inputMax: 1
+    outputMin: 100
+    outputMax: 0
+    spring: 0
+    springStiffness: 100
+    springDamping: 10
 --- !u!1001 &8522032939914589777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -122,25 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1291112889809782473, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2611921990790706593, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4137360376990707587, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4137360376990707587, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5124b9d478f3b462cb1c925c2f8fd91f, type: 3}
@@ -159,6 +169,12 @@ Transform:
 --- !u!4 &2143070139653882566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7780497490366198935, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
+    type: 3}
+  m_PrefabInstance: {fileID: 8522032939914589777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5705652367648086482 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4137360376990707587, guid: 5124b9d478f3b462cb1c925c2f8fd91f,
     type: 3}
   m_PrefabInstance: {fileID: 8522032939914589777}
   m_PrefabAsset: {fileID: 0}

@@ -3,7 +3,37 @@ guid: 5124b9d478f3b462cb1c925c2f8fd91f
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_body
+    second: {fileID: 2100000, guid: 342588a9ecd454eb5bf21b95f269a6a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_eye
+    second: {fileID: 2100000, guid: 5ec752f62e2d149479484ef13edb6cfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_mouth
+    second: {fileID: 2100000, guid: 642fe20d29f0e4d19bf0759d7b3b40a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_pupil
+    second: {fileID: 2100000, guid: 138a462b51ee7468483006333ca484db, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_ring
+    second: {fileID: 2100000, guid: 0dcb4dfbf8c714dee8efe16cee6d0c03, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tex_tongue
+    second: {fileID: 2100000, guid: a633b30acb4284bbba1547647b452e27, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -34,7 +64,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 10
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -80,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
