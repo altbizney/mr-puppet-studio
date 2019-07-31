@@ -51,6 +51,7 @@ MonoBehaviour:
   WeightedInfluences: []
   RotationSpeed: 7
   PositionSpeed: 0.1
+  EnableHipPosition: 0
 --- !u!114 &1920597055
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -95,6 +95,8 @@ namespace MrPuppet
         public float PositionSpeed = 0.1f;
         private Vector3 PositionVelocity;
 
+        public bool EnableHipPosition = true;
+
         private void OnValidate()
         {
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -152,8 +154,11 @@ namespace MrPuppet
         {
             if (AttachPoseSet)
             {
-                // apply position delta to bind pose
-                HipProxy.position = Vector3.SmoothDamp(HipProxy.position, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                if (EnableHipPosition)
+                {
+                    // apply position delta to bind pose
+                    HipProxy.position = Vector3.SmoothDamp(HipProxy.position, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                }
 
                 // apply rotation deltas to bind pose
                 HipProxy.rotation = Quaternion.Slerp(HipProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
@@ -173,7 +178,7 @@ namespace MrPuppet
         {
             if (!(HipProxy && HeadProxy)) return;
 
-            Hip.position = Hip.position - (HipProxySpawnPosition - HipProxy.position);
+            if (EnableHipPosition) Hip.position = Hip.position - (HipProxySpawnPosition - HipProxy.position);
 
             Hip.rotation = Hip.rotation * (Quaternion.Inverse(Hip.rotation) * HipProxy.rotation);
             Head.rotation = Head.rotation * (Quaternion.Inverse(Head.rotation) * HeadProxy.rotation);
