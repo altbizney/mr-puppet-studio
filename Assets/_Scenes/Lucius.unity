@@ -215,12 +215,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &134379715 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2384950406925528120, guid: ee60fcb54272447bdb783254221ade6f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1883817616162853730}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &164865261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1026,12 +1020,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!4 &774555708 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6110887771553649725, guid: ee60fcb54272447bdb783254221ade6f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1883817616162853730}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832141958
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,58 +2061,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[0].amount
-      value: 0.204
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[1].amount
-      value: 0.571
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[2].amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[0].joint
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[1].joint
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[0].target
-      value: 
-      objectReference: {fileID: 774555708}
-    - target: {fileID: 399512804, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
-      propertyPath: WeightedInfluences.Array.data[1].target
-      value: 
-      objectReference: {fileID: 134379715}
-    - target: {fileID: 8167305527006337787, guid: ee60fcb54272447bdb783254221ade6f,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998803611447210896, guid: ee60fcb54272447bdb783254221ade6f,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.19507396
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998803611447210896, guid: ee60fcb54272447bdb783254221ade6f,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.380803
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998803611447210896, guid: ee60fcb54272447bdb783254221ade6f,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.024261951
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee60fcb54272447bdb783254221ade6f, type: 3}
