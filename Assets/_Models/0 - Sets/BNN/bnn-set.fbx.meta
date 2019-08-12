@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 4e37081e505be4e9e85840f71518de0f
+guid: a03db68c438f94bb2a75973f85f60df3
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: brows
-    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -17,27 +12,32 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: lambert4
-    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert9
-    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: pasted__pasted__lambert6
-    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: pasted__surfaceShader1
+      name: paper
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: surfaceShader1
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader2
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader3
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader4
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: svgBlinn3
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   materials:
     importMaterials: 1
@@ -118,10 +118,10 @@ ModelImporter:
     globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
