@@ -61,9 +61,9 @@ MonoBehaviour:
   RotationSpeed: 7
   PositionSpeed: 0.1
   LimitHipExtentX: 1
-  HipExtentX: 0.05
+  HipExtentX: 0.1
   LimitHipExtentY: 1
-  HipExtentY: 0.2
+  HipExtentY: 0.1
   LimitHipExtentZ: 1
   HipExtentZ: 0.2
 --- !u!114 &1575444023606922970
@@ -89,7 +89,7 @@ MonoBehaviour:
     CloseMaxPosition: {x: 0.12507087, y: 0.2856114, z: 1.5600003e-15}
     CloseRotation: {x: -0.6861345, y: 0.7274747, z: 4.490535e-17, w: 4.1628248e-17}
     CloseMaxRotation: {x: -0.7016079, y: 0.7125633, z: 4.4000483e-17, w: 4.2583546e-17}
-  SmoothTime: 0.02
+  SmoothTime: 0.015
 --- !u!1001 &213161498723333510
 PrefabInstance:
   m_ObjectHideFlags: 0

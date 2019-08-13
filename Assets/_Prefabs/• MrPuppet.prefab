@@ -66,11 +66,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HubConnection: {fileID: 180394980541420895}
+  EnableGizmo: 1
   TPose:
-    ShoulderRotation: {x: -0.014424969, y: -0.12374368, z: -0.9922122, w: 0.0007071082}
-    ElbowRotation: {x: 0.07353913, y: -0.043557763, z: -0.5873229, w: 0.80482894}
-    WristRotation: {x: -0.015414914, y: -0.25788185, z: 0.9608167, w: -0.10076271}
-  JawOpened: 359
-  JawClosed: 123
+    ShoulderRotation: {x: -0.08803478, y: 0.050416715, z: 0.9901616, w: 0.09666149}
+    ElbowRotation: {x: 0.057346363, y: -0.015839163, z: -0.18264568, w: 0.98132277}
+    WristRotation: {x: 0.027011493, y: 0.3674127, z: -0.92956257, w: 0.014566394}
+  JawOpened: 532
+  JawClosed: 193
   ArmLength: 1
   ForearmLength: 1
