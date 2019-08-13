@@ -12,7 +12,7 @@ namespace MrPuppet
         {
             public MrPuppetDataMapper.Joint joint;
             public Transform target;
-            private Transform proxy;
+            // private Transform proxy;
 
             [Range(0f, 1f)]
             public float amount = 1f;
@@ -24,9 +24,9 @@ namespace MrPuppet
 
             public void SnapshotSpawn()
             {
-                proxy = new GameObject("Proxy:" + target.name).transform;
-                proxy.SetPositionAndRotation(target.position, target.rotation);
-                proxy.SetParent(target.parent, false);
+                // proxy = new GameObject("Proxy:" + target.name).transform;
+                // proxy.SetPositionAndRotation(target.position, target.rotation);
+                // proxy.SetParent(target.parent, false);
 
                 spawn = target.rotation;
             }
@@ -55,16 +55,16 @@ namespace MrPuppet
                 weighted = Quaternion.Slerp(spawn, full, amount);
 
                 // apply with smoothing
-                proxy.rotation = Quaternion.Slerp(proxy.rotation, weighted, RotationSpeed * Time.smoothDeltaTime);
+                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.smoothDeltaTime);
             }
 
             public void OnDrawGizmos()
             {
-                if (!proxy) return;
+                if (!target) return;
 
-                Debug.DrawRay(proxy.position, proxy.up * 0.5f, Color.green, 0f, false);
-                Debug.DrawRay(proxy.position, proxy.right * 0.5f, Color.red, 0f, false);
-                Debug.DrawRay(proxy.position, proxy.forward * 0.5f, Color.blue, 0f, false);
+                Debug.DrawRay(target.position, target.up * 0.5f, Color.green, 0f, false);
+                Debug.DrawRay(target.position, target.right * 0.5f, Color.red, 0f, false);
+                Debug.DrawRay(target.position, target.forward * 0.5f, Color.blue, 0f, false);
             }
         }
 
@@ -78,9 +78,9 @@ namespace MrPuppet
         private Vector3 AttachPoseElbowPosition;
 
         // spawn position of proxy geo
-        private Vector3 HipProxySpawnPosition;
-        private Quaternion HipProxySpawnRotation;
-        private Quaternion HeadProxySpawnRotation;
+        private Vector3 HipSpawnPosition;
+        private Quaternion HipSpawnRotation;
+        private Quaternion HeadSpawnRotation;
 
         public Transform Hip;
         public Transform Head;
@@ -95,7 +95,23 @@ namespace MrPuppet
         public float PositionSpeed = 0.1f;
         private Vector3 PositionVelocity;
 
-        public bool EnableHipPosition = true;
+        [HorizontalGroup("HipExtentX")]
+        public bool LimitHipExtentX = false;
+        [HorizontalGroup("HipExtentX")]
+        [ShowIf("LimitHipExtentX")]
+        public float HipExtentX = 0f;
+
+        [HorizontalGroup("HipExtentY")]
+        public bool LimitHipExtentY = false;
+        [HorizontalGroup("HipExtentY")]
+        [ShowIf("LimitHipExtentY")]
+        public float HipExtentY = 0f;
+
+        [HorizontalGroup("HipExtentZ")]
+        public bool LimitHipExtentZ = false;
+        [HorizontalGroup("HipExtentZ")]
+        [ShowIf("LimitHipExtentZ")]
+        public float HipExtentZ = 0f;
 
         private void OnValidate()
         {
@@ -130,18 +146,18 @@ namespace MrPuppet
 
         private void Awake()
         {
-            // clone proxy geo
-            HipProxy = new GameObject("Proxy:" + Hip.name).transform;
-            HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
-            HipProxy.SetParent(Hip.parent, false);
+            // // clone proxy geo
+            // HipProxy = new GameObject("Proxy:" + Hip.name).transform;
+            // HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
+            // HipProxy.SetParent(Hip.parent, false);
 
-            HeadProxy = new GameObject("Proxy:" + Head.name).transform;
-            HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
-            HeadProxy.SetParent(Head.parent, false);
+            // HeadProxy = new GameObject("Proxy:" + Head.name).transform;
+            // HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
+            // HeadProxy.SetParent(Head.parent, false);
 
-            HipProxySpawnPosition = Hip.position;
-            HipProxySpawnRotation = Hip.rotation;
-            HeadProxySpawnRotation = Head.rotation;
+            HipSpawnPosition = Hip.position;
+            HipSpawnRotation = Hip.rotation;
+            HeadSpawnRotation = Head.rotation;
 
             // snapshot bind poses of weighted influence targets
             foreach (var influence in WeightedInfluences)
@@ -154,15 +170,22 @@ namespace MrPuppet
         {
             if (AttachPoseSet)
             {
-                if (EnableHipPosition)
-                {
-                    // apply position delta to bind pose
-                    HipProxy.position = Vector3.SmoothDamp(HipProxy.position, HipProxySpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
-                }
+                // apply position delta to bind pose
+                Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
+
+                // clamp to XYZ extents (BEFORE) smooth
+                position.Set(
+                    LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
+                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                );
+
+                // smoothly apply changes to position
+                Hip.position = Vector3.SmoothDamp(Hip.position, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                HipProxy.rotation = Quaternion.Slerp(HipProxy.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
-                HeadProxy.rotation = Quaternion.Slerp(HeadProxy.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadProxySpawnRotation, RotationSpeed * Time.smoothDeltaTime);
+                Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
+                Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
 
                 // apply weighted influences
                 foreach (var influence in WeightedInfluences)
@@ -174,32 +197,50 @@ namespace MrPuppet
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
 
-        private void LateUpdate()
-        {
-            if (!(HipProxy && HeadProxy)) return;
+        // private void LateUpdate()
+        // {
+        //     if (!(HipProxy && HeadProxy)) return;
 
-            if (EnableHipPosition) Hip.position = Hip.position - (HipProxySpawnPosition - HipProxy.position);
+        //     Hip.position = Hip.position - (HipProxySpawnPosition - HipProxy.position);
 
-            Hip.rotation = Hip.rotation * (Quaternion.Inverse(Hip.rotation) * HipProxy.rotation);
-            Head.rotation = Head.rotation * (Quaternion.Inverse(Head.rotation) * HeadProxy.rotation);
+        //     Hip.rotation = Hip.rotation * (Quaternion.Inverse(Hip.rotation) * HipProxy.rotation);
+        //     Head.rotation = Head.rotation * (Quaternion.Inverse(Head.rotation) * HeadProxy.rotation);
 
-            // WIP: this basically is world-relative. also sort of busted on head....
-            // Hip.rotation = Hip.rotation * (HipProxy.rotation * Quaternion.Inverse(HipProxySpawnRotation));
-            // Head.rotation = Head.rotation * (HeadProxy.localRotation * Quaternion.Inverse(HeadProxySpawnRotation));
-        }
+        //     // WIP: this basically is world-relative. also sort of busted on head....
+        //     // Hip.rotation = Hip.rotation * (HipProxy.rotation * Quaternion.Inverse(HipProxySpawnRotation));
+        //     // Head.rotation = Head.rotation * (HeadProxy.localRotation * Quaternion.Inverse(HeadProxySpawnRotation));
+        // }
 
         private void OnDrawGizmos()
         {
-            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.up * 0.5f, Color.green, 0f, false);
-            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.up * 0.5f, Color.green, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.up * 0.5f, Color.green, 0f, false);
+            if (Head) Debug.DrawRay(Head.position, Head.up * 0.5f, Color.green, 0f, false);
 
-            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.right * 0.5f, Color.red, 0f, false);
-            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.right * 0.5f, Color.red, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.right * 0.5f, Color.red, 0f, false);
+            if (Head) Debug.DrawRay(Head.position, Head.right * 0.5f, Color.red, 0f, false);
 
-            if (HipProxy) Debug.DrawRay(HipProxy.position, HipProxy.forward * 0.5f, Color.blue, 0f, false);
-            if (HeadProxy) Debug.DrawRay(HeadProxy.position, HeadProxy.forward * 0.5f, Color.blue, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.forward * 0.5f, Color.blue, 0f, false);
+            if (Head) Debug.DrawRay(Head.position, Head.forward * 0.5f, Color.blue, 0f, false);
 
             foreach (var influence in WeightedInfluences) influence.OnDrawGizmos();
+
+            if (LimitHipExtentX)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(HipExtentX * 2f, 0.001f, LimitHipExtentZ ? HipExtentZ * 2f : 0.1f));
+            }
+
+            if (LimitHipExtentY)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(LimitHipExtentX ? HipExtentX * 2f : 0.1f, HipExtentY * 2f, 0.001f));
+            }
+
+            if (LimitHipExtentZ)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(0.001f, LimitHipExtentY ? HipExtentY * 2f : 0.1f, HipExtentZ * 2f));
+            }
         }
     }
 }
