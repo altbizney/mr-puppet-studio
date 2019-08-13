@@ -120,6 +120,11 @@
             Installed Odin Inspector Version Info.
             </summary>
         </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinInspectorVersion.BuildName">
+            <summary>
+            Gets the name of the current running version of Odin Inspector.
+            </summary>
+        </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinInspectorVersion.Version">
             <summary>
             Gets the current running version of Odin Inspector.
@@ -1917,454 +1922,6 @@
             Draws the property.
             </summary>
         </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeByteDrawer">
-            <summary>
-            Draws byte properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeByteDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeDoubleDrawer">
-            <summary>
-            Draws double properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeDoubleDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint64Drawer">
-            <summary>
-            Draws ulong properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint64Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint32Drawer">
-            <summary>
-            Draws uint properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint32Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint16Drawer">
-            <summary>
-            Draws ushort properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeUint16Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeSbyteDrawer">
-            <summary>
-            Draws sbyte properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeSbyteDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt64Drawer">
-            <summary>
-            Draws long properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt64Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt32Drawer">
-            <summary>
-            Draws int properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt32Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt16Drawer">
-            <summary>
-            Draws short properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeInt16Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeFloatDrawer">
-            <summary>
-            Draws float properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeFloatDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector2Drawer">
-            <summary>
-            Draws Vector2 properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector2Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector3Drawer">
-            <summary>
-            Draws Vector3 properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector3Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector4Drawer">
-            <summary>
-            Draws Vector4 properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeVector4Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeDecimalDrawer">
-            <summary>
-            Draws decimal properties marked with <see cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MaxValueAttributeDecimalDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint32Drawer">
-            <summary>
-            Draws uint properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint32Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint64Drawer">
-            <summary>
-            Draws ulong properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint64Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint16Drawer">
-            <summary>
-            Draws ushort properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeUint16Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeSbyteDrawer">
-            <summary>
-            Draws sbyte properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeSbyteDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt64Drawer">
-            <summary>
-            Draws long properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt64Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt32Drawer">
-            <summary>
-            Draws int properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt32Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt16Drawer">
-            <summary>
-            Draws short properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeInt16Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeFloatDrawer">
-            <summary>
-            Draws float properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeFloatDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeDoubleDrawer">
-            <summary>
-            Draws double properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeDoubleDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeByteDrawer">
-            <summary>
-            Draws byte properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeByteDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector2Drawer">
-            <summary>
-            Draws Vector2 properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector2Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector3Drawer">
-            <summary>
-            Draws Vector3 properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector3Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector4Drawer">
-            <summary>
-            Draws Vector4 properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeVector4Drawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeDecimalDrawer">
-            <summary>
-            Draws decimal properties marked with <see cref="T:Sirenix.OdinInspector.MinValueAttribute"/>.
-            </summary>
-            <seealso cref="T:Sirenix.OdinInspector.MinValueAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MaxValueAttribute"/>
-            <seealso cref="T:UnityEngine.RangeAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.MinMaxSliderAttribute"/>
-            <seealso cref="T:UnityEngine.DelayedAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.WrapAttribute"/>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MinValueAttributeDecimalDrawer.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
         <member name="T:Sirenix.OdinInspector.Editor.Drawers.RangeAttributeByteDrawer">
             <summary>
             Draws byte properties marked with <see cref="T:UnityEngine.RangeAttribute"/>.
@@ -3676,6 +3233,20 @@
             The attribute can be applied to Odin drawers, Odin property resolvers and Odin attribute processor types.
             </summary>
         </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Validation.NoValidationInInspectorAttribute">
+            <summary>
+            Put this attribute on a validator class to prevent the ValidatorDrawer from running that validator in the inspector.
+            Typically you would use this for a validation-related attribute that has its own, complex custom drawer that should
+            handle the validation and error/warning drawing while the inspector is being drawn, but still needs a validator to 
+            run for the project validation scans.
+            </summary>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Validation.RegisterValidatorAttribute">
+            <summary>
+            Apply this to an assembly to register validators for the validation system.
+            This enables locating of all relevant validator types very quickly.
+            </summary>
+        </member>
         <member name="T:Sirenix.OdinInspector.Editor.OdinGettingStartedWindow">
             <summary>
             The Odin Getting Started Window
@@ -3853,12 +3424,12 @@
             <param name="name">The name of the menu item.</param>
             <param name="value">The instance the value item represents.</param>
         </member>
-        <member name="E:Sirenix.OdinInspector.Editor.OdinMenuItem.OnDrawItem">
+        <member name="F:Sirenix.OdinInspector.Editor.OdinMenuItem.OnDrawItem">
             <summary>
             Occurs right after the menu item is done drawing, and right before mouse input is handles so you can take control of that.
             </summary>
         </member>
-        <member name="E:Sirenix.OdinInspector.Editor.OdinMenuItem.OnRightClick">
+        <member name="F:Sirenix.OdinInspector.Editor.OdinMenuItem.OnRightClick">
             <summary>
             Occurs when the user has right-clicked the menu item.
             </summary>
@@ -7019,16 +6590,6 @@
         <member name="M:Sirenix.OdinInspector.Editor.OdinEditor.DrawTree">
             <summary>
             Draws the property tree.
-            </summary>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.OdinEditor.GetInspectorWindow">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.OdinEditor.MockUnityGenericInspector">
-            <summary>
-            Not yet documented.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.OdinEditor.OnDisable">

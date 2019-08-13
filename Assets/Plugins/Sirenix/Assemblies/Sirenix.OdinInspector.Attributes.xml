@@ -827,40 +827,40 @@
             Note that if the value is referencing itself recursively, then the reference box will be drawn regardless of this attribute in all recursive draw calls.
             </summary>
         </member>
-        <member name="T:Sirenix.OdinInspector.HideGroupIfAttribute">
+        <member name="T:Sirenix.OdinInspector.HideIfGroupAttribute">
             <summary>
-            <p>The HideGroupIf is an attribute that allows for showing or hiding a group of properties based on a condition.</p>
+            <p>HideIfGroup allows for showing or hiding a group of properties based on a condition.</p>
             <p>The attribute is a group attribute and can therefore be combined with other group attributes, and even be used to show or hide entire groups.</p>
             </summary>
             <seealso cref="T:Sirenix.OdinInspector.ShowIfAttribute"/>
             <seealso cref="T:Sirenix.OdinInspector.HideIfAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.ShowGroupIfAttribute"/>
+            <seealso cref="T:Sirenix.OdinInspector.ShowIfGroupAttribute"/>
             <seealso cref="T:Sirenix.OdinInspector.ShowInInspectorAttribute"/>
             <seealso cref="T:UnityEngine.HideInInspector"/>
         </member>
-        <member name="F:Sirenix.OdinInspector.HideGroupIfAttribute.Animate">
+        <member name="F:Sirenix.OdinInspector.HideIfGroupAttribute.Animate">
             <summary>
             Whether or not to slide the properties in and out when the state changes.
             </summary>
         </member>
-        <member name="F:Sirenix.OdinInspector.HideGroupIfAttribute.Value">
+        <member name="F:Sirenix.OdinInspector.HideIfGroupAttribute.Value">
             <summary>
             The optional member value.
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.HideGroupIfAttribute.MemberName">
+        <member name="P:Sirenix.OdinInspector.HideIfGroupAttribute.MemberName">
             <summary>
             Name of member to use when to hide the group. Defaults to the name of the group, by can be overriden by setting this property.
             </summary>
         </member>
-        <member name="M:Sirenix.OdinInspector.HideGroupIfAttribute.#ctor(System.String,System.Boolean)">
+        <member name="M:Sirenix.OdinInspector.HideIfGroupAttribute.#ctor(System.String,System.Boolean)">
             <summary>
             Makes a group that can be shown or hidden based on a condition.
             </summary>
             <param name="path">The group path.</param>
             <param name="animate">If <c>true</c> then a fade animation will be played when the group is hidden or shown.</param>
         </member>
-        <member name="M:Sirenix.OdinInspector.HideGroupIfAttribute.#ctor(System.String,System.Object,System.Boolean)">
+        <member name="M:Sirenix.OdinInspector.HideIfGroupAttribute.#ctor(System.String,System.Object,System.Boolean)">
             <summary>
             Makes a group that can be shown or hidden based on a condition.
             </summary>
@@ -868,7 +868,7 @@
             <param name="value">The value the member should equal for the property to shown.</param>
             <param name="animate">If <c>true</c> then a fade animation will be played when the group is hidden or shown.</param>
         </member>
-        <member name="M:Sirenix.OdinInspector.HideGroupIfAttribute.CombineValuesWith(Sirenix.OdinInspector.PropertyGroupAttribute)">
+        <member name="M:Sirenix.OdinInspector.HideIfGroupAttribute.CombineValuesWith(Sirenix.OdinInspector.PropertyGroupAttribute)">
             <summary>
             Combines HideIfGroup attributes.
             </summary>
@@ -1470,40 +1470,40 @@
             </summary>
             <param name="other">The attribute to combine with.</param>
         </member>
-        <member name="T:Sirenix.OdinInspector.ShowGroupIfAttribute">
+        <member name="T:Sirenix.OdinInspector.ShowIfGroupAttribute">
             <summary>
-            <p>The ShowIfGroup is an attribute that allows for showing or hiding a group of properties based on a condition.</p>
+            <p>ShowIfGroup allows for showing or hiding a group of properties based on a condition.</p>
             <p>The attribute is a group attribute and can therefore be combined with other group attributes, and even be used to show or hide entire groups.</p>
             </summary>
             <seealso cref="T:Sirenix.OdinInspector.ShowIfAttribute"/>
             <seealso cref="T:Sirenix.OdinInspector.HideIfAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.HideGroupIfAttribute"/>
+            <seealso cref="T:Sirenix.OdinInspector.HideIfGroupAttribute"/>
             <seealso cref="T:Sirenix.OdinInspector.ShowInInspectorAttribute"/>
             <seealso cref="T:UnityEngine.HideInInspector"/>
         </member>
-        <member name="F:Sirenix.OdinInspector.ShowGroupIfAttribute.Animate">
+        <member name="F:Sirenix.OdinInspector.ShowIfGroupAttribute.Animate">
             <summary>
             Whether or not to slide the properties in and out when the state changes.
             </summary>
         </member>
-        <member name="F:Sirenix.OdinInspector.ShowGroupIfAttribute.Value">
+        <member name="F:Sirenix.OdinInspector.ShowIfGroupAttribute.Value">
             <summary>
             The optional member value.
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.ShowGroupIfAttribute.MemberName">
+        <member name="P:Sirenix.OdinInspector.ShowIfGroupAttribute.MemberName">
             <summary>
             Name of member to use when to show the group. Defaults to the name of the group, by can be overriden by setting this property.
             </summary>
         </member>
-        <member name="M:Sirenix.OdinInspector.ShowGroupIfAttribute.#ctor(System.String,System.Boolean)">
+        <member name="M:Sirenix.OdinInspector.ShowIfGroupAttribute.#ctor(System.String,System.Boolean)">
             <summary>
             Makes a group that can be shown or hidden based on a condition.
             </summary>
             <param name="path">The group path.</param>
             <param name="animate">If <c>true</c> then a fade animation will be played when the group is hidden or shown.</param>
         </member>
-        <member name="M:Sirenix.OdinInspector.ShowGroupIfAttribute.#ctor(System.String,System.Object,System.Boolean)">
+        <member name="M:Sirenix.OdinInspector.ShowIfGroupAttribute.#ctor(System.String,System.Object,System.Boolean)">
             <summary>
             Makes a group that can be shown or hidden based on a condition.
             </summary>
@@ -1511,7 +1511,7 @@
             <param name="value">The value the member should equal for the property to shown.</param>
             <param name="animate">If <c>true</c> then a fade animation will be played when the group is hidden or shown.</param>
         </member>
-        <member name="M:Sirenix.OdinInspector.ShowGroupIfAttribute.CombineValuesWith(Sirenix.OdinInspector.PropertyGroupAttribute)">
+        <member name="M:Sirenix.OdinInspector.ShowIfGroupAttribute.CombineValuesWith(Sirenix.OdinInspector.PropertyGroupAttribute)">
             <summary>
             Combines ShowIfGroup attributes.
             </summary>
@@ -3814,11 +3814,22 @@
             The maximum value for the property.
             </summary>
         </member>
+        <member name="F:Sirenix.OdinInspector.MaxValueAttribute.Expression">
+            <summary>
+            The string with which to resolve a maximum value. This could be a field, property or method name, or an expression.
+            </summary>
+        </member>
         <member name="M:Sirenix.OdinInspector.MaxValueAttribute.#ctor(System.Double)">
             <summary>
             Sets a maximum value for the property in the inspector.
             </summary>
             <param name="maxValue">The max value.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.MaxValueAttribute.#ctor(System.String)">
+            <summary>
+            Sets a maximum value for the property in the inspector.
+            </summary>
+            <param name="expression">The string with which to resolve a maximum value. This could be a field, property or method name, or an expression.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.MinValueAttribute">
             <summary>
@@ -3857,11 +3868,22 @@
             The minimum value for the property.
             </summary>
         </member>
+        <member name="F:Sirenix.OdinInspector.MinValueAttribute.Expression">
+            <summary>
+            The string with which to resolve a minimum value. This could be a field, property or method name, or an expression.
+            </summary>
+        </member>
         <member name="M:Sirenix.OdinInspector.MinValueAttribute.#ctor(System.Double)">
             <summary>
             Sets a minimum value for the property in the inspector.
             </summary>
             <param name="minValue">The minimum value.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.MinValueAttribute.#ctor(System.String)">
+            <summary>
+            Sets a minimum value for the property in the inspector.
+            </summary>
+            <param name="expression">The string with which to resolve a minimum value. This could be a field, property or method name, or an expression.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.MultiLinePropertyAttribute">
             <summary>
@@ -4764,6 +4786,11 @@
             If true, the content of each page will not be contained in any box.
             </summary>
         </member>
+        <member name="F:Sirenix.OdinInspector.TabGroupAttribute.HideTabGroupIfTabGroupOnlyHasOneTab">
+            <summary>
+            If true, the tab group will be hidden if it only contains one tab.
+            </summary>
+        </member>
         <member name="M:Sirenix.OdinInspector.TabGroupAttribute.#ctor(System.String,System.Boolean,System.Int32)">
             <summary>
             Organizes the property into the specified tab in the default group.
@@ -5104,7 +5131,7 @@
             Whether to also trigger validation when changes to child values happen. This is true by default.
             </summary>
         </member>
-        <member name="F:Sirenix.OdinInspector.ValidateInputAttribute.ContiniousValidationCheck">
+        <member name="F:Sirenix.OdinInspector.ValidateInputAttribute.ContinuousValidationCheck">
             <summary>
             If true, the validation method will not only be executed when the User has changed the value. It'll run once every frame in the inspector.
             </summary>

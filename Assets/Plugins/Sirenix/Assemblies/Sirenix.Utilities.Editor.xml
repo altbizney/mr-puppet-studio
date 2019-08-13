@@ -4,456 +4,6 @@
         <name>Sirenix.Utilities.Editor</name>
     </assembly>
     <members>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier.Private">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier.Protected">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier.Public">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier.Internal">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.AccessModifier.ProtectedInternal">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.#ctor">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.DefaultNamespace">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.ReferenceUserScriptAssemblies">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.ReferenceUnityAssemblies">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.IncludeEditorAssemblies">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.IncludeNonPluginUserScriptAssemblies">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.LogErrors">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.KeepFilesOnError">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.KeepFiles">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.IncludeActiveUnityDefines">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.AddDefine(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.AddExternAlias(System.String,System.Reflection.Assembly)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.AddExternAlias(System.String,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.AddReferencedAssembly(System.Reflection.Assembly)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.AddReferencedAssembly(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.Compile(System.String,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.CreateCodeWriter(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.AssemblyGenerator.Dispose">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.UserScriptAssemblies">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.TypeIsFromUnityAssembly(System.Type)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.TypeIsFromUserScriptAssembly(System.Type)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.TypeIsFromUserScriptAssembly(System.Type,System.Nullable{Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType}@)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.PrintAsParameters(System.Type[],System.String[],System.Boolean,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGenerationUtilities.PrintAsParameters(System.Reflection.ParameterInfo[],System.Boolean,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.CodeGeneratorExtensions">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeGeneratorExtensions.Stringify(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.#ctor">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.#ctor(System.IO.Stream)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.#ctor(System.IO.TextWriter)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.Indent">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.IndentWithTabs">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.Namespace">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.SpacesPerIndent">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.AddExternAlias(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginGetter(System.Nullable{Sirenix.Utilities.Editor.CodeGeneration.AccessModifier})">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginConstructor(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginConstructor(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.String,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginConstructor(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.String,System.String,System.Type[],System.String[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndConstructor">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginMethod(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginMethod(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String,System.Type[],System.String[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginMethod(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String,System.Boolean,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginMethod(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String,System.Type[],System.String[],System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginProperty(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String,System.Boolean)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginSegment">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginSetter(System.Nullable{Sirenix.Utilities.Editor.CodeGeneration.AccessModifier})">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.Dispose">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EmptyLine">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndGetter">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndMethod">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndProperty">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndSegment(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndSetter">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.GetFinalCode">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginType(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.BeginType(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration,System.String,System.Type,System.Type[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.EndType">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.PasteChunk(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.UseNamespace(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.RegisterTypeSeen(System.Type)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.RegisterTypesSeen(System.Collections.Generic.IEnumerable{System.Type})">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.RegisterTypesSeen(System.Type[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.Write(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteAttribute(System.Type,System.String,System.Type[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteAutoProperty(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String,System.Nullable{Sirenix.Utilities.Editor.CodeGeneration.AccessModifier})">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteComment(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteField(Sirenix.Utilities.Editor.CodeGeneration.AccessModifier,System.Type,System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteLine(System.String,System.Object[])">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteLineIndentation">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.NewLine">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.Editor.CodeGeneration.CodeWriter.WriteLine(System.String)">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration.Class">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration.StaticClass">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration.SealedClass">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.TypeDeclaration.Struct">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType.Standard">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType.StandardEditor">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType.Plugin">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.Editor.CodeGeneration.UserAssemblyType.PluginEditor">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
         <member name="T:Sirenix.Utilities.Editor.EditorIcon">
             <summary>
             Icon for using in editor GUI.
@@ -7866,6 +7416,225 @@
             </summary>
             <param name="sprite"></param>
             <returns></returns>
+        </member>
+        <member name="T:Sirenix.Utilities.MemberFinderExtensions">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinderExtensions.FindMember(System.Type)">
+            <summary>
+            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
+            <para>See <see cref="T:Sirenix.Utilities.MemberFinder"/> for more information.</para>
+            </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.MemberFinder">
+            <summary>
+            <para>
+            The MemberFinder is a utility class often used by Odin drawers to find fields, methods, and
+            properties while providing good user-friendly error messages based on the search criteria.
+            </para>
+            <para>
+            The MemberFinder is initialized by ether using the extensions method type.FindMember() or MemberFinder.Start(type),
+            and must be ended again using ether TryGetMember() or GetMember().
+            </para>
+            </summary>
+            <example>
+            <code>
+            // Finds any member (FieldInfo, PropertyInfo or MethodInfo) "memberName" with a return type of string.
+            string errorMessage;
+            MemberInfo myMember = typeof(MyType)
+                                    .FindMember()
+                                    .IsNamed("memberName")
+                                    .HasReturnType(typeof(string))
+                                    .HasNoParameters()
+                                    .GetMember(out errorMessage);
+            If no matching member was found, myMember will be null and errorMessage will contain a proper formatted error message based on the search filters provided.
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sirenix.Utilities.MemberFinder"/> class.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Sirenix.Utilities.MemberFinder"/> class.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.Start``1">
+            <summary>
+            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.Start(System.Type)">
+            <summary>
+            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasNoParameters">
+            <summary>
+            Can be true for both fields, properties and methods.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsDeclaredOnly">
+            <summary>
+            Exclude members found in base-types.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type)">
+            <summary>
+            <para>Only include methods with the following parameter.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type)">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type,System.Type)">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type,System.Type,System.Type)">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``1">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``2">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``3">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``4">
+            <summary>
+            <para>Only include methods with the following parameters.</para>
+            <para>Calling this will also exclude fields and properties.</para>
+            <para>Parameter type inheritance is supported.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasReturnType(System.Type,System.Boolean)">
+            <summary>
+            Determines whether [has return type] [the specified return type].
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.HasReturnType``1(System.Boolean)">
+            <summary>
+            Can be true for both fields, properties and methods.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsFieldOrProperty">
+            <summary>
+            Calls IsField() and IsProperty().
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsStatic">
+            <summary>
+            Only include static members. By default, both static and non-static members are included.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsInstance">
+            <summary>
+            Only include non-static members. By default, both static and non-static members are included.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsNamed(System.String)">
+            <summary>
+            Specify the name of the member.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsProperty">
+            <summary>
+            <para>Excludes fields and methods if nether IsField() or IsMethod() is called. Otherwise includes properties.</para>
+            <para>By default, all member types are included.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsMethod">
+            <summary>
+            <para>Excludes fields and properties if nether IsField() or IsProperty() is called. Otherwise includes methods.</para>
+            <para>By default, all member types are included.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsField">
+            <summary>
+            <para>Excludes properties and methods if nether IsProperty() or IsMethod() is called. Otherwise includes fields.</para>
+            <para>By default, all member types are included.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsPublic">
+            <summary>
+            <para>Excludes non-public members if IsNonPublic() has not yet been called. Otherwise includes public members.</para>
+            <para>By default, both public and non-public members are included.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.IsNonPublic">
+            <summary>
+            <para>Excludes public members if IsPublic() has not yet been called. Otherwise includes non-public members.</para>
+            <para>By default, both public and non-public members are included.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.ReturnsVoid">
+            <summary>
+            Excludes fields and properties, and only includes methods with a return type of void.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.GetMember``1">
+            <summary>
+            <para>Gets the member based on the search filters provided</para>
+            <para>Returns null if no member was found.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.GetMember``1(System.String@)">
+            <summary>
+            <para>Gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.GetMember(System.String@)">
+            <summary>
+            <para>Gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMember``1(``0@,System.String@)">
+            <summary>
+            <para>Try gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMember(System.Reflection.MemberInfo@,System.String@)">
+            <summary>
+            <para>Try gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMembers(System.Reflection.MemberInfo[]@,System.String@)">
+            <summary>
+            <para>Try gets all members based on the search filters provided, and provides a proper error message if no members was found.</para>
+            </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.IResizableColumn.ColWidth">
             <summary>
