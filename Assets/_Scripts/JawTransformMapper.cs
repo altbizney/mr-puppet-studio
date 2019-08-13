@@ -49,12 +49,12 @@ namespace MrPuppet
 
             JawJoint.localPosition = Vector3.SmoothDamp(
                 JawJoint.localPosition,
-                Vector3.LerpUnclamped(AnimData.ClosePosition, AnimData.OpenPosition, DataMapper.JawPercent),
+                Vector3.Lerp(AnimData.ClosePosition, AnimData.OpenPosition, DataMapper.JawPercent),
                 ref _jawCurrentVelocity,
                 SmoothTime);
 
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
-            JawJoint.localRotation = Quaternion.LerpUnclamped(
+            JawJoint.localRotation = Quaternion.Slerp(
                 AnimData.CloseRotation,
                 AnimData.OpenRotation,
                 _jawPercentSmoothed);
