@@ -223,6 +223,24 @@ namespace MrPuppet
             if (Head) Debug.DrawRay(Head.position, Head.forward * 0.5f, Color.blue, 0f, false);
 
             foreach (var influence in WeightedInfluences) influence.OnDrawGizmos();
+
+            if (LimitHipExtentX)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(HipExtentX * 2f, 0.001f, LimitHipExtentZ ? HipExtentZ * 2f : 0.1f));
+            }
+
+            if (LimitHipExtentY)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(LimitHipExtentX ? HipExtentX * 2f : 0.1f, HipExtentY * 2f, 0.001f));
+            }
+
+            if (LimitHipExtentZ)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(0.001f, LimitHipExtentY ? HipExtentY * 2f : 0.1f, HipExtentZ * 2f));
+            }
         }
     }
 }

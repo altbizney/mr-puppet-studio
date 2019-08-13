@@ -275,6 +275,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: bnn-set
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a03db68c438f94bb2a75973f85f60df3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -1621705962288598257, guid: a03db68c438f94bb2a75973f85f60df3,
         type: 3}
       propertyPath: m_IsActive
@@ -796,6 +801,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: LimitHipExtentX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: HipExtentX
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: HipExtentY
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: HipExtentZ
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: LimitHipExtentY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: LimitHipExtentZ
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}
