@@ -82,9 +82,13 @@ MonoBehaviour:
   JawJoint: {fileID: 6310633553607651337}
   AnimData:
     OpenPosition: {x: 0.12507087, y: 0.2856114, z: 1.5600003e-15}
-    OpenRotation: {x: -0.49111506, y: 0.87109476, z: -0.0000000033024818, w: 0.00000002961878}
+    OpenMaxPosition: {x: 0.12507087, y: 0.2856114, z: 1.5600003e-15}
+    OpenRotation: {x: -0.4847701, y: 0.87464166, z: 5.381014e-17, w: 2.922103e-17}
+    OpenMaxRotation: {x: -0.43570393, y: 0.9000901, z: 5.534246e-17, w: 2.6203282e-17}
     ClosePosition: {x: 0.12507087, y: 0.2856114, z: 1.5600003e-15}
-    CloseRotation: {x: -0.69255024, y: 0.7213698, z: 4.4534924e-17, w: 4.202429e-17}
+    CloseMaxPosition: {x: 0.12507087, y: 0.2856114, z: 1.5600003e-15}
+    CloseRotation: {x: -0.6861345, y: 0.7274747, z: 4.490535e-17, w: 4.1628248e-17}
+    CloseMaxRotation: {x: -0.7016079, y: 0.7125633, z: 4.4000483e-17, w: 4.2583546e-17}
   SmoothTime: 0.02
 --- !u!1001 &213161498723333510
 PrefabInstance:
