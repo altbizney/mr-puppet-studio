@@ -34,6 +34,8 @@ namespace MrPuppet
         [Required]
         public MrPuppetHubConnection HubConnection;
 
+        public bool EnableGizmo = true;
+
         public Pose TPose;
 
         [Range(0f, 1023f)]
@@ -144,7 +146,7 @@ namespace MrPuppet
 
         private void OnDrawGizmos()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || !EnableGizmo) return;
 
             // body
             Gizmos.color = Color.grey;

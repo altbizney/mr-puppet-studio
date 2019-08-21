@@ -95,6 +95,24 @@ namespace MrPuppet
         public float PositionSpeed = 0.1f;
         private Vector3 PositionVelocity;
 
+        [HorizontalGroup("HipExtentX")]
+        public bool LimitHipExtentX = false;
+        [HorizontalGroup("HipExtentX")]
+        [ShowIf("LimitHipExtentX")]
+        public float HipExtentX = 0f;
+
+        [HorizontalGroup("HipExtentY")]
+        public bool LimitHipExtentY = false;
+        [HorizontalGroup("HipExtentY")]
+        [ShowIf("LimitHipExtentY")]
+        public float HipExtentY = 0f;
+
+        [HorizontalGroup("HipExtentZ")]
+        public bool LimitHipExtentZ = false;
+        [HorizontalGroup("HipExtentZ")]
+        [ShowIf("LimitHipExtentZ")]
+        public float HipExtentZ = 0f;
+
         private void OnValidate()
         {
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -153,7 +171,17 @@ namespace MrPuppet
             if (AttachPoseSet)
             {
                 // apply position delta to bind pose
-                Hip.position = Vector3.SmoothDamp(Hip.position, HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition), ref PositionVelocity, PositionSpeed);
+                Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
+
+                // clamp to XYZ extents (BEFORE) smooth
+                position.Set(
+                    LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
+                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                );
+
+                // smoothly apply changes to position
+                Hip.position = Vector3.SmoothDamp(Hip.position, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
                 Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
@@ -195,6 +223,24 @@ namespace MrPuppet
             if (Head) Debug.DrawRay(Head.position, Head.forward * 0.5f, Color.blue, 0f, false);
 
             foreach (var influence in WeightedInfluences) influence.OnDrawGizmos();
+
+            if (LimitHipExtentX)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(HipExtentX * 2f, 0.001f, LimitHipExtentZ ? HipExtentZ * 2f : 0.1f));
+            }
+
+            if (LimitHipExtentY)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(LimitHipExtentX ? HipExtentX * 2f : 0.1f, HipExtentY * 2f, 0.001f));
+            }
+
+            if (LimitHipExtentZ)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(0.001f, LimitHipExtentY ? HipExtentY * 2f : 0.1f, HipExtentZ * 2f));
+            }
         }
     }
 }
