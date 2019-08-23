@@ -193,6 +193,11 @@ namespace MrPuppet
                     influence.Update(DataMapper, RotationSpeed);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GrabAttachPose();
+            }
         }
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
