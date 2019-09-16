@@ -48,7 +48,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -85.853676
+    limit: -83.75969
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
@@ -59,11 +59,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 63.20304
+    limit: 27.500626
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 9.49463
+    limit: 4.755951
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -133,11 +133,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 4.1324596
+    limit: 30.00976
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 10.600235
+    limit: 5.147185
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -208,11 +208,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 63.20304
+    limit: 42.515186
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 9.49463
+    limit: 7.9235506
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -283,11 +283,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 11.630423
+    limit: 18.163414
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 9.282773
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -392,7 +392,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 9.282773
+    limit: 5.624133
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -538,7 +538,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -66.02394
+    limit: -74.11787
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
@@ -549,11 +549,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 4.1324596
+    limit: 33.17571
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 10.600235
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
