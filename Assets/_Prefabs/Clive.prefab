@@ -458,13 +458,13 @@ MonoBehaviour:
     amount: 0.5
   RotationSpeed: 7
   PositionSpeed: 0.1
-  LimitHipExtentX: 0
-  HipExtentX: 2
-  LimitHipExtentY: 0
-  HipExtentY: 2
-  LimitHipExtentZ: 0
-  HipExtentZ: 2
-  EnableJawHeadMixer: 0
+  LimitHipExtentX: 1
+  HipExtentX: 0
+  LimitHipExtentY: 1
+  HipExtentY: 0.5
+  LimitHipExtentZ: 1
+  HipExtentZ: 0.5
+  EnableJawHeadMixer: 1
   JawHeadMaxExtent: 5
   JawHeadWeight: 0.5
 --- !u!114 &1963004416
