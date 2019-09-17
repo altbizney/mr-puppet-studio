@@ -113,6 +113,15 @@ namespace MrPuppet
         [ShowIf("LimitHipExtentZ")]
         public float HipExtentZ = 0f;
 
+
+        public bool EnableJawHeadMixer = false;
+        [MinValue(0f)]
+        [ShowIf("EnableJawHeadMixer")]
+        public float JawHeadMaxExtent = 10f;
+        [Range(0f, 1f)]
+        [ShowIf("EnableJawHeadMixer")]
+        public float JawHeadWeight = 1.0f;
+
         private void OnValidate()
         {
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -187,11 +196,21 @@ namespace MrPuppet
                 Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
                 Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
 
+                if (EnableJawHeadMixer)
+                {
+                    Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent) * JawHeadWeight, Space.World);
+                }
+
                 // apply weighted influences
                 foreach (var influence in WeightedInfluences)
                 {
                     influence.Update(DataMapper, RotationSpeed);
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GrabAttachPose();
             }
         }
 

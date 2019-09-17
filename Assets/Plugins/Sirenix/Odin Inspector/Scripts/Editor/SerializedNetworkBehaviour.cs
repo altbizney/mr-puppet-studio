@@ -56,7 +56,7 @@ namespace Sirenix.OdinInspector
         [OnInspectorGUI, PropertyOrder(int.MinValue)]
         private void InternalOnInspectorGUI()
         {
-            EditorOnlyModeConfigUtility.InternalOnInspectorGUI(this.GetType());
+            EditorOnlyModeConfigUtility.InternalOnInspectorGUI(this);
         }
 
 #endif
