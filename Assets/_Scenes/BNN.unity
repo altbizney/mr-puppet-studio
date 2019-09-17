@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -367,7 +367,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: a03db68c438f94bb2a75973f85f60df3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8036058660185337876, guid: a03db68c438f94bb2a75973f85f60df3,
         type: 3}
@@ -687,62 +687,62 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.x
-      value: -0.07219561
+      value: 0.27131686
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.y
-      value: 0.24395186
+      value: -0.9014904
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.z
-      value: 0.68836844
+      value: -0.030900562
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.w
-      value: -0.6792468
+      value: 0.335805
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.x
-      value: 0.04723475
+      value: -0.0344361
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.y
-      value: -0.009192356
+      value: -0.4394669
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.z
-      value: -0.40729347
+      value: -0.107126676
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.w
-      value: 0.91202635
+      value: -0.8911667
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.x
-      value: 0.079125226
+      value: 0.24267906
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.y
-      value: 0.2530735
+      value: -0.011808683
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.z
-      value: -0.96414006
+      value: 0.9594025
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.w
-      value: 0.009121674
+      value: 0.14304769
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
@@ -1075,6 +1075,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 19.763
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: AnimData.OpenRotation.x
+      value: -0.45946032
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: AnimData.OpenRotation.y
+      value: 0.8881984
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: AnimData.OpenRotation.z
+      value: 0.0000000033024807
+      objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: AnimData.OpenRotation.w
+      value: -0.00000002961877
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391121188127379318, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5955355
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391121188127379318, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.803329
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391121188127379318, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -2.2756459e-16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391121188127379318, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1.6870149e-16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}
