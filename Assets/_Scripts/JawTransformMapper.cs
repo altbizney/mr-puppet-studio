@@ -38,6 +38,8 @@ namespace MrPuppet
         [ShowIf("EnableJawSpring")]
         public float JawDamping = 20.0f;
 
+        public float JawSmoothTime = 0.05f;
+
         private float JawVelocity;
         private float JawCurrent;
 
@@ -50,7 +52,8 @@ namespace MrPuppet
         {
             if (EnableJawSpring)
             {
-                JawCurrent = Springz.Float(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawStiffness, JawDamping);
+                // JawCurrent = Springz.Float(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawStiffness, JawDamping);
+                JawCurrent = Mathf.SmoothDamp(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawSmoothTime);
             }
             else
             {
