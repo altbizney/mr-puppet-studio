@@ -62,11 +62,11 @@ MonoBehaviour:
   RotationSpeed: 7
   PositionSpeed: 0.1
   LimitHipExtentX: 1
-  HipExtentX: 0.1
+  HipExtentX: 0.005
   LimitHipExtentY: 1
-  HipExtentY: 0.1
+  HipExtentY: 0.005
   LimitHipExtentZ: 1
-  HipExtentZ: 0.3
+  HipExtentZ: 0.005
   EnableJawHeadMixer: 0
   JawHeadMaxExtent: 2
   JawHeadWeight: 0.5
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 0}
-  EnableDebugGraph: 1
+  EnableDebugGraph: 0
   JawJoint: {fileID: 6391121188127379318}
   AnimData:
     OpenRotation: {x: -0.45946032, y: 0.8881984, z: 0.0000000033024807, w: -0.00000002961877}
@@ -93,6 +93,7 @@ MonoBehaviour:
   EnableJawSpring: 1
   JawStiffness: 2000
   JawDamping: 500
+  JawSmoothTime: 0.005
 --- !u!114 &1966292752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +244,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f9c61d12c00754266aba495adde42334, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -322,16 +333,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 66.073006
-      objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: f9c61d12c00754266aba495adde42334, type: 2}
-    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
-        type: 3}
-      propertyPath: m_CullingMode
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e742abb73667403e98875476cf8a917, type: 3}
