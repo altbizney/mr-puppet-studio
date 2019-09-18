@@ -68,8 +68,8 @@ MonoBehaviour:
   LimitHipExtentZ: 1
   HipExtentZ: 0.3
   EnableJawHeadMixer: 0
-  JawHeadMaxExtent: 10
-  JawHeadWeight: 1
+  JawHeadMaxExtent: 2
+  JawHeadWeight: 0.5
 --- !u!114 &1575444023606922970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
     CloseRotation: {x: -0.69758844, y: 0.7164987, z: 4.4239323e-17, w: 4.233535e-17}
     CloseMaxRotation: {x: -0.5955355, y: 0.803329, z: -2.2756459e-16, w: 1.6870149e-16}
   EnableJawSpring: 1
-  JawStiffness: 1000
+  JawStiffness: 2000
   JawDamping: 500
 --- !u!114 &1966292752
 MonoBehaviour:
@@ -242,6 +242,86 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000029802315
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.00000026822084
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.54015446
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8415659
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5918104
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000048480928
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.000013828278
+      objectReference: {fileID: 0}
+    - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 65.388
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.00000022351739
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000002942979
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5451753
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.83832204
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59179866
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000048726797
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0000123381615
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509518868258048378, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 66.073006
       objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
         type: 3}
