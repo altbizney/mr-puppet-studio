@@ -4,6 +4,9 @@ using Sirenix.OdinInspector;
 
 public class CountdownSlate : MonoBehaviour
 {
+    [Required]
+    public Camera cam;
+
     public Texture2D card1;
     public Texture2D card2;
     public Texture2D card3;
@@ -35,7 +38,7 @@ public class CountdownSlate : MonoBehaviour
             if (current != 1)
             {
                 image.texture = card1;
-                AudioSource.PlayClipAtPoint(tone1, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(tone1, cam.transform.position);
                 current = 1;
             }
         }
@@ -44,7 +47,7 @@ public class CountdownSlate : MonoBehaviour
             if (current != 2)
             {
                 image.texture = card2;
-                AudioSource.PlayClipAtPoint(tone2, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(tone2, cam.transform.position);
                 current = 2;
             }
         }
@@ -54,7 +57,7 @@ public class CountdownSlate : MonoBehaviour
             {
                 image.enabled = true;
                 image.texture = card3;
-                AudioSource.PlayClipAtPoint(tone3, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(tone3, cam.transform.position);
                 current = 3;
             }
         }
