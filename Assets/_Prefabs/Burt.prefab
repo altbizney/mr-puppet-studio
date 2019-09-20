@@ -93,7 +93,6 @@ MonoBehaviour:
   EnableJawSpring: 1
   JawStiffness: 2000
   JawDamping: 500
-  JawSmoothTime: 0.005
 --- !u!114 &1966292752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,16 +243,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: f9c61d12c00754266aba495adde42334, type: 2}
-    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
-        type: 3}
-      propertyPath: m_CullingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -3213365933962404442, guid: 7e742abb73667403e98875476cf8a917,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -333,6 +322,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 66.073006
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f9c61d12c00754266aba495adde42334, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e742abb73667403e98875476cf8a917, type: 3}

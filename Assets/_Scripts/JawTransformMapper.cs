@@ -38,7 +38,7 @@ namespace MrPuppet
         [ShowIf("EnableJawSpring")]
         public float JawDamping = 20.0f;
 
-        public float JawSmoothTime = 0.05f;
+        // public float JawSmoothTime = 0.05f;
 
         private float JawVelocity;
         private float JawCurrent;
@@ -48,24 +48,30 @@ namespace MrPuppet
             if (DataMapper == null) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
+        private void Start()
+        {
+            // preload spring to avoid initial wobble
+            JawCurrent = DataMapper.JawPercent;
+        }
+
         private void Update()
         {
             if (EnableJawSpring)
             {
-                // JawCurrent = Springz.Float(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawStiffness, JawDamping);
-                JawCurrent = Mathf.SmoothDamp(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawSmoothTime);
+                JawCurrent = Springz.Float(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawStiffness, JawDamping);
+                // JawCurrent = Mathf.SmoothDamp(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawSmoothTime);
             }
             else
             {
                 JawCurrent = DataMapper.JawPercent;
             }
 
-            JawJoint.localRotation = Quaternion.Slerp(AnimData.CloseRotation, AnimData.OpenRotation, JawCurrent);
+            JawJoint.localRotation = Quaternion.SlerpUnclamped(AnimData.CloseRotation, AnimData.OpenRotation, JawCurrent);
 
             if (EnableDebugGraph)
             {
                 DebugGraph.MultiLog("Jaw", Color.red, JawCurrent, "Current");
-                DebugGraph.MultiLog("Jaw", Color.blue, DataMapper.JawPercent, "Sensor");
+                DebugGraph.MultiLog("Jaw", Color.blue, DataMapper.JawPercent, "Target");
             }
         }
 
@@ -256,7 +262,7 @@ namespace MrPuppet
 
         private void JawStep(float step)
         {
-            _jawTransformMapper.JawJoint.localRotation = Quaternion.Lerp(_jawTransformMapper.AnimData.OpenRotation, _jawTransformMapper.AnimData.CloseRotation, step);
+            _jawTransformMapper.JawJoint.localRotation = Quaternion.Slerp(_jawTransformMapper.AnimData.OpenRotation, _jawTransformMapper.AnimData.CloseRotation, step);
         }
     }
 }
