@@ -5,48 +5,50 @@ namespace MrPuppet
 {
     public class EyeTracker : MonoBehaviour
     {
-        public Transform PupilDriver;
+        public Transform GazeTarget;
 
         public Transform Eyeball;
         public Transform Pupil;
 
-        public Collider EyeballCollider;
+        public SphereCollider EyeballCollider;
+
+        private Vector3 point;
 
         private Ray ray;
         private RaycastHit hit;
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
-            if (!PupilDriver) return;
+            if (!GazeTarget) return;
 
-            // cast ray from driver backward (towards eye). TODO: find that direction dynamically
-            ray = new Ray(PupilDriver.position, -PupilDriver.forward);
+            // find closest point on eyeball collider to driver
+            point = EyeballCollider.ClosestPoint(GazeTarget.position);
 
-            // cast the ray exclusively to the eyeball collider
-            EyeballCollider.Raycast(ray, out hit, 10f);
+            // find the direction, and extend that point a bit (so we're INSIDE the eyeball)
+            Vector3 direction = point - GazeTarget.position;
+            point += direction.normalized * 0.01f;
+
+            // cast a ray from gaze target in the direction we just computed
+            ray = new Ray(GazeTarget.position, direction);
+            EyeballCollider.Raycast(ray, out hit, Mathf.Infinity);
         }
 
         private void Update()
         {
-            // Debug.DrawRay(Eyeball.position, Eyeball.up, Color.green);
-
             // move pupil to where the ray hit the eyeball
-            // TODO: keep rotation relative to "up" of Eyeball
             Pupil.SetPositionAndRotation(hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal));
         }
 
         private void OnDrawGizmos()
         {
-            if (!PupilDriver) return;
+            if (!GazeTarget) return;
 
             Gizmos.color = Color.white;
-            Gizmos.DrawSphere(PupilDriver.position, 0.05f);
+            Gizmos.DrawSphere(GazeTarget.position, 0.05f);
+            Gizmos.DrawSphere(point, 0.05f);
 
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(hit.point, 0.05f);
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(ray.origin, ray.direction);
 
             Gizmos.color = Color.blue;
             Gizmos.DrawRay(hit.point, hit.normal);
