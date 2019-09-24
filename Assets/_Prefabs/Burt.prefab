@@ -93,6 +93,7 @@ MonoBehaviour:
   EnableJawSpring: 1
   JawStiffness: 2000
   JawDamping: 500
+  JawSmoothTime: 0.01
 --- !u!114 &1966292752
 MonoBehaviour:
   m_ObjectHideFlags: 0
