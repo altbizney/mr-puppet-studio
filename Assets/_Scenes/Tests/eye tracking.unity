@@ -333,7 +333,7 @@ MonoBehaviour:
   GazeTarget: {fileID: 1594005715}
   Eyeball: {fileID: 1792170478}
   Pupil: {fileID: 1935452918}
-  EyeballCollider: {fileID: 1792170482}
+  EyeballCollider: {fileID: 1792170481}
 --- !u!114 &576235682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,7 +349,7 @@ MonoBehaviour:
   GazeTarget: {fileID: 1594005715}
   Eyeball: {fileID: 1470680931}
   Pupil: {fileID: 1023854179}
-  EyeballCollider: {fileID: 1470680935}
+  EyeballCollider: {fileID: 1470680934}
 --- !u!1 &684647764
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,10 +907,10 @@ MeshCollider:
   m_GameObject: {fileID: 1470680930}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: -1
   m_Mesh: {fileID: 5522412913403590152, guid: 7e742abb73667403e98875476cf8a917, type: 3}
 --- !u!135 &1470680935
 SphereCollider:
@@ -921,7 +921,7 @@ SphereCollider:
   m_GameObject: {fileID: 1470680930}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.44314715
   m_Center: {x: 0, y: -0.00000011920929, z: -0.000000059604645}
@@ -1278,7 +1278,7 @@ MeshCollider:
   m_GameObject: {fileID: 1792170477}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
@@ -1292,7 +1292,7 @@ SphereCollider:
   m_GameObject: {fileID: 1792170477}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.44314715
   m_Center: {x: 0, y: -0.00000011920929, z: -0.000000029802322}

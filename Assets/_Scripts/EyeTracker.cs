@@ -10,7 +10,7 @@ namespace MrPuppet
         public Transform Eyeball;
         public Transform Pupil;
 
-        public SphereCollider EyeballCollider;
+        public MeshCollider EyeballCollider;
 
         private Vector3 point;
 
