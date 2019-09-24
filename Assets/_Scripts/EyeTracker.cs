@@ -10,33 +10,41 @@ namespace MrPuppet
         public Transform Eyeball;
         public Transform Pupil;
 
-        public MeshCollider EyeballCollider;
+        public MeshCollider Collider;
+        public MeshCollider ConvexCollider;
 
         private Vector3 point;
-
         private Ray ray;
         private RaycastHit hit;
+        private bool collided;
 
         private void LateUpdate()
         {
             if (!GazeTarget) return;
 
             // find closest point on eyeball collider to driver
-            point = EyeballCollider.ClosestPoint(GazeTarget.position);
+            point = ConvexCollider.ClosestPoint(GazeTarget.position);
 
-            // find the direction, and extend that point a bit (so we're INSIDE the eyeball)
-            Vector3 direction = point - GazeTarget.position;
-            point += direction.normalized * 0.01f;
+            // find the direction from gazetarget to point on eyeball
+            var heading = point - GazeTarget.position;
+            var distance = heading.magnitude;
+            var direction = heading / distance;
 
-            // cast a ray from gaze target in the direction we just computed
-            ray = new Ray(GazeTarget.position, direction);
-            EyeballCollider.Raycast(ray, out hit, Mathf.Infinity);
+            ray = new Ray(GazeTarget.position, direction + heading);
+            collided = Collider.Raycast(ray, out hit, Mathf.Infinity);
         }
 
         private void Update()
         {
             // move pupil to where the ray hit the eyeball
-            Pupil.SetPositionAndRotation(hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal));
+            if (collided)
+            {
+                Pupil.SetPositionAndRotation(hit.point, Quaternion.FromToRotation(Vector3.forward, GetMeshColliderNormal(hit)));
+            }
+            else
+            {
+                Pupil.position = point;
+            }
         }
 
         private void OnDrawGizmos()
@@ -49,9 +57,35 @@ namespace MrPuppet
 
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(hit.point, 0.05f);
+            Gizmos.DrawRay(ray);
 
             Gizmos.color = Color.blue;
             Gizmos.DrawRay(hit.point, hit.normal);
+
+            Gizmos.color = Color.yellow;
+            // Debug.Log(GetMeshColliderNormal(hit));
+            Gizmos.DrawRay(hit.point, GetMeshColliderNormal(hit));
+        }
+
+        // https://answers.unity.com/questions/50846/how-do-i-obtain-the-surface-normal-for-a-point-on.html
+        private Vector3 GetMeshColliderNormal(RaycastHit hit)
+        {
+            if (hit.collider == null || hit.triangleIndex < 0) return Vector3.zero;
+
+            MeshCollider collider = (MeshCollider)hit.collider;
+            Mesh mesh = collider.sharedMesh;
+            Vector3[] normals = mesh.normals;
+            int[] triangles = mesh.triangles;
+
+            Vector3 n0 = normals[triangles[hit.triangleIndex * 3 + 0]];
+            Vector3 n1 = normals[triangles[hit.triangleIndex * 3 + 1]];
+            Vector3 n2 = normals[triangles[hit.triangleIndex * 3 + 2]];
+            Vector3 baryCenter = hit.barycentricCoordinate;
+            Vector3 interpolatedNormal = n0 * baryCenter.x + n1 * baryCenter.y + n2 * baryCenter.z;
+            interpolatedNormal.Normalize();
+            interpolatedNormal = hit.transform.TransformDirection(interpolatedNormal);
+
+            return interpolatedNormal;
         }
     }
 }
