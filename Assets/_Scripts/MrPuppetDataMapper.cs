@@ -51,7 +51,7 @@ namespace MrPuppet
         private void Awake()
         {
             ShoulderJoint = new GameObject("Shoulder").transform;
-            ShoulderJoint.SetParent(transform, false);
+            ShoulderJoint.hideFlags = HideFlags.HideInHierarchy;
 
             ElbowJoint = new GameObject("Elbow").transform;
             ElbowJoint.SetParent(ShoulderJoint);
@@ -67,14 +67,14 @@ namespace MrPuppet
 
         private void Update()
         {
-            // apply rotations (subtracting TPose)
-            ShoulderJoint.rotation = HubConnection.ShoulderRotation * Quaternion.Inverse(TPose.ShoulderRotation);
+            // apply rotations *onto* TPose
+            ShoulderJoint.rotation = TPose.ShoulderRotation * HubConnection.ShoulderRotation;
 
             ElbowJoint.localPosition = Vector3.back * ArmLength;
-            ElbowJoint.rotation = HubConnection.ElbowRotation * Quaternion.Inverse(TPose.ElbowRotation);
+            ElbowJoint.rotation = TPose.ElbowRotation * HubConnection.ElbowRotation;
 
             WristJoint.localPosition = Vector3.back * ForearmLength;
-            WristJoint.rotation = HubConnection.WristRotation * Quaternion.Inverse(TPose.WristRotation);
+            WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -113,11 +113,12 @@ namespace MrPuppet
         [EnableIf(nameof(ApplicationIsPlaying))]
         public void GrabTPose()
         {
+            // store as the inverse, to save calculating it each frame
             TPose = new Pose
             {
-                ShoulderRotation = HubConnection.ShoulderRotation,
-                ElbowRotation = HubConnection.ElbowRotation,
-                WristRotation = HubConnection.WristRotation
+                ShoulderRotation = Quaternion.Inverse(HubConnection.ShoulderRotation),
+                ElbowRotation = Quaternion.Inverse(HubConnection.ElbowRotation),
+                WristRotation = Quaternion.Inverse(HubConnection.WristRotation)
             };
         }
 
