@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HubConnection: {fileID: 262788195}
   EnableGizmo: 1
+  ShowJointChain: 0
   TPose:
     ShoulderRotation: {x: 0.029415682, y: -0.90728873, z: -0.097580716, w: 0.40807134}
     ElbowRotation: {x: -0.13724938, y: -0.8577205, z: -0.10740949, w: 0.48366103}

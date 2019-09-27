@@ -36,6 +36,9 @@ namespace MrPuppet
 
         public bool EnableGizmo = true;
 
+        [DisableInPlayMode()]
+        public bool ShowJointChain = false;
+
         public Pose TPose;
 
         [Range(0f, 1023f)]
@@ -50,8 +53,12 @@ namespace MrPuppet
 
         private void Awake()
         {
+            var JointChain = new GameObject("• MrPuppet / Joint Chain").transform;
+            JointChain.SetAsFirstSibling();
+            JointChain.hideFlags = ShowJointChain ? HideFlags.None : HideFlags.HideInHierarchy;
+
             ShoulderJoint = new GameObject("Shoulder").transform;
-            ShoulderJoint.hideFlags = HideFlags.HideInHierarchy;
+            ShoulderJoint.SetParent(JointChain);
 
             ElbowJoint = new GameObject("Elbow").transform;
             ElbowJoint.SetParent(ShoulderJoint);
