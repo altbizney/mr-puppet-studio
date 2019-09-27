@@ -34,11 +34,15 @@ namespace MrPuppet
         [Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
         public bool FixRightHandedQuaternions = true;
 
-        [Tooltip("Fixes the elbow sensor being mounted upside down (relative to the shoulder/wrist)")]
-        public bool FixInvertedElbowSensor = true;
+        [Tooltip("Fixes the orentation not matching Unity's Transform space")]
+        public bool FixSwappedOrientation = true;
 
-        [Tooltip("Fixes the X and Y axises being flipped")]
-        public bool FixSwappedXYAxis = true;
+        // [Header("Legacy Adjustments")]
+        // [Tooltip("Fixes the elbow sensor being mounted upside down (relative to the shoulder/wrist)")]
+        // public bool FixInvertedElbowSensor = false;
+
+        // [Tooltip("Fixes the X and Y axises being flipped")]
+        // public bool FixSwappedXYAxis = false;
 
         [ReadOnly, Header("Sensors")]
         public Quaternion WristRotation;
@@ -128,16 +132,23 @@ namespace MrPuppet
                             ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
                         }
 
-                        if (FixSwappedXYAxis)
-                        {
-                            ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
-                            ElbowRotation *= Quaternion.Euler(0, -90f, 0);
-                            WristRotation *= Quaternion.Euler(0, -90f, 0);
-                        }
+                        // if (FixSwappedXYAxis)
+                        // {
+                        //     ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
+                        //     ElbowRotation *= Quaternion.Euler(0, -90f, 0);
+                        //     WristRotation *= Quaternion.Euler(0, -90f, 0);
+                        // }
 
-                        if (FixInvertedElbowSensor)
+                        // if (FixInvertedElbowSensor)
+                        // {
+                        //     ElbowRotation *= Quaternion.Euler(0, 180f, 0);
+                        // }
+
+                        if (FixSwappedOrientation)
                         {
-                            ElbowRotation *= Quaternion.Euler(0, 180f, 0);
+                            ShoulderRotation *= Quaternion.Euler(0, 90f, -180f);
+                            ElbowRotation *= Quaternion.Euler(0, 90f, -180f);
+                            WristRotation *= Quaternion.Euler(0, 90f, -180f);
                         }
 
                         // grab calibration info
@@ -158,6 +169,12 @@ namespace MrPuppet
 
             webSocket.Close();
         }
+
+        // private void OnDrawGizmos()
+        // {
+        //     if (!Application.isPlaying) return;
+        //     Handles.PositionHandle(Vector3.zero, WristRotation);
+        // }
     }
 
     [CustomEditor(typeof(MrPuppetHubConnection))]

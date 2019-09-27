@@ -127,14 +127,9 @@ namespace MrPuppet
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        private bool ApplicationIsPlaying()
-        {
-            return Application.isPlaying;
-        }
-
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
-        [EnableIf(nameof(ApplicationIsPlaying))]
+        [DisableInEditorMode()]
         public void GrabAttachPose()
         {
             AttachPoseSet = true;
@@ -182,7 +177,7 @@ namespace MrPuppet
                 // apply position delta to bind pose
                 Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
 
-                // clamp to XYZ extents (BEFORE) smooth
+                // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
                     LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
                     LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
@@ -246,19 +241,19 @@ namespace MrPuppet
             if (LimitHipExtentX)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(HipExtentX * 2f, 0.001f, LimitHipExtentZ ? HipExtentZ * 2f : 0.1f));
+                Gizmos.DrawWireCube(Application.isPlaying ? HipSpawnPosition : transform.position, new Vector3(HipExtentX * 2f, 0.001f, LimitHipExtentZ ? HipExtentZ * 2f : 0.1f));
             }
 
             if (LimitHipExtentY)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(LimitHipExtentX ? HipExtentX * 2f : 0.1f, HipExtentY * 2f, 0.001f));
+                Gizmos.DrawWireCube(Application.isPlaying ? HipSpawnPosition : transform.position, new Vector3(LimitHipExtentX ? HipExtentX * 2f : 0.1f, HipExtentY * 2f, 0.001f));
             }
 
             if (LimitHipExtentZ)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawWireCube(ApplicationIsPlaying() ? HipSpawnPosition : transform.position, new Vector3(0.001f, LimitHipExtentY ? HipExtentY * 2f : 0.1f, HipExtentZ * 2f));
+                Gizmos.DrawWireCube(Application.isPlaying ? HipSpawnPosition : transform.position, new Vector3(0.001f, LimitHipExtentY ? HipExtentY * 2f : 0.1f, HipExtentZ * 2f));
             }
         }
     }

@@ -46,8 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WebsocketUri: ws://localhost:3000
   FixRightHandedQuaternions: 1
-  FixInvertedElbowSensor: 1
-  FixSwappedXYAxis: 1
+  FixInvertedElbowSensor: 0
+  FixSwappedXYAxis: 0
+  FixSwappedOrientation: 1
   WristRotation: {x: 0, y: 0, z: 0, w: 0}
   ElbowRotation: {x: 0, y: 0, z: 0, w: 0}
   ShoulderRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -67,11 +68,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HubConnection: {fileID: 180394980541420895}
   EnableGizmo: 1
+  ShowJointChain: 0
   TPose:
-    ShoulderRotation: {x: -0.08803478, y: 0.050416715, z: 0.9901616, w: 0.09666149}
-    ElbowRotation: {x: 0.057346363, y: -0.015839163, z: -0.18264568, w: 0.98132277}
-    WristRotation: {x: 0.027011493, y: 0.3674127, z: -0.92956257, w: 0.014566394}
-  JawOpened: 532
-  JawClosed: 193
+    ShoulderRotation: {x: 0.069650024, y: 0.18695903, z: 0.979555, w: 0.026304375}
+    ElbowRotation: {x: -0.047659017, y: 0.14495683, z: 0.34124973, w: -0.92744124}
+    WristRotation: {x: 0.07615543, y: -0.30299523, z: 0.94660383, w: 0.07940809}
+  JawOpened: 587
+  JawClosed: 206
   ArmLength: 1
   ForearmLength: 1
