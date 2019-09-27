@@ -34,14 +34,15 @@ namespace MrPuppet
         [Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
         public bool FixRightHandedQuaternions = true;
 
+        [Tooltip("Fixes the orentation not matching Unity's Transform space")]
+        public bool FixSwappedOrientation = true;
+
+        [Header("Legacy Adjustments")]
         [Tooltip("Fixes the elbow sensor being mounted upside down (relative to the shoulder/wrist)")]
         public bool FixInvertedElbowSensor = false;
 
         [Tooltip("Fixes the X and Y axises being flipped")]
         public bool FixSwappedXYAxis = false;
-
-        [Tooltip("Fixes the orentation not matching Unity's Transform space")]
-        public bool FixSwappedOrientation = true;
 
         [ReadOnly, Header("Sensors")]
         public Quaternion WristRotation;
