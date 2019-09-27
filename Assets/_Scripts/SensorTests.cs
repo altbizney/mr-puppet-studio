@@ -8,6 +8,14 @@ namespace MrPuppet
         [Required]
         public MrPuppetHubConnection HubConnection;
 
+        private Quaternion InverseCenter = Quaternion.identity;
+
+        [Button("Recenter", ButtonSizes.Large)]
+        private void Recenter()
+        {
+            InverseCenter = Quaternion.Inverse(HubConnection.WristRotation);
+        }
+
         private void OnValidate()
         {
             if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
@@ -15,7 +23,7 @@ namespace MrPuppet
 
         private void Update()
         {
-            transform.rotation = HubConnection.WristRotation;
+            transform.rotation = InverseCenter * HubConnection.WristRotation;
         }
 
         private void OnDrawGizmos()
