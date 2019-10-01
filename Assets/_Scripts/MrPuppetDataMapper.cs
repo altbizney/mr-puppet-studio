@@ -1,7 +1,10 @@
 ﻿using System;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MrPuppet
 {
@@ -117,7 +120,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
-        [EnableIf(nameof(ApplicationIsPlaying))]
+        [DisableInPlayMode]
         public void GrabTPose()
         {
             // store as the inverse, to save calculating it each frame
@@ -139,7 +142,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [EnableIf(nameof(ApplicationIsPlaying))]
+        [DisableInPlayMode]
         public void GrabJawOpened()
         {
             JawOpened = HubConnection.Jaw;
@@ -148,7 +151,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [EnableIf(nameof(ApplicationIsPlaying))]
+        [DisableInPlayMode]
         public void GrabJawClosed()
         {
             JawClosed = HubConnection.Jaw;
@@ -162,11 +165,7 @@ namespace MrPuppet
             JawOpened = 1023f;
         }
 
-        private bool ApplicationIsPlaying()
-        {
-            return Application.isPlaying;
-        }
-
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !EnableGizmo) return;
@@ -210,7 +209,6 @@ namespace MrPuppet
             Gizmos.DrawRay(ElbowJoint.position, ElbowJoint.forward * 0.25f);
             Gizmos.DrawRay(WristJoint.position, WristJoint.forward * 0.25f);
         }
-
 
         // The section below is used to store the changes made at runtime 
         static MrPuppetDataMapper()
@@ -260,5 +258,6 @@ namespace MrPuppet
                 PlayerPrefs.SetFloat(ForearmLengthKey, dataMapper.ForearmLength);
             }
         }
+#endif
     }
 }

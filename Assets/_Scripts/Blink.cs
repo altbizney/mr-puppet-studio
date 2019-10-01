@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditorInternal;
-using UnityEngine;
-using Random = UnityEngine.Random;
+#endif
 
 namespace MrPuppet
 {
@@ -136,6 +139,7 @@ namespace MrPuppet
         }
     }
 
+#if UNITY_EDITOR
     [CustomEditor(typeof(Blink))]
     public class BlinkEditor : OdinEditor
     {
@@ -583,4 +587,5 @@ namespace MrPuppet
             }
         }
     }
+#endif
 }

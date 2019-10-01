@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using Sirenix.OdinInspector.Editor;
+#endif
 
 namespace MrPuppet
 {
@@ -177,6 +180,7 @@ namespace MrPuppet
         // }
     }
 
+#if UNITY_EDITOR
     [CustomEditor(typeof(MrPuppetHubConnection))]
     public class MrPuppetHubConnectionEditor : OdinEditor
     {
@@ -213,4 +217,5 @@ namespace MrPuppet
             GUI.color = defColor;
         }
     }
+#endif
 }

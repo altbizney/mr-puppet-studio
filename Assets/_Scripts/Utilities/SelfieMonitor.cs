@@ -1,73 +1,81 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class SelfieMonitor : EditorWindow
+namespace MrPuppet
 {
-    private float PlaybackFPS = 24f;
-    private float LastFrameTime = 0.0f;
-
-    private string RenderTextureAssetPath = "Assets/_Textures/SelfieRenderer.renderTexture";
-    private RenderTexture Texture;
-
-    private float imgRatio = 0f;
-    private float containerRatio = 0f;
-    private float finalWidth = 0f;
-    private float finalHeight = 0f;
-
-    // private MrPuppet.Blink Blinker;
-
-    [MenuItem("Tools/Selfie Monitor")]
-    private static void Init()
+#if UNITY_EDITOR
+    public class SelfieMonitor : EditorWindow
     {
-        SelfieMonitor window = ScriptableObject.CreateInstance(typeof(SelfieMonitor)) as SelfieMonitor;
-        window.Show();
-    }
+        private float PlaybackFPS = 24f;
+        private float LastFrameTime = 0.0f;
 
-    private void OnGUI()
-    {
-        if (Texture)
+        private string RenderTextureAssetPath = "Assets/_Textures/SelfieRenderer.renderTexture";
+        private RenderTexture Texture;
+
+        private float imgRatio = 0f;
+        private float containerRatio = 0f;
+        private float finalWidth = 0f;
+        private float finalHeight = 0f;
+
+        // private MrPuppet.Blink Blinker;
+
+        [MenuItem("Tools/Selfie Monitor")]
+        private static void Init()
         {
-            // https://stackoverflow.com/a/10285523
-            imgRatio = ((float)Texture.height / (float)Texture.width);
-            containerRatio = (position.height / position.width);
+            SelfieMonitor window = ScriptableObject.CreateInstance(typeof(SelfieMonitor)) as SelfieMonitor;
+            window.Show();
+        }
 
-            if (containerRatio > imgRatio)
+        private void OnGUI()
+        {
+            if (Texture)
             {
-                finalHeight = position.height;
-                finalWidth = (position.height / imgRatio);
+                // https://stackoverflow.com/a/10285523
+                imgRatio = ((float)Texture.height / (float)Texture.width);
+                containerRatio = (position.height / position.width);
+
+                if (containerRatio > imgRatio)
+                {
+                    finalHeight = position.height;
+                    finalWidth = (position.height / imgRatio);
+                }
+                else
+                {
+                    finalWidth = position.width;
+                    finalHeight = (position.width * imgRatio);
+                }
+
+                EditorGUI.DrawPreviewTexture(new Rect(finalWidth, 0f, -finalWidth, finalHeight), Texture);
             }
             else
             {
-                finalWidth = position.width;
-                finalHeight = (position.width * imgRatio);
+                EditorGUILayout.LabelField(RenderTextureAssetPath + " not found");
             }
-
-            EditorGUI.DrawPreviewTexture(new Rect(finalWidth, 0f, -finalWidth, finalHeight), Texture);
         }
-        else
+
+        private void Update()
         {
-            EditorGUILayout.LabelField(RenderTextureAssetPath + " not found");
-        }
-    }
+            if (LastFrameTime < Time.time + (1f / PlaybackFPS))
+            {
+                LastFrameTime = Time.time;
 
-    private void Update()
-    {
-        if (LastFrameTime < Time.time + (1f / PlaybackFPS))
+                Repaint();
+            }
+        }
+
+        private void OnEnable()
         {
-            LastFrameTime = Time.time;
+            Texture = AssetDatabase.LoadAssetAtPath(RenderTextureAssetPath, typeof(RenderTexture)) as RenderTexture;
+            // Blinker = GameObject.Find("lucius - idle").GetComponent<MrPuppet.Blink>();
+        }
 
-            Repaint();
+        private void OnDisable()
+        {
+            LastFrameTime = 0f;
         }
     }
-
-    private void OnEnable()
-    {
-        Texture = AssetDatabase.LoadAssetAtPath(RenderTextureAssetPath, typeof(RenderTexture)) as RenderTexture;
-        // Blinker = GameObject.Find("lucius - idle").GetComponent<MrPuppet.Blink>();
+#else
+    public class SelfieMonitor : MonoBehaviour {
     }
-
-    private void OnDisable()
-    {
-        LastFrameTime = 0f;
-    }
+#endif
 }

@@ -1,8 +1,11 @@
 ﻿using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
+
+#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-using UnityEngine;
+#endif
 
 namespace MrPuppet
 {
@@ -113,6 +116,7 @@ namespace MrPuppet
     }
 
     // Editor
+#if UNITY_EDITOR
     [CustomEditor(typeof(JawTransformMapper))]
     public class JawTransformMapperEditor : OdinEditor
     {
@@ -265,4 +269,5 @@ namespace MrPuppet
             _jawTransformMapper.JawJoint.localRotation = Quaternion.Slerp(_jawTransformMapper.AnimData.OpenRotation, _jawTransformMapper.AnimData.CloseRotation, step);
         }
     }
+#endif
 }
