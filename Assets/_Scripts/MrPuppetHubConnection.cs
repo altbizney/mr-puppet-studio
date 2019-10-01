@@ -106,71 +106,79 @@ namespace MrPuppet
                     break;
                 }
 
-                _data = webSocket.RecvString();
-                if (!string.IsNullOrEmpty(_data))
+                try
                 {
-                    if (_data.StartsWith("DEBUG"))
+                    _data = webSocket.RecvString();
+                    if (!string.IsNullOrEmpty(_data))
                     {
-                        // output debug
-                        Debug.Log(_data);
-                    }
-                    else
-                    {
-                        // process packet
-                        _array = _data.Split(';');
-
-                        // jaw
-                        Jaw = float.Parse(_array[0]);
-
-                        // rotations
-                        _wrist = _array[1].Split(',');
-                        _elbow = _array[2].Split(',');
-                        _shoulder = _array[3].Split(',');
-
-                        // initialize raw quaternions
-                        if (FixRightHandedQuaternions)
+                        if (_data.StartsWith("DEBUG"))
                         {
-                            WristRotation = new Quaternion(-float.Parse(_wrist[3]), -float.Parse(_wrist[1]), -float.Parse(_wrist[2]), float.Parse(_wrist[0]));
-                            ElbowRotation = new Quaternion(-float.Parse(_elbow[3]), -float.Parse(_elbow[1]), -float.Parse(_elbow[2]), float.Parse(_elbow[0]));
-                            ShoulderRotation = new Quaternion(-float.Parse(_shoulder[3]), -float.Parse(_shoulder[1]), -float.Parse(_shoulder[2]), float.Parse(_shoulder[0]));
+                            // output debug
+                            Debug.Log(_data);
                         }
                         else
                         {
-                            WristRotation = new Quaternion(float.Parse(_wrist[0]), float.Parse(_wrist[1]), float.Parse(_wrist[2]), float.Parse(_wrist[3]));
-                            ElbowRotation = new Quaternion(float.Parse(_elbow[0]), float.Parse(_elbow[1]), float.Parse(_elbow[2]), float.Parse(_elbow[3]));
-                            ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
-                        }
+                            // process packet
+                            _array = _data.Split(';');
 
-                        // if (FixSwappedXYAxis)
-                        // {
-                        //     ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
-                        //     ElbowRotation *= Quaternion.Euler(0, -90f, 0);
-                        //     WristRotation *= Quaternion.Euler(0, -90f, 0);
-                        // }
+                            // jaw
+                            Jaw = float.Parse(_array[0]);
 
-                        // if (FixInvertedElbowSensor)
-                        // {
-                        //     ElbowRotation *= Quaternion.Euler(0, 180f, 0);
-                        // }
+                            // rotations
+                            _wrist = _array[1].Split(',');
+                            _elbow = _array[2].Split(',');
+                            _shoulder = _array[3].Split(',');
 
-                        if (FixSwappedOrientation)
-                        {
-                            ShoulderRotation *= Quaternion.Euler(0, 90f, -180f);
-                            ElbowRotation *= Quaternion.Euler(0, 90f, -180f);
-                            WristRotation *= Quaternion.Euler(0, 90f, -180f);
-                        }
+                            // initialize raw quaternions
+                            if (FixRightHandedQuaternions)
+                            {
+                                WristRotation = new Quaternion(-float.Parse(_wrist[3]), -float.Parse(_wrist[1]), -float.Parse(_wrist[2]), float.Parse(_wrist[0]));
+                                ElbowRotation = new Quaternion(-float.Parse(_elbow[3]), -float.Parse(_elbow[1]), -float.Parse(_elbow[2]), float.Parse(_elbow[0]));
+                                ShoulderRotation = new Quaternion(-float.Parse(_shoulder[3]), -float.Parse(_shoulder[1]), -float.Parse(_shoulder[2]), float.Parse(_shoulder[0]));
+                            }
+                            else
+                            {
+                                WristRotation = new Quaternion(float.Parse(_wrist[0]), float.Parse(_wrist[1]), float.Parse(_wrist[2]), float.Parse(_wrist[3]));
+                                ElbowRotation = new Quaternion(float.Parse(_elbow[0]), float.Parse(_elbow[1]), float.Parse(_elbow[2]), float.Parse(_elbow[3]));
+                                ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
+                            }
 
-                        // grab calibration info
-                        WristCalibrationData.Set(int.Parse(_wrist[4]), int.Parse(_wrist[5]), int.Parse(_wrist[6]), int.Parse(_wrist[7]));
-                        ElbowCalibrationData.Set(int.Parse(_elbow[4]), int.Parse(_elbow[5]), int.Parse(_elbow[6]), int.Parse(_elbow[7]));
-                        ShoulderCalibrationData.Set(int.Parse(_shoulder[4]), int.Parse(_shoulder[5]), int.Parse(_shoulder[6]), int.Parse(_shoulder[7]));
+                            // if (FixSwappedXYAxis)
+                            // {
+                            //     ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
+                            //     ElbowRotation *= Quaternion.Euler(0, -90f, 0);
+                            //     WristRotation *= Quaternion.Euler(0, -90f, 0);
+                            // }
 
-                        if (OutputData)
-                        {
-                            Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation.eulerAngles} ElbowRotation: {ElbowRotation.eulerAngles} ShoulderRotation: {ShoulderRotation.eulerAngles}");
-                            _lastUpdateTime = Time.time;
+                            // if (FixInvertedElbowSensor)
+                            // {
+                            //     ElbowRotation *= Quaternion.Euler(0, 180f, 0);
+                            // }
+
+                            if (FixSwappedOrientation)
+                            {
+                                ShoulderRotation *= Quaternion.Euler(0, 90f, -180f);
+                                ElbowRotation *= Quaternion.Euler(0, 90f, -180f);
+                                WristRotation *= Quaternion.Euler(0, 90f, -180f);
+                            }
+
+                            // grab calibration info
+                            WristCalibrationData.Set(int.Parse(_wrist[4]), int.Parse(_wrist[5]), int.Parse(_wrist[6]), int.Parse(_wrist[7]));
+                            ElbowCalibrationData.Set(int.Parse(_elbow[4]), int.Parse(_elbow[5]), int.Parse(_elbow[6]), int.Parse(_elbow[7]));
+                            ShoulderCalibrationData.Set(int.Parse(_shoulder[4]), int.Parse(_shoulder[5]), int.Parse(_shoulder[6]), int.Parse(_shoulder[7]));
+
+                            if (OutputData)
+                            {
+                                Debug.Log($"{(Time.time - _lastUpdateTime).ToString($"0.00")} - Jaw: {Jaw} WristRotation: {WristRotation.eulerAngles} ElbowRotation: {ElbowRotation.eulerAngles} ShoulderRotation: {ShoulderRotation.eulerAngles}");
+                                _lastUpdateTime = Time.time;
+                            }
+
                         }
                     }
+                }
+                catch (System.FormatException e)
+                {
+                    Debug.Log(e.Message);
                 }
 
                 yield return null;
