@@ -80,7 +80,7 @@ public class WebSocket
 		while (SocketState(m_NativeRef) == 0)
 			yield return 0;
 	}
- 
+
 	public void Close()
 	{
 		SocketClose(m_NativeRef);
@@ -96,7 +96,7 @@ public class WebSocket
 			if (result == 0)
 				return null;
 
-			return Encoding.UTF8.GetString (buffer);				
+			return Encoding.UTF8.GetString (buffer);
 		}
 	}
 #else
@@ -111,6 +111,7 @@ public class WebSocket
 		m_Socket.OnMessage += (sender, e) => m_Messages.Enqueue (e.RawData);
 		m_Socket.OnOpen += (sender, e) => m_IsConnected = true;
 		m_Socket.OnError += (sender, e) => m_Error = e.Message;
+		m_Socket.OnClose += (sender, e) => m_Error = e.Reason + " (WasClean? " + e.WasClean + ")";
 		m_Socket.ConnectAsync();
 		while (!m_IsConnected && m_Error == null)
 			yield return 0;
@@ -139,5 +140,5 @@ public class WebSocket
 			return m_Error;
 		}
 	}
-#endif 
+#endif
 }

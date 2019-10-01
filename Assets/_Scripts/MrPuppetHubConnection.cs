@@ -33,6 +33,9 @@ namespace MrPuppet
         [Header("Hub")]
         public string WebsocketUri = "ws://localhost:3000";
 
+        [MinValue(0.1f)]
+        public float ReconnectInterval = 2f;
+
         [Header("Adjustments")]
         [Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
         public bool FixRightHandedQuaternions = true;
@@ -96,7 +99,10 @@ namespace MrPuppet
             {
                 if (webSocket.error != null)
                 {
-                    Debug.LogError("[Websocket] " + webSocket.error);
+                    Debug.LogError("[WS] " + webSocket.error + " Reconnecting in " + ReconnectInterval + " sec...");
+                    // TODO: show an on screen message / reconnect countdown
+                    yield return new WaitForSecondsRealtime(ReconnectInterval);
+                    StartCoroutine(GrabData());
                     break;
                 }
 
