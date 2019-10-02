@@ -186,12 +186,6 @@ namespace MrPuppet
 
             webSocket.Close();
         }
-
-        // private void OnDrawGizmos()
-        // {
-        //     if (!Application.isPlaying) return;
-        //     Handles.PositionHandle(Vector3.zero, WristRotation);
-        // }
     }
 
 #if UNITY_EDITOR
