@@ -131,8 +131,8 @@ namespace MrPuppet
         private class JawAnimDataEdit
         {
             public Quaternion OriginalRotation;
-            public bool EditOpenPose;
             public bool EditOpenMax;
+            public bool EditOpenPose;
             public bool EditClosePose;
             public bool EditCloseMax;
         }
@@ -161,7 +161,9 @@ namespace MrPuppet
             base.OnDisable();
 
             if (_editJawMode || _previewJawMode)
+            {
                 ResetJawTransform();
+            }
         }
 
         public override void OnInspectorGUI()
@@ -177,10 +179,10 @@ namespace MrPuppet
 
             // Edit buttons
             EditorGUILayout.BeginHorizontal();
-            // EditTransformButton("Edit Open Max", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.OpenMaxRotation, ref _jawAnimDataEdit.EditOpenMax, ref _jawAnimDataEdit.OriginalRotation);
+            EditTransformButton("Edit Open Max", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.OpenMaxRotation, ref _jawAnimDataEdit.EditOpenMax, ref _jawAnimDataEdit.OriginalRotation);
             EditTransformButton("Edit Open Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.OpenRotation, ref _jawAnimDataEdit.EditOpenPose, ref _jawAnimDataEdit.OriginalRotation);
             EditTransformButton("Edit Close Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.CloseRotation, ref _jawAnimDataEdit.EditClosePose, ref _jawAnimDataEdit.OriginalRotation);
-            // EditTransformButton("Edit Close Max", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.CloseMaxRotation, ref _jawAnimDataEdit.EditCloseMax, ref _jawAnimDataEdit.OriginalRotation);
+            EditTransformButton("Edit Close Max", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.CloseMaxRotation, ref _jawAnimDataEdit.EditCloseMax, ref _jawAnimDataEdit.OriginalRotation);
             EditorGUILayout.EndHorizontal();
 
             // Preview
@@ -191,9 +193,13 @@ namespace MrPuppet
                 _previewJawMode = !_previewJawMode;
 
                 if (_previewJawMode)
+                {
                     JawStep(_jawStep);
+                }
                 else
+                {
                     ResetJawTransform();
+                }
             }
             GUI.color = Color.white;
 
@@ -202,7 +208,9 @@ namespace MrPuppet
                 EditorGUI.BeginChangeCheck();
                 _jawStep = EditorGUILayout.Slider(_jawStep, 0, 1);
                 if (EditorGUI.EndChangeCheck())
+                {
                     JawStep(_jawStep);
+                }
             }
 
             // Apply changes
@@ -217,9 +225,13 @@ namespace MrPuppet
             if (!_jawTransformMapper.enabled)
                 return;
 
+            Debug.Log("_jawAnimDataEdit: " + (_jawAnimDataEdit != null));
+            Debug.Log("_jawAnimDataEdit.EditOpenMax: " + _jawAnimDataEdit.EditOpenMax);
+
             // Draw jaw transform handle
             if (_jawAnimDataEdit != null && (_jawAnimDataEdit.EditOpenMax || _jawAnimDataEdit.EditOpenPose || _jawAnimDataEdit.EditClosePose || _jawAnimDataEdit.EditCloseMax))
             {
+                Debug.Log("yeah im here");
                 EditorGUI.BeginChangeCheck();
                 var pos = _jawTransformMapper.JawJoint.position;
                 var rot = _jawTransformMapper.JawJoint.rotation;
