@@ -90,29 +90,37 @@ namespace MrPuppet
             };
         }
 
+#if UNITY_EDITOR
         // The section below is used to store the changes made at runtime
-        // static JawTransformMapper()
-        // {
-        //     EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        // }
+        static JawTransformMapper()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
 
-        // private const string JawSmoothTimeKey = "jawSmoothTime";
+        private const string JawSmoothTimeKey = "JawSmoothTime";
+        private const string JawDampingKey = "JawDamping";
+        private const string JawStiffnessKey = "JawStiffness";
 
-        // private static void OnPlayModeStateChanged(PlayModeStateChange state)
-        // {
-        //     var jawTransformMapper = FindObjectOfType<JawTransformMapper>();
-        //     if (jawTransformMapper == null) return;
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            var jawTransformMapper = FindObjectOfType<JawTransformMapper>();
+            if (jawTransformMapper == null) return;
 
-        //     if (state == PlayModeStateChange.EnteredEditMode)
-        //     {
-        //         Undo.RecordObject(jawTransformMapper, "Undo JawTransformMapper");
-        //         jawTransformMapper.SmoothTime = PlayerPrefs.GetFloat(JawSmoothTimeKey);
-        //     }
-        //     else if (state == PlayModeStateChange.ExitingPlayMode)
-        //     {
-        //         PlayerPrefs.SetFloat(JawSmoothTimeKey, jawTransformMapper.SmoothTime);
-        //     }
-        // }
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                Undo.RecordObject(jawTransformMapper, "Undo JawTransformMapper");
+                jawTransformMapper.JawSmoothTime = PlayerPrefs.GetFloat(JawSmoothTimeKey);
+                jawTransformMapper.JawDamping = PlayerPrefs.GetFloat(JawDampingKey);
+                jawTransformMapper.JawStiffness = PlayerPrefs.GetFloat(JawStiffnessKey);
+            }
+            else if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                PlayerPrefs.SetFloat(JawSmoothTimeKey, jawTransformMapper.JawSmoothTime);
+                PlayerPrefs.SetFloat(JawDampingKey, jawTransformMapper.JawDamping);
+                PlayerPrefs.SetFloat(JawStiffnessKey, jawTransformMapper.JawStiffness);
+            }
+        }
+#endif
     }
 
     // Editor
