@@ -14,10 +14,15 @@ namespace MrPuppet
         [Serializable]
         public class JawAnimData
         {
+            public Quaternion OriginalRotation = Quaternion.identity;
             public Quaternion OpenRotation = Quaternion.identity;
             public Quaternion OpenMaxRotation = Quaternion.identity;
             public Quaternion CloseRotation = Quaternion.identity;
             public Quaternion CloseMaxRotation = Quaternion.identity;
+            public float OpenAngle = 0f;
+            public float CloseAngle = 0f;
+            public float OpenMaxAngle = 0f;
+            public float CloseMaxAngle = 0f;
         }
 
         [Required]
@@ -55,6 +60,12 @@ namespace MrPuppet
         {
             // preload spring to avoid initial wobble
             JawCurrent = DataMapper.JawPercent;
+
+            // pre-calculate angles
+            AnimData.OpenAngle = Quaternion.Angle(AnimData.OriginalRotation, AnimData.OpenRotation);
+            AnimData.CloseAngle = Quaternion.Angle(AnimData.OriginalRotation, AnimData.CloseRotation);
+            AnimData.OpenMaxAngle = Quaternion.Angle(AnimData.OriginalRotation, AnimData.OpenMaxRotation);
+            AnimData.CloseMaxAngle = Quaternion.Angle(AnimData.OriginalRotation, AnimData.CloseMaxRotation);
         }
 
         private void Update()
@@ -71,10 +82,35 @@ namespace MrPuppet
 
             JawJoint.localRotation = Quaternion.SlerpUnclamped(AnimData.CloseRotation, AnimData.OpenRotation, JawCurrent);
 
+            float angle = Quaternion.Angle(AnimData.OriginalRotation, JawJoint.localRotation);
+
+            if (EnableDebugGraph)
+            {
+                DebugGraph.MultiLog("Jaw Angle", Color.magenta, AnimData.OpenMaxAngle, "Open Max");
+                DebugGraph.MultiLog("Jaw Angle", Color.red, AnimData.OpenAngle, "Open");
+
+                DebugGraph.MultiLog("Jaw Angle", Color.blue, AnimData.CloseAngle, "Close");
+                DebugGraph.MultiLog("Jaw Angle", Color.cyan, AnimData.CloseMaxAngle, "Close Max");
+
+                DebugGraph.MultiLog("Jaw Angle", Color.green, angle, "Current");
+            }
+
+            // clamp the unclamped value against the max angles
+            if (angle > AnimData.OpenMaxAngle)
+            {
+                JawJoint.localRotation = AnimData.OpenMaxRotation;
+            }
+            else if (angle < AnimData.CloseMaxAngle)
+            {
+                JawJoint.localRotation = AnimData.CloseMaxRotation;
+            }
+
             if (EnableDebugGraph)
             {
                 DebugGraph.MultiLog("Jaw", Color.red, JawCurrent, "Current");
                 DebugGraph.MultiLog("Jaw", Color.blue, DataMapper.JawPercent, "Target");
+                // NOTE: can't reuse `angle` here, we're recaluclating the value
+                DebugGraph.MultiLog("Jaw Angle", Color.yellow, Quaternion.Angle(AnimData.OriginalRotation, JawJoint.localRotation), "Adjusted");
             }
         }
 
@@ -83,6 +119,7 @@ namespace MrPuppet
             if (JawJoint == null) return;
             AnimData = new JawAnimData()
             {
+                OriginalRotation = JawJoint.localRotation,
                 OpenRotation = JawJoint.localRotation,
                 OpenMaxRotation = JawJoint.localRotation,
                 CloseRotation = JawJoint.localRotation,
