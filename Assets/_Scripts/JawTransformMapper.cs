@@ -225,13 +225,9 @@ namespace MrPuppet
             if (!_jawTransformMapper.enabled)
                 return;
 
-            Debug.Log("_jawAnimDataEdit: " + (_jawAnimDataEdit != null));
-            Debug.Log("_jawAnimDataEdit.EditOpenMax: " + _jawAnimDataEdit.EditOpenMax);
-
             // Draw jaw transform handle
             if (_jawAnimDataEdit != null && (_jawAnimDataEdit.EditOpenMax || _jawAnimDataEdit.EditOpenPose || _jawAnimDataEdit.EditClosePose || _jawAnimDataEdit.EditCloseMax))
             {
-                Debug.Log("yeah im here");
                 EditorGUI.BeginChangeCheck();
                 var pos = _jawTransformMapper.JawJoint.position;
                 var rot = _jawTransformMapper.JawJoint.rotation;
