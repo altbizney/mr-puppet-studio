@@ -1,8 +1,11 @@
 ﻿using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
+
+#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-using UnityEngine;
+#endif
 
 namespace MrPuppet
 {
@@ -68,6 +71,7 @@ namespace MrPuppet
             };
         }
 
+#if UNITY_EDITOR
         // The section below is used to store the changes made at runtime
         static JawTransformMapper()
         {
@@ -91,8 +95,10 @@ namespace MrPuppet
                 PlayerPrefs.SetFloat(JawSmoothTimeKey, jawTransformMapper.SmoothTime);
             }
         }
+#endif
     }
 
+#if UNITY_EDITOR
     // Editor
     [CustomEditor(typeof(JawTransformMapper))]
     public class JawTransformMapperEditor : OdinEditor
@@ -253,4 +259,5 @@ namespace MrPuppet
             _jawTransformMapper.JawJoint.localRotation = Quaternion.Lerp(_jawTransformMapper.AnimData.OpenRotation, _jawTransformMapper.AnimData.CloseRotation, step);
         }
     }
+#endif
 }
