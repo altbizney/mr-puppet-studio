@@ -31,6 +31,10 @@ namespace MrPuppet
             [ShowIf("spring"), MinValue(0f)]
             public float springDamping = 10f;
 
+            public bool proxy = false;
+            [ShowIf("proxy")]
+            public Transform Proxy;
+
             public void Update(float driver, float smoothTime, SkinnedMeshRenderer skinnedMeshRenderer)
             {
                 // remap input driver to output range
@@ -48,6 +52,7 @@ namespace MrPuppet
                 if (blendShapeIndex < skinnedMeshRenderer.sharedMesh.blendShapeCount)
                 {
                     skinnedMeshRenderer.SetBlendShapeWeight(blendShapeIndex, output);
+                    if (proxy) Proxy.position = Vector3.Lerp(Vector3.zero, Vector3.one, output);
                 }
             }
 
