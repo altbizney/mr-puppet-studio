@@ -85,10 +85,8 @@ MonoBehaviour:
   DataMapper: {fileID: 0}
   JawJoint: {fileID: 6391121188127379318}
   AnimData:
-    OpenPosition: {x: 0.12507087, y: 0.28561163, z: 1.5600003e-15}
-    OpenRotation: {x: -0.47021028, y: 0.88255435, z: 5.4286957e-17, w: 2.832536e-17}
-    ClosePosition: {x: 0.12507087, y: 0.28561163, z: 1.5600003e-15}
-    CloseRotation: {x: -0.69657815, y: 0.717481, z: 4.4298943e-17, w: 4.227297e-17}
+    OpenRotation: {x: -0.4702103, y: 0.8825544, z: -0.00000014809387, w: -0.00000001651241}
+    CloseRotation: {x: -0.69657826, y: 0.7174808, z: 4.4298933e-17, w: 4.227298e-17}
   SmoothTime: 0.01
 --- !u!114 &1966292752
 MonoBehaviour:

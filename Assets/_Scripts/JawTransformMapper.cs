@@ -14,9 +14,7 @@ namespace MrPuppet
         [Serializable]
         public class JawAnimData
         {
-            public Vector3 OpenPosition = Vector3.zero;
             public Quaternion OpenRotation = Quaternion.identity;
-            public Vector3 ClosePosition = Vector3.zero;
             public Quaternion CloseRotation = Quaternion.identity;
         }
 
@@ -46,12 +44,6 @@ namespace MrPuppet
         {
             // TODO: should JawPercent be smoothed, and/or position and rotation?
 
-            JawJoint.localPosition = Vector3.SmoothDamp(
-                JawJoint.localPosition,
-                Vector3.LerpUnclamped(AnimData.ClosePosition, AnimData.OpenPosition, DataMapper.JawPercent),
-                ref _jawCurrentVelocity,
-                SmoothTime);
-
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
             JawJoint.localRotation = Quaternion.LerpUnclamped(
                 AnimData.CloseRotation,
@@ -64,9 +56,7 @@ namespace MrPuppet
             if (JawJoint == null) return;
             AnimData = new JawAnimData()
             {
-                OpenPosition = JawJoint.localPosition,
                 OpenRotation = JawJoint.localRotation,
-                ClosePosition = JawJoint.localPosition,
                 CloseRotation = JawJoint.localRotation
             };
         }
@@ -105,7 +95,6 @@ namespace MrPuppet
     {
         private class JawAnimDataEdit
         {
-            public Vector3 OriginalPosition;
             public Quaternion OriginalRotation;
             public bool EditOpenPose;
             public bool EditClosePose;
@@ -126,7 +115,6 @@ namespace MrPuppet
             _jawAnimDataEdit = new JawAnimDataEdit();
             if (_jawTransformMapper.JawJoint != null)
             {
-                _jawAnimDataEdit.OriginalPosition = _jawTransformMapper.JawJoint.localPosition;
                 _jawAnimDataEdit.OriginalRotation = _jawTransformMapper.JawJoint.localRotation;
             }
         }
@@ -152,8 +140,8 @@ namespace MrPuppet
 
             // Edit buttons
             EditorGUILayout.BeginHorizontal();
-            EditTransformButton("Edit Open Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.OpenPosition, ref _jawTransformMapper.AnimData.OpenRotation, ref _jawAnimDataEdit.EditOpenPose, ref _jawAnimDataEdit.OriginalPosition, ref _jawAnimDataEdit.OriginalRotation);
-            EditTransformButton("Edit Close Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.ClosePosition, ref _jawTransformMapper.AnimData.CloseRotation, ref _jawAnimDataEdit.EditClosePose, ref _jawAnimDataEdit.OriginalPosition, ref _jawAnimDataEdit.OriginalRotation);
+            EditTransformButton("Edit Open Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.OpenRotation, ref _jawAnimDataEdit.EditOpenPose, ref _jawAnimDataEdit.OriginalRotation);
+            EditTransformButton("Edit Close Pose", ref _jawTransformMapper.JawJoint, ref _jawTransformMapper.AnimData.CloseRotation, ref _jawAnimDataEdit.EditClosePose, ref _jawAnimDataEdit.OriginalRotation);
             EditorGUILayout.EndHorizontal();
 
             // Preview
@@ -193,20 +181,11 @@ namespace MrPuppet
             // Draw jaw transform handle
             if (_jawAnimDataEdit != null && (_jawAnimDataEdit.EditOpenPose || _jawAnimDataEdit.EditClosePose))
             {
-                EditorGUI.BeginChangeCheck();
-                var pos = _jawTransformMapper.JawJoint.position;
-                var rot = _jawTransformMapper.JawJoint.rotation;
-                Handles.TransformHandle(ref pos, ref rot);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RecordObject(_jawTransformMapper.JawJoint, "Adjust jaw");
-                    _jawTransformMapper.JawJoint.position = pos;
-                    _jawTransformMapper.JawJoint.rotation = rot;
-                }
+                _jawTransformMapper.JawJoint.rotation = Handles.RotationHandle(_jawTransformMapper.JawJoint.rotation, _jawTransformMapper.JawJoint.position);
             }
         }
 
-        private void EditTransformButton(string button, ref Transform transf, ref Vector3 pos, ref Quaternion rot, ref bool edit, ref Vector3 originalPosition, ref Quaternion originalRotation)
+        private void EditTransformButton(string button, ref Transform transf, ref Quaternion rot, ref bool edit, ref Quaternion originalRotation)
         {
             GUI.enabled = (edit || !_editJawMode) && !_previewJawMode && !Application.isPlaying;
 
@@ -218,20 +197,14 @@ namespace MrPuppet
                 edit = !edit;
                 if (edit)
                 {
-                    _jawAnimDataEdit.OriginalPosition = _jawTransformMapper.JawJoint.localPosition;
                     _jawAnimDataEdit.OriginalRotation = _jawTransformMapper.JawJoint.localRotation;
 
-                    originalPosition = transf.localPosition;
                     originalRotation = transf.localRotation;
-                    transf.localPosition = pos;
                     transf.localRotation = rot;
                     Tools.hidden = true; // Hides the default gizmos so they don't get in the way
                 }
                 else
                 {
-                    var newPos = transf.localPosition;
-                    transf.localPosition = originalPosition;
-                    pos = newPos;
                     var newRot = transf.localRotation;
                     transf.localRotation = originalRotation;
                     rot = newRot;
@@ -248,14 +221,12 @@ namespace MrPuppet
         {
             if (_jawTransformMapper != null && _jawTransformMapper.JawJoint != null && _jawAnimDataEdit != null)
             {
-                _jawTransformMapper.JawJoint.localPosition = _jawAnimDataEdit.OriginalPosition;
                 _jawTransformMapper.JawJoint.localRotation = _jawAnimDataEdit.OriginalRotation;
             }
         }
 
         private void JawStep(float step)
         {
-            _jawTransformMapper.JawJoint.localPosition = Vector3.Lerp(_jawTransformMapper.AnimData.OpenPosition, _jawTransformMapper.AnimData.ClosePosition, step);
             _jawTransformMapper.JawJoint.localRotation = Quaternion.Lerp(_jawTransformMapper.AnimData.OpenRotation, _jawTransformMapper.AnimData.CloseRotation, step);
         }
     }
