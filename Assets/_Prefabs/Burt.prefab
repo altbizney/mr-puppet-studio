@@ -83,17 +83,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataMapper: {fileID: 0}
-  EnableDebugGraph: 0
   JawJoint: {fileID: 6391121188127379318}
   AnimData:
-    OpenRotation: {x: -0.45946032, y: 0.8881984, z: 0.0000000033024807, w: -0.00000002961877}
-    OpenMaxRotation: {x: -0.5955355, y: 0.803329, z: -2.2756459e-16, w: 1.6870149e-16}
-    CloseRotation: {x: -0.69758844, y: 0.7164987, z: 4.4239323e-17, w: 4.233535e-17}
-    CloseMaxRotation: {x: -0.5955355, y: 0.803329, z: -2.2756459e-16, w: 1.6870149e-16}
-  EnableJawSpring: 1
-  JawStiffness: 2000
-  JawDamping: 500
-  JawSmoothTime: 0.01
+    OpenPosition: {x: 0.12507087, y: 0.28561163, z: 1.5600003e-15}
+    OpenRotation: {x: -0.47021028, y: 0.88255435, z: 5.4286957e-17, w: 2.832536e-17}
+    ClosePosition: {x: 0.12507087, y: 0.28561163, z: 1.5600003e-15}
+    CloseRotation: {x: -0.69657815, y: 0.717481, z: 4.4298943e-17, w: 4.227297e-17}
+  SmoothTime: 0.01
 --- !u!114 &1966292752
 MonoBehaviour:
   m_ObjectHideFlags: 0
