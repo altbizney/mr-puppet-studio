@@ -41,11 +41,6 @@ namespace MrPuppet
         public bool EnableJawSpring = true;
 
         [ShowIf("EnableJawSpring")]
-        public float JawStiffness = 100.0f;
-
-        [ShowIf("EnableJawSpring")]
-        public float JawDamping = 20.0f;
-
         public float JawSmoothTime = 0.05f;
 
         private float JawVelocity;
@@ -72,7 +67,6 @@ namespace MrPuppet
         {
             if (EnableJawSpring)
             {
-                // JawCurrent = Springz.Float(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawStiffness, JawDamping);
                 JawCurrent = Mathf.SmoothDamp(JawCurrent, DataMapper.JawPercent, ref JawVelocity, JawSmoothTime);
             }
             else
@@ -135,8 +129,6 @@ namespace MrPuppet
         }
 
         private const string JawSmoothTimeKey = "JawSmoothTime";
-        private const string JawDampingKey = "JawDamping";
-        private const string JawStiffnessKey = "JawStiffness";
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
@@ -147,14 +139,10 @@ namespace MrPuppet
             {
                 Undo.RecordObject(jawTransformMapper, "Undo JawTransformMapper");
                 jawTransformMapper.JawSmoothTime = PlayerPrefs.GetFloat(JawSmoothTimeKey);
-                jawTransformMapper.JawDamping = PlayerPrefs.GetFloat(JawDampingKey);
-                jawTransformMapper.JawStiffness = PlayerPrefs.GetFloat(JawStiffnessKey);
             }
             else if (state == PlayModeStateChange.ExitingPlayMode)
             {
                 PlayerPrefs.SetFloat(JawSmoothTimeKey, jawTransformMapper.JawSmoothTime);
-                PlayerPrefs.SetFloat(JawDampingKey, jawTransformMapper.JawDamping);
-                PlayerPrefs.SetFloat(JawStiffnessKey, jawTransformMapper.JawStiffness);
             }
         }
 #endif
