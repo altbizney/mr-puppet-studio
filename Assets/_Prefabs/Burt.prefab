@@ -87,7 +87,7 @@ MonoBehaviour:
   AnimData:
     OpenRotation: {x: -0.4702103, y: 0.8825544, z: -0.00000014809387, w: -0.00000001651241}
     CloseRotation: {x: -0.69657826, y: 0.7174808, z: 4.4298933e-17, w: 4.227298e-17}
-  SmoothTime: 0.01
+  SmoothTime: 0.005
 --- !u!114 &1966292752
 MonoBehaviour:
   m_ObjectHideFlags: 0
