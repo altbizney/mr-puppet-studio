@@ -235,7 +235,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: TPose (t)
+  m_text: TPose
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -304,10 +304,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 187982407}
-    characterCount: 9
+    characterCount: 5
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -475,7 +475,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Jaw Close (c)
+  m_text: Jaw Close
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -544,10 +544,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 285594996}
-    characterCount: 13
+    characterCount: 9
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -643,7 +643,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1719381401}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &379529812
 SpriteRenderer:
@@ -953,6 +953,7 @@ GameObject:
   - component: {fileID: 478697772}
   - component: {fileID: 478697771}
   - component: {fileID: 478697770}
+  - component: {fileID: 478697774}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1040,6 +1041,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &478697774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478697769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59199932c9e52431299fb1aae783bc2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraDropdown: {fileID: 735340683}
+  TPoseButton: {fileID: 1325441127}
+  AttachButton: {fileID: 2035556112}
+  JawOpenButton: {fileID: 1850115770}
+  JawCloseButton: {fileID: 1650557626}
+  BurtCamera: {fileID: 1583206017}
+  CliveCamera: {fileID: 1408009853}
+  LuciusCamera: {fileID: 2070975918}
 --- !u!1001 &558284412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1106,6 +1127,66 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.x
+      value: -0.623951
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.y
+      value: 0.35666463
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.z
+      value: -0.6069805
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.w
+      value: -0.3394112
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.x
+      value: 0.027223637
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.y
+      value: -0.5977881
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.z
+      value: 0.022698093
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.w
+      value: -0.80086917
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.x
+      value: 0.63781035
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.y
+      value: -0.35206842
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.z
+      value: -0.5727565
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.w
+      value: -0.37568578
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
@@ -1536,7 +1617,7 @@ PrefabInstance:
     - target: {fileID: 8091702361939518146, guid: 85d0e9b4868b0414f8a23e4160ef7333,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8091702361939518146, guid: 85d0e9b4868b0414f8a23e4160ef7333,
         type: 3}
@@ -1783,7 +1864,18 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 478697774}
+        m_MethodName: ChangeCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: TMPro.TMP_Dropdown+DropdownEvent, Unity.TextMeshPro, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &735340684
@@ -2605,7 +2697,7 @@ PrefabInstance:
     - target: {fileID: 1575444023606922972, guid: a927cd8caccdd4597b0a88b00cddd9d0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1575444023606922972, guid: a927cd8caccdd4597b0a88b00cddd9d0,
         type: 3}
@@ -2986,7 +3078,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 130, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1325441127
 MonoBehaviour:
@@ -3041,7 +3133,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1325441128
@@ -3194,7 +3286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &1408009855
 Camera:
   m_ObjectHideFlags: 0
@@ -3250,7 +3342,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1719381401}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -69.87701, z: 0}
 --- !u!1 &1556623599
 GameObject:
@@ -3279,9 +3371,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1583206020}
   - {fileID: 828994184}
   - {fileID: 3719566654439172723}
-  - {fileID: 1583206020}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3409,7 +3501,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1556623600}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -69.87701, z: 0}
 --- !u!1 &1620512161
 GameObject:
@@ -3526,7 +3618,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 180, y: 50}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1650557626
 MonoBehaviour:
@@ -3685,9 +3777,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1408009856}
   - {fileID: 121328125}
   - {fileID: 379529811}
-  - {fileID: 1408009856}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3859,7 +3951,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Attach (a)
+  m_text: Attach
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3928,10 +4020,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1790056190}
-    characterCount: 10
+    characterCount: 6
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -4076,7 +4168,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 180, y: 50}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1850115770
 MonoBehaviour:
@@ -4307,7 +4399,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Jaw Open (o)
+  m_text: Jaw Open
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4376,10 +4468,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1932054637}
-    characterCount: 12
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -4474,7 +4566,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 140, y: 50}
+  m_SizeDelta: {x: 110, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2035556112
 MonoBehaviour:
@@ -4518,7 +4610,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2035556113}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 478697774}
+        m_MethodName: AttachAll
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2035556113
@@ -4569,7 +4672,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2070975919}
   - component: {fileID: 2070975921}
-  - component: {fileID: 2070975920}
   m_Layer: 0
   m_Name: Lucius Camera
   m_TagString: MainCamera
@@ -4591,14 +4693,6 @@ Transform:
   m_Father: {fileID: 989890332}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -69.87701, z: 0}
---- !u!81 &2070975920
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2070975918}
-  m_Enabled: 1
 --- !u!20 &2070975921
 Camera:
   m_ObjectHideFlags: 0
@@ -4633,7 +4727,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 2
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -7915,7 +8009,7 @@ Transform:
   - {fileID: 2818550038845385}
   - {fileID: 6789743142672055670}
   m_Father: {fileID: 1556623600}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 104.866005, z: 0}
 --- !u!1 &3758731830592778108
 GameObject:
