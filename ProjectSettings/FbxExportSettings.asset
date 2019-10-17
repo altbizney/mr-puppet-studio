@@ -15,6 +15,7 @@
             "."
         ],
         "fbxSavePaths": [
+            "Recordings",
             "."
         ],
         "selectedFbxPath": 0,
@@ -23,7 +24,7 @@
         "dccOptionPaths": [],
         "exportModelSettingsSerialize": {
             "exportFormat": 0,
-            "animatedSkinnedMesh": false,
+            "animatedSkinnedMesh": true,
             "mayaCompatibleNaming": true,
             "include": 2,
             "lodLevel": 0,
