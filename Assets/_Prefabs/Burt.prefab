@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1574947495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378849177921865420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8bda32bc0f441f0b72e2b6ac141f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DrawGizmos: 0
 --- !u!1 &1575444023606922973
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +209,61 @@ PrefabInstance:
       propertyPath: m_CullingMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 57903825575852807, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_angry
+      objectReference: {fileID: 0}
+    - target: {fileID: -7540222605956457885, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: browBlend_angry
+      objectReference: {fileID: 0}
+    - target: {fileID: 264148651848824085, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: browBlend_rightBrowUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5840277577373404764, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: mouthBlend_smile
+      objectReference: {fileID: 0}
+    - target: {fileID: -4949390847272833060, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: mouthBlend_frown
+      objectReference: {fileID: 0}
+    - target: {fileID: 360241852233197354, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_blink
+      objectReference: {fileID: 0}
+    - target: {fileID: -2047165711982504177, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_frown
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551880721314631160, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: browBlend_leftBrowUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267452783392840984, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_leftBrowUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683016350299109397, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_smile
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345521893160865728, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: headBlend_rightBrowUp
+      objectReference: {fileID: 0}
     - target: {fileID: 1513352704009848583, guid: 7e742abb73667403e98875476cf8a917,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
@@ -254,6 +322,12 @@ Transform:
 --- !u!4 &494266073110264144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3069604979615447665, guid: 7e742abb73667403e98875476cf8a917,
+    type: 3}
+  m_PrefabInstance: {fileID: 6034100946064375007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1378849177921865420 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4566712888699602413, guid: 7e742abb73667403e98875476cf8a917,
     type: 3}
   m_PrefabInstance: {fileID: 6034100946064375007}
   m_PrefabAsset: {fileID: 0}
