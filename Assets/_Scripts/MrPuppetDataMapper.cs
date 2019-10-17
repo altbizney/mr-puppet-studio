@@ -120,7 +120,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableInPlayMode]
+        [DisableInEditorMode]
         public void GrabTPose()
         {
             // store as the inverse, to save calculating it each frame
@@ -142,7 +142,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableInPlayMode]
+        [DisableInEditorMode]
         public void GrabJawOpened()
         {
             JawOpened = HubConnection.Jaw;
@@ -151,7 +151,7 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
         [GUIColor(0f, 1f, 0f)]
-        [DisableInPlayMode]
+        [DisableInEditorMode]
         public void GrabJawClosed()
         {
             JawClosed = HubConnection.Jaw;
