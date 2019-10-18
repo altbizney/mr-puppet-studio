@@ -9,7 +9,7 @@
         "HideSendToUnityMenu": true,
         "BakeAnimation": true,
         "showConvertToPrefabDialog": true,
-        "integrationSavePath": "/Users/jacob/Sites/Unity/mr-puppet-studio",
+        "integrationSavePath": "/Users/jacob/Sites/Unity",
         "selectedDCCApp": 0,
         "prefabSavePaths": [
             "."
@@ -20,8 +20,12 @@
         ],
         "selectedFbxPath": 0,
         "selectedPrefabPath": 0,
-        "dccOptionNames": [],
-        "dccOptionPaths": [],
+        "dccOptionNames": [
+            "Maya 2019"
+        ],
+        "dccOptionPaths": [
+            "/Applications/Autodesk/maya2019/Maya.app/Contents/MacOS/Maya"
+        ],
         "exportModelSettingsSerialize": {
             "exportFormat": 0,
             "animatedSkinnedMesh": true,
