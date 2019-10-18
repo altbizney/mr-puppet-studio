@@ -17,6 +17,8 @@ public class CountdownSlate : MonoBehaviour
 
     public RawImage image;
 
+    public Transform DataTransportChannel;
+
     private float started = -1f;
     private int current = -1;
 
@@ -32,14 +34,18 @@ public class CountdownSlate : MonoBehaviour
             image.enabled = false;
             started = -1f;
             current = -1;
+            if (DataTransportChannel)
+                DataTransportChannel.localPosition = new Vector3(DataTransportChannel.localPosition.x, 0f, DataTransportChannel.localPosition.z);
         }
         else if (time > 2f)
         {
             if (current != 1)
             {
                 image.texture = card1;
-                AudioSource.PlayClipAtPoint(tone1, cam.transform.position);
                 current = 1;
+                AudioSource.PlayClipAtPoint(tone1, cam.transform.position);
+                if (DataTransportChannel)
+                    DataTransportChannel.localPosition = new Vector3(DataTransportChannel.localPosition.x, 1f, DataTransportChannel.localPosition.z);
             }
         }
         else if (time > 1f)
@@ -47,8 +53,10 @@ public class CountdownSlate : MonoBehaviour
             if (current != 2)
             {
                 image.texture = card2;
-                AudioSource.PlayClipAtPoint(tone2, cam.transform.position);
                 current = 2;
+                AudioSource.PlayClipAtPoint(tone2, cam.transform.position);
+                if (DataTransportChannel)
+                    DataTransportChannel.localPosition = new Vector3(DataTransportChannel.localPosition.x, 2f, DataTransportChannel.localPosition.z);
             }
         }
         else
@@ -57,13 +65,15 @@ public class CountdownSlate : MonoBehaviour
             {
                 image.enabled = true;
                 image.texture = card3;
-                AudioSource.PlayClipAtPoint(tone3, cam.transform.position);
                 current = 3;
+                AudioSource.PlayClipAtPoint(tone3, cam.transform.position);
+                if (DataTransportChannel)
+                    DataTransportChannel.localPosition = new Vector3(DataTransportChannel.localPosition.x, 3f, DataTransportChannel.localPosition.z);
             }
         }
     }
 
-    [Button(ButtonSizes.Large)]
+    [Button(ButtonSizes.Gigantic)]
     private void Clap()
     {
         started = Time.time;

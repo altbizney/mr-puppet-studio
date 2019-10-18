@@ -287,6 +287,12 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617375025}
   m_Enabled: 1
+--- !u!4 &666455764 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4531592076244969323, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1575444023645241999}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &874638098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -409,6 +415,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 617375026}
+    - target: {fileID: 3247515607601681080, guid: 58238513ec79f42cb8d60e0b51d6014d,
+        type: 3}
+      propertyPath: DataTransportChannel
+      value: 
+      objectReference: {fileID: 666455764}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58238513ec79f42cb8d60e0b51d6014d, type: 3}
 --- !u!1001 &1086622181
@@ -772,62 +783,62 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.x
-      value: -0.0009192738
+      value: -0.14884597
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.y
-      value: 0.80737454
+      value: -0.20866719
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.z
-      value: 0.03387044
+      value: -0.07700397
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.w
-      value: 0.58901995
+      value: -0.9635744
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.x
-      value: 0.011738004
+      value: -0.039739396
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.y
-      value: -0.72535014
+      value: -0.33389583
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.z
-      value: -0.02729435
+      value: 0.23589078
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.w
-      value: -0.68773204
+      value: -0.91174346
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.x
-      value: -0.062861815
+      value: 0.21107137
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.y
-      value: 0.7060461
+      value: -0.1364009
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.z
-      value: -0.32307705
+      value: 0.053245105
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.w
-      value: 0.62699157
+      value: -0.9664028
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
@@ -837,22 +848,10 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: JawClosed
-      value: 158
+      value: 149
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
---- !u!114 &1484110963 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-    type: 3}
-  m_PrefabInstance: {fileID: 1484110962}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d53d716a4071412b829f2fb5d017c97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1630363600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,15 +1073,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+    - target: {fileID: 2840882888801798418, guid: a927cd8caccdd4597b0a88b00cddd9d0,
         type: 3}
-      propertyPath: DataMapper
-      value: 
-      objectReference: {fileID: 1484110963}
-    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
-        type: 3}
-      propertyPath: DataMapper
-      value: 
-      objectReference: {fileID: 1484110963}
+      propertyPath: m_Name
+      value: CountdownSlate
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}
