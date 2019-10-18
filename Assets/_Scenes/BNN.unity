@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -273,7 +273,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617375025}
   m_LocalRotation: {x: 0.47671106, y: 0.5222515, z: -0.5222515, w: -0.47671106}
-  m_LocalPosition: {x: 10.76, y: 3.62, z: -0.01}
+  m_LocalPosition: {x: 9.25, y: 3.18, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -943,7 +943,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2029046018}
   - component: {fileID: 2029046017}
-  - component: {fileID: 2029046016}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -951,14 +950,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2029046016
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029046015}
-  m_Enabled: 1
 --- !u!20 &2029046017
 Camera:
   m_ObjectHideFlags: 0
@@ -993,7 +984,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -1010,7 +1001,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2029046015}
   m_LocalRotation: {x: -0.054412127, y: 0.7050102, z: -0.05441217, w: -0.7050102}
-  m_LocalPosition: {x: 26.08, y: 6.29, z: -0.01}
+  m_LocalPosition: {x: 35.13, y: 7.41, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
