@@ -229,6 +229,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: mouthBlend_smile
       objectReference: {fileID: 0}
+    - target: {fileID: -805659205225171507, guid: 7e742abb73667403e98875476cf8a917,
+        type: 3}
+      propertyPath: m_Name
+      value: CountdownSlate
+      objectReference: {fileID: 0}
     - target: {fileID: -4949390847272833060, guid: 7e742abb73667403e98875476cf8a917,
         type: 3}
       propertyPath: m_Name
