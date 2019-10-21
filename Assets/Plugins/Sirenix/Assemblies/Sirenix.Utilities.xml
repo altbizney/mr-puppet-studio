@@ -1904,32 +1904,15 @@
             Tries to update the Guid of a specified asset with the Guid from a specified script type.
             </summary>
         </member>
-        <member name="T:Sirenix.Utilities.ICache`1">
-            <summary>
-            The ICache interface used by <see cref="T:Sirenix.Utilities.Cache`1"/>.
-            </summary>
-            <seealso cref="T:Sirenix.Utilities.Cache`1" />
-        </member>
-        <member name="P:Sirenix.Utilities.ICache`1.Value">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.ICache`1.IsFree">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.ICache`1.Release">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
         <member name="T:Sirenix.Utilities.Cache`1">
             <summary>
             Provides an easy way of claiming and freeing cached values of any non-abstract reference type with a public parameterless constructor.
             <para />
             Cached types which implement the <see cref="T:Sirenix.Utilities.ICacheNotificationReceiver"/> interface will receive notifications when they are claimed and freed.
+            <para />
+            Only one thread should be holding a given cache instance at a time if <see cref="T:Sirenix.Utilities.ICacheNotificationReceiver"/> is implemented, since the invocation of 
+            <see cref="M:Sirenix.Utilities.ICacheNotificationReceiver.OnFreed"/> is not thread safe, IE, weird stuff might happen if multiple different threads are trying to free
+            the same cache instance at the same time. This will practically never happen unless you're doing really strange stuff, but the case is documented here.
             </summary>
             <typeparam name="T">The type which is cached.</typeparam>
             <seealso cref="T:System.IDisposable" />
@@ -1942,16 +1925,12 @@
             The maximum size of the cache.
             </value>
         </member>
-        <member name="P:Sirenix.Utilities.Cache`1.Value">
+        <member name="F:Sirenix.Utilities.Cache`1.Value">
             <summary>
-            Gets the cached value.
-            </summary>
-            <value>
             The cached value.
-            </value>
-            <exception cref="T:System.InvalidOperationException">Cannot access a cache while it is freed.</exception>
+            </summary>
         </member>
-        <member name="P:Sirenix.Utilities.Cache`1.Sirenix#Utilities#ICache{T}#IsFree">
+        <member name="P:Sirenix.Utilities.Cache`1.IsFree">
             <summary>
             Gets a value indicating whether this cached value is free.
             </summary>
@@ -1981,7 +1960,7 @@
             The result of the conversion.
             </returns>
         </member>
-        <member name="M:Sirenix.Utilities.Cache`1.Sirenix#Utilities#ICache{T}#Release">
+        <member name="M:Sirenix.Utilities.Cache`1.Release">
             <summary>
             Releases this cached value.
             </summary>

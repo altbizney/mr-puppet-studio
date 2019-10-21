@@ -2460,7 +2460,8 @@
         </member>
         <member name="F:Sirenix.OdinInspector.DisplayAsStringAttribute.Overflow">
             <summary>
-            If <c>true</c> the string will overflow to multiple lines, if there's not enough space when drawn.
+            If <c>true</c>, the string will overflow past the drawn space and be clipped when there's not enough space for the text.
+            If <c>false</c> the string will expand to multiple lines, if there's not enough space when drawn.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.DisplayAsStringAttribute.#ctor">
@@ -2472,7 +2473,7 @@
             <summary>
             Displays the property as a string in the inspector.
             </summary>
-            <param name="overflow">Value indicating if the string should overflow to multiple lines or not.</param>
+            <param name="overflow">Value indicating if the string should overflow past the available space, or expand to multiple lines when there's not enough horizontal space.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.DontApplyToListElementsAttribute">
             <summary>
