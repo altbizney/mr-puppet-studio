@@ -13,35 +13,31 @@ namespace MrPuppet
 #if UNITY_EDITOR
         private RecorderWindow Recorder;
 
-        private bool IsRecording = false;
+        private MrPuppetHubConnection HubConnection;
 
-        private enum MicrophoneState
-        {
-            Idle,
-            Recording,
-            Stopped,
-        };
+        private bool IsRecording = false;
 
         private bool RecordingMicrophone = false;
 
-        private void FindRecorderWindow()
+        private void OnValidate()
         {
-            if (!Recorder) Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
         }
 
         private void Update()
         {
-            FindRecorderWindow();
+            if (!Recorder) Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
             IsRecording = Recorder.IsRecording();
 
             if (IsRecording && !RecordingMicrophone)
             {
-                Debug.Log("START MICROPHONE");
+                HubConnection.SendSocketMessage("COMMAND;START_MICROPHONE");
                 RecordingMicrophone = true;
             }
             else if (RecordingMicrophone && !IsRecording)
             {
-                Debug.Log("STOP MICROPHONE");
+                HubConnection.SendSocketMessage("COMMAND;STOP_MICROPHONE");
                 RecordingMicrophone = false;
             }
         }
