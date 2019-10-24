@@ -68,6 +68,8 @@ namespace MrPuppet
         [Header("Debug")]
         public bool OutputData = false;
 
+        private WebSocket webSocket;
+
         private string _data;
         private string[] _array;
         private string[] _wrist;
@@ -92,9 +94,27 @@ namespace MrPuppet
             StartCoroutine(GrabData());
         }
 
+        public void SendSocketMessage(string message)
+        {
+            if (!IsConnected)
+            {
+                Debug.LogWarning("Called SendMessage while not connected: " + message);
+                return;
+            }
+
+            try
+            {
+                webSocket.SendString(message);
+            }
+            catch (System.FormatException e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
+
         private IEnumerator GrabData()
         {
-            var webSocket = new WebSocket(new Uri(WebsocketUri));
+            webSocket = new WebSocket(new Uri(WebsocketUri));
 
             yield return StartCoroutine(webSocket.Connect());
 
@@ -115,7 +135,7 @@ namespace MrPuppet
                     _data = webSocket.RecvString();
                     if (!string.IsNullOrEmpty(_data))
                     {
-                        if (_data.StartsWith("DEBUG"))
+                        if (_data.StartsWith("DEBUG") || _data.StartsWith("COMMAND"))
                         {
                             // output debug
                             Debug.Log(_data);
