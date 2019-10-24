@@ -1,61 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Sirenix.OdinInspector;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Recorder;
+#endif
 
 namespace MrPuppet
 {
-    [RequireComponent(typeof(AudioSource))]
     public class CaptureMicrophone : MonoBehaviour
     {
-        private ValueDropdownList<string> DeviceNames = new ValueDropdownList<string>();
+#if UNITY_EDITOR
+        private RecorderWindow Recorder;
 
-        [ValueDropdown("DeviceNames")]
-        [OnValueChanged(nameof(OnDeviceNameChanged))]
-        public string DeviceName;
+        private bool IsRecording = false;
 
-        public int Frequency;
-
-        [ShowInInspector, ReadOnly]
-        private int minFreq;
-
-        [ShowInInspector, ReadOnly]
-        private int maxFreq;
-
-        private AudioSource AudioSource;
-
-        private void OnDeviceNameChanged()
+        private enum MicrophoneState
         {
-            Microphone.GetDeviceCaps(DeviceName, out minFreq, out maxFreq);
+            Idle,
+            Recording,
+            Stopped,
+        };
 
-            // if (Frequency == 0) Frequency = minFreq;
-            // if (Frequency > maxFreq) Frequency = maxFreq;
-            // if (Frequency < minFreq) Frequency = minFreq;
+        private bool RecordingMicrophone = false;
+
+        private void FindRecorderWindow()
+        {
+            if (!Recorder) Recorder = EditorWindow.GetWindow<RecorderWindow>();
         }
 
-        private void OnValidate()
+        private void Update()
         {
-            DeviceNames.Clear();
-            foreach (var name in Microphone.devices)
-            {
-                DeviceNames.Add(name);
+            FindRecorderWindow();
+            IsRecording = Recorder.IsRecording();
 
-                if (DeviceName == null)
-                {
-                    DeviceName = name;
-                }
+            if (IsRecording && !RecordingMicrophone)
+            {
+                Debug.Log("START MICROPHONE");
+                RecordingMicrophone = true;
+            }
+            else if (RecordingMicrophone && !IsRecording)
+            {
+                Debug.Log("STOP MICROPHONE");
+                RecordingMicrophone = false;
             }
         }
-
-        private void Start()
-        {
-            AudioSource = GetComponent<AudioSource>();
-            AudioSource.playOnAwake = false;
-            AudioSource.loop = true;
-            AudioSource.spatialBlend = 0f;
-            AudioSource.clip = Microphone.Start(DeviceName, true, 1, Frequency);
-            while (!(Microphone.GetPosition(DeviceName) > 0)) { }
-            AudioSource.Play();
-        }
+#endif
     }
 }
