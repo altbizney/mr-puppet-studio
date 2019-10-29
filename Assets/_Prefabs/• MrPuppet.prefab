@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 180394980541420894}
   - component: {fileID: 180394980541420895}
   - component: {fileID: 180394980541420889}
+  - component: {fileID: 1142454842}
   m_Layer: 0
   m_Name: "\u2022 MrPuppet"
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WebsocketUri: ws://localhost:3000
   ReconnectInterval: 2
+  IsConnected: 0
   FixRightHandedQuaternions: 1
   FixSwappedOrientation: 1
   WristRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -69,10 +71,22 @@ MonoBehaviour:
   EnableGizmo: 1
   ShowJointChain: 0
   TPose:
-    ShoulderRotation: {x: 0.022132406, y: -0.060952604, z: -0.88593405, w: 0.45919514}
-    ElbowRotation: {x: 0.10684387, y: 0.038395938, z: -0.622749, w: 0.77421117}
-    WristRotation: {x: -0.056073558, y: 0.31027845, z: -0.9483009, w: -0.03464823}
-  JawOpened: 587
-  JawClosed: 206
+    ShoulderRotation: {x: -0.09489373, y: 0.12254162, z: -0.24267909, w: -0.9576347}
+    ElbowRotation: {x: 0.023546658, y: -0.045042716, z: -0.10401545, w: -0.99327284}
+    WristRotation: {x: -0.15202795, y: -0.15860407, z: 0.014990707, w: 0.9754538}
+  JawOpened: 451
+  JawClosed: 105
   ArmLength: 1
   ForearmLength: 1
+--- !u!114 &1142454842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180394980541420888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f25202a339fc4b0d87b4220dda462aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
