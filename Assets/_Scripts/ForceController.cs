@@ -12,14 +12,31 @@ public class ForceController : MonoBehaviour
 
     private Vector3 InputVelocity;
 
+    private float Bob = 0f;
+    private float BobStartTime = 0f;
+    private float BobWave = 0f;
+
     private void Update()
     {
-        // Mathf.Lerp(0f, BobAmplitude, Input.GetAxis("Horizontal"));
+        if (Input.GetAxis("Horizontal") != 0f)
+        {
+            if (BobStartTime == 0f) BobStartTime = Time.time;
 
-        float Bob = (Mathf.Lerp(0f, BobAmplitude, Input.GetAxis("Horizontal")) * Mathf.Sin(Time.time * BobSpeed));
+            // moving
+            BobWave = Mathf.Sin((Time.time - BobStartTime) * BobSpeed);
+            Bob = Mathf.LerpUnclamped(0f, BobAmplitude, Input.GetAxis("Horizontal")) * BobWave;
+        }
+        else
+        {
+            // resting
+            BobWave = BobStartTime = 0f;
+        }
 
         InputVelocity = new Vector3(Input.GetAxis("Horizontal") * WalkSpeed, Input.GetAxis("Horizontal") == 0f ? rb.velocity.y : Bob, rb.velocity.z);
-        // rb.transform.LookAt(new Vector3(InputVelocity.x, 0f, InputVelocity.z));
+
+        DebugGraph.Log("BobWave", BobWave);
+        DebugGraph.Log("Bob", Bob);
+        DebugGraph.Log("InputVelocity", InputVelocity);
     }
 
     private void FixedUpdate()
