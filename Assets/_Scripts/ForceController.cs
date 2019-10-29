@@ -36,6 +36,7 @@ namespace MrPuppet
 
             InputVelocity = new Vector3(Input.GetAxis("Horizontal") * WalkSpeed, Input.GetAxis("Horizontal") == 0f ? rb.velocity.y : Bob, rb.velocity.z);
 
+            DebugGraph.Log("Input", Input.GetAxis("Horizontal"));
             DebugGraph.Log("BobWave", BobWave);
             DebugGraph.Log("Bob", Bob);
             DebugGraph.Log("InputVelocity", InputVelocity);
