@@ -4,37 +4,26 @@ using UnityEngine;
 
 public class ForceController : MonoBehaviour
 {
-    public float WalkSpeed = 25f;
-    public float BobSpeed = 1f;
-
-    public float MaxSpeed = 20f;
-
     public Rigidbody rb;
+    public float WalkSpeed = 5f;
 
-    public KeyCode LeftKey = KeyCode.LeftArrow;
-    public KeyCode RightKey = KeyCode.RightArrow;
-    public KeyCode UpKey = KeyCode.UpArrow;
+    public float BobAmplitude = 1f;
+    public float BobSpeed = 2f;
 
-    public ForceMode WalkMode = ForceMode.Force;
-    public ForceMode BobMode = ForceMode.Impulse;
+    private Vector3 InputVelocity;
 
-    void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKey(LeftKey))
-        {
-            rb.AddForce(-WalkSpeed, 0f, 0f, WalkMode);
-        }
+        // Mathf.Lerp(0f, BobAmplitude, Input.GetAxis("Horizontal"));
 
-        if (Input.GetKey(RightKey))
-        {
-            rb.AddForce(WalkSpeed, 0f, 0f, WalkMode);
-        }
+        float Bob = (Mathf.Lerp(0f, BobAmplitude, Input.GetAxis("Horizontal")) * Mathf.Sin(Time.time * BobSpeed));
 
-        if (Input.GetKey(UpKey))
-        {
-            rb.AddForce(0f, BobSpeed, 0f, BobMode);
-        }
+        InputVelocity = new Vector3(Input.GetAxis("Horizontal") * WalkSpeed, Input.GetAxis("Horizontal") == 0f ? rb.velocity.y : Bob, rb.velocity.z);
+        // rb.transform.LookAt(new Vector3(InputVelocity.x, 0f, InputVelocity.z));
+    }
 
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, MaxSpeed);
+    private void FixedUpdate()
+    {
+        rb.velocity = InputVelocity;
     }
 }
