@@ -9,8 +9,8 @@ namespace MrPuppet
         public Rigidbody rb;
         public float WalkSpeed = 3.41f;
 
-        public float BobFrequency = 0.5f;
-        public float BobHeight = 5f;
+        public float BobFrequency = 0.2f;
+        public float BobHeight = 4f;
 
         private Vector3 InputVelocity;
         private bool IsWalking = false;
