@@ -6,12 +6,13 @@ namespace MrPuppet
 {
     public class ForceController : MonoBehaviour
     {
-        public float WalkSpeed = 3.41f;
-
+        public float WalkSpeed = 0.1f;
         public float BobFrequency = 0.2f;
         public float BobHeight = 4f;
 
         public float SmoothTime = 0.1f;
+        public float Stiffness = 100f;
+        public float Damping = 10f;
 
         private Vector3 PositionTarget = Vector3.zero;
         private Vector3 PositionCurrent = Vector3.zero;
@@ -36,7 +37,7 @@ namespace MrPuppet
                     CancelInvoke("ToggleBob");
                 }
 
-                PositionTarget.x += Input.GetAxisRaw("Horizontal") * WalkSpeed;
+                PositionTarget.x += Input.GetAxis("Horizontal") * WalkSpeed;
             }
             else
             {
@@ -48,6 +49,8 @@ namespace MrPuppet
             }
 
             PositionCurrent = Vector3.SmoothDamp(PositionCurrent, PositionTarget, ref PositionVelocity, SmoothTime);
+            // PositionCurrent = Springz.Vector3(PositionCurrent, PositionTarget, ref PositionVelocity, Stiffness, Damping);
+
             transform.position = PositionCurrent;
         }
 
