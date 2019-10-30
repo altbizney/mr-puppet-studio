@@ -11,11 +11,15 @@ namespace MrPuppet
         public float BobFrequency = 0.2f;
         public float BobHeight = 4f;
 
+        public float BobSmoothTime = 0.1f;
         private float BobTarget = 0f;
+        private float BobCurrent = 0f;
+        private float BobVelocity = 0f;
 
         private Vector3 Position = Vector3.zero;
         private bool IsMoving = false;
         private bool IsUp = false;
+
 
         private void Update()
         {
@@ -37,8 +41,10 @@ namespace MrPuppet
                 }
             }
 
+            BobCurrent = Mathf.SmoothDamp(BobCurrent, BobTarget, ref BobVelocity, BobSmoothTime);
+
             Position = transform.position;
-            Position.y = BobTarget;
+            Position.y = BobCurrent;
             transform.position = Position;
         }
 
