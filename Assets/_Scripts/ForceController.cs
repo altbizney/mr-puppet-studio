@@ -6,57 +6,42 @@ namespace MrPuppet
 {
     public class ForceController : MonoBehaviour
     {
-        public Rigidbody rb;
         public float WalkSpeed = 3.41f;
 
         public float BobFrequency = 0.2f;
         public float BobHeight = 4f;
 
-        private Vector3 InputVelocity;
-        private bool IsWalking = false;
-
-        private float BobTarget = 0f;
+        private Vector3 Position = Vector3.zero;
+        private bool IsMoving = false;
+        private bool IsUp = false;
 
         private void Update()
         {
-            InputVelocity = rb.velocity;
-            InputVelocity.x = Input.GetAxis("Horizontal") * WalkSpeed;
-
-            IsWalking = Input.GetAxisRaw("Horizontal") != 0f;
-
-            if (IsWalking)
+            if (IsMoving)
             {
-                if (!IsInvoking("ToggleBob")) InvokeRepeating("ToggleBob", 0f, BobFrequency);
-                InputVelocity.y = BobTarget * Mathf.Lerp(0f, BobHeight, Mathf.Abs(Input.GetAxis("Horizontal")));
+                if (Input.GetAxisRaw("Horizontal") == 0f)
+                {
+                    IsMoving = IsUp = false;
+                    CancelInvoke("ToggleBob");
+                }
             }
             else
             {
-                CancelInvoke("ToggleBob");
-                if (BobTarget != 0f) InputVelocity.y = BobTarget = 0f;
+                if (Input.GetAxisRaw("Horizontal") != 0f)
+                {
+                    IsMoving = true;
+                    if (!IsInvoking("ToggleBob")) InvokeRepeating("ToggleBob", 0f, BobFrequency);
+                }
             }
 
-            // DebugGraph.Log("Input", Input.GetAxis("Horizontal"));
-            // DebugGraph.Log("Input (raw)", Input.GetAxisRaw("Horizontal"));
-            // DebugGraph.Log("BobTarget", BobTarget);
-            // DebugGraph.Log("InputVelocity.x", InputVelocity.x);
-            // DebugGraph.Log("InputVelocity.y", InputVelocity.y);
-        }
-
-        private void FixedUpdate()
-        {
-            rb.velocity = InputVelocity;
+            Position = transform.position;
+            Position.y = IsUp ? BobHeight : 0;
+            transform.position = Position;
         }
 
         private void ToggleBob()
         {
-            if (BobTarget == 1f)
-            {
-                BobTarget = -1f;
-            }
-            else
-            {
-                BobTarget = 1f;
-            }
+            IsUp = !IsUp;
         }
     }
 }
