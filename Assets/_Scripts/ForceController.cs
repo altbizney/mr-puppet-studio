@@ -9,42 +9,54 @@ namespace MrPuppet
         public Rigidbody rb;
         public float WalkSpeed = 3.41f;
 
-        public float BobAmplitude = 3.4f;
-        public float BobSpeed = 15f;
+        public float BobFrequency = 0.5f;
+        public float BobHeight = 5f;
 
         private Vector3 InputVelocity;
+        private bool IsWalking = false;
 
-        private float Bob = 0f;
-        private float BobStartTime = 0f;
-        private float BobWave = 0f;
+        private float BobTarget = 0f;
 
         private void Update()
         {
-            if (Input.GetAxis("Horizontal") != 0f)
-            {
-                if (BobStartTime == 0f) BobStartTime = Time.time;
+            InputVelocity = rb.velocity;
+            InputVelocity.x = Input.GetAxis("Horizontal") * WalkSpeed;
 
-                // moving
-                BobWave = Mathf.Sin((Time.time - BobStartTime) * BobSpeed);
-                Bob = Mathf.LerpUnclamped(0f, BobAmplitude, Input.GetAxis("Horizontal")) * BobWave;
+            IsWalking = Input.GetAxisRaw("Horizontal") != 0f;
+
+            if (IsWalking)
+            {
+                if (!IsInvoking("ToggleBob")) InvokeRepeating("ToggleBob", 0f, BobFrequency);
+                InputVelocity.y = BobTarget * Mathf.Lerp(0f, BobHeight, Mathf.Abs(Input.GetAxis("Horizontal")));
             }
             else
             {
-                // resting
-                BobWave = BobStartTime = 0f;
+                CancelInvoke("ToggleBob");
+                if (BobTarget != 0f) InputVelocity.y = BobTarget = 0f;
             }
 
-            InputVelocity = new Vector3(Input.GetAxis("Horizontal") * WalkSpeed, Input.GetAxis("Horizontal") == 0f ? rb.velocity.y : Bob, rb.velocity.z);
-
-            DebugGraph.Log("Input", Input.GetAxis("Horizontal"));
-            DebugGraph.Log("BobWave", BobWave);
-            DebugGraph.Log("Bob", Bob);
-            DebugGraph.Log("InputVelocity", InputVelocity);
+            // DebugGraph.Log("Input", Input.GetAxis("Horizontal"));
+            // DebugGraph.Log("Input (raw)", Input.GetAxisRaw("Horizontal"));
+            // DebugGraph.Log("BobTarget", BobTarget);
+            // DebugGraph.Log("InputVelocity.x", InputVelocity.x);
+            // DebugGraph.Log("InputVelocity.y", InputVelocity.y);
         }
 
         private void FixedUpdate()
         {
             rb.velocity = InputVelocity;
+        }
+
+        private void ToggleBob()
+        {
+            if (BobTarget == 1f)
+            {
+                BobTarget = -1f;
+            }
+            else
+            {
+                BobTarget = 1f;
+            }
         }
     }
 }
