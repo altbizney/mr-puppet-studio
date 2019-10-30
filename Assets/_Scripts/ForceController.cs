@@ -11,15 +11,19 @@ namespace MrPuppet
         public float BobFrequency = 0.2f;
         public float BobHeight = 4f;
 
-        public float BobSmoothTime = 0.1f;
-        private float BobTarget = 0f;
-        private float BobCurrent = 0f;
-        private float BobVelocity = 0f;
+        public float SmoothTime = 0.1f;
 
-        private Vector3 Position = Vector3.zero;
+        private Vector3 PositionTarget = Vector3.zero;
+        private Vector3 PositionCurrent = Vector3.zero;
+        private Vector3 PositionVelocity = Vector3.zero;
+
         private bool IsMoving = false;
         private bool IsUp = false;
 
+        private void Start()
+        {
+            PositionTarget = PositionCurrent = transform.position;
+        }
 
         private void Update()
         {
@@ -27,10 +31,12 @@ namespace MrPuppet
             {
                 if (Input.GetAxisRaw("Horizontal") == 0f)
                 {
-                    BobTarget = 0f;
+                    PositionTarget.y = 0f;
                     IsMoving = IsUp = false;
                     CancelInvoke("ToggleBob");
                 }
+
+                PositionTarget.x += Input.GetAxisRaw("Horizontal") * WalkSpeed;
             }
             else
             {
@@ -41,18 +47,15 @@ namespace MrPuppet
                 }
             }
 
-            BobCurrent = Mathf.SmoothDamp(BobCurrent, BobTarget, ref BobVelocity, BobSmoothTime);
-
-            Position = transform.position;
-            Position.y = BobCurrent;
-            transform.position = Position;
+            PositionCurrent = Vector3.SmoothDamp(PositionCurrent, PositionTarget, ref PositionVelocity, SmoothTime);
+            transform.position = PositionCurrent;
         }
 
         private void ToggleBob()
         {
             IsUp = !IsUp;
 
-            BobTarget = IsUp ? BobHeight : 0f;
+            PositionTarget.y = IsUp ? BobHeight : 0f;
         }
     }
 }

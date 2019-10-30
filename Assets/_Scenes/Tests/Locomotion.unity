@@ -727,6 +727,7 @@ MonoBehaviour:
   WalkSpeed: 3.41
   BobFrequency: 0.2
   BobHeight: 4
+  SmoothTime: 0.1
 --- !u!54 &1136385799
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -832,9 +833,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e0ff506d75b436d9dd9c59d0865296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 3.41
+  WalkSpeed: 0.1
   BobFrequency: 0.2
   BobHeight: 4
+  SmoothTime: 0.1
 --- !u!65 &1504398005
 BoxCollider:
   m_ObjectHideFlags: 0
