@@ -11,6 +11,8 @@ namespace MrPuppet
         public float BobFrequency = 0.2f;
         public float BobHeight = 4f;
 
+        private float BobTarget = 0f;
+
         private Vector3 Position = Vector3.zero;
         private bool IsMoving = false;
         private bool IsUp = false;
@@ -21,6 +23,7 @@ namespace MrPuppet
             {
                 if (Input.GetAxisRaw("Horizontal") == 0f)
                 {
+                    BobTarget = 0f;
                     IsMoving = IsUp = false;
                     CancelInvoke("ToggleBob");
                 }
@@ -35,13 +38,15 @@ namespace MrPuppet
             }
 
             Position = transform.position;
-            Position.y = IsUp ? BobHeight : 0;
+            Position.y = BobTarget;
             transform.position = Position;
         }
 
         private void ToggleBob()
         {
             IsUp = !IsUp;
+
+            BobTarget = IsUp ? BobHeight : 0f;
         }
     }
 }
