@@ -159,7 +159,7 @@ namespace MrPuppet
             // HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
             // HeadProxy.SetParent(Head.parent, false);
 
-            HipSpawnPosition = Hip.position;
+            HipSpawnPosition = Hip.localPosition;
             HipSpawnRotation = Hip.rotation;
             HeadSpawnRotation = Head.rotation;
 
@@ -185,7 +185,7 @@ namespace MrPuppet
                 );
 
                 // smoothly apply changes to position
-                Hip.position = Vector3.SmoothDamp(Hip.position, position, ref PositionVelocity, PositionSpeed);
+                Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
                 Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.smoothDeltaTime);
