@@ -23,4 +23,13 @@ public static class Springz
 
         return current;
     }
+
+    public static Vector3 Vector3(Vector3 current, Vector3 target, ref Vector3 velocity, float stiffness = 100f, float damping = 10f, float maxVelocity = Mathf.Infinity)
+    {
+        current.x = Float(current.x, target.x, ref velocity.x, stiffness, damping, maxVelocity);
+        current.y = Float(current.y, target.y, ref velocity.y, stiffness, damping, maxVelocity);
+        current.z = Float(current.z, target.z, ref velocity.z, stiffness, damping, maxVelocity);
+
+        return current;
+    }
 }
