@@ -115,7 +115,6 @@ namespace MrPuppet
 
 
         public bool EnableJawHeadMixer = false;
-        [MinValue(0f)]
         [ShowIf("EnableJawHeadMixer")]
         public float JawHeadMaxExtent = 10f;
         [Range(0f, 1f)]
@@ -193,7 +192,7 @@ namespace MrPuppet
 
                 if (EnableJawHeadMixer)
                 {
-                    Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent) * JawHeadWeight, Space.World);
+                    Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent) * JawHeadWeight, Space.Self);
                 }
 
                 // apply weighted influences
