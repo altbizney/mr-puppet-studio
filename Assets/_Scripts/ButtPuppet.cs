@@ -113,13 +113,14 @@ namespace MrPuppet
         [ShowIf("LimitHipExtentZ")]
         public float HipExtentZ = 0f;
 
-
         public bool EnableJawHeadMixer = false;
         [ShowIf("EnableJawHeadMixer")]
         public float JawHeadMaxExtent = 10f;
-        [Range(0f, 1f)]
+
+        public enum JawHeadAxis { x, y, z };
         [ShowIf("EnableJawHeadMixer")]
-        public float JawHeadWeight = 1.0f;
+        [EnumToggleButtons]
+        public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
 
         private void OnValidate()
         {
@@ -192,7 +193,20 @@ namespace MrPuppet
 
                 if (EnableJawHeadMixer)
                 {
-                    Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent) * JawHeadWeight, Space.Self);
+                    switch (JawHeadRotate)
+                    {
+                        case JawHeadAxis.x:
+                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
+                            break;
+
+                        case JawHeadAxis.y:
+                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
+                            break;
+
+                        case JawHeadAxis.z:
+                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
+                            break;
+                    }
                 }
 
                 // apply weighted influences

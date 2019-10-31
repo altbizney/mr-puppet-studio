@@ -37,7 +37,7 @@ namespace MrPuppet
                     CancelInvoke("ToggleBob");
                 }
 
-                PositionTarget.x += Input.GetAxis("Horizontal") * WalkSpeed;
+                PositionTarget.z += Input.GetAxis("Horizontal") * WalkSpeed;
             }
             else
             {
