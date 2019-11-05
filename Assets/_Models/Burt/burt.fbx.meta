@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7e742abb73667403e98875476cf8a917
+guid: b23177e0cdb6c482695fde7103523cc9
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -27,7 +27,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: pasted__pasted__surfaceShader2
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: pasted__surfaceShader1
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__surfaceShader3
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   - first:
       type: UnityEngine:Material
