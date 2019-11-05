@@ -16,7 +16,7 @@ namespace MrPuppet
             public Transform Proxy;
         }
 
-        private List<ChannelMap> Channels;
+        private List<ChannelMap> Channels = new List<ChannelMap>();
 
         public bool DrawGizmos = false;
 
