@@ -31,6 +31,28 @@ Transform:
   m_Father: {fileID: 882916653820372836}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -38.963, z: 0}
+--- !u!114 &504471903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7914525882327813228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0df423099b5344f3bed539da6a6b85b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Triggers:
+  - TriggerKey: 49
+    TriggerName: wave
+    TriggerHash: 0
+  - TriggerKey: 50
+    TriggerName: flick
+    TriggerHash: 0
+  - TriggerKey: 51
+    TriggerName: bow
+    TriggerHash: 0
 --- !u!1 &8822315253336759722
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +254,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c415c26cb8a14e69a7dbd962e0d7ec0, type: 3}
+--- !u!1 &7914525882327813228 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 7c415c26cb8a14e69a7dbd962e0d7ec0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2231505358969869669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6597019754083270271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 7c415c26cb8a14e69a7dbd962e0d7ec0,
