@@ -111,7 +111,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: take
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: captureEveryNthFrame
@@ -131,7 +131,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: fileNameGenerator.m_FileName
-    value: <Scene> - take <Take>
+    value: BNN-E000-A<Take>
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_AnimationInputSettings.m_BindingId
