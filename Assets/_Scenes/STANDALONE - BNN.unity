@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -583,7 +583,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1188583356}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
-  m_LocalPosition: {x: 6.04, y: 2.5, z: 0}
+  m_LocalPosition: {x: 8.63, y: 2.4, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 1418949578}
   - component: {fileID: 1418949577}
   m_Layer: 0
-  m_Name: Offset Camera
+  m_Name: PIP Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -807,13 +807,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418949576}
-  m_LocalRotation: {x: -0, y: 0.6258582, z: -0, w: -0.7799369}
-  m_LocalPosition: {x: 6.72, y: 2.48, z: -2.63}
+  m_LocalRotation: {x: -0, y: 0.6969217, z: -0, w: -0.71714723}
+  m_LocalPosition: {x: 7.07, y: 2.25, z: -1.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: -77.490005, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -88.36101, z: 0}
 --- !u!1 &1473909458
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,8 +947,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1965410524}
   - component: {fileID: 1965410523}
+  - component: {fileID: 1965410525}
   m_Layer: 0
-  m_Name: Audio Listener
+  m_Name: Global Scripts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,6 +977,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1965410525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965410522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 801cc33b79d8b4fa69223a61553a52d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeroCamera: {fileID: 1188583356}
+  PIPCamera: {fileID: 1418949576}
+  WideCamera: {fileID: 865992117}
+  PIP: {fileID: 1473909458}
+  HeroKey: 49
+  PIPKey: 50
+  WideKey: 51
 --- !u!1001 &5615389820869651630
 PrefabInstance:
   m_ObjectHideFlags: 0
