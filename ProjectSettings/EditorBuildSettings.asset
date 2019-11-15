@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/STANDALONE - Trainer.unity
-    guid: cea55759691334834983f6bfe3b893ff
+    path: Assets/_Scenes/STANDALONE - BNN.unity
+    guid: bca309c8ccd0349b28922f7a7673e869
   m_configObjects: {}
