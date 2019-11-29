@@ -42,7 +42,7 @@ namespace MrPuppet
 
         private void Start()
         {
-            // starting = transform.localRotation.eulerAngles;
+            starting = transform.localRotation.eulerAngles;
         }
 
         private void LateUpdate()
