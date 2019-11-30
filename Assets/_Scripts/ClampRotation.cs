@@ -1,10 +1,15 @@
 ﻿using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+using UnityEditor;
+#endif
 
 namespace MrPuppet
 {
-    public class ClampTest : MonoBehaviour
+    public class ClampRotation : MonoBehaviour
     {
         [HorizontalGroup("Split", LabelWidth = 20)]
 
@@ -73,4 +78,40 @@ namespace MrPuppet
             return delta;
         }
     }
+
+#if UNITY_EDITOR && false
+    [CustomEditor(typeof(ClampRotation))]
+    public class ClampRotationEditor : OdinEditor
+    {
+        private float size = 0.75f;
+
+        private void OnSceneGUI()
+        {
+            ClampRotation src = (ClampRotation) target;
+
+            Handles.color = Color.red;
+            Handles.DrawWireArc(src.transform.position, src.transform.right, src.transform.up, 360f, size);
+
+            Handles.color = new Color(size, 0f, 0f, 0.25f);
+            Handles.DrawSolidArc(src.transform.position, src.transform.right, -src.transform.up, src.minX, size);
+            Handles.DrawSolidArc(src.transform.position, src.transform.right, -src.transform.up, src.maxX, size);
+
+            Handles.color = Color.green;
+            Handles.DrawWireArc(src.transform.position, src.transform.up, src.transform.right, 360f, size);
+
+            Handles.color = new Color(0f, 1f, 0f, 0.25f);
+            Handles.DrawSolidArc(src.transform.position, src.transform.up, src.transform.right, src.minY, size);
+            Handles.DrawSolidArc(src.transform.position, src.transform.up, src.transform.right, src.maxY, size);
+
+            Handles.color = Color.blue;
+            Handles.DrawWireArc(src.transform.position, src.transform.forward, src.transform.up, 360f, size);
+
+            Handles.color = new Color(0f, 0f, 1f, 0.25f);
+            Handles.DrawSolidArc(src.transform.position, src.transform.forward, -src.transform.up, src.minZ, size);
+            Handles.DrawSolidArc(src.transform.position, src.transform.forward, -src.transform.up, src.maxZ, size);
+
+        }
+    }
+
+#endif
 }
