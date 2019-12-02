@@ -11,36 +11,55 @@ namespace MrPuppet
 {
     public class ClampRotation : MonoBehaviour
     {
+        [System.Flags]
+        public enum ClampAxis
+        {
+            // None = 0,
+            X = 1 << 1,
+            Y = 1 << 2,
+            Z = 1 << 3,
+            // All = X | Y | Z
+        }
+
+        [EnumToggleButtons, HideLabel]
+        public ClampAxis EnabledAxis = ClampAxis.X | ClampAxis.Y | ClampAxis.Z;
+
         [HorizontalGroup("Split", LabelWidth = 20)]
 
         [BoxGroup("Split/Min")]
         [LabelText("X")]
         [Range(-179f, 0f)]
+        [EnableIf("IsClampedX")]
         public float minX = -179f;
 
         [BoxGroup("Split/Max")]
         [LabelText("X")]
         [Range(0f, 179f)]
+        [EnableIf("IsClampedX")]
         public float maxX = 179f;
 
         [BoxGroup("Split/Min")]
         [LabelText("Y")]
         [Range(-179f, 0f)]
+        [EnableIf("IsClampedY")]
         public float minY = -179f;
 
         [BoxGroup("Split/Max")]
         [LabelText("Y")]
         [Range(0f, 179f)]
+        [EnableIf("IsClampedY")]
         public float maxY = 179f;
 
         [BoxGroup("Split/Min")]
         [LabelText("Z")]
         [Range(-179f, 0f)]
+        [EnableIf("IsClampedZ")]
         public float minZ = -179f;
 
         [BoxGroup("Split/Max")]
         [LabelText("Z")]
         [Range(0f, 179f)]
+        [EnableIf("IsClampedZ")]
         public float maxZ = 179f;
 
         private Vector3 starting;
@@ -52,12 +71,13 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
-            Vector3 diff = EulerAnglesBetween(starting, transform.localRotation.eulerAngles);
+            Vector3 curr = transform.localRotation.eulerAngles;
+            Vector3 diff = EulerAnglesBetween(starting, curr);
 
             transform.localRotation = Quaternion.Euler(
-                starting.x + Mathf.Clamp(diff.x, minX, maxX),
-                starting.y + Mathf.Clamp(diff.y, minY, maxY),
-                starting.z + Mathf.Clamp(diff.z, minZ, maxZ)
+                IsClampedX() ? starting.x + Mathf.Clamp(diff.x, minX, maxX) : curr.x,
+                IsClampedY() ? starting.y + Mathf.Clamp(diff.y, minY, maxY) : curr.y,
+                IsClampedZ() ? starting.z + Mathf.Clamp(diff.z, minZ, maxZ) : curr.z
             );
         }
 
@@ -77,6 +97,10 @@ namespace MrPuppet
 
             return delta;
         }
+
+        private bool IsClampedX() { return EnabledAxis.HasFlag(ClampAxis.X); }
+        private bool IsClampedY() { return EnabledAxis.HasFlag(ClampAxis.Y); }
+        private bool IsClampedZ() { return EnabledAxis.HasFlag(ClampAxis.Z); }
     }
 
 #if UNITY_EDITOR && false
