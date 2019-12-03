@@ -7,37 +7,49 @@ namespace MrPuppet.WIP
 {
     public class NosePointer : MonoBehaviour
     {
-        public Transform joint, target;
+        public Transform noseJoint, camTarget;
 
-        private Vector3 targetOnPlane;
-        private Quaternion rotationToTarget;
+        private Vector3 camTargetOnPlane;
+        private Quaternion rotationToCamTarget;
 
-        public float deadzone = 0.1f;
         public float noseAngle = 90f;
         public float angleCutoff = 45f;
 
         [Range(-1f, 1f)]
         public float knob = 0f;
 
+        private float angleFromCenter;
+
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
 
-            Debug.DrawLine(joint.position, target.position, Color.white);
-            Gizmos.DrawSphere(joint.position, 0.1f);
-            Gizmos.DrawSphere(target.position, 0.1f);
+            Debug.DrawLine(noseJoint.parent.position, camTarget.position, Gizmos.color = Color.grey);
+            Gizmos.DrawSphere(noseJoint.parent.position, 0.1f);
+            Gizmos.DrawSphere(camTarget.position, 0.1f);
 
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(joint.position, targetOnPlane);
-            Gizmos.DrawSphere(targetOnPlane, 0.1f);
+            Gizmos.DrawLine(noseJoint.parent.position, camTargetOnPlane);
+            Gizmos.DrawSphere(camTargetOnPlane, 0.1f);
         }
 
         private void LateUpdate()
         {
-            targetOnPlane = new Vector3(target.position.x, joint.position.y, target.position.z);
-            rotationToTarget = Quaternion.LookRotation(targetOnPlane - joint.position);
+            // project camTarget X/Z onto noseJoint.parent Y plane
+            camTargetOnPlane = new Vector3(camTarget.position.x, noseJoint.parent.position.y, camTarget.position.z);
 
-            joint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseAngle, 0f), knob);
+            // compute rotation from projected point to noseJoint parent
+            rotationToCamTarget = Quaternion.LookRotation(camTargetOnPlane - noseJoint.parent.position);
+
+            // compute current angle from origin defined by rotationToCamTarget.y
+            angleFromCenter = rotationToCamTarget.eulerAngles.y - noseJoint.parent.rotation.eulerAngles.y;
+
+            // remap from range to INVERTED knob range
+            knob = angleFromCenter.Remap(-angleCutoff, angleCutoff, -1f, 1f) * -1;
+
+            // flop the actual nose
+            noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseAngle, 0f), knob);
+
         }
     }
 }

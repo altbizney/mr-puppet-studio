@@ -200,7 +200,7 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: JawClosed
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420894, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
@@ -768,7 +768,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acb3d44bc39d47b6a9a0aecd1860eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joint: {fileID: 6808795197815391899}
-  target: {fileID: 1349743953}
-  leftAngle: -90
-  rightAngle: 90
+  noseJoint: {fileID: 6808795197815391899}
+  camTarget: {fileID: 1349743953}
+  deadzone: 0.1
+  noseAngle: 90
+  angleCutoff: 45
+  knob: 0
