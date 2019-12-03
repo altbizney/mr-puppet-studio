@@ -26,7 +26,7 @@ namespace MrPuppet.WIP
         [ValueDropdown("VectorDirectionValues", HideChildProperties = true)]
         public Vector3 UpDirection = Vector3.up;
 
-        public Vector3 offset = new Vector3(180f, 90f, -90f);
+        public Vector3 offset = new Vector3(0f, 0f, 0f);
 
         private void LateUpdate()
         {
