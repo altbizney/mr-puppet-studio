@@ -10,8 +10,8 @@ namespace MrPuppet.WIP
     {
         public Transform target;
         public Transform headBone;
-        public float headMaxTurnAngle = 180f;
-        public float headTrackingSpeed = 10f;
+        // public float headMaxTurnAngle = 180f;
+        // public float headTrackingSpeed = 10f;
 
         private ValueDropdownList<Vector3> VectorDirectionValues = new ValueDropdownList<Vector3>()
         {
@@ -28,12 +28,15 @@ namespace MrPuppet.WIP
 
         public Vector3 offset = new Vector3(0f, 0f, 0f);
 
+        [Range(0f, 1f)]
+        public float weight = 1f;
+
         private void LateUpdate()
         {
             Vector3 targetWorldLookDir = target.position - headBone.position;
             Vector3 targetLocalLookDir = headBone.parent.InverseTransformDirection(targetWorldLookDir);
 
-            headBone.localRotation = Quaternion.LookRotation(targetLocalLookDir, headBone.parent.InverseTransformDirection(UpDirection)) * Quaternion.Euler(offset);
+            headBone.localRotation = Quaternion.Slerp(headBone.localRotation, Quaternion.LookRotation(targetLocalLookDir, headBone.parent.InverseTransformDirection(UpDirection)) * Quaternion.Euler(offset), weight);
 
             Debug.DrawLine(target.position, headBone.position, Color.white);
 
