@@ -30,7 +30,7 @@ namespace MrPuppet.WIP
         [InfoBox("Corrective rotation to add onto the facing direction")]
         public Vector3 RotationOffset;
 
-        public float WalkSpeed = 5f;
+        public float WalkSpeed = 6f;
         public float BobSmoothTime = 0.1f;
         public float BobFrequency = 0.175f;
         public float BobHeight = 2f;
