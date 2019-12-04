@@ -133,7 +133,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 539329921}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 076d5cd440613447480d4ee044558ff9, type: 3}
   m_Name: 
@@ -763,6 +763,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5300629401198929641, guid: e74d56f5a0d284d009cdff3c50844693,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74d56f5a0d284d009cdff3c50844693, type: 3}
 --- !u!1 &6808795197815391898 stripped
@@ -791,6 +796,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noseJoint: {fileID: 6808795197815391899}
   camTarget: {fileID: 1349743953}
-  noseAngle: 90
-  angleCutoff: 45
-  knob: 0
+  hotspotSize: 3
+  noseAngle: 55
+  angleCutoff: 80
+  knobTarget: 0
+  knobCurr: 0
+  knobSmoothTime: 0.2

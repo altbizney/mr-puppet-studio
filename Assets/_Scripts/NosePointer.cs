@@ -12,11 +12,15 @@ namespace MrPuppet.WIP
         private Vector3 camTargetOnPlane;
         private Quaternion rotationToCamTarget;
 
-        public float noseAngle = 90f;
-        public float angleCutoff = 45f;
+        public float hotspotSize = 3f;
+        public float noseAngle = 55f;
+        public float angleCutoff = 80f;
 
-        [Range(-1f, 1f)]
-        public float knob = 0f;
+        [Range(-1f, 1f), ReadOnly]
+        public float knobTarget, knobCurr = 0f;
+        public float knobSmoothTime = 0.2f;
+
+        private float knobVel;
 
         private float angleFromCenter;
 
@@ -44,12 +48,50 @@ namespace MrPuppet.WIP
             // compute current angle from origin defined by rotationToCamTarget.y
             angleFromCenter = rotationToCamTarget.eulerAngles.y - noseJoint.parent.rotation.eulerAngles.y;
 
-            // remap from range to INVERTED knob range
-            knob = angleFromCenter.Remap(-angleCutoff, angleCutoff, -1f, 1f) * -1;
+            // remap from range to knobTarget range, then invert
+            knobTarget = angleFromCenter.Remap(-angleCutoff, angleCutoff, -1f, 1f) * -1;
 
-            // flop the actual nose
-            noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseAngle, 0f), knob);
+            // override hotspot and cutoff
+            if (angleFromCenter > 0f)
+            {
+                if (angleFromCenter < hotspotSize / 2f)
+                {
+                    // angleFromCenter = hotspotSize / 2f;
+                    // Debug.Log("HOTSPOT - RIGHT");
+                }
 
+                if (angleFromCenter > angleCutoff)
+                {
+                    // Debug.Log("CUTOFF - RIGHT");
+                    // angleFromCenter = 0f;
+                    knobTarget = 0f;
+                }
+            }
+
+            if (angleFromCenter < 0f)
+            {
+                if (angleFromCenter > -hotspotSize / 2f)
+                {
+                    // angleFromCenter = -hotspotSize / 2f;
+                    // Debug.Log("HOTSPOT - LEFT");
+                }
+
+                if (angleFromCenter < -angleCutoff)
+                {
+                    // Debug.Log("CUTOFF - LEFT");
+                    // angleFromCenter = 0f;
+                    knobTarget = 0f;
+                }
+            }
+
+            // spring the nose flop based on knobTarget
+            knobCurr = Mathf.SmoothDamp(knobCurr, knobTarget, ref knobVel, knobSmoothTime);
+            noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseAngle, 0f), knobCurr);
+        }
+
+        private void OnDisable()
+        {
+            noseJoint.localRotation = Quaternion.identity;
         }
     }
 }
