@@ -88,7 +88,7 @@ MonoBehaviour:
   HipExtentZ: 0
   EnableJawHeadMixer: 0
   JawHeadMaxExtent: 10
-  JawHeadWeight: 1
+  JawHeadRotate: 2
 --- !u!114 &1575444023606922970
 MonoBehaviour:
   m_ObjectHideFlags: 0
