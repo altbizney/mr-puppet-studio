@@ -303,6 +303,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.6321081
       objectReference: {fileID: 0}
+    - target: {fileID: 9103171389147384434, guid: e74d56f5a0d284d009cdff3c50844693,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.6116521
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6808795196696792817, guid: e74d56f5a0d284d009cdff3c50844693, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e74d56f5a0d284d009cdff3c50844693, type: 3}
@@ -342,10 +347,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d1a89dbc11b45888c9275f0584393a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1160891345}
+  Controller: {fileID: 1160891345}
   VerticalDirection: {x: -1, y: 0, z: 0}
   HorizontalDirection: {x: 0, y: 0, z: 1}
-  speed: 5
+  WalkSpeed: 5
+  BobSmoothTime: 0.1
+  BobFrequency: 0.175
+  BobHeight: 2
 --- !u!1 &1793435933
 GameObject:
   m_ObjectHideFlags: 0
