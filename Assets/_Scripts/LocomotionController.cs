@@ -19,20 +19,25 @@ namespace MrPuppet.WIP
 
         public CharacterController Controller;
 
+        [InfoBox("World axis to translate vertically")]
         [ValueDropdown("VectorDirectionValues", HideChildProperties = true)]
         public Vector3 VerticalDirection = Vector3.forward;
 
+        [InfoBox("World axis to translate horizontally")]
         [ValueDropdown("VectorDirectionValues", HideChildProperties = true)]
         public Vector3 HorizontalDirection = Vector3.right;
 
-        public float WalkSpeed = 5f;
+        [InfoBox("Corrective rotation to add onto the facing direction")]
+        public Vector3 RotationOffset;
 
+        public float WalkSpeed = 5f;
         public float BobSmoothTime = 0.1f;
         public float BobFrequency = 0.175f;
         public float BobHeight = 2f;
 
         private bool IsMoving, IsUp = false;
         private float InitialHeight, BobTarget, BobCurrent, BobVelocity = 0f;
+        private Vector3 MoveDirection;
 
         private void Start()
         {
@@ -64,12 +69,17 @@ namespace MrPuppet.WIP
             }
 
             // create direction vector to move on X/Z
-            Vector3 movementDirection = (VerticalDirection * Input.GetAxis("Vertical") * WalkSpeed) + (HorizontalDirection * Input.GetAxis("Horizontal") * WalkSpeed);
-            Controller.Move(movementDirection * Time.deltaTime);
+            MoveDirection = (VerticalDirection * Input.GetAxis("Vertical") * WalkSpeed) + (HorizontalDirection * Input.GetAxis("Horizontal") * WalkSpeed);
+            Controller.Move(MoveDirection * Time.deltaTime);
 
             // spring bob height and apply to local position
             BobCurrent = Mathf.SmoothDamp(BobCurrent, BobTarget, ref BobVelocity, BobSmoothTime);
             transform.localPosition = new Vector3(transform.localPosition.x, InitialHeight + BobCurrent, transform.localPosition.z);
+
+            if (MoveDirection != Vector3.zero)
+            {
+                transform.localRotation = Quaternion.Euler(RotationOffset) * Quaternion.LookRotation(MoveDirection);
+            }
         }
 
         private void ToggleBob()
