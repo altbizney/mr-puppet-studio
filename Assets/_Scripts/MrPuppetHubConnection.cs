@@ -183,9 +183,9 @@ namespace MrPuppet
 
                             if (FixSwappedOrientation)
                             {
-                                ShoulderRotation *= Quaternion.Euler(0, 90f, -180f);
-                                ElbowRotation *= Quaternion.Euler(0, 90f, -180f);
-                                WristRotation *= Quaternion.Euler(0, 90f, -180f);
+                                ShoulderRotation *= Quaternion.Euler(0, 0f, -180f);
+                                ElbowRotation *= Quaternion.Euler(0, 0f, -180f);
+                                WristRotation *= Quaternion.Euler(0, 0f, -180f);
                             }
 
                             // grab calibration info

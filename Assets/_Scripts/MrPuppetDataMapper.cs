@@ -82,10 +82,10 @@ namespace MrPuppet
             // apply sensor rotations *onto* TPose
             ShoulderJoint.rotation = TPose.ShoulderRotation * HubConnection.ShoulderRotation;
 
-            ElbowJoint.localPosition = Vector3.back * ArmLength;
+            ElbowJoint.localPosition = Vector3.right * ArmLength;
             ElbowJoint.rotation = TPose.ElbowRotation * HubConnection.ElbowRotation;
 
-            WristJoint.localPosition = Vector3.back * ForearmLength;
+            WristJoint.localPosition = Vector3.right * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
             if (Input.GetKeyDown(KeyCode.T)) GrabTPose();
@@ -204,24 +204,24 @@ namespace MrPuppet
 
             // body
             Gizmos.color = Color.grey;
-            Gizmos.DrawWireCube(new Vector3(0f, -0.5f, 0.5f), new Vector3(0.5f, 1.5f, 1f));
-            Gizmos.DrawWireCube(new Vector3(0f, 0.4f, 0.5f), Vector3.one * 0.33f);
+            Gizmos.DrawWireCube(new Vector3(-0.5f, -0.5f, 0f), new Vector3(1f, 1.5f, 0.5f));
+            Gizmos.DrawWireCube(new Vector3(-0.5f, 0.4f, 0f), Vector3.one * 0.33f);
 
             Gizmos.color = Color.white;
 
             // shoulder
             Gizmos.matrix = ShoulderJoint.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(0f, 0f, ArmLength * -0.5f), new Vector3(0.25f, 0.25f, ArmLength));
+            Gizmos.DrawWireCube(Vector3.right * ArmLength * 0.5f, new Vector3(ArmLength, 0.25f, 0.25f));
 
             // eblow
             Gizmos.matrix = ElbowJoint.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(0f, 0f, ForearmLength * -0.5f), new Vector3(0.25f, 0.25f, ForearmLength));
+            Gizmos.DrawWireCube(Vector3.right * ForearmLength * 0.5f, new Vector3(ForearmLength, 0.25f, 0.25f));
 
             // jaw
-            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(Mathf.Lerp(0f, 45f, JawPercent) * 0.5f, 0f, 0f), Vector3.one);
-            Gizmos.DrawWireCube(new Vector3(0f, 0.0625f, -0.25f), new Vector3(0.25f, 0.125f, 0.5f));
-            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(Mathf.Lerp(0f, 45f, JawPercent) * -0.5f, 0f, 0f), Vector3.one);
-            Gizmos.DrawWireCube(new Vector3(0f, -0.0625f, -0.25f), new Vector3(0.25f, 0.125f, 0.5f));
+            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(0f, 0f, Mathf.Lerp(0f, 45f, JawPercent) * 0.5f), Vector3.one);
+            Gizmos.DrawWireCube(new Vector3(0.25f, 0.0625f, 0f), new Vector3(0.5f, 0.125f, 0.25f));
+            Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(0f, 0f, Mathf.Lerp(0f, 45f, JawPercent) * -0.5f), Vector3.one);
+            Gizmos.DrawWireCube(new Vector3(0.25f, -0.0625f, 0f), new Vector3(0.5f, 0.125f, 0.25f));
 
             Gizmos.matrix = Matrix4x4.identity;
 
