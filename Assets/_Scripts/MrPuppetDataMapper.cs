@@ -46,8 +46,8 @@ namespace MrPuppet
         [DisableInPlayMode]
         public bool ShowJointChain = false;
 
-        public Pose TPose;
-        public Pose AttachPose;
+        [ReadOnly] public Pose TPose;
+        [ReadOnly] public Pose AttachPose;
 
         [Range(0f, 1023f)]
         public float JawOpened = 1023f;
@@ -100,11 +100,11 @@ namespace MrPuppet
             switch (joint)
             {
                 case Joint.Shoulder:
-                    return Quaternion.Inverse(AttachPose.ShoulderRotation) * ShoulderJoint.localRotation;
+                    return (AttachPose.ShoulderRotation) * ShoulderJoint.localRotation;
                 case Joint.Elbow:
-                    return Quaternion.Inverse(AttachPose.ElbowRotation) * ElbowJoint.localRotation;
+                    return (AttachPose.ElbowRotation) * ElbowJoint.localRotation;
                 case Joint.Wrist:
-                    return Quaternion.Inverse(AttachPose.WristRotation) * WristJoint.localRotation;
+                    return (AttachPose.WristRotation) * WristJoint.localRotation;
             }
 
             throw new ArgumentException("Invalid Joint");
@@ -133,9 +133,9 @@ namespace MrPuppet
         {
             AttachPose = new Pose();
 
-            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
-            AttachPose.ElbowRotation = ElbowJoint.rotation;
-            AttachPose.WristRotation = WristJoint.rotation;
+            AttachPose.ShoulderRotation = Quaternion.Inverse(ShoulderJoint.localRotation);
+            AttachPose.ElbowRotation = Quaternion.Inverse(ElbowJoint.localRotation);
+            AttachPose.WristRotation = Quaternion.Inverse(WristJoint.localRotation);
 
             AttachPose.ShoulderPosition = ShoulderJoint.position;
             AttachPose.ElbowPosition = ElbowJoint.position;
