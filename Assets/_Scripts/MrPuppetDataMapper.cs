@@ -79,6 +79,8 @@ namespace MrPuppet
 
         private void Update()
         {
+            // ShoulderJoint.rotation = ElbowJoint.rotation = WristJoint.rotation = Quaternion.identity;
+
             // apply sensor rotations *onto* TPose
             ShoulderJoint.rotation = TPose.ShoulderRotation * HubConnection.ShoulderRotation;
 
@@ -100,11 +102,11 @@ namespace MrPuppet
             switch (joint)
             {
                 case Joint.Shoulder:
-                    return (AttachPose.ShoulderRotation) * ShoulderJoint.localRotation;
+                    return AttachPose.ShoulderRotation * ShoulderJoint.rotation;
                 case Joint.Elbow:
-                    return (AttachPose.ElbowRotation) * ElbowJoint.localRotation;
+                    return AttachPose.ElbowRotation * ElbowJoint.rotation;
                 case Joint.Wrist:
-                    return (AttachPose.WristRotation) * WristJoint.localRotation;
+                    return AttachPose.WristRotation * WristJoint.rotation;
             }
 
             throw new ArgumentException("Invalid Joint");
@@ -133,9 +135,9 @@ namespace MrPuppet
         {
             AttachPose = new Pose();
 
-            AttachPose.ShoulderRotation = Quaternion.Inverse(ShoulderJoint.localRotation);
-            AttachPose.ElbowRotation = Quaternion.Inverse(ElbowJoint.localRotation);
-            AttachPose.WristRotation = Quaternion.Inverse(WristJoint.localRotation);
+            AttachPose.ShoulderRotation = Quaternion.Inverse(ShoulderJoint.rotation);
+            AttachPose.ElbowRotation = Quaternion.Inverse(ElbowJoint.rotation);
+            AttachPose.WristRotation = Quaternion.Inverse(WristJoint.rotation);
 
             AttachPose.ShoulderPosition = ShoulderJoint.position;
             AttachPose.ElbowPosition = ElbowJoint.position;
