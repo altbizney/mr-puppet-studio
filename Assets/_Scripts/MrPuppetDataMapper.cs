@@ -100,11 +100,11 @@ namespace MrPuppet
             switch (joint)
             {
                 case Joint.Shoulder:
-                    return Quaternion.Inverse(AttachPose.ShoulderRotation) * ShoulderJoint.rotation;
+                    return Quaternion.Inverse(AttachPose.ShoulderRotation) * ShoulderJoint.localRotation;
                 case Joint.Elbow:
-                    return Quaternion.Inverse(AttachPose.ElbowRotation) * ElbowJoint.rotation;
+                    return Quaternion.Inverse(AttachPose.ElbowRotation) * ElbowJoint.localRotation;
                 case Joint.Wrist:
-                    return Quaternion.Inverse(AttachPose.WristRotation) * WristJoint.rotation;
+                    return Quaternion.Inverse(AttachPose.WristRotation) * WristJoint.localRotation;
             }
 
             throw new ArgumentException("Invalid Joint");
