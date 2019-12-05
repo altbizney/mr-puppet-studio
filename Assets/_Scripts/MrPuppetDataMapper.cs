@@ -11,6 +11,10 @@ namespace MrPuppet
     [Serializable]
     public class Pose
     {
+        public Vector3 ShoulderPosition = Vector3.zero;
+        public Vector3 ElbowPosition = Vector3.zero;
+        public Vector3 WristPosition = Vector3.zero;
+
         public Quaternion ShoulderRotation = Quaternion.identity;
         public Quaternion ElbowRotation = Quaternion.identity;
         public Quaternion WristRotation = Quaternion.identity;
@@ -39,10 +43,11 @@ namespace MrPuppet
 
         public bool EnableGizmo = true;
 
-        [DisableInPlayMode()]
+        [DisableInPlayMode]
         public bool ShowJointChain = false;
 
         public Pose TPose;
+        public Pose AttachPose;
 
         [Range(0f, 1023f)]
         public float JawOpened = 1023f;
@@ -56,6 +61,8 @@ namespace MrPuppet
 
         private void Awake()
         {
+            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
             var JointChain = new GameObject("• MrPuppet / Joint Chain").transform;
             JointChain.SetAsFirstSibling();
             JointChain.hideFlags = ShowJointChain ? HideFlags.None : HideFlags.HideInHierarchy;
@@ -70,14 +77,9 @@ namespace MrPuppet
             WristJoint.SetParent(ElbowJoint);
         }
 
-        private void OnValidate()
-        {
-            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-        }
-
         private void Update()
         {
-            // apply rotations *onto* TPose
+            // apply sensor rotations *onto* TPose
             ShoulderJoint.rotation = TPose.ShoulderRotation * HubConnection.ShoulderRotation;
 
             ElbowJoint.localPosition = Vector3.back * ArmLength;
@@ -85,6 +87,11 @@ namespace MrPuppet
 
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GrabAttachPose();
+            }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -118,6 +125,30 @@ namespace MrPuppet
         }
 
         [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
+        [GUIColor(1f, 1f, 0f)]
+        [DisableInEditorMode]
+        public void GrabAttachPose()
+        {
+            AttachPose = new Pose();
+
+            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            AttachPose.ElbowRotation = ElbowJoint.rotation;
+            AttachPose.WristRotation = WristJoint.rotation;
+
+            AttachPose.ShoulderPosition = ShoulderJoint.position;
+            AttachPose.ElbowPosition = ElbowJoint.position;
+            AttachPose.WristPosition = WristJoint.position;
+        }
+
+        [Button(ButtonSizes.Large, Name = "Clear")]
+        [HorizontalGroup("AttachPose", Width = .1f)]
+        public void ClearAttachPose()
+        {
+            AttachPose = new Pose();
+        }
+
+        [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode]
@@ -141,7 +172,7 @@ namespace MrPuppet
 
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
-        [GUIColor(0f, 1f, 0f)]
+        [GUIColor(0f, 1f, 1f)]
         [DisableInEditorMode]
         public void GrabJawOpened()
         {
@@ -150,7 +181,7 @@ namespace MrPuppet
 
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("Jaw")]
-        [GUIColor(0f, 1f, 0f)]
+        [GUIColor(0f, 1f, 1f)]
         [DisableInEditorMode]
         public void GrabJawClosed()
         {
