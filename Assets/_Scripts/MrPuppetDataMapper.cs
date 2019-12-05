@@ -109,6 +109,22 @@ namespace MrPuppet
             }
         }
 
+        public Quaternion GetJointRotationDelta(Joint joint)
+        {
+            // delta from attach pose (which already accounts for delta from tpose)
+            switch (joint)
+            {
+                case Joint.Shoulder:
+                    return Quaternion.Inverse(AttachPose.ShoulderRotation) * ShoulderJoint.rotation;
+                case Joint.Elbow:
+                    return Quaternion.Inverse(AttachPose.ElbowRotation) * ElbowJoint.rotation;
+                case Joint.Wrist:
+                    return Quaternion.Inverse(AttachPose.WristRotation) * WristJoint.rotation;
+            }
+
+            throw new ArgumentException("Invalid Joint");
+        }
+
         public Transform GetJoint(Joint joint)
         {
             switch (joint)
