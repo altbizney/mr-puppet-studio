@@ -88,25 +88,10 @@ namespace MrPuppet
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                GrabAttachPose();
-            }
-
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                GrabTPose();
-            }
-
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                GrabJawOpened();
-            }
-
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                GrabJawClosed();
-            }
+            if (Input.GetKeyDown(KeyCode.T)) GrabTPose();
+            if (Input.GetKeyDown(KeyCode.A)) GrabAttachPose();
+            if (Input.GetKeyDown(KeyCode.O)) GrabJawOpened();
+            if (Input.GetKeyDown(KeyCode.C)) GrabJawClosed();
         }
 
         public Quaternion GetJointRotationDelta(Joint joint)
