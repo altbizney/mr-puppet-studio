@@ -35,8 +35,6 @@ namespace MrPuppet.WIP
             // Head.localRotation = SpawnHeadRotation * DataMapper.AttachPose.WristRotation;
 
             // Hip.rotation = (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation);
-        }
-
 
         }
     }
