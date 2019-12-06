@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace MrPuppet.WIP
+namespace MrPuppet
 {
     public class NosePointer : MonoBehaviour
     {
