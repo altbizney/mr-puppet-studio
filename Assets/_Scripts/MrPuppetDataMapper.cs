@@ -225,6 +225,17 @@ namespace MrPuppet
             Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(0f, 0f, Mathf.Lerp(0f, 45f, JawPercent) * -0.5f), Vector3.one);
             Gizmos.DrawWireCube(new Vector3(0.25f, -0.0625f, 0f), new Vector3(0.5f, 0.125f, 0.25f));
 
+            // AttachPose
+            Gizmos.color = Color.yellow;
+
+            // shoulder
+            Gizmos.matrix = Matrix4x4.TRS(AttachPose.ShoulderPosition, Quaternion.Inverse(AttachPose.ShoulderRotation), Vector3.one);
+            Gizmos.DrawWireCube(Vector3.right * ArmLength * 0.5f, new Vector3(ArmLength, 0.25f, 0.25f));
+
+            // elbow
+            Gizmos.matrix = Matrix4x4.TRS(AttachPose.ElbowPosition, Quaternion.Inverse(AttachPose.ElbowRotation), Vector3.one);
+            Gizmos.DrawWireCube(Vector3.right * ForearmLength * 0.5f, new Vector3(ForearmLength, 0.25f, 0.25f));
+
             Gizmos.matrix = Matrix4x4.identity;
 
             // axises
