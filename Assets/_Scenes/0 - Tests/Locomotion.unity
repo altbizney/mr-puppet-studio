@@ -802,3 +802,4 @@ MonoBehaviour:
   knobTarget: 0
   knobCurr: 0
   knobSmoothTime: 0.2
+  EnableDebugGraph: 1
