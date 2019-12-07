@@ -71,9 +71,6 @@ namespace MrPuppet
         [Range(0f, 180f)]
         public float angleCutoff = 80f;
 
-        // [Range(0f, 180f)]
-        // public float noseExtremeAngle = 55f;
-
         [Range(-1f, 1f), ReadOnly]
         public float knobTarget, knobCurr = 0f;
         public float knobSmoothTime = 0.2f;
@@ -139,16 +136,6 @@ namespace MrPuppet
             extremeRightSnapshot.Activate();
         }
 
-        // [DisableInEditorMode]
-        // [Range(-1f, 1f)]
-        // [OnValueChanged("LerpSnapshots")]
-        // public float lerp = 0f;
-
-        // private void LerpSnapshots()
-        // {
-        //     Snapshot.Lerp(centerSnapshot, lerp > 0f ? extremeRightSnapshot : extremeLeftSnapshot, Mathf.Abs(lerp));
-        // }
-
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
@@ -191,7 +178,11 @@ namespace MrPuppet
             // match original sign
             if (angleFromCenter < 0f) knobTarget *= -1;
 
-            // TODO: only allow swap between hotspotKnob when "changing direction"
+            // spring the nose flop based on knobTarget
+            knobCurr = Mathf.SmoothDamp(knobCurr, knobTarget, ref knobVelocity, knobSmoothTime);
+
+            // -1 is extreme left, 0 is identity, and 1 is extreme right
+            Snapshot.Lerp(centerSnapshot, knobCurr > 0f ? extremeRightSnapshot : extremeLeftSnapshot, Mathf.Abs(knobCurr));
 
             if (EnableDebugGraph)
             {
@@ -201,20 +192,13 @@ namespace MrPuppet
                 DebugGraph.MultiLog(angleCutoff, "angleCutoff");
                 DebugGraph.MultiLog(-angleCutoff, "-angleCutoff");
                 DebugGraph.Log(knobTarget);
+                DebugGraph.Log(knobCurr);
             }
-
-            // spring the nose flop based on knobTarget
-            knobCurr = Mathf.SmoothDamp(knobCurr, knobTarget, ref knobVelocity, knobSmoothTime);
-
-            Snapshot.Lerp(centerSnapshot, knobCurr > 0f ? extremeRightSnapshot : extremeLeftSnapshot, Mathf.Abs(knobCurr));
-
-            // slerp unclamped, so -1 is extreme left, 0 is identity, and 1 is extreme right
-            //noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseExtremeAngle, 0f), knobCurr);
         }
 
         private void OnDisable()
         {
-            noseJoint.localRotation = Quaternion.identity;
+            centerSnapshot.Activate();
         }
     }
 }
