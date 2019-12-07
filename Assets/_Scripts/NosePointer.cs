@@ -71,8 +71,8 @@ namespace MrPuppet
         [Range(0f, 180f)]
         public float angleCutoff = 80f;
 
-        [Range(0f, 180f)]
-        public float noseExtremeAngle = 55f;
+        // [Range(0f, 180f)]
+        // public float noseExtremeAngle = 55f;
 
         [Range(-1f, 1f), ReadOnly]
         public float knobTarget, knobCurr = 0f;
@@ -83,44 +83,71 @@ namespace MrPuppet
 
         public bool EnableDebugGraph = false;
 
-        [SerializeField]
-        private Snapshot originSnapshot, extremeSnapshot;
+        [SerializeField, HideInInspector]
+        private Snapshot centerSnapshot, extremeLeftSnapshot, extremeRightSnapshot;
 
-        [Button, DisableInPlayMode]
-        public void ActivateOrigin()
+        // centerSnapshot
+        [Button(ButtonSizes.Medium)]
+        [HorizontalGroup("centerSnapshot")]
+        [DisableInPlayMode]
+        public void CaptureCenter()
         {
-            originSnapshot.Activate();
+            centerSnapshot = new Snapshot().Capture(noseJoint);
         }
 
-        [Button, DisableInPlayMode]
-        public void ActivateExtreme()
+        [Button(ButtonSizes.Medium, Name = "Activate")]
+        [HorizontalGroup("centerSnapshot", Width = 0.25f)]
+        [DisableInPlayMode]
+        public void ActivateCenter()
         {
-            extremeSnapshot.Activate();
+            centerSnapshot.Activate();
         }
 
-        [Button, DisableInPlayMode]
-        public void CaptureOrigin()
+        // extremeLeftSnapshot
+        [Button(ButtonSizes.Medium)]
+        [HorizontalGroup("extremeLeftSnapshot")]
+        [DisableInPlayMode]
+        [PropertyTooltip("The puppets own left")]
+        public void CaptureExtremeLeft()
         {
-            originSnapshot = new Snapshot().Capture(noseJoint);
+            extremeLeftSnapshot = new Snapshot().Capture(noseJoint);
         }
 
-        [Button, DisableInPlayMode]
-        public void CaptureExtreme()
+        [Button(ButtonSizes.Medium, Name = "Activate")]
+        [HorizontalGroup("extremeLeftSnapshot", Width = 0.25f)]
+        [DisableInPlayMode]
+        public void ActivateExtremeLeft()
         {
-            extremeSnapshot = new Snapshot().Capture(noseJoint);
+            extremeLeftSnapshot.Activate();
         }
 
-        [DisableInEditorMode]
-        [Range(0f, 1f)]
-        [OnValueChanged("LerpSnapshots")]
-        public float lerp = 0f;
-
-        private void LerpSnapshots()
+        // extremeRightSnapshot
+        [Button(ButtonSizes.Medium)]
+        [HorizontalGroup("extremeRightSnapshot")]
+        [DisableInPlayMode]
+        [PropertyTooltip("The puppets own right")]
+        public void CaptureExtremeRight()
         {
-            if (!Application.isPlaying) return;
-
-            Snapshot.Lerp(originSnapshot, extremeSnapshot, lerp);
+            extremeRightSnapshot = new Snapshot().Capture(noseJoint);
         }
+
+        [Button(ButtonSizes.Medium, Name = "Activate")]
+        [HorizontalGroup("extremeRightSnapshot", Width = 0.25f)]
+        [DisableInPlayMode]
+        public void ActivateExtremeRight()
+        {
+            extremeRightSnapshot.Activate();
+        }
+
+        // [DisableInEditorMode]
+        // [Range(-1f, 1f)]
+        // [OnValueChanged("LerpSnapshots")]
+        // public float lerp = 0f;
+
+        // private void LerpSnapshots()
+        // {
+        //     Snapshot.Lerp(centerSnapshot, lerp > 0f ? extremeRightSnapshot : extremeLeftSnapshot, Mathf.Abs(lerp));
+        // }
 
         private void OnDrawGizmos()
         {
@@ -178,6 +205,9 @@ namespace MrPuppet
 
             // spring the nose flop based on knobTarget
             knobCurr = Mathf.SmoothDamp(knobCurr, knobTarget, ref knobVelocity, knobSmoothTime);
+
+            Snapshot.Lerp(centerSnapshot, knobCurr > 0f ? extremeRightSnapshot : extremeLeftSnapshot, Mathf.Abs(knobCurr));
+
             // slerp unclamped, so -1 is extreme left, 0 is identity, and 1 is extreme right
             //noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseExtremeAngle, 0f), knobCurr);
         }
