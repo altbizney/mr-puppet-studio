@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -7,6 +8,58 @@ namespace MrPuppet
 {
     public class NosePointer : MonoBehaviour
     {
+        [Serializable]
+        public class Snapshot
+        {
+            [HideInTables]
+            public List<Transform> elements;
+
+            [HideInTables]
+            public List<Vector3> localPosition;
+
+            [HideInTables]
+            public List<Quaternion> localRotation;
+
+            public Snapshot Capture(Transform root)
+            {
+                elements = new List<Transform>(root.GetComponentsInChildren<Transform>(true));
+
+                localPosition = new List<Vector3>();
+                localRotation = new List<Quaternion>();
+
+                foreach (Transform element in elements)
+                {
+                    localPosition.Add(element.localPosition);
+                    localRotation.Add(element.localRotation);
+                }
+
+                return this;
+            }
+
+            public static void Lerp(Snapshot from, Snapshot to, float t)
+            {
+                foreach (Transform element in from.elements)
+                {
+                    int i = from.elements.IndexOf(element);
+
+                    if (element.GetInstanceID() != to.elements[i].GetInstanceID()) throw new Exception("Mismatched elements");
+
+                    element.localPosition = Vector3.Lerp(from.localPosition[i], to.localPosition[i], t);
+                    element.localRotation = Quaternion.Slerp(from.localRotation[i], to.localRotation[i], t);
+                }
+            }
+
+            public void Activate()
+            {
+                foreach (Transform element in elements)
+                {
+                    int i = elements.IndexOf(element);
+                    element.localPosition = localPosition[i];
+                    element.localRotation = localRotation[i];
+                }
+            }
+        }
+
         public Transform noseJoint, camTarget;
 
         private Vector3 camTargetOnPlane;
@@ -29,6 +82,45 @@ namespace MrPuppet
         private float angleFromCenter;
 
         public bool EnableDebugGraph = false;
+
+        [SerializeField]
+        private Snapshot originSnapshot, extremeSnapshot;
+
+        [Button, DisableInPlayMode]
+        public void ActivateOrigin()
+        {
+            originSnapshot.Activate();
+        }
+
+        [Button, DisableInPlayMode]
+        public void ActivateExtreme()
+        {
+            extremeSnapshot.Activate();
+        }
+
+        [Button, DisableInPlayMode]
+        public void CaptureOrigin()
+        {
+            originSnapshot = new Snapshot().Capture(noseJoint);
+        }
+
+        [Button, DisableInPlayMode]
+        public void CaptureExtreme()
+        {
+            extremeSnapshot = new Snapshot().Capture(noseJoint);
+        }
+
+        [DisableInEditorMode]
+        [Range(0f, 1f)]
+        [OnValueChanged("LerpSnapshots")]
+        public float lerp = 0f;
+
+        private void LerpSnapshots()
+        {
+            if (!Application.isPlaying) return;
+
+            Snapshot.Lerp(originSnapshot, extremeSnapshot, lerp);
+        }
 
         private void OnDrawGizmos()
         {
@@ -87,7 +179,7 @@ namespace MrPuppet
             // spring the nose flop based on knobTarget
             knobCurr = Mathf.SmoothDamp(knobCurr, knobTarget, ref knobVelocity, knobSmoothTime);
             // slerp unclamped, so -1 is extreme left, 0 is identity, and 1 is extreme right
-            noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseExtremeAngle, 0f), knobCurr);
+            //noseJoint.localRotation = Quaternion.SlerpUnclamped(Quaternion.identity, Quaternion.Euler(0f, noseExtremeAngle, 0f), knobCurr);
         }
 
         private void OnDisable()
