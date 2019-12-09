@@ -604,6 +604,7 @@ MonoBehaviour:
   HorizontalDirection: {x: 0, y: 0, z: 1}
   RotationOffset: {x: 0, y: 270, z: 0}
   WalkSpeed: 6
+  EnableRotation: 0
   RotateSpeed: 1080
   BobSmoothTime: 0.1
   BobFrequency: 0.175
