@@ -138,7 +138,7 @@ namespace MrPuppet
 
         private void OnDrawGizmos()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || !camTarget || !noseJoint) return;
 
             Debug.DrawLine(noseJoint.parent.position, camTarget.position, Gizmos.color = Color.grey);
             Gizmos.DrawSphere(noseJoint.parent.position, 0.1f);
@@ -158,6 +158,8 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
+            if (!camTarget || !noseJoint) return;
+
             // project camTarget X/Z onto noseJoint.parent Y plane
             camTargetOnPlane = new Vector3(camTarget.position.x, noseJoint.parent.position.y, camTarget.position.z);
 
