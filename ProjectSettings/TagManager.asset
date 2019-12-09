@@ -3,9 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Character 1
-  - Character 2
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -38,7 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - IgnoreCamera
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
