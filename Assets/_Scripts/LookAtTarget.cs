@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace MrPuppet.WIP
+namespace MrPuppet
 {
     // https://www.weaverdev.io/blog/bonehead-procedural-animation
     public class LookAtTarget : MonoBehaviour
     {
-        public Transform target;
-        public Transform headBone;
-        // public float headMaxTurnAngle = 180f;
-        // public float headTrackingSpeed = 10f;
+        public Transform lookTarget;
+
+        [ChildGameObjectsOnly]
+        public Transform headJoint;
 
         private ValueDropdownList<Vector3> VectorDirectionValues = new ValueDropdownList<Vector3>()
         {
@@ -26,49 +26,42 @@ namespace MrPuppet.WIP
         [ValueDropdown("VectorDirectionValues", HideChildProperties = true)]
         public Vector3 UpDirection = Vector3.up;
 
+        [OnValueChanged("CacheOffsetQuaternion")]
         public Vector3 offset = new Vector3(0f, 0f, 0f);
+        private Quaternion offsetQuaternion;
 
         [Range(0f, 1f)]
         public float weight = 1f;
 
+        public bool DrawGizmos = false;
+
+        private void OnEnable()
+        {
+            CacheOffsetQuaternion();
+        }
+
         private void LateUpdate()
         {
-            Vector3 targetWorldLookDir = target.position - headBone.position;
-            Vector3 targetLocalLookDir = headBone.parent.InverseTransformDirection(targetWorldLookDir);
+            headJoint.localRotation = Quaternion.Slerp(
+                headJoint.localRotation,
+                Quaternion.LookRotation(
+                    headJoint.parent.InverseTransformDirection(lookTarget.position - headJoint.position),
+                    headJoint.parent.InverseTransformDirection(UpDirection)
+                ) * offsetQuaternion,
+            weight);
+        }
 
-            headBone.localRotation = Quaternion.Slerp(headBone.localRotation, Quaternion.LookRotation(targetLocalLookDir, headBone.parent.InverseTransformDirection(UpDirection)) * Quaternion.Euler(offset), weight);
+        private void OnDrawGizmos()
+        {
+            if (!DrawGizmos || !lookTarget || !headJoint) return;
 
-            Debug.DrawLine(target.position, headBone.position, Color.white);
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(lookTarget.position, headJoint.position);
+        }
 
-            // // Store the current head rotation since we will be resetting it
-            // Quaternion currentLocalRotation = headBone.localRotation;
-
-            // // Reset the head rotation so our world to local space transformation will use the head's zero rotation. 
-            // // Note: Quaternion.Identity is the quaternion equivalent of "zero"
-            // headBone.localRotation = Quaternion.identity;
-
-            // Vector3 targetWorldLookDir = target.position - headBone.position;
-            // Vector3 targetLocalLookDir = headBone.InverseTransformDirection(targetWorldLookDir);
-            // // Vector3 targetLocalLookDir = headBone.parent.InverseTransformDirection(targetWorldLookDir);
-
-
-            // // Apply angle limit
-            // targetLocalLookDir = Vector3.RotateTowards(
-            //   ForwardDirection,
-            //   targetLocalLookDir,
-            //   Mathf.Deg2Rad * headMaxTurnAngle, // Note we multiply by Mathf.Deg2Rad here to convert degrees to radians
-            //   0f // We don't care about the length here, so we leave it at zero
-            // );
-
-            // // Get the local rotation by using LookRotation on a local directional vector
-            // Quaternion targetLocalRotation = Quaternion.LookRotation(targetLocalLookDir, UpDirection);
-
-            // // Apply smoothing
-            // headBone.localRotation = Quaternion.Slerp(
-            //   currentLocalRotation,
-            //   targetLocalRotation,
-            //   1 - Mathf.Exp(-headTrackingSpeed * Time.deltaTime)
-            // );
+        private void CacheOffsetQuaternion()
+        {
+            offsetQuaternion = Quaternion.Euler(offset);
         }
     }
 }
