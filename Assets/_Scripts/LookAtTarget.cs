@@ -30,8 +30,14 @@ namespace MrPuppet
         public Vector3 offset = new Vector3(0f, 0f, 0f);
         private Quaternion offsetQuaternion;
 
-        [Range(0f, 1f)]
-        public float weight = 1f;
+        [Range(0f, 1f), ReadOnly]
+        public float weight = 0f;
+
+        public float smoothTime = 0.1f;
+
+        private float weightTarget, weightVelocity = 0f;
+
+        public KeyCode weightKey = KeyCode.L;
 
         public bool DrawGizmos = false;
 
@@ -40,8 +46,16 @@ namespace MrPuppet
             CacheOffsetQuaternion();
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(weightKey)) weightTarget = 1f;
+            if (Input.GetKeyUp(weightKey)) weightTarget = 0f;
+        }
+
         private void LateUpdate()
         {
+            weight = Mathf.SmoothDamp(weight, weightTarget, ref weightVelocity, smoothTime);
+
             headJoint.localRotation = Quaternion.Slerp(
                 headJoint.localRotation,
                 Quaternion.LookRotation(
