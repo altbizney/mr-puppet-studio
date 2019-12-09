@@ -626,7 +626,8 @@ MonoBehaviour:
   knobTarget: 0
   knobCurr: 0
   knobSmoothTime: 0.2
-  EnableDebugGraph: 1
+  EnableDebugGraph: 0
+  EnableGizmos: 0
   centerSnapshot:
     elements:
     - {fileID: 1173002053462821400}
