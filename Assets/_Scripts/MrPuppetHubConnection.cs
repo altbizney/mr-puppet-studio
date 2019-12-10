@@ -4,17 +4,25 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using UnityEditor;
 using Sirenix.OdinInspector.Editor;
+using UnityEditor;
 #endif
 
 namespace MrPuppet
 {
+    [Serializable]
     public class SensorCalibrationData
     {
+        [ReadOnly, GUIColor("SystemColor")]
         public int System;
+
+        [ReadOnly, GUIColor("GyroColor")]
         public int Gyro;
+
+        [ReadOnly, GUIColor("AccelerometerColor")]
         public int Accelerometer;
+
+        [ReadOnly, GUIColor("MagnetometerColor")]
         public int Magnetometer;
 
         public void Set(int system, int gyro, int accelerometer, int magnetometer)
@@ -25,35 +33,49 @@ namespace MrPuppet
             Magnetometer = magnetometer;
         }
 
+        public Color SystemColor => GetColor(System);
+        public Color GyroColor => GetColor(Gyro);
+        public Color AccelerometerColor => GetColor(Accelerometer);
+        public Color MagnetometerColor => GetColor(Magnetometer);
+
+        public Color GetColor(int code)
+        {
+            switch (code)
+            {
+                case 0:
+                    return Color.red;
+                case 3:
+                    return Color.green;
+                default:
+                    return Color.yellow;
+            }
+        }
+
         public bool IsCalibrated => System == 3 && Gyro == 3 && Accelerometer == 3 && Magnetometer == 3;
     }
 
     public class MrPuppetHubConnection : MonoBehaviour
     {
-        [Header("Hub")]
+        [Header("Connection")]
         public string WebsocketUri = "ws://localhost:3000";
 
-        [MinValue(0.1f)]
+        [MinValue(0.1f), SuffixLabel("seconds")]
         public float ReconnectInterval = 2f;
 
         [ReadOnly]
         public bool IsConnected = false;
 
         [Header("Adjustments")]
-        [Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
+        [ToggleLeft, Tooltip("Fixes quaternion coordinate space (BNO055's right-handed → Unity's left-handed)")]
         public bool FixRightHandedQuaternions = true;
 
-        [Tooltip("Fixes the orentation not matching Unity's Transform space")]
+        [ToggleLeft, Tooltip("Fixes the orentation not matching Unity's Transform space")]
         public bool FixSwappedOrientation = true;
 
-        // [Header("Legacy Adjustments")]
-        // [Tooltip("Fixes the elbow sensor being mounted upside down (relative to the shoulder/wrist)")]
-        // public bool FixInvertedElbowSensor = false;
+        private Quaternion FixSwappedOrientationQuaternion = Quaternion.Euler(0f, 0f, -180f);
 
-        // [Tooltip("Fixes the X and Y axises being flipped")]
-        // public bool FixSwappedXYAxis = false;
-
-        [ReadOnly, Header("Sensors")]
+        [Header("Sensors")]
+        [ReadOnly]
         public Quaternion WristRotation;
 
         [ReadOnly]
@@ -65,7 +87,16 @@ namespace MrPuppet
         [ReadOnly]
         public float Jaw;
 
+        [Header("Calibration")]
+        [InlineProperty, LabelText("Wrist")]
+        public SensorCalibrationData WristCalibrationData;
+        [InlineProperty, LabelText("Elbow"), Space]
+        public SensorCalibrationData ElbowCalibrationData;
+        [InlineProperty, LabelText("Shoulder"), Space]
+        public SensorCalibrationData ShoulderCalibrationData;
+
         [Header("Debug")]
+        [ToggleLeft]
         public bool OutputData = false;
 
         private WebSocket webSocket;
@@ -77,10 +108,6 @@ namespace MrPuppet
         private string[] _shoulder;
 
         private float _lastUpdateTime;
-
-        public SensorCalibrationData WristCalibrationData;
-        public SensorCalibrationData ElbowCalibrationData;
-        public SensorCalibrationData ShoulderCalibrationData;
 
         private void Awake()
         {
@@ -169,23 +196,11 @@ namespace MrPuppet
                                 ShoulderRotation = new Quaternion(float.Parse(_shoulder[0]), float.Parse(_shoulder[1]), float.Parse(_shoulder[2]), float.Parse(_shoulder[3]));
                             }
 
-                            // if (FixSwappedXYAxis)
-                            // {
-                            //     ShoulderRotation *= Quaternion.Euler(0, -90f, 0);
-                            //     ElbowRotation *= Quaternion.Euler(0, -90f, 0);
-                            //     WristRotation *= Quaternion.Euler(0, -90f, 0);
-                            // }
-
-                            // if (FixInvertedElbowSensor)
-                            // {
-                            //     ElbowRotation *= Quaternion.Euler(0, 180f, 0);
-                            // }
-
                             if (FixSwappedOrientation)
                             {
-                                ShoulderRotation *= Quaternion.Euler(0, 0f, -180f);
-                                ElbowRotation *= Quaternion.Euler(0, 0f, -180f);
-                                WristRotation *= Quaternion.Euler(0, 0f, -180f);
+                                ShoulderRotation *= FixSwappedOrientationQuaternion;
+                                ElbowRotation *= FixSwappedOrientationQuaternion;
+                                WristRotation *= FixSwappedOrientationQuaternion;
                             }
 
                             // grab calibration info
@@ -213,43 +228,4 @@ namespace MrPuppet
             webSocket.Close();
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MrPuppetHubConnection))]
-    public class MrPuppetHubConnectionEditor : OdinEditor
-    {
-        private MrPuppetHubConnection _hubConnection;
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            _hubConnection = target as MrPuppetHubConnection;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            if (!Application.isPlaying) return;
-            var defColor = GUI.color;
-
-            // Calibration info
-            GUILayout.Space(10);
-            GUILayout.Label("CALIBRATION", EditorStyles.boldLabel, GUILayout.ExpandWidth(false));
-            var calibData = _hubConnection.ShoulderCalibrationData;
-            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
-            GUILayout.Box($"Shoulder - {calibData.System}:{calibData.Gyro}:{calibData.Accelerometer}:{calibData.Magnetometer}");
-            GUI.color = defColor;
-            calibData = _hubConnection.ElbowCalibrationData;
-            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
-            GUILayout.Box($"Elbow - {calibData.System}:{calibData.Gyro}:{calibData.Accelerometer}:{calibData.Magnetometer}");
-            GUI.color = defColor;
-            calibData = _hubConnection.WristCalibrationData;
-            GUI.color = calibData.IsCalibrated ? Color.green : Color.yellow;
-            GUILayout.Box($"Wrist - {calibData.System}:{calibData.Gyro}:{calibData.Accelerometer}:{calibData.Magnetometer}");
-            GUI.color = defColor;
-        }
-    }
-#endif
 }

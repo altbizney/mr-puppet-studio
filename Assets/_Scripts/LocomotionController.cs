@@ -30,7 +30,9 @@ namespace MrPuppet.WIP
 
         [Tooltip("Modifier for walk speed")]
         public float WalkSpeed = 6f;
-        [Tooltip("Angular speed in degrees per sec")]
+
+        public bool EnableRotation = true;
+        [Tooltip("Angular speed in degrees/sec"), ShowIf("EnableRotation")]
         public float RotateSpeed = 1080f;
 
         [Tooltip("SmoothTime for SmoothDamp on Y bob")]
@@ -83,7 +85,7 @@ namespace MrPuppet.WIP
             transform.localPosition = new Vector3(transform.localPosition.x, InitialHeight + BobCurrent, transform.localPosition.z);
 
             // look in direction were moving
-            if (MoveDirection != Vector3.zero)
+            if (EnableRotation && MoveDirection != Vector3.zero)
             {
                 LookDirection = Quaternion.Euler(RotationOffset) * Quaternion.LookRotation(MoveDirection);
             }

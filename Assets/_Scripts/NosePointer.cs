@@ -78,7 +78,7 @@ namespace MrPuppet
         private float knobVelocity;
         private float angleFromCenter;
 
-        public bool EnableDebugGraph = false;
+        public bool EnableDebugGraph, EnableGizmos = false;
 
         [SerializeField, HideInInspector]
         private Snapshot centerSnapshot, extremeLeftSnapshot, extremeRightSnapshot;
@@ -138,7 +138,7 @@ namespace MrPuppet
 
         private void OnDrawGizmos()
         {
-            if (!Application.isPlaying || !camTarget || !noseJoint) return;
+            if (!EnableGizmos || !Application.isPlaying || !camTarget || !noseJoint) return;
 
             Debug.DrawLine(noseJoint.parent.position, camTarget.position, Gizmos.color = Color.grey);
             Gizmos.DrawSphere(noseJoint.parent.position, 0.1f);
