@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
@@ -12,19 +12,23 @@ namespace MrPuppet
     public class CaptureMicrophone : MonoBehaviour
     {
 #if UNITY_EDITOR
-        private RecorderWindow Recorder;
+        public bool ListenForCommands = true;
 
+        private RecorderWindow Recorder;
         private MrPuppetHubConnection HubConnection;
 
+        [ReadOnly, ShowInInspector, ShowIf("ListenForCommands")]
         private bool IsRecording = false;
 
+        [ReadOnly, ShowInInspector, ShowIf("ListenForCommands")]
         private bool RecordingMicrophone = false;
 
+        [DisplayAsString, ShowInInspector, ShowIf("ListenForCommands")]
         private string Filename;
 
-        private void OnValidate()
+        private void Awake()
         {
-            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
         }
 
         private void GetFilename()
@@ -50,6 +54,8 @@ namespace MrPuppet
 
         private void Update()
         {
+            if (!ListenForCommands) return;
+
             if (!Recorder) Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
             IsRecording = Recorder.IsRecording();
@@ -62,7 +68,7 @@ namespace MrPuppet
             }
             else if (RecordingMicrophone && !IsRecording)
             {
-                // DO NOTT requery filename here as the take has already been advanced
+                // DO NOT requery filename here as the take has already been advanced
                 HubConnection.SendSocketMessage("COMMAND;STOP_MICROPHONE;" + Filename);
                 RecordingMicrophone = false;
             }
