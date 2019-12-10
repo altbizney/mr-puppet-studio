@@ -62,7 +62,7 @@ namespace MrPuppet
         [EnableIf("IsClampedZ")]
         public float maxZ = 179f;
 
-        private Vector3 starting;
+        private Vector3 starting, curr, diff;
 
         private void Start()
         {
@@ -71,8 +71,8 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
-            Vector3 curr = transform.localRotation.eulerAngles;
-            Vector3 diff = EulerAnglesBetween(starting, curr);
+            curr = transform.localRotation.eulerAngles;
+            diff = EulerAnglesBetween(curr - starting);
 
             transform.localRotation = Quaternion.Euler(
                 IsClampedX() ? starting.x + Mathf.Clamp(diff.x, minX, maxX) : curr.x,
@@ -82,10 +82,8 @@ namespace MrPuppet
         }
 
         // https://answers.unity.com/questions/599393/angles-from-quaternionvector-problem.html
-        private Vector3 EulerAnglesBetween(Vector3 from, Vector3 to)
+        private Vector3 EulerAnglesBetween(Vector3 delta)
         {
-            Vector3 delta = to - from;
-
             if (delta.x > 180) delta.x -= 360;
             else if (delta.x < -180) delta.x += 360;
 
@@ -98,9 +96,19 @@ namespace MrPuppet
             return delta;
         }
 
-        private bool IsClampedX() { return EnabledAxis.HasFlag(ClampAxis.X); }
-        private bool IsClampedY() { return EnabledAxis.HasFlag(ClampAxis.Y); }
-        private bool IsClampedZ() { return EnabledAxis.HasFlag(ClampAxis.Z); }
+        private Vector3 EulerAnglesBetween(Vector3 from, Vector3 to)
+        {
+            return EulerAnglesBetween(to - from);
+        }
+
+        public bool IsClamped(ClampAxis flag)
+        {
+            return (EnabledAxis & flag) == flag;
+        }
+
+        private bool IsClampedX() { return IsClamped(ClampAxis.X); }
+        private bool IsClampedY() { return IsClamped(ClampAxis.Y); }
+        private bool IsClampedZ() { return IsClamped(ClampAxis.Z); }
     }
 
 #if UNITY_EDITOR && false
