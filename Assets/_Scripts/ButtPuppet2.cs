@@ -22,6 +22,8 @@ namespace MrPuppet.WIP
         {
             if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
 
+            SpawnHipRotation = Hip.localRotation;
+            SpawnHeadRotation = Head.localRotation;
         }
 
         private void LateUpdate()
@@ -31,11 +33,8 @@ namespace MrPuppet.WIP
             // TODO: smooth hip translate
 
             // apply joint rotation delta onto initial rotation
-            // Hip.localRotation = SpawnHipRotation * DataMapper.AttachPose.ElbowRotation;
-            // Head.localRotation = SpawnHeadRotation * DataMapper.AttachPose.WristRotation;
-
-            // Hip.rotation = (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation);
-
+            Hip.localRotation = SpawnHipRotation * DataMapper.GetJointRotationDelta(MrPuppetDataMapper.Joint.Elbow);
+            Head.localRotation = SpawnHeadRotation * DataMapper.GetJointRotationDelta(MrPuppetDataMapper.Joint.Wrist);
         }
     }
 }
