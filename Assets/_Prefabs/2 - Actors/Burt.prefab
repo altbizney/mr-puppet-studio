@@ -176,16 +176,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5615389820586578772}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: b23177e0cdb6c482695fde7103523cc9,
-        type: 3}
-      propertyPath: m_Name
-      value: burt
-      objectReference: {fileID: 0}
-    - target: {fileID: 4137360376990707587, guid: b23177e0cdb6c482695fde7103523cc9,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b23177e0cdb6c482695fde7103523cc9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,6 +230,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: b23177e0cdb6c482695fde7103523cc9,
+        type: 3}
+      propertyPath: m_Name
+      value: burt
+      objectReference: {fileID: 0}
+    - target: {fileID: 4137360376990707587, guid: b23177e0cdb6c482695fde7103523cc9,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3509819465908996867, guid: b23177e0cdb6c482695fde7103523cc9,
         type: 3}

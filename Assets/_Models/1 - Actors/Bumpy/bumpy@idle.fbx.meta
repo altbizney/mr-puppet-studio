@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1061dba1590f44233b87fadeef087d0f
+guid: bb82561adc0844fe1b58700ffc5a1157
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
@@ -25,7 +25,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 1
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -38,8 +38,8 @@ ModelImporter:
       name: idle
       takeName: Take 001
       internalID: 1827226128182048838
-      firstFrame: 0
-      lastFrame: 30
+      firstFrame: 1
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -63,7 +63,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -118,7 +118,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 7c415c26cb8a14e69a7dbd962e0d7ec0,
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2b5cf68583e2546be86f96fe7e9e7035,
     type: 3}
   animationType: 2
   humanoidOversampling: 1

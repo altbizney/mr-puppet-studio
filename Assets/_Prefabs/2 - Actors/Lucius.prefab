@@ -24,6 +24,15 @@ MonoBehaviour:
     amount: 0.5
   RotationSpeed: 7
   PositionSpeed: 0.1
+  LimitHipExtentX: 0
+  HipExtentX: 0
+  LimitHipExtentY: 0
+  HipExtentY: 0
+  LimitHipExtentZ: 0
+  HipExtentZ: 0
+  EnableJawHeadMixer: 0
+  JawHeadMaxExtent: 10
+  JawHeadRotate: 2
 --- !u!114 &399512805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,9 +79,7 @@ MonoBehaviour:
   DataMapper: {fileID: 0}
   JawJoint: {fileID: 4489916753406370435}
   AnimData:
-    OpenPosition: {x: 5.0155873, y: -0.15919685, z: 5.067516}
     OpenRotation: {x: -0.40795767, y: 0.5981479, z: 0.57386464, w: 0.38271266}
-    ClosePosition: {x: 5.013966, y: -0.15919685, z: 5.068056}
     CloseRotation: {x: -0.531807, y: 0.49131647, z: 0.47331914, w: 0.5017554}
   SmoothTime: 0.02
 --- !u!1001 &1883817615991932802
@@ -85,7 +92,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
       propertyPath: m_Name
-      value: lucius - idle
+      value: Lucius
       objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: 494cf16a5ef1e4510b75d622bd5f9f1c,
         type: 3}
