@@ -6,8 +6,7 @@ namespace MrPuppet
 {
     public class JointFollower : MonoBehaviour
     {
-        [Required]
-        public MrPuppetDataMapper DataMapper;
+        private MrPuppetDataMapper DataMapper;
 
         public MrPuppetDataMapper.Joint Joint = MrPuppetDataMapper.Joint.Wrist;
 
@@ -19,23 +18,42 @@ namespace MrPuppet
         [MinValue(0f)]
         public float PositionSpeed = 0.1f;
 
+        public bool InLateUpdate = false;
+
         private Vector3 PositionVelocity;
 
-        private void OnValidate()
+        private void Awake()
         {
-            if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        private void Update()
+        private void Update() { if (!InLateUpdate) Follow(); }
+        private void LateUpdate() { if (InLateUpdate) Follow(); }
+
+        private void Follow()
         {
             if (FollowRotation)
             {
-                transform.localRotation = Quaternion.Slerp(transform.localRotation, DataMapper.GetJoint(Joint).rotation, RotationSpeed * Time.smoothDeltaTime);
+                if (RotationSpeed > 0f)
+                {
+                    transform.localRotation = Quaternion.RotateTowards(transform.localRotation, DataMapper.GetJoint(Joint).rotation, RotationSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.localRotation = DataMapper.GetJoint(Joint).rotation;
+                }
             }
 
             if (FollowPosition)
             {
-                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.GetJoint(Joint).position, ref PositionVelocity, PositionSpeed);
+                if (PositionSpeed > 0f)
+                {
+                    transform.localPosition = Vector3.SmoothDamp(transform.localPosition, DataMapper.GetJoint(Joint).position, ref PositionVelocity, PositionSpeed);
+                }
+                else
+                {
+                    transform.localPosition = DataMapper.GetJoint(Joint).position;
+                }
             }
         }
     }
