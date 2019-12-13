@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
-using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 #endif
