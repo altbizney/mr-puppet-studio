@@ -12,6 +12,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: lambert1
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader1
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

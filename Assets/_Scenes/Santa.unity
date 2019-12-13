@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -130,6 +130,9 @@ GameObject:
   m_Component:
   - component: {fileID: 81627296}
   - component: {fileID: 81627295}
+  - component: {fileID: 81627299}
+  - component: {fileID: 81627298}
+  - component: {fileID: 81627297}
   m_Layer: 0
   m_Name: Santa
   m_TagString: Untagged
@@ -170,6 +173,115 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81627297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81627294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ac8d30c6a0d9642a11e5be4c440740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Root: {fileID: 1883370366}
+  m_UpdateRate: 60
+  m_UpdateMode: 0
+  m_Damping: 0.286
+  m_DampingDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Elasticity: 0.1
+  m_ElasticityDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Stiffness: 0.05
+  m_StiffnessDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Inert: 0
+  m_InertDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Radius: 0
+  m_RadiusDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_EndLength: 0
+  m_EndOffset: {x: 0, y: 0, z: 0}
+  m_Gravity: {x: 0, y: 0, z: 0}
+  m_Force: {x: 0, y: 0, z: 0}
+  m_Colliders: []
+  m_Exclusions: []
+  m_FreezeAxis: 0
+  m_DistantDisable: 0
+  m_ReferenceObject: {fileID: 0}
+  m_DistanceToObject: 20
+--- !u!114 &81627298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81627294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc6b281542f478f8d4918024455cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoBlink: 1
+  BlinkInterval: {x: 1, y: 3}
+  BlinkCloseDuration: {x: 0.05, y: 0.1}
+  BlinkOpenDuration: {x: 0.05, y: 0.1}
+  BlinkHoldDuration: {x: 0.05, y: 0.1}
+  Invert: 0
+  ManualBlinkKey: 98
+  Step: 1
+  BlendShapeKeys:
+  - SkinnedMeshRenderer: {fileID: 1536876779}
+    BlendShapeIndex: 0
+    BlendShapeMin: 0
+    BlendShapeMax: 100
+  TransformKeys:
+  - Transform: {fileID: 1801730929}
+    InitPosition: {x: -0, y: 0.045238152, z: 0.24645247}
+    EndPosition: {x: 0, y: 0.045238152, z: 0.10229619}
+    InitRotation: {x: 0, y: -0, z: -0, w: 1}
+    EndRotation: {x: -0, y: -0, z: -0, w: 1}
+--- !u!114 &81627299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81627294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e948fc08d1af244d0bbee37ec8da9642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DataMapper: {fileID: 1940579822}
+  JawJoint: {fileID: 1220605712}
+  AnimData:
+    OpenRotation: {x: 0.81179845, y: 0.5839378, z: -0, w: 0}
+    CloseRotation: {x: 0.69699705, y: 0.71707404, z: -0, w: 0}
+  SmoothTime: 0.02
 --- !u!1 &144751845
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,127 +612,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bbf90b0e72344fd797fa8f9ff3b203c, type: 3}
---- !u!1 &1220605710 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 4bbf90b0e72344fd797fa8f9ff3b203c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1220605709}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1220605711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220605710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e948fc08d1af244d0bbee37ec8da9642, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DataMapper: {fileID: 1940579822}
-  JawJoint: {fileID: 1220605712}
-  AnimData:
-    OpenRotation: {x: 0.81179845, y: 0.5839378, z: -0, w: 0}
-    CloseRotation: {x: 0.69699705, y: 0.71707404, z: -0, w: 0}
-  SmoothTime: 0.02
 --- !u!4 &1220605712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3069604979615447665, guid: 4bbf90b0e72344fd797fa8f9ff3b203c,
     type: 3}
   m_PrefabInstance: {fileID: 1220605709}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1220605713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220605710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afdc6b281542f478f8d4918024455cb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoBlink: 1
-  BlinkInterval: {x: 1, y: 3}
-  BlinkCloseDuration: {x: 0.05, y: 0.1}
-  BlinkOpenDuration: {x: 0.05, y: 0.1}
-  BlinkHoldDuration: {x: 0.05, y: 0.1}
-  Invert: 0
-  ManualBlinkKey: 98
-  Step: 1
-  BlendShapeKeys:
-  - SkinnedMeshRenderer: {fileID: 1536876779}
-    BlendShapeIndex: 0
-    BlendShapeMin: 0
-    BlendShapeMax: 100
-  TransformKeys:
-  - Transform: {fileID: 1801730929}
-    InitPosition: {x: -0, y: 0.045238152, z: 0.24645247}
-    EndPosition: {x: 0, y: 0.045238152, z: 0.10229619}
-    InitRotation: {x: 0, y: -0, z: -0, w: 1}
-    EndRotation: {x: -0, y: -0, z: -0, w: 1}
---- !u!114 &1220605714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220605710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9ac8d30c6a0d9642a11e5be4c440740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Root: {fileID: 1883370366}
-  m_UpdateRate: 60
-  m_UpdateMode: 0
-  m_Damping: 0.286
-  m_DampingDistrib:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Elasticity: 0.1
-  m_ElasticityDistrib:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Stiffness: 0.05
-  m_StiffnessDistrib:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Inert: 0
-  m_InertDistrib:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Radius: 0
-  m_RadiusDistrib:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_EndLength: 0
-  m_EndOffset: {x: 0, y: 0, z: 0}
-  m_Gravity: {x: 0, y: 0, z: 0}
-  m_Force: {x: 0, y: 0, z: 0}
-  m_Colliders: []
-  m_Exclusions: []
-  m_FreezeAxis: 0
-  m_DistantDisable: 0
-  m_ReferenceObject: {fileID: 0}
-  m_DistanceToObject: 20
 --- !u!4 &1220605716 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 4bbf90b0e72344fd797fa8f9ff3b203c,
