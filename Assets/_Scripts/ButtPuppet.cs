@@ -55,7 +55,7 @@ namespace MrPuppet
                 weighted = Quaternion.Slerp(spawn, full, amount);
 
                 // apply with smoothing
-                target.rotation = Quaternion.RotateTowards(target.rotation, weighted, RotationSpeed);
+                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.deltaTime);
             }
 
             public void OnDrawGizmos()
@@ -188,8 +188,8 @@ namespace MrPuppet
                 Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                Hip.rotation = Quaternion.RotateTowards(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed);
-                Head.rotation = Quaternion.RotateTowards(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed);
+                Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
                 if (EnableJawHeadMixer)
                 {
