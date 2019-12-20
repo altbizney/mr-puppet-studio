@@ -72,6 +72,16 @@ namespace MrPuppet
                 HubConnection.SendSocketMessage("COMMAND;STOP_MICROPHONE;" + Filename);
                 RecordingMicrophone = false;
             }
+
+            // TODO: move these to where they happen
+            if (Input.GetKeyDown(KeyCode.A))
+                HubConnection.SendSocketMessage("COMMAND;KEYDOWN:A\n");
+            if (Input.GetKeyDown(KeyCode.T))
+                HubConnection.SendSocketMessage("COMMAND;KEYDOWN:T\n");
+            if (Input.GetKeyDown(KeyCode.O))
+                HubConnection.SendSocketMessage("COMMAND;KEYDOWN:O\n");
+            if (Input.GetKeyDown(KeyCode.C))
+                HubConnection.SendSocketMessage("COMMAND;KEYDOWN:C\n");
         }
 #endif
     }
