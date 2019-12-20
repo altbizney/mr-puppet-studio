@@ -32,7 +32,7 @@ namespace MrPuppet
                     var channel = new ChannelMap();
                     channel.SkinnedMeshRenderer = mr;
                     channel.BlendShapeIndex = i;
-                    channel.Name = mr.sharedMesh.GetBlendShapeName(i).Replace(".", "_");
+                    channel.Name = mr.sharedMesh.GetBlendShapeName(i).Split('.')[1] + "_CHANNEL";
                     channel.Proxy = transform.Find(channel.Name);
 
                     if (channel.Proxy)
