@@ -181,33 +181,33 @@ namespace MrPuppet
                             if (_array.Length < 2)
                             {
                                 Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
-                                return;
                             }
-
-                            switch (_array[1])
+                            else
                             {
-                                case "JAW_OPENED":
-                                    Debug.Log("[COMMAND] JawOpened = " + _array[2]);
-                                    DataMapper.JawOpened = float.Parse(_array[2]);
-                                    break;
-                                case "JAW_CLOSED":
-                                    Debug.Log("[COMMAND] JawClosed = " + _array[2]);
-                                    DataMapper.JawClosed = float.Parse(_array[2]);
-                                    break;
-                                case "TPOSE":
-                                    Debug.Log("[COMMAND] TPOSE updated");
-                                    DataMapper.TPose.FromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
-                                    break;
-                                case "ATTACH":
-                                    // TODO: support for multiple puppets
-                                    Debug.Log("[COMMAND] ATTACH updated");
-                                    FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
-                                    break;
-                                default:
-                                    Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
-                                    break;
+                                switch (_array[1])
+                                {
+                                    case "JAW_OPENED":
+                                        Debug.Log("[COMMAND] JawOpened = " + _array[2]);
+                                        DataMapper.JawOpened = float.Parse(_array[2]);
+                                        break;
+                                    case "JAW_CLOSED":
+                                        Debug.Log("[COMMAND] JawClosed = " + _array[2]);
+                                        DataMapper.JawClosed = float.Parse(_array[2]);
+                                        break;
+                                    case "TPOSE":
+                                        Debug.Log("[COMMAND] TPOSE updated");
+                                        DataMapper.TPose.FromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                        break;
+                                    case "ATTACH":
+                                        // TODO: support for multiple puppets
+                                        Debug.Log("[COMMAND] ATTACH updated");
+                                        FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                        break;
+                                    default:
+                                        Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
+                                        break;
+                                }
                             }
-
                         }
                         else
                         {
