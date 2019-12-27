@@ -198,6 +198,11 @@ namespace MrPuppet
                                     Debug.Log("[COMMAND] TPOSE updated");
                                     DataMapper.TPose.FromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
                                     break;
+                                case "ATTACH":
+                                    // TODO: support for multiple puppets
+                                    Debug.Log("[COMMAND] ATTACH updated");
+                                    FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                    break;
                                 default:
                                     Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
                                     break;
