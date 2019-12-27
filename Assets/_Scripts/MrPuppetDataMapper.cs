@@ -21,6 +21,13 @@ namespace MrPuppet
             ElbowRotation = elbow;
             WristRotation = wrist;
         }
+
+        public override string ToString()
+        {
+            return WristRotation.x + "," + WristRotation.y + "," + WristRotation.z + "," + WristRotation.w + ";" +
+                ElbowRotation.x + "," + ElbowRotation.y + "," + ElbowRotation.z + "," + ElbowRotation.w + ";" +
+                ShoulderRotation.x + "," + ShoulderRotation.y + "," + ShoulderRotation.z + "," + ShoulderRotation.w + ";";
+        }
     }
 
     public class MrPuppetDataMapper : MonoBehaviour
@@ -210,7 +217,7 @@ namespace MrPuppet
             Gizmos.DrawRay(WristJoint.position, WristJoint.forward * 0.25f);
         }
 
-        // The section below is used to store the changes made at runtime 
+        // The section below is used to store the changes made at runtime
         static MrPuppetDataMapper()
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
