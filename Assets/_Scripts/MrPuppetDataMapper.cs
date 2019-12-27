@@ -26,23 +26,29 @@ namespace MrPuppet
         {
             return WristRotation.x + "," + WristRotation.y + "," + WristRotation.z + "," + WristRotation.w + ";" +
                 ElbowRotation.x + "," + ElbowRotation.y + "," + ElbowRotation.z + "," + ElbowRotation.w + ";" +
-                ShoulderRotation.x + "," + ShoulderRotation.y + "," + ShoulderRotation.z + "," + ShoulderRotation.w + ";";
+                ShoulderRotation.x + "," + ShoulderRotation.y + "," + ShoulderRotation.z + "," + ShoulderRotation.w;
+        }
+
+        public void FromString(string[] wrist, string[] elbow, string[] shoulder)
+        {
+            WristRotation = new Quaternion(float.Parse(wrist[0]), float.Parse(wrist[1]), float.Parse(wrist[2]), float.Parse(wrist[3]));
+            ElbowRotation = new Quaternion(float.Parse(elbow[0]), float.Parse(elbow[1]), float.Parse(elbow[2]), float.Parse(elbow[3]));
+            ShoulderRotation = new Quaternion(float.Parse(shoulder[0]), float.Parse(shoulder[1]), float.Parse(shoulder[2]), float.Parse(shoulder[3]));
         }
     }
 
     public class MrPuppetDataMapper : MonoBehaviour
     {
-        // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
-        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
+        private MrPuppetHubConnection HubConnection;
 
-        public enum Joint { Shoulder, Elbow, Wrist };
+        // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
+        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float) (JawOpened - JawClosed)) * (1f - 0f));
+
+        public enum Joint { Shoulder, Elbow, Wrist }
 
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
         public Transform WristJoint { get; private set; }
-
-        [Required]
-        public MrPuppetHubConnection HubConnection;
 
         public bool EnableGizmo = true;
 
@@ -63,6 +69,8 @@ namespace MrPuppet
 
         private void Awake()
         {
+            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
             var JointChain = new GameObject("• MrPuppet / Joint Chain").transform;
             JointChain.SetAsFirstSibling();
             JointChain.hideFlags = ShowJointChain ? HideFlags.None : HideFlags.HideInHierarchy;
@@ -75,11 +83,6 @@ namespace MrPuppet
 
             WristJoint = new GameObject("Wrist").transform;
             WristJoint.SetParent(ElbowJoint);
-        }
-
-        private void OnValidate()
-        {
-            if (HubConnection == null) HubConnection = FindObjectOfType<MrPuppetHubConnection>();
         }
 
         private void Update()
