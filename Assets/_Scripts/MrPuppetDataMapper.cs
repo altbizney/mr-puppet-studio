@@ -137,6 +137,7 @@ namespace MrPuppet
                 ElbowRotation = Quaternion.Inverse(HubConnection.ElbowRotation),
                 WristRotation = Quaternion.Inverse(HubConnection.WristRotation)
             };
+            HubConnection.SendSocketMessage("COMMAND;TPOSE;" + TPose.ToString());
         }
 
         [Button(ButtonSizes.Large, Name = "Clear")]
@@ -144,6 +145,7 @@ namespace MrPuppet
         public void ClearTPose()
         {
             TPose = new Pose();
+            HubConnection.SendSocketMessage("COMMAND;TPOSE;" + TPose.ToString());
         }
 
         [Button(ButtonSizes.Large)]
@@ -153,6 +155,7 @@ namespace MrPuppet
         public void GrabJawOpened()
         {
             JawOpened = HubConnection.Jaw;
+            HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;" + JawOpened);
         }
 
         [Button(ButtonSizes.Large)]
@@ -162,6 +165,7 @@ namespace MrPuppet
         public void GrabJawClosed()
         {
             JawClosed = HubConnection.Jaw;
+            HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;" + JawClosed);
         }
 
         [Button(ButtonSizes.Large, Name = "Clear")]
@@ -170,6 +174,8 @@ namespace MrPuppet
         {
             JawClosed = 0f;
             JawOpened = 1023f;
+            HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;0");
+            HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;1023");
         }
 
 #if UNITY_EDITOR
