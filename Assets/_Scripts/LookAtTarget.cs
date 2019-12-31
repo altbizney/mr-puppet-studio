@@ -13,15 +13,7 @@ namespace MrPuppet
         [ChildGameObjectsOnly]
         public Transform headJoint;
 
-        private ValueDropdownList<Vector3> VectorDirectionValues = new ValueDropdownList<Vector3>()
-        {
-            {"Forward", Vector3.forward },
-            {"Back",    Vector3.back    },
-            {"Up",      Vector3.up      },
-            {"Down",    Vector3.down    },
-            {"Right",   Vector3.right   },
-            {"Left",    Vector3.left    },
-        };
+        private ValueDropdownList<Vector3> VectorDirectionValues() { return VectorTools.VectorDirectionValues; }
 
         [ValueDropdown("VectorDirectionValues", HideChildProperties = true)]
         public Vector3 UpDirection = Vector3.up;
@@ -62,7 +54,7 @@ namespace MrPuppet
                     headJoint.parent.InverseTransformDirection(lookTarget.position - headJoint.position),
                     headJoint.parent.InverseTransformDirection(UpDirection)
                 ) * offsetQuaternion,
-            weight);
+                weight);
         }
 
         private void OnDrawGizmos()
