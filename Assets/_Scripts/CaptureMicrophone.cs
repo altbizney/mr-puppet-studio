@@ -65,8 +65,8 @@ namespace MrPuppet
             if (UnityIsRecording && !RecordingIsActive)
             {
                 GetFilename();
-                RecordingIsActive = true;
                 HubConnection.SendSocketMessage("COMMAND;RECORDING;START;" + Filename);
+                RecordingIsActive = true;
 
                 HubConnection.SendSocketMessage("COMMAND;TPOSE;" + DataMapper.TPose.ToString());
                 HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;" + DataMapper.JawOpened);
