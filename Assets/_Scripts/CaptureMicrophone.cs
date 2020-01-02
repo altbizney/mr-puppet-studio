@@ -63,13 +63,13 @@ namespace MrPuppet
             if (IsRecording && !RecordingMicrophone)
             {
                 GetFilename();
-                HubConnection.SendSocketMessage("COMMAND;START_MICROPHONE;" + Filename);
+                HubConnection.SendSocketMessage("COMMAND;RECORDING;START;" + Filename);
                 RecordingMicrophone = true;
             }
             else if (RecordingMicrophone && !IsRecording)
             {
                 // DO NOT requery filename here as the take has already been advanced
-                HubConnection.SendSocketMessage("COMMAND;STOP_MICROPHONE;" + Filename);
+                HubConnection.SendSocketMessage("COMMAND;RECORDING;STOP;" + Filename);
                 RecordingMicrophone = false;
             }
 
