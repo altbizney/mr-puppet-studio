@@ -65,7 +65,7 @@ namespace MrPuppet
             if (UnityIsRecording && !RecordingIsActive)
             {
                 GetFilename();
-                HubConnection.SendSocketMessage("COMMAND;START_MICROPHONE;" + Filename);
+                HubConnection.SendSocketMessage("COMMAND;RECORDING;START;" + Filename);
 
                 HubConnection.SendSocketMessage("COMMAND;TPOSE;" + DataMapper.TPose.ToString());
                 HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;" + DataMapper.JawOpened);
@@ -79,7 +79,7 @@ namespace MrPuppet
             else if (RecordingIsActive && !UnityIsRecording)
             {
                 // DO NOT requery filename here as the take has already been advanced
-                HubConnection.SendSocketMessage("COMMAND;STOP_MICROPHONE;" + Filename);
+                HubConnection.SendSocketMessage("COMMAND;RECORDING;STOP;" + Filename);
                 RecordingIsActive = false;
             }
         }
