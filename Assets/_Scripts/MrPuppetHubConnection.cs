@@ -187,24 +187,27 @@ namespace MrPuppet
                                 switch (_array[1])
                                 {
                                     case "JAW_OPENED":
-                                        Debug.Log("[COMMAND] JawOpened = " + _array[2]);
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
                                         DataMapper.JawOpened = float.Parse(_array[2]);
                                         break;
                                     case "JAW_CLOSED":
-                                        Debug.Log("[COMMAND] JawClosed = " + _array[2]);
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
                                         DataMapper.JawClosed = float.Parse(_array[2]);
                                         break;
                                     case "TPOSE":
-                                        Debug.Log("[COMMAND] TPOSE updated");
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
                                         DataMapper.TPose.FromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
                                         break;
                                     case "ATTACH":
                                         // TODO: support for multiple puppets
-                                        Debug.Log("[COMMAND] ATTACH updated");
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
                                         FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
                                         break;
+                                    case "RECORDING":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] " + _array[2]);
+                                        break;
                                     default:
-                                        Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
+                                        Debug.LogWarning("[COMMAND][UNKNOWN] " + _data);
                                         break;
                                 }
                             }
