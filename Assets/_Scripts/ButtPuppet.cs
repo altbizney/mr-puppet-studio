@@ -68,8 +68,8 @@ namespace MrPuppet
             }
         }
 
-        [Required]
-        public MrPuppetDataMapper DataMapper;
+        private MrPuppetDataMapper DataMapper;
+        private MrPuppetHubConnection HubConnection;
 
         // performer attach position
         private bool AttachPoseSet = false;
@@ -117,15 +117,11 @@ namespace MrPuppet
         [ShowIf("EnableJawHeadMixer")]
         public float JawHeadMaxExtent = 10f;
 
-        public enum JawHeadAxis { x, y, z };
+        public enum JawHeadAxis { x, y, z }
+
         [ShowIf("EnableJawHeadMixer")]
         [EnumToggleButtons]
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
-
-        private void OnValidate()
-        {
-            if (!DataMapper) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
-        }
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -146,10 +142,35 @@ namespace MrPuppet
             {
                 influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
             }
+
+            HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
+        }
+
+        public string AttachPoseToString()
+        {
+            string packet = "";
+
+            packet += AttachPoseElbowPosition.x + "," + AttachPoseElbowPosition.y + "," + AttachPoseElbowPosition.z + ";";
+            packet += AttachPoseElbowRotation.x + "," + AttachPoseElbowRotation.y + "," + AttachPoseElbowRotation.z + "," + AttachPoseElbowRotation.w + ";";
+            packet += AttachPoseWristRotation.x + "," + AttachPoseWristRotation.y + "," + AttachPoseWristRotation.z + "," + AttachPoseWristRotation.w;
+
+            return packet;
+        }
+
+        public void AttachPoseFromString(string[] elbowPos, string[] elbowRot, string[] wristRot)
+        {
+            AttachPoseElbowPosition = new Vector3(float.Parse(elbowPos[0]), float.Parse(elbowPos[1]), float.Parse(elbowPos[2]));
+            AttachPoseElbowRotation = new Quaternion(float.Parse(elbowRot[0]), float.Parse(elbowRot[1]), float.Parse(elbowRot[2]), float.Parse(elbowRot[3]));
+            AttachPoseWristRotation = new Quaternion(float.Parse(wristRot[0]), float.Parse(wristRot[1]), float.Parse(wristRot[2]), float.Parse(wristRot[3]));
+
+            AttachPoseSet = true;
         }
 
         private void Awake()
         {
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
             // // clone proxy geo
             // HipProxy = new GameObject("Proxy:" + Hip.name).transform;
             // HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);

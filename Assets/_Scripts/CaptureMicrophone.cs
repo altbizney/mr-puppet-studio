@@ -16,12 +16,13 @@ namespace MrPuppet
 
         private RecorderWindow Recorder;
         private MrPuppetHubConnection HubConnection;
+        private MrPuppetDataMapper DataMapper;
 
         [ReadOnly, ShowInInspector, ShowIf("ListenForCommands")]
-        private bool IsRecording = false;
+        private bool UnityIsRecording = false;
 
         [ReadOnly, ShowInInspector, ShowIf("ListenForCommands")]
-        private bool RecordingMicrophone = false;
+        private bool RecordingIsActive = false;
 
         [DisplayAsString, ShowInInspector, ShowIf("ListenForCommands")]
         private string Filename;
@@ -29,6 +30,7 @@ namespace MrPuppet
         private void Awake()
         {
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
         private void GetFilename()
@@ -58,19 +60,26 @@ namespace MrPuppet
 
             if (!Recorder) Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
-            IsRecording = Recorder.IsRecording();
+            UnityIsRecording = Recorder.IsRecording();
 
-            if (IsRecording && !RecordingMicrophone)
+            if (UnityIsRecording && !RecordingIsActive)
             {
                 GetFilename();
                 HubConnection.SendSocketMessage("COMMAND;RECORDING;START;" + Filename);
-                RecordingMicrophone = true;
+                RecordingIsActive = true;
+
+                HubConnection.SendSocketMessage("COMMAND;TPOSE;" + DataMapper.TPose.ToString());
+                HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;" + DataMapper.JawOpened);
+                HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;" + DataMapper.JawClosed);
+                HubConnection.SendSocketMessage("COMMAND;ATTACH;" + FindObjectOfType<ButtPuppet>().AttachPoseToString());
+                // TODO: COMMAND;ARM_LENGTH
+                // TODO: COMMAND;FOREARM_LENGTH
             }
-            else if (RecordingMicrophone && !IsRecording)
+            else if (RecordingIsActive && !UnityIsRecording)
             {
                 // DO NOT requery filename here as the take has already been advanced
                 HubConnection.SendSocketMessage("COMMAND;RECORDING;STOP;" + Filename);
-                RecordingMicrophone = false;
+                RecordingIsActive = false;
             }
         }
 #endif

@@ -56,6 +56,8 @@ namespace MrPuppet
 
     public class MrPuppetHubConnection : MonoBehaviour
     {
+        private MrPuppetDataMapper DataMapper;
+
         [Header("Connection")]
         public string WebsocketUri = "ws://localhost:3000";
 
@@ -111,6 +113,8 @@ namespace MrPuppet
 
         private void Awake()
         {
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+
             WristCalibrationData = new SensorCalibrationData();
             ElbowCalibrationData = new SensorCalibrationData();
             ShoulderCalibrationData = new SensorCalibrationData();
@@ -162,10 +166,51 @@ namespace MrPuppet
                     _data = webSocket.RecvString();
                     if (!string.IsNullOrEmpty(_data))
                     {
-                        if (_data.StartsWith("DEBUG") || _data.StartsWith("COMMAND"))
+                        if (_data.StartsWith("DEBUG"))
                         {
                             // output debug
                             Debug.Log(_data);
+                        }
+                        else if (_data.StartsWith("COMMAND"))
+                        {
+                            IsConnected = true;
+
+                            // process packet
+                            _array = _data.Split(';');
+
+                            if (_array.Length < 2)
+                            {
+                                Debug.LogWarning("[COMMAND] UNKNOWN: " + _data);
+                            }
+                            else
+                            {
+                                switch (_array[1])
+                                {
+                                    case "JAW_OPENED":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
+                                        DataMapper.JawOpened = float.Parse(_array[2]);
+                                        break;
+                                    case "JAW_CLOSED":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
+                                        DataMapper.JawClosed = float.Parse(_array[2]);
+                                        break;
+                                    case "TPOSE":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
+                                        DataMapper.TPose.FromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                        break;
+                                    case "ATTACH":
+                                        // TODO: support for multiple puppets
+                                        Debug.Log("[COMMAND][" + _array[1] + "] updated");
+                                        FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                        break;
+                                    case "RECORDING":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] " + _array[2]);
+                                        break;
+                                    default:
+                                        Debug.LogWarning("[COMMAND][UNKNOWN] " + _data);
+                                        break;
+                                }
+                            }
                         }
                         else
                         {
