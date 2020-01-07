@@ -59,7 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19e83244385a4ebb92dd31d3f5c13ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DataMapper: {fileID: 0}
   Hip: {fileID: 5206072566242003866}
   Head: {fileID: 2689699437124903445}
   WeightedInfluences:
@@ -226,6 +225,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283504686520518403, guid: b23177e0cdb6c482695fde7103523cc9,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b23177e0cdb6c482695fde7103523cc9, type: 3}
