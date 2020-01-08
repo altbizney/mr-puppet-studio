@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Thinko
-  productName: Santa
+  productName: BNN
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -164,7 +164,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Standalone: com.thinko.mr-puppet-studio.santa
+    Standalone: com.thinko.mr-puppet-studio.bnn
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -280,7 +280,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 950137e50a90542b289f4ea171d6f91b, type: 3}
+      m_Icon: {fileID: 2800000, guid: 21eb4f8685ec74f97982a5ceeeecf71c, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

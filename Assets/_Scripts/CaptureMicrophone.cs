@@ -38,13 +38,13 @@ namespace MrPuppet
             RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
             RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
 
-            foreach (var recorder in m_ControllerSettings.recorderSettings)
+            foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
             {
-                if (!recorder.enabled) continue;
+                if (!recorder.Enabled) continue;
 
-                Filename = recorder.outputFile;
+                Filename = recorder.OutputFile;
 
-                Filename = Filename.Replace("<Take>", recorder.take.ToString("000"));
+                Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));
                 Filename = Filename.Replace("<Scene>", SceneManager.GetActiveScene().name);
 
                 Filename = Filename.Substring(Filename.LastIndexOf('/') + 1);
@@ -74,8 +74,6 @@ namespace MrPuppet
                 HubConnection.SendSocketMessage("COMMAND;ATTACH;" + FindObjectOfType<ButtPuppet>().AttachPoseToString());
                 // TODO: COMMAND;ARM_LENGTH
                 // TODO: COMMAND;FOREARM_LENGTH
-
-                RecordingIsActive = true;
             }
             else if (RecordingIsActive && !UnityIsRecording)
             {

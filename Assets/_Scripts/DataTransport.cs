@@ -12,6 +12,7 @@ namespace MrPuppet
             public SkinnedMeshRenderer SkinnedMeshRenderer;
 
             public int BlendShapeIndex;
+            public string Name;
 
             public Transform Proxy;
         }
@@ -31,8 +32,17 @@ namespace MrPuppet
                     var channel = new ChannelMap();
                     channel.SkinnedMeshRenderer = mr;
                     channel.BlendShapeIndex = i;
-                    channel.Proxy = transform.Find(mr.sharedMesh.GetBlendShapeName(i).Replace(".", "_"));
-                    Channels.Add(channel);
+                    channel.Name = mr.sharedMesh.GetBlendShapeName(i).Split('.')[1] + "_CHANNEL";
+                    channel.Proxy = transform.Find(channel.Name);
+
+                    if (channel.Proxy)
+                    {
+                        Channels.Add(channel);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Could not find dataTransport channel named: " + channel.Name);
+                    }
                 }
             }
         }
