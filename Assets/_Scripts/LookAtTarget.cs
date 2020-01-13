@@ -24,6 +24,8 @@ namespace MrPuppet
 
         [Range(0f, 1f), ReadOnly]
         public float weight = 0f;
+        [Range(0f, 1f)]
+        public float weightMax = 1f;
 
         public float smoothTime = 0.1f;
 
@@ -40,7 +42,7 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (Input.GetKeyDown(weightKey)) weightTarget = 1f;
+            if (Input.GetKeyDown(weightKey)) weightTarget = weightMax;
             if (Input.GetKeyUp(weightKey)) weightTarget = 0f;
         }
 
