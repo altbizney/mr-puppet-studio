@@ -1,5 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
+using System.Collections;
+using UnityEngine.Networking;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace MrPuppet
 {
@@ -9,6 +13,7 @@ namespace MrPuppet
         public GameObject PIPCamera;
         public GameObject WideCamera;
 
+        public GameObject LowerThird;
         public GameObject PIP1;
         public GameObject PIP2;
         public GameObject PIP3;
@@ -21,10 +26,50 @@ namespace MrPuppet
         public KeyCode PrevView = KeyCode.UpArrow;
         public KeyCode NextView = KeyCode.DownArrow;
         private int CurrentView = 1;
+        private string GraphicsRoot;
 
         private void Start()
         {
             SwapGraphics(1);
+
+            GraphicsRoot = Path.Combine(Application.persistentDataPath, "Graphics");
+
+        }
+
+        private void DownloadGraphics()
+        {
+            StartCoroutine(LoadGraphic("LowerThird.png", LowerThird));
+            StartCoroutine(LoadGraphic("PIP1.png", PIP1));
+            StartCoroutine(LoadGraphic("PIP2.png", PIP2));
+            StartCoroutine(LoadGraphic("PIP3.png", PIP3));
+            StartCoroutine(LoadGraphic("PIP4.png", PIP4));
+            StartCoroutine(LoadGraphic("PIP5.png", PIP5));
+            StartCoroutine(LoadGraphic("PIP6.png", PIP6));
+            StartCoroutine(LoadGraphic("PIP7.png", PIP7));
+            StartCoroutine(LoadGraphic("PIP8.png", PIP8));
+        }
+
+        private IEnumerator LoadGraphic(string filename, GameObject GO)
+        {
+            RawImage image = GO.GetComponent<RawImage>();
+
+            if (File.Exists(Path.Combine(GraphicsRoot, filename)))
+            {
+                UnityWebRequest www = UnityWebRequestTexture.GetTexture("file:///" + Path.Combine(GraphicsRoot, filename));
+                yield return www.SendWebRequest();
+
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    Debug.Log("Error downloading " + filename + ": " + www.error);
+                }
+                else
+                {
+                    image.texture = DownloadHandlerTexture.GetContent(www);
+                    image.texture.wrapMode = TextureWrapMode.Clamp;
+                    image.texture.filterMode = FilterMode.Bilinear;
+                    image.SetNativeSize();
+                }
+            }
         }
 
         private void Update()
