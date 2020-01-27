@@ -34,6 +34,7 @@ namespace MrPuppet
 
             GraphicsRoot = Path.Combine(Application.persistentDataPath, "Graphics");
 
+            DownloadGraphics();
         }
 
         private void DownloadGraphics()
