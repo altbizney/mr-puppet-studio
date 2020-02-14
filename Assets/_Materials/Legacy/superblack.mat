@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: superblake
+  m_Name: superblack
   m_Shader: {fileID: -6465566751694194690, guid: 5aa2c2a351a534dd3b092f0ca4803ce5,
     type: 3}
   m_ShaderKeywords: 
