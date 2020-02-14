@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 5842653561860986872}
   - component: {fileID: 5842653561860986853}
   - component: {fileID: 5842653561860986874}
+  - component: {fileID: 779914413}
   m_Layer: 0
   m_Name: Gator
   m_TagString: Untagged
@@ -96,6 +97,37 @@ MonoBehaviour:
     OpenRotation: {x: 0.25443086, y: -0, z: -0.000000029802319, w: 0.967091}
     CloseRotation: {x: -0.014047431, y: -0, z: 0.0000000013969838, w: 0.9999014}
   SmoothTime: 0.02
+--- !u!114 &779914413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5842653561860986873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc6b281542f478f8d4918024455cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoBlink: 1
+  BlinkInterval: {x: 1, y: 3}
+  BlinkCloseDuration: {x: 0.05, y: 0.1}
+  BlinkOpenDuration: {x: 0.05, y: 0.1}
+  BlinkHoldDuration: {x: 0.05, y: 0.1}
+  Invert: 0
+  ManualBlinkKey: 98
+  Step: 1
+  BlendShapeKeys:
+  - SkinnedMeshRenderer: {fileID: 6078385116300838719}
+    BlendShapeIndex: 0
+    BlendShapeMin: 0
+    BlendShapeMax: 100
+  TransformKeys:
+  - Transform: {fileID: 0}
+    InitPosition: {x: 0, y: 0, z: 0}
+    EndPosition: {x: 0, y: 0, z: 0}
+    InitRotation: {x: 0, y: 0, z: 0, w: 1}
+    EndRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1001 &5842653562041751311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113,6 +145,11 @@ PrefabInstance:
       propertyPath: m_BlendShapeWeights.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -8840700782357950416, guid: 6a2d363de226d4406991cbf3139d16f0,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b17afd3f8f7544e4e84f9c9954323dba, type: 2}
     - target: {fileID: -5700219938486146723, guid: 6a2d363de226d4406991cbf3139d16f0,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -228,6 +265,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 54.020004
       objectReference: {fileID: 0}
+    - target: {fileID: 5917040743896300544, guid: 6a2d363de226d4406991cbf3139d16f0,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b17afd3f8f7544e4e84f9c9954323dba, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a2d363de226d4406991cbf3139d16f0, type: 3}
 --- !u!4 &1472662492419390485 stripped
@@ -239,6 +281,12 @@ Transform:
 --- !u!1 &1263964103449767196 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4566712888699602413, guid: 6a2d363de226d4406991cbf3139d16f0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5842653562041751311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6078385116300838719 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8840700782357950416, guid: 6a2d363de226d4406991cbf3139d16f0,
     type: 3}
   m_PrefabInstance: {fileID: 5842653562041751311}
   m_PrefabAsset: {fileID: 0}

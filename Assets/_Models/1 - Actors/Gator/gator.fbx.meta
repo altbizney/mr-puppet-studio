@@ -3,7 +3,32 @@ guid: 6a2d363de226d4406991cbf3139d16f0
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader1
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader2
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: surfaceShader3
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: teeth_MAT
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
