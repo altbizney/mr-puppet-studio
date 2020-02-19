@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &529444840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037807422081296057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8bda32bc0f441f0b72e2b6ac141f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DrawGizmos: 0
 --- !u!1 &5690525215994362893
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,11 +142,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b17afd3f8f7544e4e84f9c9954323dba, type: 2}
-    - target: {fileID: -7985722353254526086, guid: 9d11aee2291314eeba1df7f82a1682d9,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 9d11aee2291314eeba1df7f82a1682d9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -194,6 +202,12 @@ PrefabInstance:
 --- !u!4 &829359723230689200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 9d11aee2291314eeba1df7f82a1682d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5690525215641558186}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1037807422081296057 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4566712888699602413, guid: 9d11aee2291314eeba1df7f82a1682d9,
     type: 3}
   m_PrefabInstance: {fileID: 5690525215641558186}
   m_PrefabAsset: {fileID: 0}
