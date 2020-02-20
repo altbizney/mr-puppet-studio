@@ -105,7 +105,6 @@ namespace MrPuppet
 
                 // apply rotation deltas to bind pose
                 Root.rotation = Quaternion.Slerp(Root.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
-
             }
 
             if (Input.GetKeyDown(KeyCode.A))
