@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a675fa236592a4b7397ac2b512fa6188
+guid: a7d5dfa1d8a634288b25f77497175496
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
@@ -35,18 +35,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: shimmyTest
+      name: idle
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 1
-      lastFrame: 240
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -62,7 +62,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     isReadable: 0
   meshes:
     lODScreenPercentages: []
