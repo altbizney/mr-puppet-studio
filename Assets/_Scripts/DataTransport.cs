@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -13,10 +14,13 @@ namespace MrPuppet
 
             public int BlendShapeIndex;
             public string Name;
+            [Range(0f, 100f)]
+            public float Amount;
 
             public Transform Proxy;
         }
 
+        [ShowInInspector, ReadOnly]
         private List<ChannelMap> Channels = new List<ChannelMap>();
 
         public bool DrawGizmos = false;
@@ -51,7 +55,8 @@ namespace MrPuppet
         {
             foreach (var channel in Channels)
             {
-                channel.Proxy.localPosition = new Vector3(channel.Proxy.localPosition.x, channel.SkinnedMeshRenderer.GetBlendShapeWeight(channel.BlendShapeIndex), channel.Proxy.localPosition.z);
+                channel.Amount = channel.SkinnedMeshRenderer.GetBlendShapeWeight(channel.BlendShapeIndex);
+                channel.Proxy.localPosition = new Vector3(channel.Proxy.localPosition.x, channel.Amount, channel.Proxy.localPosition.z);
             }
         }
 
@@ -62,7 +67,7 @@ namespace MrPuppet
             foreach (var channel in Channels)
             {
                 var start = new Vector3(channel.Proxy.localPosition.x, 0f, channel.Proxy.localPosition.z);
-                var end = new Vector3(channel.Proxy.localPosition.x, channel.SkinnedMeshRenderer.GetBlendShapeWeight(channel.BlendShapeIndex), channel.Proxy.localPosition.z);
+                var end = new Vector3(channel.Proxy.localPosition.x, channel.Amount, channel.Proxy.localPosition.z);
 
                 Gizmos.DrawSphere(start, 0.25f);
                 Gizmos.DrawLine(start, end);
