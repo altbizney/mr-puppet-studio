@@ -10,9 +10,15 @@ public class customInspector : Editor
         DrawDefaultInspector();
 
         AnimationPlayback ac = (AnimationPlayback)target;
+
         if (GUILayout.Button("PLAY"))
         {
             ac.playAnim();
+        }
+
+        if (GUILayout.Button("STOP"))
+        {
+            ac.stopAnim();
         }
 
     }
