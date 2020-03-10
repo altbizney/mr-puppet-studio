@@ -1,73 +1,92 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 
-    public class AnimationPlayback : MonoBehaviour
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Animations;
+using UnityEditor.Formats.Fbx.Exporter;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+#endif
+
+namespace MrPuppet
+{
+#if UNITY_EDITOR
+    public class AnimationPlayback : OdinEditorWindow
     {
-        AudioSource audSource;
+        [MenuItem("Tools/Animation Playback")]
+        private static void OpenWindow()
+        {
+            GetWindow<AnimationPlayback>().Show();
+        }
 
         GameObject clone;
 
-        Animator anim;
+        bool playing = false;
+
         public AnimationClip animClip;
         public AudioClip audClip;
+        public GameObject actor;
 
-    void Start()
+        [GUIColor(0.2f, 0.9f, 0.2f)]
+        [ButtonGroup]
+        [Button(ButtonSizes.Large)]
+        [DisableInEditorMode]
+        private void playAnim()
         {
-            //anim = gameObject.GetComponent<Animator>();
-            //anim.enabled = false;
-            animClip.legacy = false;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            if (playing == false)
+            {
+                clone = Instantiate(actor, actor.transform.position, Quaternion.identity);
 
-            //rs = GetComponentsInChildren<Renderer>();
+                Destroy(clone.GetComponent<MrPuppet.Blink>());
+                Destroy(clone.GetComponent<MrPuppet.JawTransformMapper>());
+                Destroy(clone.GetComponent<MrPuppet.ButtPuppet>());
+
+                Animator cloneAnim = clone.GetComponent<Animator>();
+
+                cloneAnim.enabled = true;
+
+                AnimatorOverrideController animatorOverrideController = new AnimatorOverrideController();
+                animatorOverrideController.runtimeAnimatorController = cloneAnim.runtimeAnimatorController;
+                animatorOverrideController["testAnim"] = animClip;
+                cloneAnim.runtimeAnimatorController = animatorOverrideController;
+
+                AudioSource audSource = clone.AddComponent<AudioSource>();
+                audSource.clip = audClip;
+                audSource.Play();
+
+                Renderer[] rs = actor.GetComponentsInChildren<Renderer>();
+                foreach (Renderer r in rs)
+                    r.enabled = false;
+
+                playing = true;
+            }
+
         }
 
-    public void playAnim()
+        [GUIColor(0.9f, 0.3f, 0.3f)]
+        [ButtonGroup]
+        [Button(ButtonSizes.Large)]
+        [DisableInEditorMode]
+        private void stopAnim()
         {
-            clone = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
+            if (playing == true)
+            {
+                Renderer[] rs = actor.GetComponentsInChildren<Renderer>();
+                foreach (Renderer r in rs)
+                    r.enabled = true;
 
-            Destroy(clone.GetComponent<MrPuppet.Blink>());
-            Destroy(clone.GetComponent<MrPuppet.JawTransformMapper>());
-            Destroy(clone.GetComponent<MrPuppet.ButtPuppet>());
-            Destroy(clone.GetComponent<AnimationPlayback>());
+                Destroy(clone);
 
-            Animator cloneAnim = clone.GetComponent<Animator>();
-
-            cloneAnim.enabled = true;
-
-            AnimatorOverrideController animatorOverrideController = new AnimatorOverrideController();
-            animatorOverrideController.runtimeAnimatorController = cloneAnim.runtimeAnimatorController;
-            animatorOverrideController["testAnim"] = animClip;
-            cloneAnim.runtimeAnimatorController = animatorOverrideController;
-
-            audSource = clone.AddComponent<AudioSource>();
-            audSource.clip = audClip;
-            audSource.Play();
-
-            Renderer[] rs = GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in rs)
-                r.enabled = false;
-
-        //gameObject.GetComponent<MeshRenderer>().enabled = false;
+                playing = false;
+            }
+        }
 
     }
-
-    public void stopAnim()
-    {
-        Renderer[] rs = GetComponentsInChildren<Renderer>();
-        foreach (Renderer r in rs)
-            r.enabled = true;
-
-        Destroy(clone);
-    }
-
-
-        //insttiate the clone
-        //deactivate all kinds of stuff from the clone, mainly puppet stuff. 
-        //than just doo all the on the clone.
-        //deactivate this actor? 
-
-    //deactivate this script from clone?
-    //add in some other script that will only ever run on clone? 
-
+#else
+public class AnimationPlayback : MonoBehaviour {
+    
+}
+#endif
 }
