@@ -22,42 +22,65 @@ namespace MrPuppet
     public class AnimationPlayback : OdinEditorWindow
     {
 
-        //MonoBehaviour instance;
-
-        private GameObject clone;
-        private Renderer[] rs;
-        private AudioClip audClip;
-        private string tempController = "temp.controller";
-
-        public AnimationClip animClip;
-        public GameObject actor;
-
         [MenuItem("Tools/Animation Playback")]
         private static void OpenWindow()
         {
             GetWindow<AnimationPlayback>().Show();
         }
 
-        IEnumerator streamAudioClip()
-        {
-            Debug.Log("Calling Coroutine");
-            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("https://hypermesh.accelerator.net/renders/QNgToB/audio", AudioType.OGGVORBIS))
-            {
-                yield return www.SendWebRequest();
+        private GameObject clone;
+        private Renderer[] rs;
+        private AudioClip audClip;
+        private AudioSource audSource;
+        private bool inCoroutine;
+        private static string tempController = "temp.controller";
 
-                if (www.isNetworkError)
-                    Debug.Log(www.error);
-                else
-                    audClip = DownloadHandlerAudioClip.GetContent(www);
-            }
+
+        public AnimationClip animClip;
+        public GameObject actor;
+
+        [BoxGroup]
+        [DisplayAsString]
+        [HideLabel]
+        public string infoBoxMsg;
+
+        public void OnEnable()
+        {
+            rs = actor.GetComponentsInChildren<Renderer>();
+            infoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
         }
 
-        private void OnEnable()
+        IEnumerator streamAudioClip()
         {
-            //MonoBehaviour myMono = actor.GetComponent<MonoBehaviour>();
-            //myMono.StartCoroutine(streamAudioClip());
+            inCoroutine = true;
+            using (UnityWebRequest webR = UnityWebRequestMultimedia.GetAudioClip("https://hypermesh.accelerator.net/renders/QNgToB/audio", AudioType.WAV))
+            {
+                //((DownloadHandlerAudioClip)webR.downloadHandler).streamAudio = false;
+                //Debug.Log("Start Audio Download");
+                infoBoxMsg = "LOADING AUDIO FILE";
 
-            rs = actor.GetComponentsInChildren<Renderer>();
+                yield return webR.SendWebRequest();
+
+                /* while (webR.downloadProgress < 0.01)
+                {
+                    Debug.Log(webR.downloadProgress);
+                    yield return new WaitForSeconds(.1f);
+                }*/
+
+                if (webR.isNetworkError)
+                {
+                    Debug.Log(webR.error);
+                }
+                else
+                {
+
+                    audClip = DownloadHandlerAudioClip.GetContent(webR);
+                    //Debug.Log("Audio Download Completed");
+                    inCoroutine = false;
+                    infoBoxMsg = "The audio file has been succesfully loaded!";
+                    initAnim();
+                }
+            }
         }
 
         [GUIColor(0.2f, 0.9f, 0.2f)]
@@ -66,23 +89,39 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void playAnim()
         {
-            if (!clone)
+            if (!audClip && !inCoroutine)
+            {
+                MonoBehaviour myMono = actor.GetComponent<MonoBehaviour>();
+                myMono.StartCoroutine(streamAudioClip());
+            }
+            else
+                initAnim();
+        }
+
+        private void initAnim()
+        {
+            if (!clone && audClip.loadState == AudioDataLoadState.Loaded)
             {
                 clone = Instantiate(actor, actor.transform.position, Quaternion.identity);
 
-                Destroy(clone.GetComponent<Blink>());
-                Destroy(clone.GetComponent<JawTransformMapper>());
-                Destroy(clone.GetComponent<ButtPuppet>());
+                killChildren(clone.GetComponentsInChildren<JawTransformMapper>());
+                killChildren(clone.GetComponentsInChildren<ButtPuppet>());
+                killChildren(clone.GetComponentsInChildren<Blink>());
+                killChildren(clone.GetComponentsInChildren<HeadPuppet>());
+                killChildren(clone.GetComponentsInChildren<JawBlendShapeMapper>());
+                killChildren(clone.GetComponentsInChildren<JointFollower>());
+                killChildren(clone.GetComponentsInChildren<LookAtTarget>());
+                killChildren(clone.GetComponentsInChildren<MrPuppetDataMapper>());
+                killChildren(clone.GetComponentsInChildren<MrPuppetHubConnection>());
+                killChildren(clone.GetComponentsInChildren<CaptureMicrophone>());
+                killChildren(clone.GetComponentsInChildren<OneShotAnimations>());
 
-                var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/"+tempController, animClip);
-
+                var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, animClip);
                 Animator cloneAnim = clone.AddComponent<Animator>();
-
                 cloneAnim.enabled = true;
-
                 cloneAnim.runtimeAnimatorController = controller;
 
-                AudioSource audSource = clone.AddComponent<AudioSource>();
+                audSource = actor.AddComponent<AudioSource>();
                 audSource.clip = audClip;
                 audSource.Play();
 
@@ -91,7 +130,6 @@ namespace MrPuppet
             }
 
         }
-
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
         [ButtonGroup]
@@ -104,30 +142,38 @@ namespace MrPuppet
                 foreach (Renderer r in rs)
                     r.enabled = true;
 
+                audSource.Stop();
+
                 Destroy(clone);
                 AssetDatabase.DeleteAsset("Assets/Recordings/"+tempController);
             }
         }
-    }
 
+        [InitializeOnLoadAttribute]
+        public static class PlayModeStateChanged
+        {
+            static PlayModeStateChanged()
+            {
+                EditorApplication.playModeStateChanged += playModes;
+            }
+
+            private static void playModes(PlayModeStateChange state)
+            {
+                AssetDatabase.DeleteAsset("Assets/Recordings/"+tempController);
+            }
+        }
+
+        private void killChildren(UnityEngine.Object[] children)
+        {
+            foreach (UnityEngine.Object child in children)
+                Destroy(child);
+        }
+
+    }
 #else
 public class AnimationPlayback : MonoBehaviour {
 
 }
 #endif
-
-    [InitializeOnLoadAttribute]
-    public static class PlayModeStateChanged
-    {
-        static PlayModeStateChanged()
-        {
-            EditorApplication.playModeStateChanged += playModes;
-        }
-
-        private static void playModes(PlayModeStateChange state)
-        {
-            AssetDatabase.DeleteAsset("Assets/Recordings/temp.controller");
-        }
-    }
 
 }
