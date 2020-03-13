@@ -3,8 +3,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 using System;
-
-
+using System.IO;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -37,16 +37,18 @@ namespace MrPuppet
         }
 
         private GameObject clone;
-        private List<Renderer> activeRenderers;
         private AudioClip audioClip;
         private AudioSource audioSource;
         private bool inCoroutine;
+        private List<Renderer> activeRenderers;
         private static string tempController = "temp.controller";
+        private string hyperMeshURL;
 
         [SerializeField]
         private GameObject actor;
 
         [SerializeField]
+        [HorizontalGroup]
         [AssetSelector(Paths = "Assets/Recordings", FlattenTreeView = true)]
         private AnimationClip animationClip;
 
@@ -56,25 +58,32 @@ namespace MrPuppet
         [HideLabel]
         private string infoBoxMsg;
 
+        [Button(ButtonSizes.Small)]
+        [HorizontalGroup(LabelWidth = 5)]
+        [DisableInEditorMode]
+        private void LatestAnimation()
+        {
+            List<string> files = Directory.GetFiles("Assets/Recordings").OrderBy(f => f).ToList();
+            animationClip = (AnimationClip)AssetDatabase.LoadAssetAtPath(files[files.Count - 2], typeof(AnimationClip));
+        }
+
         [GUIColor(0.2f, 0.9f, 0.2f)]
-        [ButtonGroup]
         [Button(ButtonSizes.Large)]
-        [HideIf("IsPlaying")]
-        [ShowIf("NotPlaying")]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
         private void PlayAnimation()
         {
             if (!audioClip && !inCoroutine)
-                actor.GetComponent<MonoBehaviour>().StartCoroutine(StreamAudioClip());
+                actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + animationClip.name + "-audio/info.json" ));
             else
                 InitilizeAnimation();
         }
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
-        [ButtonGroup]
         [Button(ButtonSizes.Large)]
-        [HideIf("NotPlaying")]
-        [ShowIf("IsPlaying")]
+        [HideIf("NotPlaying", false)]
+        [ShowIf("IsPlaying", false)]
         [DisableInEditorMode]
         private void StopAnimation()
         {
@@ -115,7 +124,9 @@ namespace MrPuppet
                 audioSource.Play();
 
                 foreach (Renderer renderer in activeRenderers)
+                {
                     renderer.enabled = false;
+                }
             }
         }
 
@@ -143,9 +154,11 @@ namespace MrPuppet
                 return true;
         }
 
-        private IEnumerator QueryHyperMesh()
+        private IEnumerator QueryHyperMesh(string  url)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Get("https://hypermesh.app/renders/STARBY-E001-S001-cameraA-25-927:v1/info.json");
+            JsonData json;
+
+            UnityWebRequest webRequest = UnityWebRequest.Get(url);
             webRequest.SetRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyOlZhbmhOSiJ9.3FXNh0U-DOJ76GwtFQJx1wblRzVFAPJElIrtN15pQEM");
             yield return webRequest.SendWebRequest();
 
@@ -154,13 +167,34 @@ namespace MrPuppet
                 Debug.Log(webRequest.error);
             }
             else
-                Debug.Log(webRequest.downloadHandler.text);
+            {
+                try
+                {
+                    json = JsonData.CreateFromJSON(webRequest.downloadHandler.text);
+
+                    if (json.ok == true)
+                    {
+                        actor.GetComponent<MonoBehaviour>().StartCoroutine(StreamAudioClip(json.media_url));
+                    }
+                    else
+                    {
+                        if (json.error != null)
+                            Debug.Log("ERROR : " + json.error);
+                        else
+                            Debug.Log("ERROR : UNKNOWN");
+                    }
+                }
+                catch
+                {
+                    Debug.Log("ERROR: UNKNOWN");
+                }
+            }
         }
 
-        private IEnumerator StreamAudioClip()
+        private IEnumerator StreamAudioClip(string url)
         {
             inCoroutine = true;
-            using (UnityWebRequest webRequest = UnityWebRequestMultimedia.GetAudioClip("https://hypermesh.accelerator.net/renders/QNgToB/audio", AudioType.WAV))
+            using (UnityWebRequest webRequest = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.WAV))
             {
                 infoBoxMsg = "LOADING AUDIO FILE - 0%";
                 webRequest.SendWebRequest();
@@ -183,6 +217,23 @@ namespace MrPuppet
                     infoBoxMsg = "The audio file has been succesfully loaded!";
                     InitilizeAnimation();
                 }
+            }
+        }
+
+        // Will reduce usage of public in this class. Perhaps through the use of an interface. 
+        public class JsonData
+        {
+            public bool ok;
+            private string name;
+            private string media_status;
+            public string media_url;
+
+            public string status;
+            public string error;
+
+            public static JsonData CreateFromJSON(string jsonString)
+            {
+                return JsonUtility.FromJson<JsonData>(jsonString);
             }
         }
 
