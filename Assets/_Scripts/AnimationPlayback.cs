@@ -16,7 +16,6 @@ using Sirenix.OdinInspector.Editor;
 
 namespace MrPuppet
 {
-
 #if UNITY_EDITOR
     public class AnimationPlayback : OdinEditorWindow
     {
@@ -26,13 +25,8 @@ namespace MrPuppet
             GetWindow<AnimationPlayback>().Show();
         }
 
-        public void OnEnable()
+        private new void OnEnable()
         {
-            foreach (Renderer renderer in actor.GetComponentsInChildren<Renderer>())
-            {
-                if (renderer.enabled == true)
-                    activeRenderers.Add(renderer);
-            }
             infoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
         }
 
@@ -41,14 +35,14 @@ namespace MrPuppet
         private AudioSource audioSource;
         private bool inCoroutine;
         private List<Renderer> activeRenderers;
-        private static string tempController = "temp.controller";
         private string hyperMeshURL;
+        private static string tempController = "temp.controller";
 
         [SerializeField]
         private GameObject actor;
 
         [SerializeField]
-        [HorizontalGroup]
+        [HorizontalGroup(MarginLeft = 0.01f)]
         [AssetSelector(Paths = "Assets/Recordings", FlattenTreeView = true)]
         private AnimationClip animationClip;
 
@@ -58,26 +52,12 @@ namespace MrPuppet
         [HideLabel]
         private string infoBoxMsg;
 
-        [Button(ButtonSizes.Small)]
-        [HorizontalGroup(LabelWidth = 5)]
-        [DisableInEditorMode]
+        [Button("Latest")]
+        [HorizontalGroup(Width = 35)]
         private void LatestAnimation()
         {
             List<string> files = Directory.GetFiles("Assets/Recordings").OrderBy(f => f).ToList();
             animationClip = (AnimationClip)AssetDatabase.LoadAssetAtPath(files[files.Count - 2], typeof(AnimationClip));
-        }
-
-        [GUIColor(0.2f, 0.9f, 0.2f)]
-        [Button(ButtonSizes.Large)]
-        [HideIf("IsPlaying", false)]
-        [ShowIf("NotPlaying", false)]
-        [DisableInEditorMode]
-        private void PlayAnimation()
-        {
-            if (!audioClip && !inCoroutine)
-                actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + animationClip.name + "-audio/info.json" ));
-            else
-                InitilizeAnimation();
         }
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
@@ -93,40 +73,57 @@ namespace MrPuppet
                     renderer.enabled = true;
 
                 audioSource.Stop();
-
                 Destroy(clone);
                 AssetDatabase.DeleteAsset("Assets/Recordings/" + tempController);
             }
         }
 
-        private void InitilizeAnimation()
+        [GUIColor(0.2f, 0.9f, 0.2f)]
+        [Button(ButtonSizes.Large)]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
+        [DisableInEditorMode]
+        private void PlayAnimation()
+        {
+            if (!audioClip && !inCoroutine)
+                actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + animationClip.name + "-audio/info.json"));
+            else
+                InitializeAnimation();
+        }
+
+        private void InitializeAnimation()
         {
             if (!clone && audioClip.loadState == AudioDataLoadState.Loaded)
             {
-                clone = Instantiate(actor, actor.transform.position, Quaternion.identity);
+               clone = Instantiate(actor, actor.transform.position, Quaternion.identity);
 
-                KillChildren(clone.GetComponentsInChildren<JawTransformMapper>());
-                KillChildren(clone.GetComponentsInChildren<ButtPuppet>());
-                KillChildren(clone.GetComponentsInChildren<Blink>());
-                KillChildren(clone.GetComponentsInChildren<HeadPuppet>());
-                KillChildren(clone.GetComponentsInChildren<JawBlendShapeMapper>());
-                KillChildren(clone.GetComponentsInChildren<JointFollower>());
-                KillChildren(clone.GetComponentsInChildren<LookAtTarget>());
-                KillChildren(clone.GetComponentsInChildren<CaptureMicrophone>());
-                KillChildren(clone.GetComponentsInChildren<OneShotAnimations>());
+               KillChildren(clone.GetComponentsInChildren<JawTransformMapper>());
+               KillChildren(clone.GetComponentsInChildren<ButtPuppet>());
+               KillChildren(clone.GetComponentsInChildren<Blink>());
+               KillChildren(clone.GetComponentsInChildren<HeadPuppet>());
+               KillChildren(clone.GetComponentsInChildren<JawBlendShapeMapper>());
+               KillChildren(clone.GetComponentsInChildren<JointFollower>());
+               KillChildren(clone.GetComponentsInChildren<LookAtTarget>());
+               KillChildren(clone.GetComponentsInChildren<CaptureMicrophone>());
+               KillChildren(clone.GetComponentsInChildren<OneShotAnimations>());
 
-                Animator cloneAnim = clone.AddComponent<Animator>();
-                cloneAnim.enabled = true;
-                cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, animationClip);
+               Animator cloneAnim = clone.AddComponent<Animator>();
+               cloneAnim.enabled = true;
+               cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, animationClip);
+               actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneAnim));
 
-                audioSource = actor.AddComponent<AudioSource>();
-                audioSource.clip = audioClip;
-                audioSource.Play();
-
-                foreach (Renderer renderer in activeRenderers)
+                foreach (Renderer renderer in actor.GetComponentsInChildren<Renderer>())
                 {
-                    renderer.enabled = false;
+                    if (renderer.enabled == true)
+                    {
+                        activeRenderers.Add(renderer);
+                        renderer.enabled = false;
+                    }
                 }
+
+               audioSource = actor.AddComponent<AudioSource>();
+               audioSource.clip = audioClip;
+               audioSource.Play();
             }
         }
 
@@ -136,25 +133,24 @@ namespace MrPuppet
                 Destroy(child);
         }
 
-        // Potential refactor on these. Should be able to reduce to one line.
-        // (Checking for null is a little expensive too, not that it matters too much right now)
         private bool NotPlaying()
         {
-            if (clone == null)
-                return true;
-            else
-                return false;
+            return !clone;
         }
 
         private bool IsPlaying()
         {
-            if (clone == null)
-                return false;
-            else
-                return true;
+            return clone;
         }
 
-        private IEnumerator QueryHyperMesh(string  url)
+        private IEnumerator StopAfterAnimation(Animator animator)
+        {
+            while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
+                yield return null;
+            StopAnimation();
+        }
+
+        private IEnumerator QueryHyperMesh(string url)
         {
             JsonData json;
 
@@ -215,17 +211,17 @@ namespace MrPuppet
                     audioClip = DownloadHandlerAudioClip.GetContent(webRequest);
                     inCoroutine = false;
                     infoBoxMsg = "The audio file has been succesfully loaded!";
-                    InitilizeAnimation();
+                    InitializeAnimation();
                 }
             }
         }
 
-        // Will reduce usage of public in this class. Perhaps through the use of an interface. 
-        public class JsonData
+        //Public variables should currently only be visible to enclosing type. 
+        private class JsonData
         {
             public bool ok;
-            private string name;
-            private string media_status;
+            public string name;
+            public string media_status;
             public string media_url;
 
             public string status;
@@ -238,7 +234,7 @@ namespace MrPuppet
         }
 
         [InitializeOnLoadAttribute]
-        private static class PlayModeStateChanged
+        static class PlayModeStateChanged
         {
             static PlayModeStateChanged()
             {
@@ -256,5 +252,4 @@ public class AnimationPlayback : MonoBehaviour {
 
 }
 #endif
-
 }

@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -476,8 +476,6 @@ GameObject:
   - component: {fileID: 756442699}
   - component: {fileID: 756442698}
   - component: {fileID: 756442700}
-  - component: {fileID: 756442697}
-  - component: {fileID: 756442696}
   m_Layer: 0
   m_Name: Starby
   m_TagString: Untagged
@@ -485,41 +483,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &756442696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4563381336079698522, guid: 2b20e93a20f9a447ab5b13f1670d7f2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7472244928909602702}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756442695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab096b91f1304fe7883cd7279102b10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animClip: {fileID: 7400000, guid: 4e16da4ca80224c50ab31e9667973c4a, type: 2}
-  audClip: {fileID: 8300000, guid: b618ec7631dcf45e0a5dff9e4ff0650d, type: 3}
---- !u!95 &756442697
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 7808279065853420951, guid: 2b20e93a20f9a447ab5b13f1670d7f2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7472244928909602702}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756442695}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: afed3323955de4d2f82118c5dbe9e44e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &756442698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,6 +1538,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Starby
       objectReference: {fileID: 0}
+    - target: {fileID: 7472244929528891844, guid: 2b20e93a20f9a447ab5b13f1670d7f2c,
+        type: 3}
+      propertyPath: DataMapper
+      value: 
+      objectReference: {fileID: 1366452795}
     - target: {fileID: 7472244929528891846, guid: 2b20e93a20f9a447ab5b13f1670d7f2c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1630,12 +1598,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7472244929528891844, guid: 2b20e93a20f9a447ab5b13f1670d7f2c,
-        type: 3}
-      propertyPath: DataMapper
-      value: 
-      objectReference: {fileID: 1366452795}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2b20e93a20f9a447ab5b13f1670d7f2c, type: 3}
 --- !u!4 &8358702348770560201
 Transform:
