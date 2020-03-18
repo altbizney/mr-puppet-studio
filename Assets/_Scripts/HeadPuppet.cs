@@ -44,8 +44,7 @@ namespace MrPuppet
         [ShowIf("LimitRootExtentZ")]
         public float RootExtentZ = 0f;
 
-        [MinValue(0f)]
-        [MaxValue(100f)]
+        [Range(1f, 10f)]
         public float RotationModifier = 1f;
 
         [Button(ButtonSizes.Large)]
