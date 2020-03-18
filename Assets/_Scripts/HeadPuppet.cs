@@ -46,7 +46,7 @@ namespace MrPuppet
 
         [MinValue(0f)]
         [MaxValue(100f)]
-        public float RotationModifier = 7f;
+        public float RotationModifier = 1f;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
