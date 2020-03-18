@@ -108,7 +108,8 @@ namespace MrPuppet
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                Root.rotation = Quaternion.Slerp(Root.rotation, (Quaternion.SlerpUnclamped(Quaternion.identity, DataMapper.WristJoint.rotation, RotationModifier) * Quaternion.Inverse(AttachPoseWristRotation)) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                // Root.rotation = Quaternion.Slerp(Root.rotation, (Quaternion.SlerpUnclamped(Quaternion.identity, DataMapper.WristJoint.rotation, RotationModifier) * Quaternion.Inverse(AttachPoseWristRotation)) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
             }
 
             if (Input.GetKeyDown(KeyCode.A))
