@@ -16,7 +16,7 @@ namespace MrPuppet
         private Vector3 AttachPoseWristPosition;
 
         private Quaternion TempRotation;
-       private Quaternion RootRotAttach;
+        private Quaternion RootRotAttach;
 
 
         private Vector3 RootSpawnPosition;
@@ -52,20 +52,34 @@ namespace MrPuppet
         [Range(1f, 10f)]
         public float RotationModifier = 1f;
 
+        private bool hasBeenSet;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
         public void GrabAttachPose()
         {
+
+            //tempRotation kinda weird, kinda not. 
             AttachPoseSet = true;
-            TempRotation = Root.rotation;
-            RootRotAttach = Root.rotation;
-            lastRotation = Root.rotation;
+            if (hasBeenSet == false)
+            {
+                lastRotation = Root.rotation;
+                hasBeenSet = true;
+
+                TempRotation = CurrentRootRotation();
+
+                AttachPoseWristRotation = DataMapper.WristJoint.rotation;//issues if out?
+                RootRotAttach = CurrentRootRotation();
+
+            }
+            TempRotation = CurrentRootRotation();//??
+
+
+            AttachPoseWristPosition = DataMapper.WristJoint.position;
 
 
             // grab the attach position and rotation of the wrist joint
-            AttachPoseWristPosition = DataMapper.WristJoint.position;
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
 
             // TODO: generic support for ATTACH command
             // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
@@ -88,6 +102,11 @@ namespace MrPuppet
 
         //     AttachPoseSet = true;
         // }
+
+        private Quaternion CurrentRootRotation()
+        {
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
+        }
 
         private void Awake()
         {
@@ -116,10 +135,13 @@ namespace MrPuppet
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 //apply rotation deltas to bind pose
-                // Quaternion myQ = DataMapper.WristJoint.rotation * DataMapper.WristJoint.rotation * DataMapper.WristJoint.rotation;
-                //Root.rotation = Quaternion.SlerpUnclamped(WristRotation22, Root.rotation, RotationModifier);
 
-                TempRotation = Quaternion.Slerp(TempRotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                //Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                //Root.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
+                //Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation; //tempRotation * Quaternion.Inverse(lastRotation);
+                //TempRotation = Quaternion.SlerpUnclamped(TempRotation, CurrentRootRotation(), RotationSpeed * Time.deltaTime);
+
+                TempRotation = CurrentRootRotation();
 
                 Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation;
                 lastRotation = TempRotation;
