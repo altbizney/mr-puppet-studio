@@ -445,6 +445,91 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u2022 MrPuppet"
       objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.x
+      value: -0.462165
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.y
+      value: -0.1347746
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.z
+      value: -0.0275772
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ShoulderRotation.w
+      value: -0.8761053
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.x
+      value: 0.2893481
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.y
+      value: -0.5275016
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.z
+      value: 0.3709482
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.ElbowRotation.w
+      value: -0.7073897
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.x
+      value: 0.05826558
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.y
+      value: 0.7981821
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.z
+      value: -0.4381233
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: TPose.WristRotation.w
+      value: 0.4094149
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: ShowJointChain
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: JawOpened
+      value: 492
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: JawClosed
+      value: 162
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: ArmLength
+      value: 3.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
+        type: 3}
+      propertyPath: ForearmLength
+      value: 2.11
+      objectReference: {fileID: 0}
     - target: {fileID: 180394980541420894, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -499,91 +584,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ShoulderRotation.x
-      value: 0.07657968
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ShoulderRotation.y
-      value: -0.4393255
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ShoulderRotation.z
-      value: 0.02580936
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ShoulderRotation.w
-      value: -0.8947022
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ElbowRotation.x
-      value: 0.07304411
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ElbowRotation.y
-      value: 0.3989497
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ElbowRotation.z
-      value: -0.0242538
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.ElbowRotation.w
-      value: -0.9137233
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.WristRotation.x
-      value: 0.04136573
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.WristRotation.y
-      value: 0.3835347
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.WristRotation.z
-      value: 0.0658316
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: TPose.WristRotation.w
-      value: -0.9202287
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: ShowJointChain
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: JawOpened
-      value: 492
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: JawClosed
-      value: 162
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: ArmLength
-      value: 3.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
-        type: 3}
-      propertyPath: ForearmLength
-      value: 2.11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a358c1bc3ce8c45249b1a0ae2df1f124, type: 3}
@@ -662,7 +662,12 @@ PrefabInstance:
     - target: {fileID: 6905651402369519568, guid: 77599e5b97130426bb9cb8a8037f4cac,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 9.289646
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690525215994362881, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: RotationModifier
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77599e5b97130426bb9cb8a8037f4cac, type: 3}

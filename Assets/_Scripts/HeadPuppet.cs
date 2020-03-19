@@ -15,8 +15,13 @@ namespace MrPuppet
         private Quaternion AttachPoseWristRotation;
         private Vector3 AttachPoseWristPosition;
 
+        private Quaternion TempRotation;
+       private Quaternion RootRotAttach;
+
+
         private Vector3 RootSpawnPosition;
         private Quaternion RootSpawnRotation;
+        private Quaternion lastRotation;
 
         public Transform Root;
 
@@ -53,6 +58,10 @@ namespace MrPuppet
         public void GrabAttachPose()
         {
             AttachPoseSet = true;
+            TempRotation = Root.rotation;
+            RootRotAttach = Root.rotation;
+            lastRotation = Root.rotation;
+
 
             // grab the attach position and rotation of the wrist joint
             AttachPoseWristPosition = DataMapper.WristJoint.position;
@@ -106,9 +115,17 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                // apply rotation deltas to bind pose
-                // Root.rotation = Quaternion.Slerp(Root.rotation, (Quaternion.SlerpUnclamped(Quaternion.identity, DataMapper.WristJoint.rotation, RotationModifier) * Quaternion.Inverse(AttachPoseWristRotation)) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
-                Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                //apply rotation deltas to bind pose
+                // Quaternion myQ = DataMapper.WristJoint.rotation * DataMapper.WristJoint.rotation * DataMapper.WristJoint.rotation;
+                //Root.rotation = Quaternion.SlerpUnclamped(WristRotation22, Root.rotation, RotationModifier);
+
+                TempRotation = Quaternion.Slerp(TempRotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+
+                Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation;
+                lastRotation = TempRotation;
+                rotatedSinceLast = Quaternion.SlerpUnclamped(Quaternion.identity, rotatedSinceLast, RotationModifier);
+
+                Root.rotation = Root.rotation * rotatedSinceLast;
             }
 
             if (Input.GetKeyDown(KeyCode.A))
