@@ -64,21 +64,17 @@ namespace MrPuppet
         [DisableInEditorMode()]
         public void GrabAttachPose()
         {
-
             //tempRotation kinda weird, kinda not. 
             AttachPoseSet = true;
             if (hasBeenSet == false)
             {
                 lastRotation = Root.rotation;
                 hasBeenSet = true;
-
-                TempRotation = CurrentRootRotation();
-
-                AttachPoseWristRotation = DataMapper.WristJoint.rotation;//issues if out?
-                RootRotAttach = CurrentRootRotation();
-
             }
-            TempRotation = CurrentRootRotation();//??
+
+            TempRotation = CurrentRootRotation();
+
+            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
 
             AttachPoseWristPosition = DataMapper.WristJoint.position;
 
@@ -145,7 +141,6 @@ namespace MrPuppet
                 //Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation; //tempRotation * Quaternion.Inverse(lastRotation);
                 //TempRotation = Quaternion.SlerpUnclamped(TempRotation, CurrentRootRotation(), RotationSpeed * Time.deltaTime);
 
-                //Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, );
                 //Root.rotation = Quaternion.SlerpUnclamped(Quaternion.identity, CurrentRootRotation(), RotationModifier);
 
                /*if (Input.GetKey(KeyCode.A))
@@ -160,7 +155,6 @@ namespace MrPuppet
 
 
                 TempRotation = CurrentRootRotation();
-
                 Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation;
                 lastRotation = TempRotation;
                 rotatedSinceLast = Quaternion.SlerpUnclamped(Quaternion.identity, rotatedSinceLast, RotationModifier);
