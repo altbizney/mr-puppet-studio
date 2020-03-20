@@ -19,14 +19,14 @@ namespace MrPuppet
         Quaternion tempTran;
         float axis1, axis2;
 
-        private Quaternion TempRotation;
+        private Quaternion currentFrameRotation;
         private Quaternion RootRotAttach;
 
         //1.600623
 
         private Vector3 RootSpawnPosition;
         private Quaternion RootSpawnRotation;
-        private Quaternion lastRotation;
+        private Quaternion lastFrameRotation;
 
         public Transform Root;
 
@@ -54,7 +54,7 @@ namespace MrPuppet
         [ShowIf("LimitRootExtentZ")]
         public float RootExtentZ = 0f;
 
-        [Range(1f, 10f)]
+        [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
         private bool hasBeenSet;
@@ -66,17 +66,11 @@ namespace MrPuppet
         {
             //tempRotation kinda weird, kinda not. 
             AttachPoseSet = true;
-            if (hasBeenSet == false)
-            {
-                lastRotation = Root.rotation;
-                hasBeenSet = true;
-            }
-
-            TempRotation = CurrentRootRotation();
 
             AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-
             AttachPoseWristPosition = DataMapper.WristJoint.position;
+            lastFrameRotation = RotationDeltaFromAttachWrist();
+            Root.rotation = RootSpawnRotation;
 
 
             // grab the attach position and rotation of the wrist joint
@@ -103,7 +97,7 @@ namespace MrPuppet
         //     AttachPoseSet = true;
         // }
 
-        private Quaternion CurrentRootRotation()
+        private Quaternion RotationDeltaFromAttachWrist()
         {
             return DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
         }
@@ -135,32 +129,12 @@ namespace MrPuppet
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 //apply rotation deltas to bind pose
+                // Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                currentFrameRotation = RotationDeltaFromAttachWrist();
+                Quaternion rotationSinceLastFrame = Quaternion.Inverse(lastFrameRotation) * currentFrameRotation;
+                lastFrameRotation = currentFrameRotation;
 
-                //Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
-                //Root.rotation = DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
-                //Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation; //tempRotation * Quaternion.Inverse(lastRotation);
-                //TempRotation = Quaternion.SlerpUnclamped(TempRotation, CurrentRootRotation(), RotationSpeed * Time.deltaTime);
-
-                //Root.rotation = Quaternion.SlerpUnclamped(Quaternion.identity, CurrentRootRotation(), RotationModifier);
-
-               /*if (Input.GetKey(KeyCode.A))
-                {
-                    axis1 += Input.GetAxisRaw("Horizontal") * 5 * Time.deltaTime;
-                    axis2 += Input.GetAxisRaw("Vertical") * 5 * Time.deltaTime;
-                    tempTran = Quaternion.Euler(axis1, axis2, 40);
-                }*/
-                
-
-                //otherTransform.rotation = Quaternion.SlerpUnclamped(tempTran, tempTran, RotationModifier); 
-
-
-                TempRotation = CurrentRootRotation();
-                Quaternion rotatedSinceLast = Quaternion.Inverse(lastRotation) * TempRotation;
-                lastRotation = TempRotation;
-                rotatedSinceLast = Quaternion.SlerpUnclamped(Quaternion.identity, rotatedSinceLast, RotationModifier);
-
-                Root.rotation = Root.rotation * rotatedSinceLast;
-
+                Root.rotation *= Quaternion.SlerpUnclamped(Quaternion.identity, rotationSinceLastFrame, RotationModifier);
             }
 
             if (Input.GetKeyDown(KeyCode.A))
