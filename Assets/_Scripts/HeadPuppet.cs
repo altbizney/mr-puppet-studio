@@ -111,7 +111,11 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                Root.rotation = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
+                Root.rotation = Quaternion.Slerp(
+                    Root.rotation,
+                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
+                    RotationSpeed * Time.deltaTime
+                );
             }
 
             if (Input.GetKeyDown(KeyCode.A))
