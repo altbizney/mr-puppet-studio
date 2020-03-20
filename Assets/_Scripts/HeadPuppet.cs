@@ -134,7 +134,7 @@ namespace MrPuppet
                 Quaternion rotationSinceLastFrame = Quaternion.Inverse(lastFrameRotation) * currentFrameRotation;
                 lastFrameRotation = currentFrameRotation;
 
-                Root.rotation *= Quaternion.SlerpUnclamped(Quaternion.identity, rotationSinceLastFrame, RotationModifier);
+                Root.rotation = Root.rotation * Quaternion.SlerpUnclamped(Quaternion.identity, rotationSinceLastFrame, RotationModifier);
             }
 
             if (Input.GetKeyDown(KeyCode.A))
