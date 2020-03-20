@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -284,62 +284,62 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.x
-      value: 0.151038
+      value: -0.1634123
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.y
-      value: 0.06477099
+      value: -0.4525484
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.z
-      value: 0.09743935
+      value: -0.04320426
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ShoulderRotation.w
-      value: 0.9816056
+      value: -0.8755396
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.x
-      value: 0.02651651
+      value: 0.0529623
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.y
-      value: -0.03945653
+      value: -0.1613618
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.z
-      value: 0.01463715
+      value: -0.1208446
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.ElbowRotation.w
-      value: 0.9987176
+      value: -0.9780701
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.x
-      value: -0.3507957
+      value: -0.1916967
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.y
-      value: 0.04376987
+      value: 0.2626902
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.z
-      value: -0.02722358
+      value: -0.2290318
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: TPose.WristRotation.w
-      value: 0.9350073
+      value: 0.9174711
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
@@ -349,12 +349,12 @@ PrefabInstance:
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: JawOpened
-      value: 492
+      value: 461
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
       propertyPath: JawClosed
-      value: 162
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 180394980541420889, guid: a358c1bc3ce8c45249b1a0ae2df1f124,
         type: 3}
@@ -495,5 +495,35 @@ PrefabInstance:
       propertyPath: DataMapper
       value: 
       objectReference: {fileID: 1366452795}
+    - target: {fileID: 6905651402369519568, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690525215994362881, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: RotationModifier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690525215994362881, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: LimitRootExtentY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690525215994362881, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: otherTransform
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4538650522317148155, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4538650522317148155, guid: 77599e5b97130426bb9cb8a8037f4cac,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.600623
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77599e5b97130426bb9cb8a8037f4cac, type: 3}
