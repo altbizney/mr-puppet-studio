@@ -20,10 +20,6 @@ namespace MrPuppet
 
         public Transform Root;
 
-        private Quaternion lastFrameRotation;
-        private Quaternion currentFrameRotation;
-        //private Quaternion RootRotationAttach;
-
         [MinValue(0f)]
         public float RotationSpeed = 7f;
         [MinValue(0f)]
@@ -58,13 +54,9 @@ namespace MrPuppet
         {
             AttachPoseSet = true;
 
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-            AttachPoseWristPosition = DataMapper.WristJoint.position;
-            Root.rotation = RootSpawnRotation;
-
-            //RootRotationAttach = RotationDeltaFromAttachWrist();
-
             // grab the attach position and rotation of the wrist joint
+            AttachPoseWristPosition = DataMapper.WristJoint.position;
+            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
 
             // TODO: generic support for ATTACH command
             // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
@@ -119,16 +111,7 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                if (lastFrameRotation == default) //If not set. Going to be an issue?
-                    lastFrameRotation = RotationDeltaFromAttachWrist();
-
-                //apply rotation deltas to bind pose
-                //Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
-                currentFrameRotation = RotationDeltaFromAttachWrist();
-                Quaternion rotationSinceLastFrame = Quaternion.Inverse(lastFrameRotation) * currentFrameRotation;
-                lastFrameRotation = currentFrameRotation;
-
-                Root.rotation = Root.rotation * Quaternion.SlerpUnclamped(Quaternion.identity, rotationSinceLastFrame, RotationModifier);
+                Root.rotation = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
             }
 
             if (Input.GetKeyDown(KeyCode.A))
