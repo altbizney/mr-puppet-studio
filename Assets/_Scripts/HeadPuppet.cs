@@ -15,20 +15,14 @@ namespace MrPuppet
         private Quaternion AttachPoseWristRotation;
         private Vector3 AttachPoseWristPosition;
 
-        public Transform otherTransform;
-        Quaternion tempTran;
-        float axis1, axis2;
-
-        private Quaternion currentFrameRotation;
-        private Quaternion RootRotAttach;
-
-        //1.600623
-
         private Vector3 RootSpawnPosition;
         private Quaternion RootSpawnRotation;
-        private Quaternion lastFrameRotation;
 
         public Transform Root;
+
+        private Quaternion lastFrameRotation;
+        private Quaternion currentFrameRotation;
+        //private Quaternion RootRotationAttach;
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -57,21 +51,18 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
-        private bool hasBeenSet;
-
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
         public void GrabAttachPose()
         {
-            //tempRotation kinda weird, kinda not. 
             AttachPoseSet = true;
 
             AttachPoseWristRotation = DataMapper.WristJoint.rotation;
             AttachPoseWristPosition = DataMapper.WristJoint.position;
-            lastFrameRotation = RotationDeltaFromAttachWrist();
             Root.rotation = RootSpawnRotation;
 
+            //RootRotationAttach = RotationDeltaFromAttachWrist();
 
             // grab the attach position and rotation of the wrist joint
 
@@ -128,8 +119,11 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
+                if (lastFrameRotation == default) //If not set. Going to be an issue?
+                    lastFrameRotation = RotationDeltaFromAttachWrist();
+
                 //apply rotation deltas to bind pose
-                // Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                //Root.rotation = Quaternion.Slerp(Root.rotation, DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
                 currentFrameRotation = RotationDeltaFromAttachWrist();
                 Quaternion rotationSinceLastFrame = Quaternion.Inverse(lastFrameRotation) * currentFrameRotation;
                 lastFrameRotation = currentFrameRotation;
