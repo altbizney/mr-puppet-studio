@@ -27,6 +27,46 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: lambert20
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert21
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert22
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert23
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert24
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert25
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert26
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert27
+    second: {fileID: 2100000, guid: b17afd3f8f7544e4e84f9c9954323dba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert4
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   - first:
@@ -53,6 +93,11 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: pasqualHead_lambert8
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasqualHead_lambert9
     second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
   - first:
       type: UnityEngine:Material

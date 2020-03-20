@@ -204,7 +204,7 @@ ModelImporter:
     - name: L_Arm_Ring_1_connector_JNT
       parentName: L_Arm_Hand_end_FK_connector_JNT
       position: {x: -0.18493108, y: 0.031151718, z: -0.028077798}
-      rotation: {x: -0.08059416, y: 0.043064266, z: -0.02151969, w: 0.99558383}
+      rotation: {x: -0.08059416, y: 0.043064263, z: -0.02151969, w: 0.9955837}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Arm_Ring_2_connector_JNT
       parentName: L_Arm_Ring_1_connector_JNT
@@ -249,12 +249,12 @@ ModelImporter:
     - name: L_Arm_Thumb_1_connector_JNT
       parentName: L_Arm_Hand_end_FK_connector_JNT
       position: {x: -0.078863986, y: -0.02808585, z: 0.07486009}
-      rotation: {x: 0.2545658, y: 0.41197696, z: -0.1229803, w: 0.86622584}
+      rotation: {x: 0.25456583, y: 0.41197696, z: -0.12298028, w: 0.86622584}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Arm_Thumb_2_connector_JNT
       parentName: L_Arm_Thumb_1_connector_JNT
       position: {x: -0.12925452, y: 0, z: 1.3322676e-15}
-      rotation: {x: 0.20698772, y: -0.026206192, z: 0.0055459137, w: 0.9779768}
+      rotation: {x: 0.20698774, y: -0.026206162, z: 0.005545898, w: 0.97797686}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Arm_Thumb_3_connector_JNT
       parentName: L_Arm_Thumb_2_connector_JNT
