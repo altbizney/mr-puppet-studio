@@ -126,20 +126,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5615389820869651630}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &285342540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285342539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94e962d8886c6488eb372027239608e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  JawJoint: {fileID: 5615389820869651631}
-  animationClip: {fileID: 7400000, guid: 1454457d587f84bf4b200bcb1b35cce6, type: 2}
 --- !u!1001 &812879338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -739,6 +725,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1575444023606922971, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: ApplySensors
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
         type: 3}
       propertyPath: m_Enabled
@@ -749,6 +740,11 @@ PrefabInstance:
       propertyPath: DataMapper
       value: 
       objectReference: {fileID: 999247124}
+    - target: {fileID: 1575444023606922970, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: ApplySensors
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1966292752, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -855,9 +851,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}
---- !u!4 &5615389820869651631 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5201847685560245137, guid: a927cd8caccdd4597b0a88b00cddd9d0,
-    type: 3}
-  m_PrefabInstance: {fileID: 5615389820869651630}
-  m_PrefabAsset: {fileID: 0}
