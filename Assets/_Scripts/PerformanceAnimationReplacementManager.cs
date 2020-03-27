@@ -9,6 +9,7 @@ using UnityEditor.Animations;
 using UnityEditor.Formats.Fbx.Exporter;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using UnityEditor.Recorder;
 #endif
 
 namespace MrPuppet
@@ -34,22 +35,23 @@ namespace MrPuppet
         private AudioSource _AudioSource;
         private Transform JawJointMimic;
         private bool InCoroutine;
+        private GameObject TransformWrapper;
+        private RecorderWindow Recorder;
+        private Transform JawJoint;
+
+        private bool OverwriteButtPuppet;
+        private bool OverwriteJaw;
 
         public GameObject Actor;
-        public Transform JawJoint;//TODO: Get automatically from JawMapper?
         public AnimationClip _AnimationClip;
+
+        //Animator cloneReplay;
 
         [SerializeField]
         [BoxGroup]
         [DisplayAsString]
         [HideLabel]
         private string InfoBoxMsg;
-
-        [HorizontalGroup]
-        public bool OverwriteButtPuppet;
-        [HorizontalGroup]
-        public bool OverwriteJaw;
-
 
         // TODO: Propperties are probably a better solution to how to detect when a bool changes
         /*public bool _OverwriteButtPuppet
@@ -80,68 +82,99 @@ namespace MrPuppet
             }
         }*/
 
-        public class JointController : MonoBehaviour
+        private void KillChildren(UnityEngine.Object[] children)
         {
-            public PerformanceAnimationReplacementManager PAR;
+            foreach (UnityEngine.Object child in children)
+                Destroy(child);
+        }
 
-            void LateUpdate()
-                {
-                        if (PAR.JawJointMimic != null && PAR.PuppetReplay )
-                        {
-                            if (PAR.OverwriteJaw == true)
-                            {
-                                if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                                    PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+        private bool DisableRecordOption()
+        {
+            if (_AnimationClip == null || Actor == null)
+                return true;
+            else
+                return false;
+        }
 
-                               PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
-                            }
-                            else
-                            {
-                                if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                                    PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+        private bool NotPlaying()
+        {
+            return !PuppetReplay;
+        }
 
-                            }
-
-                            if (PAR.OverwriteButtPuppet == true)
-                            {
-                                if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                                    PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
-
-                                //Nasty loop. TODO: More performant solution. 
-                                foreach (Transform child in PAR.PuppetReplay.transform.GetComponentsInChildren<Transform>())
-                                {
-                                    if (child.name != PAR.JawJointMimic.name)
-                                    {
-                                        foreach (Transform nestedChild in PAR.Actor.transform.GetComponentsInChildren<Transform>())
-                                        {
-                                            if (nestedChild.name == child.name)
-                                            {
-                                                nestedChild.localRotation = child.localRotation;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (!PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                                    PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = true;
-
-                            }
-                        }
-                }
+        private bool IsPlaying()
+        {
+            return PuppetReplay;
         }
 
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
+        [ButtonGroup]
+        [DisableIf("DisableRecordOption")]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
-        private void Play(){
+        private void RerecordJaw(){
             if (!PuppetReplay && !InCoroutine)
                 Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+
+            OverwriteButtPuppet = true;
+            OverwriteJaw = false;
+        }
+
+        [GUIColor(0.2f, 0.9f, 0.2f)]
+        [Button(ButtonSizes.Large)]
+        [ButtonGroup]
+        [DisableIf("DisableRecordOption")]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
+        [DisableInEditorMode]
+        private void RerecordButtPuppet()
+        {
+            if (!PuppetReplay && !InCoroutine)
+                Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+
+            OverwriteButtPuppet = false;
+            OverwriteJaw = true;
+        }
+
+        [GUIColor(0.9f, 0.3f, 0.3f)]
+        [Button(ButtonSizes.Large)]
+        [HideIf("NotPlaying", false)]
+        [ShowIf("IsPlaying", false)]
+        [DisableInEditorMode]
+        private void StopAnimation()
+        {
+            if (PuppetReplay)
+            {
+                if (Recorder)
+                {
+                    if(Recorder.IsRecording())
+                        Recorder.StopRecording();
+                }
+
+                _AudioSource.Stop();
+                TransformWrapper.transform.DetachChildren();
+
+                Destroy(TransformWrapper);
+                Destroy(PuppetReplay);
+                //Destroy(Recorder);
+
+                InfoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
+
+                if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
+                    Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+
+                if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                    Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+
+                //AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+            }
         }
 
         private void InitializeAnimation()
         {
+            JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+
             PuppetReplay = Instantiate(Actor, new Vector3(0, 0, 0), Actor.transform.rotation);
 
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.JawTransformMapper>());
@@ -165,8 +198,11 @@ namespace MrPuppet
             cloneReplay.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
             cloneReplay.updateMode = AnimatorUpdateMode.UnscaledTime;
             Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneReplay));
-            Actor.transform.position = PuppetReplay.transform.position + new Vector3(0, 0, 1.5f);
 
+            TransformWrapper = new GameObject("TransformWrapper");
+            PuppetReplay.transform.parent = TransformWrapper.transform;
+            TransformWrapper.transform.position += new Vector3(0, 0, 2);
+            Actor.transform.parent = TransformWrapper.transform;
 
             foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
             {
@@ -175,36 +211,23 @@ namespace MrPuppet
                     JawJointMimic = child;
                 }
             }
-        }
 
-        private void KillChildren(UnityEngine.Object[] children)
-        {
-            foreach (UnityEngine.Object child in children)
-                Destroy(child);
-        }
-
-        private void StopAnimation()
-        {
-            if (PuppetReplay)
-            {
-                _AudioSource.Stop();
-                Destroy(PuppetReplay);
-                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
-
-                InfoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
-
-                if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
-                    Actor.GetComponent<ButtPuppet>().ApplySensors = true;
-
-                if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                    Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
-            }
+            if (!Recorder)
+                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            Recorder.StartRecording();
         }
 
         private IEnumerator StopAfterAnimation(Animator animator)
         {
-            while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
-                yield return null;
+            if (animator != null)
+            {
+                while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
+                {
+                    if (animator == null)
+                        break;
+                    yield return null;
+                }
+            }
             StopAnimation();
         }
 
@@ -292,6 +315,61 @@ namespace MrPuppet
             }
         }
 
+        public class JointController : MonoBehaviour
+        {
+            public PerformanceAnimationReplacementManager PAR;
+
+            void LateUpdate()
+            {
+                if (PAR.JawJointMimic != null && PAR.PuppetReplay)
+                {
+                    if (PAR.OverwriteJaw == true)
+                    {
+                        if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+
+                        PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
+                        PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+
+                    }
+                    else
+                    {
+                        if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+
+                    }
+
+                    if (PAR.OverwriteButtPuppet == true)
+                    {
+                        if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
+                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
+
+                        //Nasty loop. TODO: More performant solution. 
+                        foreach (Transform child in PAR.PuppetReplay.transform.GetComponentsInChildren<Transform>())
+                        {
+                            if (child.name != PAR.JawJointMimic.name)
+                            {
+                                foreach (Transform nestedChild in PAR.Actor.transform.GetComponentsInChildren<Transform>())
+                                {
+                                    if (nestedChild.name == child.name)
+                                    {
+                                        nestedChild.localRotation = child.localRotation;
+                                        nestedChild.localPosition = child.localPosition;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
+                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+
+                    }
+                }
+            }
+        }
+
         [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
         {
@@ -302,7 +380,7 @@ namespace MrPuppet
 
             private static void playModes(PlayModeStateChange state)
             {
-                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+               //AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
         }
     }

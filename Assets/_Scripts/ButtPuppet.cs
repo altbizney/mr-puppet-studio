@@ -123,6 +123,7 @@ namespace MrPuppet
         [EnumToggleButtons]
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
 
+        [HideInInspector]
         public bool ApplySensors;
 
         [Button(ButtonSizes.Large)]
