@@ -38,6 +38,8 @@ namespace MrPuppet
         private GameObject TransformWrapper;
         private RecorderWindow Recorder;
         private Transform JawJoint;
+        private Coroutine AnimationCoroutine;
+
 
         private bool OverwriteButtPuppet;
         private bool OverwriteJaw;
@@ -146,6 +148,9 @@ namespace MrPuppet
         {
             if (PuppetReplay)
             {
+                if (AnimationCoroutine != null)
+                    Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
+
                 if (Recorder)
                 {
                     if(Recorder.IsRecording())
@@ -197,7 +202,7 @@ namespace MrPuppet
             Animator cloneReplay = PuppetReplay.AddComponent<Animator>();
             cloneReplay.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
             cloneReplay.updateMode = AnimatorUpdateMode.UnscaledTime;
-            Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneReplay));
+            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneReplay));
 
             TransformWrapper = new GameObject("TransformWrapper");
             PuppetReplay.transform.parent = TransformWrapper.transform;
@@ -219,15 +224,9 @@ namespace MrPuppet
 
         private IEnumerator StopAfterAnimation(Animator animator)
         {
-            if (animator != null)
-            {
-                while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
-                {
-                    if (animator == null)
-                        break;
-                    yield return null;
-                }
-            }
+            while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
+                yield return null;
+               
             StopAnimation();
         }
 
