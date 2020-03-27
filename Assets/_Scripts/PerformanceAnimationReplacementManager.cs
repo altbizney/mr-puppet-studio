@@ -172,7 +172,7 @@ namespace MrPuppet
                 if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
                     Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
 
-                //AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
         }
 
@@ -379,7 +379,8 @@ namespace MrPuppet
 
             private static void playModes(PlayModeStateChange state)
             {
-               //AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+               if(state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
         }
     }
