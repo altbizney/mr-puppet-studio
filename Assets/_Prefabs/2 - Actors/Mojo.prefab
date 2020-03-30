@@ -166,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mojo
       objectReference: {fileID: 0}
+    - target: {fileID: 3557104901173694905, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -221,10 +226,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3557104901173694905, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
+    - target: {fileID: 3442373171444734268, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
-      value: 3
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442373171444734268, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b7785e4c5f3406fb1d4ab81c9a7682, type: 3}
