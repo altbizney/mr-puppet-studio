@@ -637,10 +637,22 @@ MonoBehaviour:
     - 08cd65607d3e64ee2982fb18e78dfd8c
     - 864068ca3e12541dc9dfe2c710667e15
     - 2f8fb6546517142b2ae8e52b8df1a729
+    - b38344139ad4b47038e1f72171ca4dc8
+    - d9632c25cd3064f218b971c16f3078c8
+    - c09ee93f0881f4172891cead3fa7c33b
+    - 20d7a16b805ca48c981527e94d006bdd
+    - 82c444ee51c564822ac3f42a92cf9a8a
+    - 7b7d415f421644cc3b0f23a93249b28c
     m_Values:
     - {fileID: 285342539}
     - {fileID: 285342539}
     - {fileID: 285342539}
+    - {fileID: 285342539}
+    - {fileID: 285342539}
+    - {fileID: 285342539}
+    - {fileID: 285342539}
+    - {fileID: 285342539}
+    - {fileID: 0}
 --- !u!4 &1800841130
 Transform:
   m_ObjectHideFlags: 1
@@ -778,6 +790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3658049453457781049, guid: a927cd8caccdd4597b0a88b00cddd9d0,
         type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658049453457781049, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -850,6 +867,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 905493371394427220, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 905493371394427220, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 905493371394427220, guid: a927cd8caccdd4597b0a88b00cddd9d0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a927cd8caccdd4597b0a88b00cddd9d0, type: 3}

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEditor.Recorder.Timeline;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,6 +14,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor.Recorder;
 #endif
+
 
 namespace MrPuppet
 {
@@ -39,15 +43,14 @@ namespace MrPuppet
         private RecorderWindow Recorder;
         private Transform JawJoint;
         private Coroutine AnimationCoroutine;
-
+        //private AnimationEvent _aEvents;
+        //private AnimationEvent _aEvents2;
 
         private bool OverwriteButtPuppet;
         private bool OverwriteJaw;
 
         public GameObject Actor;
         public AnimationClip _AnimationClip;
-
-        //Animator cloneReplay;
 
         [SerializeField]
         [BoxGroup]
@@ -148,16 +151,10 @@ namespace MrPuppet
         {
             if (PuppetReplay)
             {
-                if (AnimationCoroutine != null)
-                    Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
+               if (AnimationCoroutine != null)
+                 Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
-                if (Recorder)
-                {
-                    if(Recorder.IsRecording())
-                        Recorder.StopRecording();
-                }
-
-                _AudioSource.Stop();
+                //_AudioSource.Stop();
                 TransformWrapper.transform.DetachChildren();
 
                 Destroy(TransformWrapper);
@@ -176,6 +173,50 @@ namespace MrPuppet
             }
         }
 
+        /*
+        [Button(ButtonSizes.Large)]
+        [DisableInEditorMode]
+        private void Test()
+        {
+
+            GameObject TestObject = new GameObject("Test");
+            GameObject PuppetTest = Instantiate(Actor, new Vector3(0, 0, -2), Actor.transform.rotation);
+            TransformWrapper = new GameObject("TransformWrapper");
+
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.JawTransformMapper>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.ButtPuppet>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.Blink>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.HeadPuppet>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.JawBlendShapeMapper>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.JointFollower>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.LookAtTarget>());
+            KillChildren(PuppetTest.GetComponentsInChildren<MrPuppet.CaptureMicrophone>());
+            KillChildren(PuppetTest.GetComponentsInChildren<OneShotAnimations>());
+
+            Animator _Animator = PuppetTest.AddComponent<Animator>();
+            //_Animator.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
+            //_Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+            PuppetTest.transform.parent = TransformWrapper.transform;
+            TransformWrapper.transform.position += new Vector3(0, 0, 2);
+
+            PlayableDirector _PlayableDirector = TestObject.AddComponent<PlayableDirector>();
+            //TimelineAsset _TimelineAsset = new TimelineAsset();
+            _PlayableDirector.playableAsset = _TimelineAsset;
+            var NewTrack = _TimelineAsset.CreateTrack<AnimationTrack>(null, "Test Track");
+            NewTrack.CreateClip(_AnimationClip);//tell track what animation clip
+            _PlayableDirector.SetGenericBinding(NewTrack, PuppetTest);//set animator for newtrack
+            _PlayableDirector.Play();
+
+
+            //NewTrack.CreateClip<AnimationClip>();
+            //RecorderClip sso = new RecorderClip();
+            //sso.CreatePlayable
+            //var RecTrack = _TimelineAsset.CreateTrack<RecorderTrack>(null, "Test Record");
+            //RecTrack.CreateDefaultClip();
+        }
+        */
+
         private void InitializeAnimation()
         {
             JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
@@ -191,18 +232,30 @@ namespace MrPuppet
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.LookAtTarget>());
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.CaptureMicrophone>());
             KillChildren(PuppetReplay.GetComponentsInChildren<OneShotAnimations>());
+            KillChildren(PuppetReplay.GetComponentsInChildren<Animator>());
 
-            _AudioSource = PuppetReplay.AddComponent<AudioSource>();
-            _AudioSource.clip = _AudioClip;
-            _AudioSource.Play();
+            //_AudioSource = PuppetReplay.AddComponent<AudioSource>();
+            //_AudioSource.clip = _AudioClip;
+            //_AudioSource.Play();
 
             JointController _JointController = PuppetReplay.AddComponent<JointController>();
             _JointController.PAR = this;
 
             Animator cloneReplay = PuppetReplay.AddComponent<Animator>();
             cloneReplay.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
-            cloneReplay.updateMode = AnimatorUpdateMode.UnscaledTime;
-            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneReplay));
+            //cloneReplay.updateMode = AnimatorUpdateMode.UnscaledTime;
+            //_aEvents = new AnimationEvent[1];
+            //_aEvents = new AnimationEvent();
+            //_aEvents.functionName = "StartRecord";
+            //_aEvents.time = 0f;
+            //_aEvents2 = new AnimationEvent();
+            //_aEvents2.functionName = "StopRecord";
+            // _aEvents2.time = 18;//cloneReplay.GetCurrentAnimatorClipInfo(0).Length;
+            //_AnimationClip.AddEvent(_aEvents);
+            //_AnimationClip.AddEvent(_aEvents2);
+            //Debug.Log(_AnimationClip.length);
+            //Debug.Log((float)System.Math.Round(_AnimationClip.length, 3));
+            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine( StopAfterAnimation() );
 
             TransformWrapper = new GameObject("TransformWrapper");
             PuppetReplay.transform.parent = TransformWrapper.transform;
@@ -222,13 +275,19 @@ namespace MrPuppet
             Recorder.StartRecording();
         }
 
-        private IEnumerator StopAfterAnimation(Animator animator)
+
+        private IEnumerator StopAfterAnimation()
         {
-            while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
-                yield return null;
-               
+            yield return new WaitForSeconds((float) System.Math.Round(_AnimationClip.length, 3) );
+
+            if (Recorder)
+            {
+              if(Recorder.IsRecording())
+                Recorder.StopRecording();
+            }
+
             StopAnimation();
-        }
+        }   
 
         private IEnumerator QueryHyperMesh(string url)
         {
@@ -367,6 +426,39 @@ namespace MrPuppet
                     }
                 }
             }
+
+            /*
+            public void StartRecord()
+            {
+                Debug.Log("Working");
+                if (!PAR.Recorder)
+                    PAR.Recorder = EditorWindow.GetWindow<RecorderWindow>();
+                PAR.Recorder.StartRecording();
+            }
+
+            public void StopRecord()
+            {
+                Debug.Log("Stopping Audio");
+
+                //if (PAR.AnimationCoroutine != null)
+                  //PAR.Actor.GetComponent<MonoBehaviour>().StopCoroutine(PAR.AnimationCoroutine);
+
+                //PAR.TransformWrapper.transform.DetachChildren();
+
+                //Destroy(PAR.TransformWrapper);
+               // Destroy(PAR.PuppetReplay);
+               // Destroy(PAR.Recorder);
+
+                if (PAR.Recorder)
+                {
+                    if (PAR.Recorder.IsRecording())
+                    {
+                        Debug.Log("Stopping vid 2");
+
+                        PAR.Recorder.StopRecording();
+                    }
+                }
+            }*/
         }
 
         [InitializeOnLoadAttribute]
