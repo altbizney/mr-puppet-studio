@@ -216,28 +216,28 @@ namespace MrPuppet
                     Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
                     Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
+                    if (EnableJawHeadMixer)
+                    {
+                        switch (JawHeadRotate)
+                        {
+                            case JawHeadAxis.x:
+                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
+                                break;
+
+                            case JawHeadAxis.y:
+                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
+                                break;
+
+                            case JawHeadAxis.z:
+                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
+                                break;
+                        }
+                    }
+
                     // apply weighted influences
                     foreach (var influence in WeightedInfluences)
                     {
                         influence.Update(DataMapper, RotationSpeed);
-                    }
-                }
-
-                if (EnableJawHeadMixer)
-                {
-                    switch (JawHeadRotate)
-                    {
-                        case JawHeadAxis.x:
-                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
-                            break;
-
-                        case JawHeadAxis.y:
-                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
-                            break;
-
-                        case JawHeadAxis.z:
-                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
-                            break;
                     }
                 }
             }
