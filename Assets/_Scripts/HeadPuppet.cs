@@ -44,6 +44,9 @@ namespace MrPuppet
         [ShowIf("LimitRootExtentZ")]
         public float RootExtentZ = 0f;
 
+        [Range(1f, 2.5f)]
+        public float RotationModifier = 1f;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
@@ -77,6 +80,11 @@ namespace MrPuppet
         //     AttachPoseSet = true;
         // }
 
+        private Quaternion RotationDeltaFromAttachWrist()
+        {
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
+        }
+
         private void Awake()
         {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -103,8 +111,11 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                // apply rotation deltas to bind pose
-                Root.rotation = Quaternion.Slerp(Root.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * RootSpawnRotation, RotationSpeed * Time.deltaTime);
+                Root.rotation = Quaternion.Slerp(
+                    Root.rotation,
+                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
+                    RotationSpeed * Time.deltaTime
+                );
             }
 
             if (Input.GetKeyDown(KeyCode.A))
