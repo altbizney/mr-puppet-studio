@@ -2,31 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IKController : MonoBehaviour {
+public class IKTag : MonoBehaviour {
 
     #region Static Variables
 
     #endregion
 
     #region Public Variables
-    
+    public IKTagId iKTagId;
+    public int chainId;
     #endregion
 
     #region Private Variables
-    [SerializeField]
-    private Animator animator;
-    [SerializeField]
-    private bool isActive;
+
     #endregion
 
     #region Unity Methods
-    private void Start() {
-        
-    }
 
-    private void Update() {
-        OnCustomAnimatorIK();
-    }
     #endregion
 
     #region Callback Methods
@@ -42,10 +34,8 @@ public class IKController : MonoBehaviour {
     #endregion
 
     #region Local Methods
-    void OnCustomAnimatorIK() {
-        if (isActive) {
 
-        }
-    }
     #endregion
 }
+
+public enum IKTagId { Head, Neck, Spine, Hip, LeftArm, RightArm, Grounder, LeftLeg, RightLeg };
