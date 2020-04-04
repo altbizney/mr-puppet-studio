@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor.Recorder;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,20 +26,11 @@ namespace MrPuppet
 
         private RecorderWindow Recorder;
         private static string ButtonMessage;
-        private static bool ShowInfo;
+        private bool ShowInfo;
+        private static int CountdownValue;
 
-        /*[SerializeField]
-        [DisplayAsString]
-        [HideLabel]
-        [BoxGroup]
-        [GUIColor(1, 0, 0)]
-        //[LabelWidth(300)]
-        private string InfoBoxMsg;*/
-
-        //private static int ButtonHeight;
-
-        [DisplayAsString, ShowInInspector, BoxGroup, ShowIf("ShowInfo")]
-        public string Filename;
+        [DisplayAsString, ShowInInspector, BoxGroup, HideLabel, ShowIf("ShowInfo")]
+        public string StatusBox;
 
         private void GetFilename()
         {
@@ -49,19 +41,18 @@ namespace MrPuppet
             {
                 if (!recorder.Enabled) continue;
 
-                Filename = recorder.OutputFile;
+                StatusBox = recorder.OutputFile;
 
-                Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));
-                Filename = Filename.Replace("<Scene>", SceneManager.GetActiveScene().name);
+                StatusBox = StatusBox.Replace("<Take>", recorder.Take.ToString("000"));
+                StatusBox = StatusBox.Replace("<Scene>", SceneManager.GetActiveScene().name);
 
-                Filename = Filename.Substring(Filename.LastIndexOf('/') + 1);
+                StatusBox = "Recording: " + StatusBox.Substring(StatusBox.LastIndexOf('/') + 1);
 
                 // just need the first
                 return;
             }
         }
 
-        //Set Button Size to Window Size? Dynamic Size? 
         [Button("$ButtonMessage", 300)]
         [GUIColor(1, 0, 0)]
         [DisableInEditorMode]
@@ -72,68 +63,103 @@ namespace MrPuppet
 
             if (!Recorder.IsRecording())
             {
+                if (CountdownValue < 0)
+                { 
+                    Camera.main.gameObject.AddComponent<CountDown>();
+                    Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
+                }
+            }
+            else
+                ControlRecording();
+
+            Debug.Log(Recorder);
+
+        }
+
+        private void ControlRecording()
+        {
+            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
+                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
+            if (!Recorder.IsRecording())
+            {
                 Recorder.StartRecording();
-                ButtonMessage = "RECORDING";
             }
             else
             {
                 Recorder.StopRecording();
-                //EditorSceneManager.SaveScene( SceneManager.GetActiveScene() );
-                //EditorApplication.SaveScene();
                 AssetDatabase.SaveAssets();
-                ButtonMessage = "READY TO REC";
-            }
-
-            var win = GetWindow<RecorderHelper>();
-        }
-
-        // Possible global button press solution.
-        /*
-        void OnSceneGUI()
-        {
-            //RecorderHelper script = (RecorderHelper)target;
-            Event e = Event.current;
-            switch (e.type)
-            {
-                case EventType.KeyDown:
-                    {
-                        if (Event.current.keyCode == (KeyCode.Space))
-                        {
-                            //script.Painting = true;
-                        }
-                        break;
-                    }
             }
         }
-        */
 
         private void Update()
         {
             if (EditorApplication.isPlaying == true)
             {
-                GetFilename();
+                ShowInfo = true;
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     Action();
                 }
 
-
                 if (Recorder)
                 {
-                    if (Recorder.IsRecording())
-                        ShowInfo = true;
-                    else
-                        ShowInfo = false;
-                }
+                    Debug.Log("int update33333");
 
-                //ButtonHeight = (int)position.width;
+                    if (Recorder.IsRecording())
+                    {
+                        GetFilename();
+                        ButtonMessage = "STOP";
+                    }
+                    else
+                    {
+                        if (CountdownValue < 0)
+                        {
+                            StatusBox = "READY TO REC";
+                            ButtonMessage = "START";
+                        }
+                    }
+                }
             }
             else
             {
-                //ButtonMessage = "DISABLED";
+                CountdownValue = -1;
                 ShowInfo = false;
             }
+
+            Repaint();
+        }
+
+        public class CountDown : MonoBehaviour
+        {
+
+        }
+
+        public IEnumerator StartCountdown()
+        {
+
+            CountdownValue = 3;
+            while (CountdownValue > -1)
+            {
+                if (Recorder)
+                    if (Recorder.IsRecording())
+                    {
+                        //EditorUtility.DisplayDialog("Recording while attempting a record", "Stopped your recording", "OK");
+                        Recorder.StopRecording();
+                        CountdownValue = -1;
+                        yield break;
+                    }
+
+                StatusBox = "Recorder Starting in..." + CountdownValue.ToString();
+                ButtonMessage = CountdownValue.ToString();
+                if (CountdownValue == 0)
+                    StatusBox = "STARTING RECORDING!";
+                yield return new WaitForSeconds(1.0f);
+                CountdownValue--;
+            }
+
+            ControlRecording();
         }
 
         [InitializeOnLoadAttribute]
@@ -143,19 +169,20 @@ namespace MrPuppet
             {
                 EditorApplication.playModeStateChanged += playModes;
                 ButtonMessage = "DISABLED";
+                CountdownValue = -1;
             }
 
             private static void playModes(PlayModeStateChange state)
             {
-                if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode || state == UnityEditor.PlayModeStateChange.EnteredEditMode)
+                if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode)
                 {
                     //ShowInfo = false;
-                    ButtonMessage = "DISABLED";
+                    ButtonMessage = "START";
                 }
                 else
                 {
                     //ShowInfo = true;
-                    ButtonMessage = "READY TO REC";
+                    ButtonMessage = "DISABLED";
                 }
             }
         }
