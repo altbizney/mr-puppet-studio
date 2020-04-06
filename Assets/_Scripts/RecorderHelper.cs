@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor.Recorder;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Reflection;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,9 +30,14 @@ namespace MrPuppet
         private static string ButtonMessage;
         private bool ShowInfo;
         private static int CountdownValue;
+        private static Color ColorState;
+        private AudioSource _AudioSource;
 
-        [DisplayAsString, ShowInInspector, BoxGroup, HideLabel, ShowIf("ShowInfo")]
-        public string StatusBox;
+
+        [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
+        public static string StatusBox;
+
+        private AudioClip _AudioClip;
 
         private void GetFilename()
         {
@@ -53,8 +60,8 @@ namespace MrPuppet
             }
         }
 
-        [Button("$ButtonMessage", 300)]
-        [GUIColor(1, 0, 0)]
+        [Button("$ButtonMessage", 150)]
+        [GUIColor("ColorState")]
         [DisableInEditorMode]
         private void Action()
         {
@@ -63,21 +70,25 @@ namespace MrPuppet
 
             if (!Recorder.IsRecording())
             {
-                if (CountdownValue < 0)
-                { 
+                if (CountdownValue < 1)
+                {
+                    _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
+
+                    _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
+                    _AudioSource.clip = _AudioClip;
+
                     Camera.main.gameObject.AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
                 }
             }
             else
                 ControlRecording();
-
-            Debug.Log(Recorder);
-
         }
 
         private void ControlRecording()
         {
+            ColorState = Color.red;
+
             if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
@@ -105,8 +116,6 @@ namespace MrPuppet
 
                 if (Recorder)
                 {
-                    Debug.Log("int update33333");
-
                     if (Recorder.IsRecording())
                     {
                         GetFilename();
@@ -114,18 +123,20 @@ namespace MrPuppet
                     }
                     else
                     {
-                        if (CountdownValue < 0)
+                        if (CountdownValue < 1)
                         {
                             StatusBox = "READY TO REC";
                             ButtonMessage = "START";
                         }
                     }
                 }
+                //ColorState = Color.red;
             }
             else
             {
-                CountdownValue = -1;
-                ShowInfo = false;
+                CountdownValue = 0;
+                //ShowInfo = false;
+                ColorState = Color.gray;
             }
 
             Repaint();
@@ -138,10 +149,12 @@ namespace MrPuppet
 
         public IEnumerator StartCountdown()
         {
-
+            ColorState = Color.yellow;
             CountdownValue = 3;
-            while (CountdownValue > -1)
+            while (CountdownValue > 0)
             {
+                _AudioSource.Play();
+
                 if (Recorder)
                     if (Recorder.IsRecording())
                     {
@@ -159,6 +172,7 @@ namespace MrPuppet
                 CountdownValue--;
             }
 
+            Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
@@ -169,7 +183,11 @@ namespace MrPuppet
             {
                 EditorApplication.playModeStateChanged += playModes;
                 ButtonMessage = "DISABLED";
-                CountdownValue = -1;
+                StatusBox = "Enter play mode to record";
+
+                CountdownValue = 0;
+                ColorState = Color.red;
+
             }
 
             private static void playModes(PlayModeStateChange state)
@@ -178,10 +196,13 @@ namespace MrPuppet
                 {
                     //ShowInfo = false;
                     ButtonMessage = "START";
+                    ColorState = Color.red;
+
                 }
                 else
                 {
                     //ShowInfo = true;
+                    StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                 }
             }
