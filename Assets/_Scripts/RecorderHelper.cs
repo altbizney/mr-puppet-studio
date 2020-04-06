@@ -32,12 +32,10 @@ namespace MrPuppet
         private static int CountdownValue;
         private static Color ColorState;
         private AudioSource _AudioSource;
-
+        private AudioClip _AudioClip;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
-
-        private AudioClip _AudioClip;
 
         private void GetFilename()
         {
@@ -83,6 +81,8 @@ namespace MrPuppet
             }
             else
                 ControlRecording();
+
+                EditorApplication.ExecuteMenuItem("Window/General/Game");
         }
 
         private void ControlRecording()
@@ -95,6 +95,8 @@ namespace MrPuppet
             if (!Recorder.IsRecording())
             {
                 Recorder.StartRecording();
+                EditorApplication.ExecuteMenuItem("Window/General/Game");
+
             }
             else
             {
@@ -127,6 +129,7 @@ namespace MrPuppet
                         {
                             StatusBox = "READY TO REC";
                             ButtonMessage = "START";
+                            ColorState = Color.green;
                         }
                     }
                 }
@@ -186,7 +189,7 @@ namespace MrPuppet
                 StatusBox = "Enter play mode to record";
 
                 CountdownValue = 0;
-                ColorState = Color.red;
+                ColorState = Color.gray;
 
             }
 
@@ -196,7 +199,7 @@ namespace MrPuppet
                 {
                     //ShowInfo = false;
                     ButtonMessage = "START";
-                    ColorState = Color.red;
+                    ColorState = Color.green;
 
                 }
                 else
@@ -204,6 +207,8 @@ namespace MrPuppet
                     //ShowInfo = true;
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
+                    CountdownValue = 0;
+
                 }
             }
         }
