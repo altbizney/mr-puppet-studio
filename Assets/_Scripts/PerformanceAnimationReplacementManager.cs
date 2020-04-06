@@ -43,6 +43,8 @@ namespace MrPuppet
         private RecorderWindow Recorder;
         private Transform JawJoint;
         private Coroutine AnimationCoroutine;
+        private static MrPuppetHubConnection HubConnection;
+        private static string _AnimationClipName;
 
         private List<Transform> JointsMimic;
         private List<Transform> JointsClone;
@@ -85,6 +87,16 @@ namespace MrPuppet
             return PuppetReplay;
         }
 
+        [Button(ButtonSizes.Large)]
+        [DisableInEditorMode]
+        private void Test(){
+        HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
+         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name + "b");
+         Debug.Log("In Test Function, CALLING PLAYBACK START");
+
+        }
+
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
         [ButtonGroup]
@@ -93,6 +105,7 @@ namespace MrPuppet
         [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
         private void RerecordJaw(){
+
             if (!PuppetReplay)
                 InitializeAnimation();
                 //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
@@ -131,6 +144,8 @@ namespace MrPuppet
                  Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
                 //_AudioSource.Stop();
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+
                 TransformWrapper.transform.DetachChildren();
 
                 Destroy(TransformWrapper);
@@ -168,6 +183,10 @@ namespace MrPuppet
             //_AudioSource = PuppetReplay.AddComponent<AudioSource>();
             //_AudioSource.clip = _AudioClip;
             //_AudioSource.Play();
+
+            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+            _AnimationClipName = _AnimationClip.name;
+            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name + "b");
 
             JointController _JointController = PuppetReplay.AddComponent<JointController>();
             _JointController.PAR = this;
@@ -367,6 +386,7 @@ namespace MrPuppet
             static PlayModeStateChanged()
             {
                 EditorApplication.playModeStateChanged += playModes;
+                //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClipName);
             }
 
             private static void playModes(PlayModeStateChange state)
