@@ -123,7 +123,7 @@ namespace MrPuppet
         [EnumToggleButtons]
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
 
-        // [HideInInspector]
+        [HideInInspector]
         public bool ApplySensors = true;
 
         [Button(ButtonSizes.Large)]
@@ -173,6 +173,8 @@ namespace MrPuppet
         {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
+            ApplySensors = true;
 
             // // clone proxy geo
             // HipProxy = new GameObject("Proxy:" + Hip.name).transform;

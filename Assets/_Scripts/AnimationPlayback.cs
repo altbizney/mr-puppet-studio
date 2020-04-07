@@ -25,33 +25,37 @@ namespace MrPuppet
             GetWindow<AnimationPlayback>().Show();
         }
 
-        private new void OnEnable()
+        /*private new void OnEnable()
         {
             infoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
-        }
+        }*/
 
         private GameObject clone;
         private AudioClip audioClip;
-        private AudioSource audioSource;
-        private bool inCoroutine;
+        //private AudioSource audioSource;
+        //private bool inCoroutine;
         private List<Renderer> activeRenderers;
-        private string hyperMeshURL;
+        //private string hyperMeshURL;
         private static string tempController = "temp.controller";
+        private static MrPuppetHubConnection HubConnection;
+        private Coroutine AnimationCoroutine;
+
 
         [SerializeField]
-        private GameObject actor;
+        private GameObject Actor;
 
         [SerializeField]
         [HorizontalGroup(MarginLeft = 0.01f)]
         [AssetSelector(Paths = "Assets/Recordings", FlattenTreeView = true)]
-        private AnimationClip animationClip;
+        private AnimationClip _AnimationClip;
 
-        [SerializeField]
+        /*[SerializeField]
         [BoxGroup]
         [DisplayAsString]
         [HideLabel]
-        private string infoBoxMsg;
+        private string infoBoxMsg;*/
 
+        /*
         [Button("Latest")]
         [HorizontalGroup(Width = 35)]
         private void LatestAnimation()
@@ -59,6 +63,7 @@ namespace MrPuppet
             List<string> files = Directory.GetFiles("Assets/Recordings").OrderBy(f => f).ToList();
             animationClip = (AnimationClip)AssetDatabase.LoadAssetAtPath(files[files.Count - 2], typeof(AnimationClip));
         }
+        */
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
         [Button(ButtonSizes.Large)]
@@ -69,10 +74,14 @@ namespace MrPuppet
         {
             if (clone)
             {
+                if (AnimationCoroutine != null)
+                    Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
+
                 foreach (Renderer renderer in activeRenderers)
                     renderer.enabled = true;
 
-                audioSource.Stop();
+                //audioSource.Stop();
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
                 Destroy(clone);
                 AssetDatabase.DeleteAsset("Assets/Recordings/" + tempController);
             }
@@ -85,17 +94,19 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void PlayAnimation()
         {
-            if (!audioClip && !inCoroutine)
-                actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + animationClip.name + "-audio/info.json"));
-            else
+            //if (!audioClip)//&& !inCoroutine
+                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //else
                 InitializeAnimation();
         }
 
         private void InitializeAnimation()
         {
-            if (!clone && audioClip.loadState == AudioDataLoadState.Loaded)
+
+            if (!clone)//&& audioClip.loadState == AudioDataLoadState.Loaded
             {
-               clone = Instantiate(actor, actor.transform.position, Quaternion.identity);
+
+                clone = Instantiate(Actor, Actor.transform.position, Quaternion.identity);
 
                KillChildren(clone.GetComponentsInChildren<JawTransformMapper>());
                KillChildren(clone.GetComponentsInChildren<ButtPuppet>());
@@ -109,10 +120,10 @@ namespace MrPuppet
 
                Animator cloneAnim = clone.AddComponent<Animator>();
                cloneAnim.enabled = true;
-               cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, animationClip);
-               actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneAnim));
+               cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, _AnimationClip);
+               AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneAnim));
 
-                foreach (Renderer renderer in actor.GetComponentsInChildren<Renderer>())
+                foreach (Renderer renderer in Actor.GetComponentsInChildren<Renderer>())
                 {
                     if (renderer.enabled == true)
                     {
@@ -121,9 +132,11 @@ namespace MrPuppet
                     }
                 }
 
-               audioSource = actor.AddComponent<AudioSource>();
-               audioSource.clip = audioClip;
-               audioSource.Play();
+                //audioSource = Actor.AddComponent<AudioSource>();
+                //audioSource.clip = audioClip;
+                //audioSource.Play();
+                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
             }
         }
 
@@ -143,6 +156,18 @@ namespace MrPuppet
             return clone;
         }
 
+        private void Update()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    HubConnection = null;
+                }
+            }
+        }
+
         private IEnumerator StopAfterAnimation(Animator animator)
         {
             while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
@@ -150,6 +175,7 @@ namespace MrPuppet
             StopAnimation();
         }
 
+        /*
         private IEnumerator QueryHyperMesh(string url)
         {
             JsonData json;
@@ -170,7 +196,7 @@ namespace MrPuppet
 
                     if (json.ok == true)
                     {
-                        actor.GetComponent<MonoBehaviour>().StartCoroutine(StreamAudioClip(json.media_url));
+                        Actor.GetComponent<MonoBehaviour>().StartCoroutine(StreamAudioClip(json.media_url));
                     }
                     else
                     {
@@ -186,7 +212,9 @@ namespace MrPuppet
                 }
             }
         }
+        */
 
+        /*
         private IEnumerator StreamAudioClip(string url)
         {
             inCoroutine = true;
@@ -215,7 +243,9 @@ namespace MrPuppet
                 }
             }
         }
+        */
 
+        /*
         //Public variables should currently only be visible to enclosing type. 
         private class JsonData
         {
@@ -232,6 +262,7 @@ namespace MrPuppet
                 return JsonUtility.FromJson<JsonData>(jsonString);
             }
         }
+        */
 
         [InitializeOnLoadAttribute]
         static class PlayModeStateChanged

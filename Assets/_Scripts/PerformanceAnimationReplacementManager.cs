@@ -87,16 +87,6 @@ namespace MrPuppet
             return PuppetReplay;
         }
 
-        [Button(ButtonSizes.Large)]
-        [DisableInEditorMode]
-        private void Test(){
-        HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-
-         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name + "b");
-         Debug.Log("In Test Function, CALLING PLAYBACK START");
-
-        }
-
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
         [ButtonGroup]
@@ -185,8 +175,8 @@ namespace MrPuppet
             //_AudioSource.Play();
 
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-            _AnimationClipName = _AnimationClip.name;
-            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name + "b");
+            //_AnimationClipName = _AnimationClip.name;
+            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
 
             JointController _JointController = PuppetReplay.AddComponent<JointController>();
             _JointController.PAR = this;
@@ -228,6 +218,18 @@ namespace MrPuppet
             if (!Recorder)
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
             Recorder.StartRecording();
+        }
+
+        private void Update()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    HubConnection = null;
+                }
+            }
         }
 
         private IEnumerator StopAfterAnimation()
@@ -386,6 +388,7 @@ namespace MrPuppet
             static PlayModeStateChanged()
             {
                 EditorApplication.playModeStateChanged += playModes;
+                //HubConnection = FindObjectOfType<MrPuppetHubConnection>();
                 //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClipName);
             }
 

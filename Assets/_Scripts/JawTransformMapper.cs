@@ -35,8 +35,9 @@ namespace MrPuppet
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
 
-        // [HideInInspector]
+        [HideInInspector]
         public bool ApplySensors = true;
+        private void Awake(){ ApplySensors = true; }
 
         private void OnValidate()
         {
