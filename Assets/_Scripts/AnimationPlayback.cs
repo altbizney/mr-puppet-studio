@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
-using System;
-using System.IO;
-using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.Formats.Fbx.Exporter;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
