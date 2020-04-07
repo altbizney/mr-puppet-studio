@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MrPuppet;
 
 public class IKTag : MonoBehaviour {
 
@@ -18,7 +19,19 @@ public class IKTag : MonoBehaviour {
     #endregion
 
     #region Unity Methods
-
+    private void Awake() {
+        IKButtPuppet root = this.transform.root.GetComponent<IKButtPuppet>();
+        if (root != null) {
+            switch (iKTagId) {
+                case IKTagId.LeftArm:
+                    this.gameObject.SetActive(root.enableLeftArmLimb);
+                    break;
+                case IKTagId.RightArm:
+                    this.gameObject.SetActive(root.enableRightArmLimb);
+                    break;
+            }
+        }
+    }
     #endregion
 
     #region Callback Methods

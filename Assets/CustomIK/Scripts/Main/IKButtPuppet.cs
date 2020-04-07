@@ -58,9 +58,11 @@ namespace MrPuppet {
         #endregion
 
         #region IK
-        [Title("IK", "These components will follow tracking data from the data transport")]
+        [TitleGroup("IK", "These components will follow tracking data from the data transport")]
         [Required]
-        public Transform rigMain;
+        public Transform rigNode;
+        [Required]
+        public Transform[] ikNodes;
 
         [TabGroup("Spine Stack", "Hip")]
         [Required]
@@ -100,26 +102,39 @@ namespace MrPuppet {
         public float headIKRotationWeight;
 
         [TabGroup("Arm Stack", "Left Arm")]
+        public bool enableLeftArmLimb;
+        [ShowIf("enableLeftArmLimb")]
+        [TabGroup("Arm Stack", "Left Arm")]
         [Required]
         public LimbIK leftArmLimb;
+        [ShowIf("enableLeftArmLimb")]
         [TabGroup("Arm Stack", "Left Arm")]
         [Range(0, 1)]
         public float leftArmLimbPositionWeight;
+        [ShowIf("enableLeftArmLimb")]
         [TabGroup("Arm Stack", "Left Arm")]
         [Range(0, 1)]
         public float leftArmLimbRotationWeight;
+        [ShowIf("enableLeftArmLimb")]
         [TabGroup("Arm Stack", "Left Arm")]
         [Required]
         public Transform leftArmTarget;
+
+        [TabGroup("Arm Stack", "Right Arm")]
+        public bool enableRightArmLimb;
+        [ShowIf("enableRightArmLimb")]
         [TabGroup("Arm Stack", "Right Arm")]
         [Required]
         public LimbIK rightArmLimb;
+        [ShowIf("enableRightArmLimb")]
         [TabGroup("Arm Stack", "Right Arm")]
         [Range(0, 1)]
         public float rightArmLimbPositionWeight;
+        [ShowIf("enableRightArmLimb")]
         [TabGroup("Arm Stack", "Right Arm")]
         [Range(0, 1)]
         public float rightArmLimbRotationWeight;
+        [ShowIf("enableRightArmLimb")]
         [TabGroup("Arm Stack", "Right Arm")]
         [Required]
         public Transform rightArmTarget;
@@ -189,16 +204,55 @@ namespace MrPuppet {
         #endregion
 
         #region Public Methods
-        
+
         #endregion
 
         #region Local Methods
         [Title("Misc")]
+        [Button("Assign IK Nodes", 25, ButtonStyle.Box)]
+        [GUIColor(1f, 1f, 0f)]
+        [DisableInPlayMode()]
+        private void AssignIKNodes() {
+            List<IKTag> tags = new List<IKTag>();
+            foreach (Transform t in ikNodes) {
+                tags.AddRange(t.GetComponentsInChildren<IKTag>());
+            }
+            foreach (IKTag tag in tags) {
+                if (tag.iKTagId == IKTagId.Hip) {
+                    hipIK = tag.GetComponent<TrigonometricIK>();
+                }
+                if (tag.iKTagId == IKTagId.Spine) {
+                    spineIK = tag.GetComponent<TrigonometricIK>();
+                }
+                if (tag.iKTagId == IKTagId.Neck) {
+                    neckIK = tag.GetComponent<TrigonometricIK>();
+                }
+                if (tag.iKTagId == IKTagId.Head) {
+                    headIK = tag.GetComponent<TrigonometricIK>();
+                }
+                if (tag.iKTagId == IKTagId.LeftArm && enableLeftArmLimb) {
+                    leftArmLimb = tag.GetComponent<LimbIK>();
+                }
+                if (tag.iKTagId == IKTagId.RightArm && enableRightArmLimb) {
+                    rightArmLimb = tag.GetComponent<LimbIK>();
+                }
+                if (tag.iKTagId == IKTagId.Grounder) {
+                    grounderIK = tag.GetComponent<GrounderIK>();
+                }
+                if (tag.iKTagId == IKTagId.LeftLeg) {
+                    leftLegLimb = tag.GetComponent<LimbIK>();
+                }
+                if (tag.iKTagId == IKTagId.RightLeg) {
+                    rightLegLimb = tag.GetComponent<LimbIK>();
+                }
+            }
+        }
+
         [Button("Assign IK Bones", 25, ButtonStyle.Box)]
         [GUIColor(1f, 1f, 0f)]
         [DisableInPlayMode()]
         private void AssignIKBones() {
-            IKTag[] tags = FindObjectsOfType<IKTag>();
+            IKTag[] tags = rigNode.GetComponentsInChildren<IKTag>();
 
             //Hip
             foreach (IKTag tag in tags) {
@@ -269,37 +323,41 @@ namespace MrPuppet {
             }
 
             //Left Arm
-            foreach (IKTag tag in tags) {
-                if (tag.iKTagId == IKTagId.LeftArm) {
-                    leftArmLimb.solver.target = leftArmTarget;
-                    switch (tag.chainId) {
-                        case 1:
-                            leftArmLimb.solver.bone1.transform = tag.transform;
-                            break;
-                        case 2:
-                            leftArmLimb.solver.bone2.transform = tag.transform;
-                            break;
-                        case 3:
-                            leftArmLimb.solver.bone3.transform = tag.transform;
-                            break;
+            if (enableLeftArmLimb) {
+                foreach (IKTag tag in tags) {
+                    if (tag.iKTagId == IKTagId.LeftArm) {
+                        leftArmLimb.solver.target = leftArmTarget;
+                        switch (tag.chainId) {
+                            case 1:
+                                leftArmLimb.solver.bone1.transform = tag.transform;
+                                break;
+                            case 2:
+                                leftArmLimb.solver.bone2.transform = tag.transform;
+                                break;
+                            case 3:
+                                leftArmLimb.solver.bone3.transform = tag.transform;
+                                break;
+                        }
                     }
                 }
             }
 
             //Right Arm
-            foreach (IKTag tag in tags) {
-                if (tag.iKTagId == IKTagId.RightArm) {
-                    rightArmLimb.solver.target = rightArmTarget;
-                    switch (tag.chainId) {
-                        case 1:
-                            rightArmLimb.solver.bone1.transform = tag.transform;
-                            break;
-                        case 2:
-                            rightArmLimb.solver.bone2.transform = tag.transform;
-                            break;
-                        case 3:
-                            rightArmLimb.solver.bone3.transform = tag.transform;
-                            break;
+            if (enableRightArmLimb) {
+                foreach (IKTag tag in tags) {
+                    if (tag.iKTagId == IKTagId.RightArm) {
+                        rightArmLimb.solver.target = rightArmTarget;
+                        switch (tag.chainId) {
+                            case 1:
+                                rightArmLimb.solver.bone1.transform = tag.transform;
+                                break;
+                            case 2:
+                                rightArmLimb.solver.bone2.transform = tag.transform;
+                                break;
+                            case 3:
+                                rightArmLimb.solver.bone3.transform = tag.transform;
+                                break;
+                        }
                     }
                 }
             }
@@ -377,12 +435,16 @@ namespace MrPuppet {
             headIK.solver.IKRotationWeight = headIKRotationWeight;
 
             //Left Arm
-            leftArmLimb.solver.IKPositionWeight = leftArmLimbPositionWeight;
-            leftArmLimb.solver.IKRotationWeight = leftArmLimbRotationWeight;
+            if (enableLeftArmLimb) {
+                leftArmLimb.solver.IKPositionWeight = leftArmLimbPositionWeight;
+                leftArmLimb.solver.IKRotationWeight = leftArmLimbRotationWeight;
+            }
 
             //Right Arm
-            rightArmLimb.solver.IKPositionWeight = rightArmLimbPositionWeight;
-            rightArmLimb.solver.IKRotationWeight = rightArmLimbRotationWeight;
+            if (enableRightArmLimb) {
+                rightArmLimb.solver.IKPositionWeight = rightArmLimbPositionWeight;
+                rightArmLimb.solver.IKRotationWeight = rightArmLimbRotationWeight;
+            }
 
             //Grounder
             grounderIK.weight = grounderIKWeight;
