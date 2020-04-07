@@ -42,12 +42,13 @@ namespace MrPuppet
         private MrPuppetHubConnection HubConnection;
 
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
-        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float) (JawOpened - JawClosed)) * (1f - 0f));
+        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
 
         public enum Joint { Shoulder, Elbow, Wrist }
 
         public Transform ShoulderJoint { get; private set; }
         public Transform ElbowJoint { get; private set; }
+        public Transform ElbowAnchorJoint { get; private set; }
         public Transform WristJoint { get; private set; }
 
         public bool EnableGizmo = true;
@@ -67,6 +68,9 @@ namespace MrPuppet
         [Range(.2f, 4f)]
         public float ForearmLength = 1f;
 
+        [MinValue(0f)]
+        public float ForearmAnchorOffset = 0f;
+
         private void Awake()
         {
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
@@ -81,6 +85,9 @@ namespace MrPuppet
             ElbowJoint = new GameObject("Elbow").transform;
             ElbowJoint.SetParent(ShoulderJoint);
 
+            ElbowAnchorJoint = new GameObject("Elbow - Anchor").transform;
+            ElbowAnchorJoint.SetParent(ElbowJoint);
+
             WristJoint = new GameObject("Wrist").transform;
             WristJoint.SetParent(ElbowJoint);
         }
@@ -92,6 +99,8 @@ namespace MrPuppet
 
             ElbowJoint.localPosition = Vector3.back * ArmLength;
             ElbowJoint.rotation = TPose.ElbowRotation * HubConnection.ElbowRotation;
+
+            ElbowAnchorJoint.localPosition = Vector3.back * ForearmAnchorOffset;
 
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
@@ -200,6 +209,12 @@ namespace MrPuppet
             // eblow
             Gizmos.matrix = ElbowJoint.localToWorldMatrix;
             Gizmos.DrawWireCube(new Vector3(0f, 0f, ForearmLength * -0.5f), new Vector3(0.25f, 0.25f, ForearmLength));
+
+            if (ForearmAnchorOffset > 0f) {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(new Vector3(0f, 0f, -ForearmAnchorOffset), 0.1f);
+                Gizmos.color = Color.white;
+            }
 
             // jaw
             Gizmos.matrix = Matrix4x4.TRS(WristJoint.position, WristJoint.rotation * Quaternion.Euler(Mathf.Lerp(0f, 45f, JawPercent) * 0.5f, 0f, 0f), Vector3.one);
