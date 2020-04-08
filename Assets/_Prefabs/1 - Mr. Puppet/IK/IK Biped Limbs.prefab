@@ -307,7 +307,7 @@ MonoBehaviour:
       length: 0
       sqrMag: 0
       axis: {x: -1, y: -0, z: -0}
-    goal: 0
+    goal: 3
     bendModifier: 0
     maintainRotationWeight: 0
     bendModifierWeight: 1
@@ -540,7 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6224774218094703011}
   m_Layer: 0
-  m_Name: IKBipedLimbs
+  m_Name: IK Biped Limbs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
