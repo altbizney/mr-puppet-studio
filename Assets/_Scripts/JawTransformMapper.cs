@@ -34,18 +34,24 @@ namespace MrPuppet
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
 
-        private void Awake()
-        {
+        [HideInInspector]
+        public bool ApplySensors = true;
+
+        private void Awake() {
+            ApplySensors = true;
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
         private void LateUpdate()
         {
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
-            JawJoint.localRotation = Quaternion.LerpUnclamped(
-                AnimData.CloseRotation,
-                AnimData.OpenRotation,
-                _jawPercentSmoothed);
+            if (ApplySensors == true)
+            {
+                JawJoint.localRotation = Quaternion.LerpUnclamped(
+                    AnimData.CloseRotation,
+                    AnimData.OpenRotation,
+                    _jawPercentSmoothed);
+            }
         }
 
         private void OnJawJointAssigned()

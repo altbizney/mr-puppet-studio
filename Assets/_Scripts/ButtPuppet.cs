@@ -124,6 +124,9 @@ namespace MrPuppet
         [EnumToggleButtons]
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
 
+        [HideInInspector]
+        public bool ApplySensors = true;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
@@ -172,6 +175,8 @@ namespace MrPuppet
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
+            ApplySensors = true;
+
             // // clone proxy geo
             // HipProxy = new GameObject("Proxy:" + Hip.name).transform;
             // HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
@@ -196,45 +201,47 @@ namespace MrPuppet
         {
             if (AttachPoseSet)
             {
-                // apply position delta to bind pose
-                Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
-
-                // clamp to XYZ extents (BEFORE smooth)
-                position.Set(
-                    LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
-                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
-                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
-                );
-
-                // smoothly apply changes to position
-                HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
-
-                // apply rotation deltas to bind pose
-                HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
-                Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
-
-                if (EnableJawHeadMixer)
+                if (ApplySensors == true)
                 {
-                    switch (JawHeadRotate)
+                    Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
+
+                    // clamp to XYZ extents (BEFORE smooth)
+                    position.Set(
+                        LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
+                        LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                        LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                    );
+
+                    // smoothly apply changes to position
+                    HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
+
+                    // apply rotation deltas to bind pose
+                    HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
+
+                    if (EnableJawHeadMixer)
                     {
-                        case JawHeadAxis.x:
-                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
-                            break;
+                        switch (JawHeadRotate)
+                        {
+                            case JawHeadAxis.x:
+                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
+                                break;
 
-                        case JawHeadAxis.y:
-                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
-                            break;
+                            case JawHeadAxis.y:
+                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
+                                break;
 
-                        case JawHeadAxis.z:
-                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
-                            break;
+                            case JawHeadAxis.z:
+                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
+                                break;
+                        }
                     }
-                }
 
-                // apply weighted influences
-                foreach (var influence in WeightedInfluences)
-                {
-                    influence.Update(DataMapper, RotationSpeed);
+                    // apply weighted influences
+                    foreach (var influence in WeightedInfluences)
+                    {
+                        influence.Update(DataMapper, RotationSpeed);
+                    }
                 }
             }
 
