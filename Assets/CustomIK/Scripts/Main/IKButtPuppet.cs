@@ -275,14 +275,14 @@ namespace MrPuppet {
                 }
                 if (tag.iKTagId == IKTagId.LeftLeg) {
                     leftLegLimb = tag.GetComponent<LimbIK>();
-                    if (leftLegLimb && leftArmLimb.solver.bone3.transform) {
+                    if (leftLegLimb && leftLegLimb.solver.bone3.transform) {
                         leftLegLimb.transform.position = leftLegLimb.solver.bone3.transform.position;
                         leftLegLimb.transform.rotation = rigNode.rotation;
                     }
                 }
                 if (tag.iKTagId == IKTagId.RightLeg) {
                     rightLegLimb = tag.GetComponent<LimbIK>();
-                    if (rightLegLimb && rightArmLimb.solver.bone3.transform) {
+                    if (rightLegLimb && rightLegLimb.solver.bone3.transform) {
                         rightLegLimb.transform.position = rightLegLimb.solver.bone3.transform.position;
                         rightLegLimb.transform.rotation = rigNode.rotation;
                     }
