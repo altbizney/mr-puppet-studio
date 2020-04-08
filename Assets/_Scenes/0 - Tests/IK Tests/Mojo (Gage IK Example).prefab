@@ -2464,7 +2464,7 @@ GameObject:
   - component: {fileID: 3358907471311235717}
   - component: {fileID: 5104490218634178419}
   m_Layer: 0
-  m_Name: Mojov2
+  m_Name: Mojo (Gage IK Example)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2503,6 +2503,7 @@ MonoBehaviour:
     OpenRotation: {x: 0.27610415, y: -0, z: -0.00000008940695, w: 0.96112776}
     CloseRotation: {x: -0, y: -0, z: -0, w: 1}
   SmoothTime: 0.02
+  ApplySensors: 1
 --- !u!114 &3358907471311235717
 MonoBehaviour:
   m_ObjectHideFlags: 0

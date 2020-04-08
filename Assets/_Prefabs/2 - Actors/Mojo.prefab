@@ -111,6 +111,7 @@ MonoBehaviour:
   EnableJawHeadMixer: 1
   JawHeadMaxExtent: -3
   JawHeadRotate: 0
+  ApplySensors: 1
 --- !u!114 &7515371173602657785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +129,7 @@ MonoBehaviour:
     OpenRotation: {x: 0.27610415, y: -0, z: -0.00000008940695, w: 0.96112776}
     CloseRotation: {x: -0, y: -0, z: -0, w: 1}
   SmoothTime: 0.02
+  ApplySensors: 1
 --- !u!114 &7515371173602657786
 MonoBehaviour:
   m_ObjectHideFlags: 0
