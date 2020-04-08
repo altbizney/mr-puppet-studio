@@ -18,8 +18,6 @@ namespace MrPuppet {
         public Transform HipRotation;
         public Transform HipTranslation;
         public Transform Head;
-        // private Transform HipProxy;
-        // private Transform HeadProxy;
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -580,15 +578,6 @@ namespace MrPuppet {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
-            // // clone proxy geo
-            // HipProxy = new GameObject("Proxy:" + Hip.name).transform;
-            // HipProxy.SetPositionAndRotation(Hip.position, Hip.rotation);
-            // HipProxy.SetParent(Hip.parent, false);
-
-            // HeadProxy = new GameObject("Proxy:" + Head.name).transform;
-            // HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
-            // HeadProxy.SetParent(Head.parent, false);
-
             HipSpawnPosition = HipTranslation.localPosition;
             HipSpawnRotation = HipRotation.rotation;
             HeadSpawnRotation = Head.rotation;
@@ -650,9 +639,8 @@ namespace MrPuppet {
     #region Classes
     [Serializable]
     public class WeightedInfluence {
-        public MrPuppetDataMapper.Joint joint;
+        public MrPuppetDataMapper.Joint joint = MrPuppetDataMapper.Joint.Wrist;
         public Transform target;
-        // private Transform proxy;
 
         [Range(0f, 1f)]
         public float amount = 1f;
@@ -663,10 +651,6 @@ namespace MrPuppet {
         private Quaternion weighted;
 
         public void SnapshotSpawn() {
-            // proxy = new GameObject("Proxy:" + target.name).transform;
-            // proxy.SetPositionAndRotation(target.position, target.rotation);
-            // proxy.SetParent(target.parent, false);
-
             spawn = target.rotation;
         }
 
