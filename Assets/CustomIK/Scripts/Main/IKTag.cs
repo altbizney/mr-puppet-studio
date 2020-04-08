@@ -10,7 +10,7 @@ public class IKTag : MonoBehaviour {
     #endregion
 
     #region Public Variables
-    public IKTagId iKTagId;
+    public IKTagId iKTagId = IKTagId.Unknown;
     public int chainId;
     #endregion
 
@@ -51,4 +51,15 @@ public class IKTag : MonoBehaviour {
     #endregion
 }
 
-public enum IKTagId { Head, Neck, Spine, Hip, LeftArm, RightArm, Grounder, LeftLeg, RightLeg };
+public enum IKTagId {
+    Unknown = -1,
+    Head = 0,
+    Neck = 1,
+    Spine = 2,
+    Hip = 3,
+    LeftArm = 4,
+    RightArm = 5,
+    Grounder = 6,
+    LeftLeg = 7,
+    RightLeg = 8
+};
