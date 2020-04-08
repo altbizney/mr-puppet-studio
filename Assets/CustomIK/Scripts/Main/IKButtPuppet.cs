@@ -278,6 +278,11 @@ namespace MrPuppet {
                     if (leftLegLimb && leftLegLimb.solver.bone3.transform) {
                         leftLegLimb.transform.position = leftLegLimb.solver.bone3.transform.position;
                         leftLegLimb.transform.rotation = rigNode.rotation;
+
+                        if (leftLegLimb.solver.target) {
+                            leftLegLimb.solver.target.position = leftLegLimb.transform.position;
+                            leftLegLimb.solver.target.rotation = leftLegLimb.transform.rotation;
+                        }
                     }
                 }
                 if (tag.iKTagId == IKTagId.RightLeg) {
@@ -285,6 +290,11 @@ namespace MrPuppet {
                     if (rightLegLimb && rightLegLimb.solver.bone3.transform) {
                         rightLegLimb.transform.position = rightLegLimb.solver.bone3.transform.position;
                         rightLegLimb.transform.rotation = rigNode.rotation;
+
+                        if (rightLegLimb.solver.target) {
+                            rightLegLimb.solver.target.position = rightLegLimb.transform.position;
+                            rightLegLimb.solver.target.rotation = rightLegLimb.transform.rotation;
+                        }
                     }
                 }
             }
