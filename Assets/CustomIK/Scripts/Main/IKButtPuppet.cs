@@ -277,7 +277,7 @@ namespace MrPuppet {
                 }
                 if (tag.iKTagId == IKTagId.LeftLeg) {
                     leftLegLimb = tag.GetComponent<LimbIK>();
-                    if (leftLegLimb && rightArmLimb.solver.bone3.transform) {
+                    if (leftLegLimb && leftArmLimb.solver.bone3.transform) {
                         leftLegLimb.transform.position = leftLegLimb.solver.bone3.transform.position;
                         leftLegLimb.transform.rotation = rigNode.rotation;
                     }
