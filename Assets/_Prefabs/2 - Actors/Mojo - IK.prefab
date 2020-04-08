@@ -236,8 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d52d634183ba304418fc8e8039da705d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HipRotation: {fileID: 6979267812111412902}
-  HipTranslation: {fileID: 4254590583642127116}
+  HipRotation: {fileID: 6486110575842803716}
+  HipTranslation: {fileID: 6486110575842803716}
   Head: {fileID: 6979267810941035459}
   WeightedInfluences:
   - joint: 2
@@ -246,6 +246,9 @@ MonoBehaviour:
   - joint: 2
     target: {fileID: 6979267811677892551}
     amount: 0.45
+  - joint: 1
+    target: {fileID: 6979267812111412902}
+    amount: 1
   RotationSpeed: 7
   PositionSpeed: 0.1
   LimitHipExtentX: 0
