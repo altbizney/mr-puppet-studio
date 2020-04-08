@@ -18,8 +18,7 @@ namespace MrPuppet
             public Quaternion CloseRotation = Quaternion.identity;
         }
 
-        [Required]
-        public MrPuppetDataMapper DataMapper;
+        private MrPuppetDataMapper DataMapper;
 
         [Required]
         [OnValueChanged(nameof(OnJawJointAssigned))]
@@ -35,15 +34,13 @@ namespace MrPuppet
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
 
-        private void OnValidate()
+        private void Awake()
         {
-            if (DataMapper == null) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            // TODO: should JawPercent be smoothed, and/or position and rotation?
-
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
             JawJoint.localRotation = Quaternion.LerpUnclamped(
                 AnimData.CloseRotation,
