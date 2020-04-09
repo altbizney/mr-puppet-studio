@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Reflection;
 using System;
+using UnityEditor.Recorder.Input;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,6 +34,7 @@ namespace MrPuppet
         private static Color ColorState;
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
+        private ExportPerformance _ExportPerformance;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
@@ -47,6 +49,12 @@ namespace MrPuppet
                 if (!recorder.Enabled) continue;
 
                 StatusBox = recorder.OutputFile;
+
+                Debug.Log(recorder.InputsSettings);
+                foreach (var input in recorder.InputsSettings)
+                {
+                    Debug.Log(input);
+                }
 
                 StatusBox = StatusBox.Replace("<Take>", recorder.Take.ToString("000"));
                 StatusBox = StatusBox.Replace("<Scene>", SceneManager.GetActiveScene().name);
@@ -63,8 +71,13 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
+            //Potentially make these checks better
             if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
+
+            if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
+                _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
 
             if (!Recorder.IsRecording())
             {
@@ -82,7 +95,7 @@ namespace MrPuppet
             else
                 ControlRecording();
 
-                EditorApplication.ExecuteMenuItem("Window/General/Game");
+            EditorApplication.ExecuteMenuItem("Window/General/Game");
         }
 
         private void ControlRecording()
@@ -102,6 +115,9 @@ namespace MrPuppet
             {
                 Recorder.StopRecording();
                 AssetDatabase.SaveAssets();
+
+                EditorUtility.DisplayDialog("The most recent recording ", StatusBox.Remove(0, 11), "OK");
+                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + StatusBox.Remove(0, 11) + ".anim", typeof(AnimationClip)), _ExportPerformance.Prefab, ExportPerformance.Rating.Trash));
             }
         }
 
@@ -161,7 +177,6 @@ namespace MrPuppet
                 if (Recorder)
                     if (Recorder.IsRecording())
                     {
-                        //EditorUtility.DisplayDialog("Recording while attempting a record", "Stopped your recording", "OK");
                         Recorder.StopRecording();
                         CountdownValue = -1;
                         yield break;
@@ -190,7 +205,6 @@ namespace MrPuppet
 
                 CountdownValue = 0;
                 ColorState = Color.gray;
-
             }
 
             private static void playModes(PlayModeStateChange state)
@@ -212,7 +226,6 @@ namespace MrPuppet
                 }
             }
         }
-
     }
 #else
 public class PerformanceAnimationReplacementManager : MonoBehaviour {

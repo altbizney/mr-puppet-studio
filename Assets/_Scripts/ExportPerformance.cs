@@ -22,46 +22,64 @@ namespace MrPuppet
 
         public GameObject Prefab;
 
-        public List<AnimationClip> Clips;
+        //public List<AnimationClip> Clips;
+
+        public enum Rating { Trash, Keeper, Blooper };
+
+        public class ExportTake
+        {
+            public AnimationClip _Animation;
+            public GameObject _Prefab;
+            public Rating _Rating;
+
+            public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
+            {
+                _Animation = ConstructorAnimation;
+                _Prefab = ConstructorPrefab;
+                _Rating = ConstructorRating;
+            }
+        }
+
+        public List<ExportTake> Exports = new List<ExportTake>();
 
         [Button(ButtonSizes.Large)]
         private void Export()
         {
             int success = 0;
 
-            foreach (var clip in Clips)
+            foreach (var export in Exports)
             {
                 // create controller
-                var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + clip.name + ".controller", clip);
+                var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
 
                 // create instance, rename
                 var instance = GameObject.Instantiate(Prefab, Vector3.zero, Quaternion.identity);
-                instance.name = clip.name;
+                instance.name = export._Animation.name;
 
                 // add animator to instance
                 var animator = instance.AddComponent<Animator>();
                 animator.runtimeAnimatorController = controller;
 
                 // export
-                ModelExporter.ExportObject("Performances/" + clip.name + ".fbx", instance);
+                ModelExporter.ExportObject("Performances/" + export._Animation.name + ".fbx", instance);
 
                 // cleanup
                 DestroyImmediate(instance);
-                AssetDatabase.DeleteAsset("Assets/Recordings/" + clip.name + ".controller");
-                FileUtil.MoveFileOrDirectory("Assets/Recordings/" + clip.name + ".anim", "Performances/" + clip.name + ".anim");
+                AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
 
                 success++;
             }
 
-            if (success == Clips.Count)
+            if (success == Exports.Count)
             {
-                Clips = new List<AnimationClip>();
+                Exports = new List<ExportTake>();
             }
         }
     }
 #else
 public class ExportPerformance : MonoBehaviour {
-    
+
 }
 #endif
 }
