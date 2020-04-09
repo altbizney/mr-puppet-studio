@@ -28,65 +28,75 @@ namespace MrPuppet
         {
             if (EditorApplication.isPlaying)
             {
-                if (Recorder)
+                if (!Recorder)
                 {
-                    if (Recorder.IsRecording())
+                    try
+                    { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                    catch
+                    { return; }
+                }
+
+                if (!HubConnection)
+                {
+                    try
+                    { HubConnection = FindObjectOfType<MrPuppetHubConnection>(); }
+                    catch
+                    { return; }
+                }
+
+                if (!Recorder || !HubConnection)
+                    return;
+
+                if (Recorder.IsRecording())
+                {
+                    if (EnterPlayback == true)
                     {
-                        if (EnterPlayback == true)
+                        if (AudioIsPlaying == false)
                         {
-                            if (AudioIsPlaying == false)
-                            {
-                                //bool found = false;
-                                //string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Downloads";
-                                //DirectoryInfo d = new DirectoryInfo(DataPath);
-                                //FileInfo[] Files = d.GetFiles("*.wav");
-                                //foreach (FileInfo file in Files)
-                                //{
-                                  //  if (file.Name == Take.ToUpper() + ".wav")
-                                  //       found = true;
-                                //}
+                            //bool found = false;
+                            //string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Downloads";
+                            //DirectoryInfo d = new DirectoryInfo(DataPath);
+                            //FileInfo[] Files = d.GetFiles("*.wav");
+                            //foreach (FileInfo file in Files)
+                            //{
+                                //  if (file.Name == Take.ToUpper() + ".wav")
+                                //       found = true;
+                            //}
 
-                                //if (found == true)
-                                //{
-                                    TakeAfterPlay = Take;
-                                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
-                                    AudioIsPlaying = true;
-                                //}
-                                //else
-                                  //  Debug.Log("Could not find the audio file associated with Audio Reference Take");
-                            }
+                            //if (found == true)
+                            //{
+                                TakeAfterPlay = Take;
+                                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
+                                AudioIsPlaying = true;
+                            //}
+                            //else
+                                //  Debug.Log("Could not find the audio file associated with Audio Reference Take");
                         }
-
                     }
 
-                    if (!Recorder.IsRecording())
+                }
+
+                if (!Recorder.IsRecording())
+                {
+                    if (AudioIsPlaying == true)
                     {
-                        if (AudioIsPlaying == true)
-                        {
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
-                            AudioIsPlaying = false;
-                        }
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                        AudioIsPlaying = false;
                     }
                 }
             }
 
             if (!EditorApplication.isPlaying)
             {
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
-
                 if (AudioIsPlaying == true)
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                     AudioIsPlaying = false;
+                }
 
                 TakeAfterPlay = "";
             }
-
-            if(!Recorder)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-
-            if (!HubConnection)
-                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
         }
-
 
         public void OnGUI()
         {
