@@ -552,7 +552,7 @@ namespace MrPuppet {
             AttachPoseSet = true;
 
             // grab the attach position of the elbow joint
-            AttachPoseElbowPosition = DataMapper.ElbowJoint.position;
+            AttachPoseElbowPosition = DataMapper.ElbowAnchorJoint.position;
 
             // grab the attach rotation of the joints
             AttachPoseElbowRotation = DataMapper.ElbowJoint.rotation;
@@ -601,7 +601,7 @@ namespace MrPuppet {
         private void LegacyUpdate() {
             if (AttachPoseSet) {
                 // apply position delta to bind pose
-                Vector3 position = HipSpawnPosition + (DataMapper.ElbowJoint.position - AttachPoseElbowPosition);
+                Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - AttachPoseElbowPosition);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
