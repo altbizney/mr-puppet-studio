@@ -35,6 +35,10 @@ namespace MrPuppet
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
 
+        [HideInInspector]
+        public bool ApplySensors = true;
+        private void Awake(){ ApplySensors = true; }
+
         private void OnValidate()
         {
             if (DataMapper == null) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -45,10 +49,13 @@ namespace MrPuppet
             // TODO: should JawPercent be smoothed, and/or position and rotation?
 
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
-            JawJoint.localRotation = Quaternion.LerpUnclamped(
-                AnimData.CloseRotation,
-                AnimData.OpenRotation,
-                _jawPercentSmoothed);
+            if (ApplySensors == true)
+            {
+                JawJoint.localRotation = Quaternion.LerpUnclamped(
+                    AnimData.CloseRotation,
+                    AnimData.OpenRotation,
+                    _jawPercentSmoothed);
+            }
         }
 
         private void OnJawJointAssigned()
