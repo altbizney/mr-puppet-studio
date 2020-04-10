@@ -1,6 +1,7 @@
 ﻿
 #if UNITY_EDITOR
 using UnityEditor;
+using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor.Recorder;
 #endif
@@ -21,8 +22,9 @@ namespace MrPuppet
         private bool AudioIsPlaying;
         private string TakeAfterPlay;
 
+        [InfoBox("Will play an audio file with the given filename in ~/Downloads in sync with recording. \n\nFor example: to play FC_day1.aif in sync with recording, place the FC_day1.aif file in ~/Downloads, enter \"FC_day1\" as the filename, and start the `yarn run ableton` link script.")]
         public string Take;
-        public bool EnterPlayback;
+        public bool EnablePlayback = true;
 
         private void Update()
         {
@@ -49,7 +51,7 @@ namespace MrPuppet
 
                 if (Recorder.IsRecording())
                 {
-                    if (EnterPlayback == true)
+                    if (EnablePlayback == true)
                     {
                         if (AudioIsPlaying == false)
                         {
@@ -97,18 +99,10 @@ namespace MrPuppet
                 TakeAfterPlay = "";
             }
         }
-
-        public void OnGUI()
-        {
-            base.OnGUI();
-            EditorGUILayout.HelpBox("Will play an audio file with the given filename in ~/Downloads in sync with recording. For example: to play FC_day1.aif in sync with recording, place the FC_day1.aif file in ~/Downloads, enter \"FC_day1\" as the filename, and start the node ableton link script.", MessageType.Warning);
-            Repaint();
-        }
-
     }
 #else
-public class AnimationPlayback : MonoBehaviour {
-
-}
+    public class AnimationPlayback : MonoBehaviour
+    {
+    }
 #endif
 }
