@@ -34,8 +34,8 @@ namespace MrPuppet
         private static Color ColorState;
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
-        private ExportPerformance _ExportPerformance;
-        private GameObject RecorderTarget;
+        private static ExportPerformance _ExportPerformance;
+        private static GameObject RecorderTarget;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
@@ -111,27 +111,10 @@ namespace MrPuppet
                 Recorder.StopRecording();
                 AssetDatabase.SaveAssets();
 
-                EditorUtility.DisplayDialogComplex("The most recent recording ", StatusBox.Remove(0, 11), "KEEPER", "BLOOPER", "TRASH");
-                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + StatusBox.Remove(0, 11) + ".anim", typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Trash));
+                //RecorderPrompt _RecorderPrompt = RecorderPrompt.CreateInstance<RecorderPrompt>();
+                //_RecorderPrompt.init(this);
+                RecorderPrompt.ShowUtilityWindow();
             }
-        }
-
-        [Button("Modal")]
-        public void Modal()
-        {
-            RecorderPrompt.ShowModalWindow();
-        }
-
-        [Button("Utility")]
-        public void Utility()
-        {
-            RecorderPrompt.ShowUtilityWindow();
-        }
-
-        [Button("Dialogue")]
-        public void Dialogue()
-        {
-            EditorUtility.DisplayDialogComplex("The most recent recording ", "FILENAME", "KEEPER", "BLOOPER", "TRASH");
         }
 
         private void Update()
@@ -179,31 +162,73 @@ namespace MrPuppet
 
         }
 
-        public class RecorderPrompt : EditorWindow
+        public class RecorderPrompt : OdinEditorWindow
         {
+            [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
+            public static string PromptBox;
+
+            private static string filename;
+
+            //private RecorderHelper instance;
+
+            /*
+            public void init(RecorderHelper instance)
+            {
+                this.instance = instance;
+            }
+            */
+
             public static void ShowUtilityWindow()
             {
                 RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
                 window.ShowUtility();
+                PromptBox = StatusBox.Remove(0, 11);
+                filename = "Assets/Recordings/" + PromptBox + ".anim";
+                PromptBox = "TAKE: " + PromptBox;
             }
 
-            public static void ShowModalWindow()
+            [Button("Keeper")]
+            public void Keeper()
             {
-                RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
-                window.ShowModalUtility();
+                //instance._ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), instance.RecorderTarget, ExportPerformance.Rating.Keeper));
+                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Keeper));
+                Close();
             }
 
-            void OnGUI()
+            [Button("Blooper")]
+            public void Blooper()
             {
-                if (GUILayout.Button("KEEPER"))
-                    Debug.Log("Keeper");
-
-                if (GUILayout.Button("TRASH"))
-                    Debug.Log("Trash");
-
-                if (GUILayout.Button("BLOOPER"))
-                    Debug.Log("Blooper");
+                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Blooper));
+                Close();
             }
+
+            [Button("Trash")]
+            public void Trash()
+            {
+                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Trash));
+                Close();
+            }
+
+            private void OnGUI()
+            {
+                base.OnGUI();
+
+                Event current = Event.current;
+
+                switch (current.keyCode)
+                {
+                    case KeyCode.Return:
+                        Keeper();
+                        break;
+                    case KeyCode.T:
+                        Trash();
+                        break;
+                    case KeyCode.B:
+                        Blooper();
+                        break;
+                }
+            }
+
             void OnInspectorUpdate()
             {
                 Repaint();
@@ -258,7 +283,6 @@ namespace MrPuppet
                     //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
-
                 }
                 else
                 {
@@ -266,7 +290,6 @@ namespace MrPuppet
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;
-
                 }
             }
         }
