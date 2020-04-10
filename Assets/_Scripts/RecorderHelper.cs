@@ -35,6 +35,7 @@ namespace MrPuppet
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
         private ExportPerformance _ExportPerformance;
+        private GameObject RecorderTarget;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
@@ -50,11 +51,7 @@ namespace MrPuppet
 
                 StatusBox = recorder.OutputFile;
 
-                Debug.Log(recorder.InputsSettings);
-                foreach (var input in recorder.InputsSettings)
-                {
-                    Debug.Log(input);
-                }
+                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
 
                 StatusBox = StatusBox.Replace("<Take>", recorder.Take.ToString("000"));
                 StatusBox = StatusBox.Replace("<Scene>", SceneManager.GetActiveScene().name);
@@ -74,7 +71,6 @@ namespace MrPuppet
             //Potentially make these checks better
             if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
-
 
             if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
                 _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
@@ -109,16 +105,33 @@ namespace MrPuppet
             {
                 Recorder.StartRecording();
                 EditorApplication.ExecuteMenuItem("Window/General/Game");
-
             }
             else
             {
                 Recorder.StopRecording();
                 AssetDatabase.SaveAssets();
 
-                EditorUtility.DisplayDialog("The most recent recording ", StatusBox.Remove(0, 11), "OK");
-                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + StatusBox.Remove(0, 11) + ".anim", typeof(AnimationClip)), _ExportPerformance.Prefab, ExportPerformance.Rating.Trash));
+                EditorUtility.DisplayDialogComplex("The most recent recording ", StatusBox.Remove(0, 11), "KEEPER", "BLOOPER", "TRASH");
+                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + StatusBox.Remove(0, 11) + ".anim", typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Trash));
             }
+        }
+
+        [Button("Modal")]
+        public void Modal()
+        {
+            RecorderPrompt.ShowModalWindow();
+        }
+
+        [Button("Utility")]
+        public void Utility()
+        {
+            RecorderPrompt.ShowUtilityWindow();
+        }
+
+        [Button("Dialogue")]
+        public void Dialogue()
+        {
+            EditorUtility.DisplayDialogComplex("The most recent recording ", "FILENAME", "KEEPER", "BLOOPER", "TRASH");
         }
 
         private void Update()
@@ -164,6 +177,37 @@ namespace MrPuppet
         public class CountDown : MonoBehaviour
         {
 
+        }
+
+        public class RecorderPrompt : EditorWindow
+        {
+            public static void ShowUtilityWindow()
+            {
+                RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
+                window.ShowUtility();
+            }
+
+            public static void ShowModalWindow()
+            {
+                RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
+                window.ShowModalUtility();
+            }
+
+            void OnGUI()
+            {
+                if (GUILayout.Button("KEEPER"))
+                    Debug.Log("Keeper");
+
+                if (GUILayout.Button("TRASH"))
+                    Debug.Log("Trash");
+
+                if (GUILayout.Button("BLOOPER"))
+                    Debug.Log("Blooper");
+            }
+            void OnInspectorUpdate()
+            {
+                Repaint();
+            }
         }
 
         public IEnumerator StartCountdown()

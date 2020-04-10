@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,10 +21,6 @@ namespace MrPuppet
         {
             GetWindow<ExportPerformance>().Show();
         }
-
-        public GameObject Prefab;
-
-        //public List<AnimationClip> Clips;
 
         public enum Rating { Trash, Keeper, Blooper };
 
@@ -49,24 +47,36 @@ namespace MrPuppet
 
             foreach (var export in Exports)
             {
-                // create controller
-                var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
+                if (export._Rating != Rating.Trash)
+                {
+                    // create controller
+                    var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
 
-                // create instance, rename
-                var instance = GameObject.Instantiate(Prefab, Vector3.zero, Quaternion.identity);
-                instance.name = export._Animation.name;
+                    // create instance, rename
+                    var instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
+                    instance.name = export._Animation.name;
 
-                // add animator to instance
-                var animator = instance.AddComponent<Animator>();
-                animator.runtimeAnimatorController = controller;
+                    // add animator to instance
+                    var animator = instance.AddComponent<Animator>();
+                    animator.runtimeAnimatorController = controller;
 
-                // export
-                ModelExporter.ExportObject("Performances/" + export._Animation.name + ".fbx", instance);
+                    // export
+                    ModelExporter.ExportObject("Performances/" + export._Animation.name + ".fbx", instance);
 
-                // cleanup
-                DestroyImmediate(instance);
-                AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
-                FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
+                    // cleanup
+                    DestroyImmediate(instance);
+                    AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
+                }
+                else
+                {
+                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
+                }
+
+                //write file
+                var sr = File.CreateText("Performances/" + export._Animation.name + ".txt");
+                sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
+                sr.Close();
 
                 success++;
             }
