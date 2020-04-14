@@ -147,7 +147,7 @@ namespace MrPuppet
                 }
 
                 // write file
-                var sr = File.CreateText("Performances/" + export._Animation.name + ".txt");
+                var sr = File.CreateText("Performances/" + export._Animation.name + ".csv");
                 sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
                 sr.Close();
 
