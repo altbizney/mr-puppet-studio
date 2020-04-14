@@ -75,6 +75,8 @@ namespace MrPuppet
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
                 StartedRecording = false;
+                var filename = "Assets/Recordings/" + Filename + ".anim";
+                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Trash));
                 RecorderPrompt.ShowUtilityWindow(this);
             }
         }
@@ -172,7 +174,7 @@ namespace MrPuppet
                 ExportPerformanceInstance = instance;
                 RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
                 window.ShowUtility();
-                window.position = new Rect((Screen.currentResolution.width - 170) / 2, (Screen.currentResolution.height - 90) / 2, 170, 90);
+                window.position = new Rect((Screen.currentResolution.width / 2) - (170 / 2), (Screen.currentResolution.height / 2) - (90 / 2), 170, 90);
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
             }
@@ -180,21 +182,21 @@ namespace MrPuppet
             [Button("Keeper")]
             public void Keeper()
             {
-                ExportPerformanceInstance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), ExportPerformanceInstance.RecorderTarget, ExportPerformance.Rating.Keeper));
+                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
                 Close();
             }
 
             [Button("Blooper")]
             public void Blooper()
             {
-                ExportPerformanceInstance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), ExportPerformanceInstance.RecorderTarget, ExportPerformance.Rating.Blooper));
+                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Blooper;
                 Close();
             }
 
             [Button("Trash")]
             public void Trash()
             {
-                ExportPerformanceInstance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), ExportPerformanceInstance.RecorderTarget, ExportPerformance.Rating.Trash));
+                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Trash;
                 Close();
             }
 
