@@ -15,6 +15,15 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
 
+// TODO: Rework how state changes are kept track of
+//       Slider for audio
+//       Universal key commands that are not tied to game view
+
+
+//center window
+//go over for cleanup once more
+
+
 namespace MrPuppet
 {
 #if UNITY_EDITOR
@@ -25,6 +34,7 @@ namespace MrPuppet
         private static void OpenWindow()
         {
             GetWindow<RecorderHelper>().Show();
+            GetWindow<ExportPerformance>().Show();
         }
 
         private RecorderWindow Recorder;
@@ -34,8 +44,7 @@ namespace MrPuppet
         private static Color ColorState;
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
-        private static ExportPerformance _ExportPerformance;
-        private static GameObject RecorderTarget;
+        private ExportPerformance _ExportPerformance;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
@@ -51,12 +60,12 @@ namespace MrPuppet
 
                 StatusBox = recorder.OutputFile;
 
-                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
-
                 StatusBox = StatusBox.Replace("<Take>", recorder.Take.ToString("000"));
                 StatusBox = StatusBox.Replace("<Scene>", SceneManager.GetActiveScene().name);
 
                 StatusBox = "Recording: " + StatusBox.Substring(StatusBox.LastIndexOf('/') + 1);
+
+                Debug.Log("TESTING" + StatusBox);
 
                 // just need the first
                 return;
@@ -68,7 +77,6 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
-            //Potentially make these checks better
             if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
@@ -111,9 +119,7 @@ namespace MrPuppet
                 Recorder.StopRecording();
                 AssetDatabase.SaveAssets();
 
-                //RecorderPrompt _RecorderPrompt = RecorderPrompt.CreateInstance<RecorderPrompt>();
-                //_RecorderPrompt.init(this);
-                RecorderPrompt.ShowUtilityWindow();
+                //RecorderPrompt.ShowUtilityWindow(this);
             }
         }
 
@@ -162,78 +168,6 @@ namespace MrPuppet
 
         }
 
-        public class RecorderPrompt : OdinEditorWindow
-        {
-            [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
-            public static string PromptBox;
-
-            private static string filename;
-
-            //private RecorderHelper instance;
-
-            /*
-            public void init(RecorderHelper instance)
-            {
-                this.instance = instance;
-            }
-            */
-
-            public static void ShowUtilityWindow()
-            {
-                RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
-                window.ShowUtility();
-                PromptBox = StatusBox.Remove(0, 11);
-                filename = "Assets/Recordings/" + PromptBox + ".anim";
-                PromptBox = "TAKE: " + PromptBox;
-            }
-
-            [Button("Keeper")]
-            public void Keeper()
-            {
-                //instance._ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), instance.RecorderTarget, ExportPerformance.Rating.Keeper));
-                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Keeper));
-                Close();
-            }
-
-            [Button("Blooper")]
-            public void Blooper()
-            {
-                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Blooper));
-                Close();
-            }
-
-            [Button("Trash")]
-            public void Trash()
-            {
-                _ExportPerformance.Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, ExportPerformance.Rating.Trash));
-                Close();
-            }
-
-            private void OnGUI()
-            {
-                base.OnGUI();
-
-                Event current = Event.current;
-
-                switch (current.keyCode)
-                {
-                    case KeyCode.Return:
-                        Keeper();
-                        break;
-                    case KeyCode.T:
-                        Trash();
-                        break;
-                    case KeyCode.B:
-                        Blooper();
-                        break;
-                }
-            }
-
-            void OnInspectorUpdate()
-            {
-                Repaint();
-            }
-        }
 
         public IEnumerator StartCountdown()
         {
