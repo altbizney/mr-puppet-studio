@@ -53,7 +53,6 @@ namespace MrPuppet
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
             public Rating _Rating;
-            //vertical grouping
 
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
@@ -173,7 +172,7 @@ namespace MrPuppet
                 ExportPerformanceInstance = instance;
                 RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
                 window.ShowUtility();
-                window.position = new Rect((Screen.currentResolution.width - 100) / 2, (Screen.currentResolution.height - 100) / 2, 170, 90);
+                window.position = new Rect((Screen.currentResolution.width - 170) / 2, (Screen.currentResolution.height - 90) / 2, 170, 90);
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
             }
