@@ -28,6 +28,14 @@ namespace MrPuppet
 
         public enum Rating { Trash, Keeper, Blooper };
 
+        [TableList]
+        public List<ExportTake> Exports = new List<ExportTake>();
+
+        private GameObject RecorderTarget;
+        private string Filename;
+        private RecorderWindow Recorder;
+        private bool StartedRecording;
+
         [Serializable]
         public class ExportTake
         {
@@ -55,14 +63,6 @@ namespace MrPuppet
             }
         }
 
-        [TableList]
-        public List<ExportTake> Exports = new List<ExportTake>();
-
-        private GameObject RecorderTarget;
-        private string Filename;
-        private RecorderWindow Recorder;
-        private bool StartedRecording;
-
         void Update()
         {
             if (Recorder == null)
@@ -76,9 +76,39 @@ namespace MrPuppet
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
                 StartedRecording = false;
-                //RecorderPrompt _RecorderPrompt = RecorderPrompt.CreateInstance<RecorderPrompt>();
                 RecorderPrompt.ShowUtilityWindow(this);
-                //CenterOnMainWin(this);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            var win = Instantiate<ExportPerformance>(this);
+            if (RecorderHelper.IsOpen)
+            {
+                win.Show();
+            }
+        }
+
+        private void GetFilename()
+        {
+            RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
+            RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
+
+            foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
+            {
+                if (!recorder.Enabled) continue;
+
+                Filename = recorder.OutputFile;
+
+                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
+
+                Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));
+                Filename = Filename.Replace("<Scene>", SceneManager.GetActiveScene().name);
+
+                Filename = Filename.Substring(Filename.LastIndexOf('/') + 1);
+
+                // just need the first
+                return;
             }
         }
 
@@ -137,7 +167,6 @@ namespace MrPuppet
 
             private static string filename;
             private static ExportPerformance ExportPerformanceInstance;
-            //public static RecorderPrompt window;
 
             public static void ShowUtilityWindow(ExportPerformance instance)
             {
@@ -145,10 +174,7 @@ namespace MrPuppet
                 RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
                 window.ShowUtility();
                 window.position = new Rect((Screen.currentResolution.width - 100) / 2, (Screen.currentResolution.height - 100) / 2, 170, 90);
-                //xportPerformanceInstance.GetFilename();
-                //PromptBox = ExportPerformanceInstance.Filename.Remove(0, 11);
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
-                Debug.Log(filename);
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
             }
 
@@ -196,32 +222,6 @@ namespace MrPuppet
             void OnInspectorUpdate()
             {
                 Repaint();
-            }
-        }
-
-
-        private void GetFilename()
-        {
-            RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
-            RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
-
-            foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
-            {
-                if (!recorder.Enabled) continue;
-
-                Filename = recorder.OutputFile;
-
-                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
-
-                Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));
-                Filename = Filename.Replace("<Scene>", SceneManager.GetActiveScene().name);
-
-                Filename = Filename.Substring(Filename.LastIndexOf('/') + 1);
-                Debug.Log(Filename);
-
-
-                // just need the first
-                return;
             }
         }
     }

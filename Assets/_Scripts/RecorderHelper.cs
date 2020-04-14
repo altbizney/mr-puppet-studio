@@ -1,33 +1,21 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor.Recorder;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Reflection;
-using System;
-using UnityEditor.Recorder.Input;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Animations;
-using UnityEditor.Formats.Fbx.Exporter;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
 
 // TODO: Rework how state changes are kept track of
 //       Slider for audio
-//       Universal key commands that are not tied to game view
-
-
-//center window
-//go over for cleanup once more
-
+//       Key commands that are not tied to game view
 
 namespace MrPuppet
 {
 #if UNITY_EDITOR
-    //[CustomEditor(typeof(RecorderHelper))]
     public class RecorderHelper : OdinEditorWindow
     {
         [MenuItem("Tools/Recorder Helper")]
@@ -35,6 +23,11 @@ namespace MrPuppet
         {
             GetWindow<RecorderHelper>().Show();
             GetWindow<ExportPerformance>().Show();
+        }
+
+        void OnEnable()
+        {
+            Instance = this;
         }
 
         private RecorderWindow Recorder;
@@ -48,6 +41,9 @@ namespace MrPuppet
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
+
+        public static RecorderHelper Instance { get; private set; }
+        public static bool IsOpen { get { return Instance != null; } }
 
         private void GetFilename()
         {
@@ -64,8 +60,6 @@ namespace MrPuppet
                 StatusBox = StatusBox.Replace("<Scene>", SceneManager.GetActiveScene().name);
 
                 StatusBox = "Recording: " + StatusBox.Substring(StatusBox.LastIndexOf('/') + 1);
-
-                Debug.Log("TESTING" + StatusBox);
 
                 // just need the first
                 return;
@@ -118,8 +112,6 @@ namespace MrPuppet
             {
                 Recorder.StopRecording();
                 AssetDatabase.SaveAssets();
-
-                //RecorderPrompt.ShowUtilityWindow(this);
             }
         }
 
@@ -167,7 +159,6 @@ namespace MrPuppet
         {
 
         }
-
 
         public IEnumerator StartCountdown()
         {
