@@ -26,9 +26,9 @@ namespace MrPuppet
             GetWindow<ExportPerformance>().Show();
         }
 
-        public enum Rating { Trash, Keeper, Blooper };
+        public enum Rating { Keeper, Blooper, Trash };
 
-        [TableList]
+        [TableList(DefaultMinColumnWidth = 160)]
         public List<ExportTake> Exports = new List<ExportTake>();
 
         private GameObject RecorderTarget;
@@ -43,12 +43,12 @@ namespace MrPuppet
             [TableColumnWidth(60, Resizable = false)]
             public GameObject _Prefab;
 
-            [TableColumnWidth(140)]
+            [TableColumnWidth(160)]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
             public AnimationClip _Animation;
 
-            [TableColumnWidth(140)]
+            [TableColumnWidth(160)]
             [EnumToggleButtons]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
@@ -76,9 +76,11 @@ namespace MrPuppet
             {
                 StartedRecording = false;
                 var filename = "Assets/Recordings/" + Filename + ".anim";
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Trash));
+                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
                 RecorderPrompt.ShowUtilityWindow(this);
             }
+
+            Repaint();
         }
 
         private void OnDestroy()
@@ -220,10 +222,12 @@ namespace MrPuppet
                 }
             }
 
+            /*
             void OnInspectorUpdate()
             {
                 Repaint();
             }
+            */
         }
     }
 #else
