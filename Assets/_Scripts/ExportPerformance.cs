@@ -26,7 +26,7 @@ namespace MrPuppet
             GetWindow<ExportPerformance>().Show();
         }
 
-        public enum Rating { Keeper, Blooper, Trash };
+        public enum Rating { Trash, Blooper, Keeper };
 
         [TableList(DefaultMinColumnWidth = 160)]
         public List<ExportTake> Exports = new List<ExportTake>();
@@ -35,6 +35,7 @@ namespace MrPuppet
         private string Filename;
         private RecorderWindow Recorder;
         private bool StartedRecording;
+        private bool PromptShowing;
 
         [Serializable]
         public class ExportTake
@@ -165,41 +166,60 @@ namespace MrPuppet
 
         public class RecorderPrompt : OdinEditorWindow
         {
-            [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
+            [DisplayAsString, ShowInInspector, BoxGroup("Prompt", false), HideLabel]
             public static string PromptBox;
+            [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
+            public static string InstructionsLineOne;
+            [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
+            public static string InstructionsLineTwo;
 
             private static string filename;
             private static ExportPerformance ExportPerformanceInstance;
+            private static RecorderPrompt window;
 
             public static void ShowUtilityWindow(ExportPerformance instance)
             {
                 ExportPerformanceInstance = instance;
-                RecorderPrompt window = ScriptableObject.CreateInstance(typeof(RecorderPrompt)) as RecorderPrompt;
+                window = (RecorderPrompt)EditorWindow.GetWindow(typeof(RecorderPrompt), true, "Rate Take");
                 window.ShowUtility();
-                window.position = new Rect((Screen.currentResolution.width / 2) - (170 / 2), (Screen.currentResolution.height / 2) - (90 / 2), 170, 90);
+                window.position = new Rect((Screen.currentResolution.width / 2) - (320 / 2), (Screen.currentResolution.height / 2) - (100 / 2), 320, 100);
+
+                InstructionsLineOne = "Select “Keeper (↵)” or “Blooper (B)” to create FBX of take.";
+                InstructionsLineTwo = "Select “Trash (T)” to skip FBX.";
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
+
+                ExportPerformanceInstance.PromptShowing = true;
             }
 
-            [Button("Keeper")]
-            public void Keeper()
+            [HorizontalGroup]
+            [Button("Trash (T)", ButtonSizes.Medium)]
+            public void Trash()
             {
-                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
+                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Trash;
                 Close();
             }
 
-            [Button("Blooper")]
+            [HorizontalGroup]
+            [Button("Blooper (B)", ButtonSizes.Medium)]
             public void Blooper()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Blooper;
                 Close();
             }
 
-            [Button("Trash")]
-            public void Trash()
+            [HorizontalGroup]
+            [GUIColor(0.5f, 0.8f, 0.5f)]
+            [Button("Keeper (↵)", ButtonSizes.Medium)]
+            public void Keeper()
             {
-                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Trash;
+                ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
                 Close();
+            }
+
+            private void OnDestroy()
+            {
+                ExportPerformanceInstance.PromptShowing = false;
             }
 
             private void OnGUI()
@@ -222,12 +242,10 @@ namespace MrPuppet
                 }
             }
 
-            /*
             void OnInspectorUpdate()
             {
                 Repaint();
             }
-            */
         }
     }
 #else
