@@ -1,29 +1,33 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor.Recorder;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Reflection;
-using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Animations;
-using UnityEditor.Formats.Fbx.Exporter;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
 
+// TODO: Rework how state changes are kept track of
+//       Slider for audio
+//       Key commands that are not tied to game view
+
 namespace MrPuppet
 {
 #if UNITY_EDITOR
-    //[CustomEditor(typeof(RecorderHelper))]
     public class RecorderHelper : OdinEditorWindow
     {
         [MenuItem("Tools/Recorder Helper")]
         private static void OpenWindow()
         {
             GetWindow<RecorderHelper>().Show();
+            GetWindow<ExportPerformance>().Show();
+        }
+
+        void OnEnable()
+        {
+            Instance = this;
         }
 
         private RecorderWindow Recorder;
@@ -33,9 +37,13 @@ namespace MrPuppet
         private static Color ColorState;
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
+        private ExportPerformance _ExportPerformance;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
+
+        public static RecorderHelper Instance { get; private set; }
+        public static bool IsOpen { get { return Instance != null; } }
 
         private void GetFilename()
         {
@@ -66,6 +74,9 @@ namespace MrPuppet
             if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
+            if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
+                _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
+
             if (!Recorder.IsRecording())
             {
                 if (CountdownValue < 1)
@@ -82,7 +93,7 @@ namespace MrPuppet
             else
                 ControlRecording();
 
-                EditorApplication.ExecuteMenuItem("Window/General/Game");
+            EditorApplication.ExecuteMenuItem("Window/General/Game");
         }
 
         private void ControlRecording()
@@ -96,7 +107,6 @@ namespace MrPuppet
             {
                 Recorder.StartRecording();
                 EditorApplication.ExecuteMenuItem("Window/General/Game");
-
             }
             else
             {
@@ -161,7 +171,6 @@ namespace MrPuppet
                 if (Recorder)
                     if (Recorder.IsRecording())
                     {
-                        //EditorUtility.DisplayDialog("Recording while attempting a record", "Stopped your recording", "OK");
                         Recorder.StopRecording();
                         CountdownValue = -1;
                         yield break;
@@ -190,7 +199,6 @@ namespace MrPuppet
 
                 CountdownValue = 0;
                 ColorState = Color.gray;
-
             }
 
             private static void playModes(PlayModeStateChange state)
@@ -200,7 +208,6 @@ namespace MrPuppet
                     //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
-
                 }
                 else
                 {
@@ -208,11 +215,9 @@ namespace MrPuppet
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;
-
                 }
             }
         }
-
     }
 #else
 public class PerformanceAnimationReplacementManager : MonoBehaviour {
