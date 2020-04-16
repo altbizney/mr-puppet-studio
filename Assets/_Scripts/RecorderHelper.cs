@@ -9,8 +9,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
 
-// TODO: Rework how state changes are kept track of
-//       Slider for audio
+// TODO:
 //       Key commands that are not tied to game view
 
 namespace MrPuppet
@@ -45,11 +44,13 @@ namespace MrPuppet
         public static RecorderHelper Instance { get; private set; }
         public static bool IsOpen { get { return Instance != null; } }
 
+        [Range(0, 1)]
+        public float AudioVolume;
+
         private void GetFilename()
         {
             RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
             RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
-
             foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
             {
                 if (!recorder.Enabled) continue;
@@ -84,6 +85,7 @@ namespace MrPuppet
                     _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
 
                     _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
+                    _AudioSource.volume = AudioVolume;
                     _AudioSource.clip = _AudioClip;
 
                     Camera.main.gameObject.AddComponent<CountDown>();
@@ -166,6 +168,7 @@ namespace MrPuppet
             CountdownValue = 3;
             while (CountdownValue > 0)
             {
+                _AudioSource.volume = AudioVolume;
                 _AudioSource.Play();
 
                 if (Recorder)

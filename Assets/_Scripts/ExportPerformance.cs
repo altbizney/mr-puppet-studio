@@ -122,6 +122,10 @@ namespace MrPuppet
             int success = 0;
             AssetDatabase.SaveAssets();
 
+            string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/";
+            if (!Directory.Exists(DataPath))
+                DataPath = "Performances/";
+
             foreach (var export in Exports)
             {
                 if (export._Rating != Rating.Trash)
@@ -138,20 +142,20 @@ namespace MrPuppet
                     animator.runtimeAnimatorController = controller;
 
                     // export
-                    ModelExporter.ExportObject("Performances/" + export._Animation.name + ".fbx", instance);
+                    ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
 
                     // cleanup
                     DestroyImmediate(instance);
                     AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
+                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
                 }
                 else
                 {
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", "Performances/" + export._Animation.name + ".anim");
+                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
                 }
 
                 // write file
-                var sr = File.CreateText("Performances/" + export._Animation.name + ".csv");
+                var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
                 sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
                 sr.Close();
 
@@ -246,6 +250,7 @@ namespace MrPuppet
             {
                 Repaint();
             }
+
         }
     }
 #else
