@@ -82,8 +82,7 @@ namespace MrPuppet
         private Quaternion HipSpawnRotation;
         private Quaternion HeadSpawnRotation;
 
-        public Transform HipRotation;
-        public Transform HipTranslation;
+        public Transform Hip;
         public Transform Head;
         // private Transform HipProxy;
         // private Transform HeadProxy;
@@ -186,8 +185,8 @@ namespace MrPuppet
             // HeadProxy.SetPositionAndRotation(Head.position, Head.rotation);
             // HeadProxy.SetParent(Head.parent, false);
 
-            HipSpawnPosition = HipTranslation.localPosition;
-            HipSpawnRotation = HipRotation.rotation;
+            HipSpawnPosition = Hip.localPosition;
+            HipSpawnRotation = Hip.rotation;
             HeadSpawnRotation = Head.rotation;
 
             // snapshot bind poses of weighted influence targets
@@ -214,10 +213,10 @@ namespace MrPuppet
                     );
 
                     // smoothly apply changes to position
-                    HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
+                    Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                     // apply rotation deltas to bind pose
-                    HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
                     Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
                     if (EnableJawHeadMixer)
@@ -270,13 +269,13 @@ namespace MrPuppet
 
         private void OnDrawGizmos()
         {
-            // if (Hip) Debug.DrawRay(Hip.position, Hip.up * 0.5f, Color.green, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.up * 0.5f, Color.green, 0f, false);
             if (Head) Debug.DrawRay(Head.position, Head.up * 0.5f, Color.green, 0f, false);
 
-            // if (Hip) Debug.DrawRay(Hip.position, Hip.right * 0.5f, Color.red, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.right * 0.5f, Color.red, 0f, false);
             if (Head) Debug.DrawRay(Head.position, Head.right * 0.5f, Color.red, 0f, false);
 
-            // if (Hip) Debug.DrawRay(Hip.position, Hip.forward * 0.5f, Color.blue, 0f, false);
+            if (Hip) Debug.DrawRay(Hip.position, Hip.forward * 0.5f, Color.blue, 0f, false);
             if (Head) Debug.DrawRay(Head.position, Head.forward * 0.5f, Color.blue, 0f, false);
 
             foreach (var influence in WeightedInfluences) influence.OnDrawGizmos();
