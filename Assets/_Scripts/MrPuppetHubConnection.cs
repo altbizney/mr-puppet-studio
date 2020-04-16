@@ -201,7 +201,7 @@ namespace MrPuppet
                                     case "ATTACH":
                                         // TODO: support for multiple puppets
                                         Debug.Log("[COMMAND][" + _array[1] + "] updated");
-                                        FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
+                                        // FindObjectOfType<ButtPuppet>().AttachPoseFromString(_array[2].Split(','), _array[3].Split(','), _array[4].Split(','));
                                         break;
                                     case "RECORDING":
                                         Debug.Log("[COMMAND][" + _array[1] + "] " + _array[2]);

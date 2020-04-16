@@ -18,8 +18,7 @@ namespace MrPuppet
             public Quaternion CloseRotation = Quaternion.identity;
         }
 
-        [Required]
-        public MrPuppetDataMapper DataMapper;
+        private MrPuppetDataMapper DataMapper;
 
         [Required]
         [OnValueChanged(nameof(OnJawJointAssigned))]
@@ -37,17 +36,14 @@ namespace MrPuppet
 
         [HideInInspector]
         public bool ApplySensors = true;
-        private void Awake(){ ApplySensors = true; }
 
-        private void OnValidate()
-        {
-            if (DataMapper == null) DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+        private void Awake() {
+            ApplySensors = true;
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            // TODO: should JawPercent be smoothed, and/or position and rotation?
-
             _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
             if (ApplySensors == true)
             {
