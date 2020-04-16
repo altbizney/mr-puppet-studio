@@ -61,18 +61,19 @@ namespace MrPuppet
                             //FileInfo[] Files = d.GetFiles("*.wav");
                             //foreach (FileInfo file in Files)
                             //{
-                                //  if (file.Name == Take.ToUpper() + ".wav")
-                                //       found = true;
+                            //  if (file.Name == Take.ToUpper() + ".wav")
+                            //       found = true;
                             //}
 
                             //if (found == true)
                             //{
-                                TakeAfterPlay = Take;
+                            TakeAfterPlay = Take;
+                            if (HubConnection != null)
                                 HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
-                                AudioIsPlaying = true;
+                            AudioIsPlaying = true;
                             //}
                             //else
-                                //  Debug.Log("Could not find the audio file associated with Audio Reference Take");
+                            //  Debug.Log("Could not find the audio file associated with Audio Reference Take");
                         }
                     }
 
@@ -82,7 +83,9 @@ namespace MrPuppet
                 {
                     if (AudioIsPlaying == true)
                     {
-                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                        if (HubConnection != null)
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+
                         AudioIsPlaying = false;
                     }
                 }
@@ -92,7 +95,9 @@ namespace MrPuppet
             {
                 if (AudioIsPlaying == true)
                 {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                    if (HubConnection != null)
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+
                     AudioIsPlaying = false;
                 }
 

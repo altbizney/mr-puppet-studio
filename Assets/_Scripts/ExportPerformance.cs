@@ -35,7 +35,6 @@ namespace MrPuppet
         private string Filename;
         private RecorderWindow Recorder;
         private bool StartedRecording;
-        private bool PromptShowing;
 
         [Serializable]
         public class ExportTake
@@ -66,19 +65,26 @@ namespace MrPuppet
         void Update()
         {
             if (Recorder == null)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-
-            if (Recorder.IsRecording() && StartedRecording == false)
             {
-                StartedRecording = true;
-                GetFilename();
+                try
+                { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                catch { throw; }
             }
-            if (!Recorder.IsRecording() && StartedRecording == true)
+
+            if (Recorder)
             {
-                StartedRecording = false;
-                var filename = "Assets/Recordings/" + Filename + ".anim";
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
-                RecorderPrompt.ShowUtilityWindow(this);
+                if (Recorder.IsRecording() && StartedRecording == false)
+                {
+                    StartedRecording = true;
+                    GetFilename();
+                }
+                if (!Recorder.IsRecording() && StartedRecording == true)
+                {
+                    StartedRecording = false;
+                    var filename = "Assets/Recordings/" + Filename + ".anim";
+                    Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
+                    RecorderPrompt.ShowUtilityWindow(this);
+                }
             }
 
             Repaint();
@@ -192,8 +198,6 @@ namespace MrPuppet
                 InstructionsLineTwo = "Select “Trash (T)” to skip FBX.";
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
-
-                ExportPerformanceInstance.PromptShowing = true;
             }
 
             [HorizontalGroup]
@@ -219,11 +223,6 @@ namespace MrPuppet
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
                 Close();
-            }
-
-            private void OnDestroy()
-            {
-                ExportPerformanceInstance.PromptShowing = false;
             }
 
             private void OnGUI()

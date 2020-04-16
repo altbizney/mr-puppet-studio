@@ -30,16 +30,14 @@ namespace MrPuppet
         }
 
         private GameObject PuppetReplay;
-       //private AudioClip _AudioClip;
-       //private AudioSource _AudioSource;
+        //private AudioClip _AudioClip;
+        //private AudioSource _AudioSource;
         private Transform JawJointMimic;
-        private bool InCoroutine;
         private GameObject TransformWrapper;
         private RecorderWindow Recorder;
         private Transform JawJoint;
         private Coroutine AnimationCoroutine;
         private static MrPuppetHubConnection HubConnection;
-        private static string _AnimationClipName;
 
         private List<Transform> JointsMimic;
         private List<Transform> JointsClone;
@@ -89,11 +87,12 @@ namespace MrPuppet
         [HideIf("IsPlaying", false)]
         [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
-        private void RerecordJaw(){
+        private void RerecordJaw()
+        {
 
             if (!PuppetReplay)
                 InitializeAnimation();
-                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
 
             OverwriteButtPuppet = true;
             OverwriteJaw = false;
@@ -110,7 +109,7 @@ namespace MrPuppet
         {
             if (!PuppetReplay)
                 InitializeAnimation();
-                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
 
             OverwriteButtPuppet = false;
             OverwriteJaw = true;
@@ -125,11 +124,21 @@ namespace MrPuppet
         {
             if (PuppetReplay)
             {
-               if (AnimationCoroutine != null)
-                 Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
+                if (AnimationCoroutine != null)
+                    Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
                 //_AudioSource.Stop();
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+
+                if (Recorder)
+                {
+                    if (Recorder.IsRecording())
+                    {
+                        Recorder.StopRecording();
+                    }
+                }
+
+                if (HubConnection != null)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
 
                 TransformWrapper.transform.DetachChildren();
 
@@ -165,20 +174,21 @@ namespace MrPuppet
             KillChildren(PuppetReplay.GetComponentsInChildren<OneShotAnimations>());
             KillChildren(PuppetReplay.GetComponentsInChildren<Animator>());
 
+
             //_AudioSource = PuppetReplay.AddComponent<AudioSource>();
             //_AudioSource.clip = _AudioClip;
             //_AudioSource.Play();
 
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-            //_AnimationClipName = _AnimationClip.name;
-            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
+            if (HubConnection != null)
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
 
             JointController _JointController = PuppetReplay.AddComponent<JointController>();
             _JointController.PAR = this;
 
             Animator cloneReplay = PuppetReplay.AddComponent<Animator>();
             cloneReplay.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
-            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine( StopAfterAnimation() );
+            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation());
 
             TransformWrapper = new GameObject("TransformWrapper");
             PuppetReplay.transform.parent = TransformWrapper.transform;
@@ -211,8 +221,13 @@ namespace MrPuppet
             }
 
             if (!Recorder)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-            Recorder.StartRecording();
+            {
+                try
+                { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                catch { throw; }
+            }
+            if (Recorder)
+                Recorder.StartRecording();
         }
 
         private void Update()
@@ -221,7 +236,8 @@ namespace MrPuppet
             {
                 if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
                 {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    if (HubConnection != null)
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
                     HubConnection = null;
                 }
             }
@@ -229,12 +245,12 @@ namespace MrPuppet
 
         private IEnumerator StopAfterAnimation()
         {
-            yield return new WaitForSeconds( (float) System.Math.Ceiling(_AnimationClip.length * 1000) / 1000 );
+            yield return new WaitForSeconds((float)System.Math.Ceiling(_AnimationClip.length * 1000) / 1000);
 
             if (Recorder)
             {
-              if(Recorder.IsRecording())
-                Recorder.StopRecording();
+                if (Recorder.IsRecording())
+                    Recorder.StopRecording();
             }
 
             StopAnimation();
@@ -285,7 +301,7 @@ namespace MrPuppet
         /*
         private IEnumerator Stream_AutioClip(string url)
         {
-           
+
             InCoroutine = true;
             using (UnityWebRequest webRequest = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.WAV))
             {
@@ -362,9 +378,10 @@ namespace MrPuppet
                         if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
                             PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
 
-                        for (var i = 0; i<PAR.JointsMimic.Count; i++)
+                        for (var i = 0; i < PAR.JointsMimic.Count; i++)
                         {
                             PAR.JointsMimic[i].localRotation = PAR.JointsClone[i].localRotation;
+                            PAR.JointsMimic[i].localPosition = PAR.JointsClone[i].localPosition;
                         }
 
                     }
@@ -375,22 +392,20 @@ namespace MrPuppet
                     }
                 }
             }
-    }
+        }
 
-    [InitializeOnLoadAttribute]
+        [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
         {
             static PlayModeStateChanged()
             {
                 EditorApplication.playModeStateChanged += playModes;
-                //HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClipName);
             }
 
             private static void playModes(PlayModeStateChange state)
             {
-               if(state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
-                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+                if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+                    AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
         }
     }

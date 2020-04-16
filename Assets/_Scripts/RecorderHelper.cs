@@ -9,9 +9,6 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 #endif
 
-// TODO:
-//       Key commands that are not tied to game view
-
 namespace MrPuppet
 {
 #if UNITY_EDITOR
@@ -31,12 +28,10 @@ namespace MrPuppet
 
         private RecorderWindow Recorder;
         private static string ButtonMessage;
-        private bool ShowInfo;
         private static int CountdownValue;
         private static Color ColorState;
         private AudioSource _AudioSource;
         private AudioClip _AudioClip;
-        private ExportPerformance _ExportPerformance;
 
         [DisplayAsString, ShowInInspector, BoxGroup, HideLabel]
         public static string StatusBox;
@@ -72,29 +67,29 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
-            if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
-                _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
-
-            if (!Recorder.IsRecording())
+            if (Recorder)
             {
-                if (CountdownValue < 1)
+                if (!Recorder.IsRecording())
                 {
-                    _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
+                    if (CountdownValue < 1)
+                    {
+                        _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
 
-                    _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
-                    _AudioSource.volume = AudioVolume;
-                    _AudioSource.clip = _AudioClip;
+                        _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
+                        _AudioSource.volume = AudioVolume;
+                        _AudioSource.clip = _AudioClip;
 
-                    Camera.main.gameObject.AddComponent<CountDown>();
-                    Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
+                        Camera.main.gameObject.AddComponent<CountDown>();
+                        Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
+                    }
                 }
+                else
+                    ControlRecording();
             }
-            else
-                ControlRecording();
-
             EditorApplication.ExecuteMenuItem("Window/General/Game");
         }
 
@@ -102,18 +97,22 @@ namespace MrPuppet
         {
             ColorState = Color.red;
 
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
-            if (!Recorder.IsRecording())
+            if (Recorder)
             {
-                Recorder.StartRecording();
-                EditorApplication.ExecuteMenuItem("Window/General/Game");
-            }
-            else
-            {
-                Recorder.StopRecording();
-                AssetDatabase.SaveAssets();
+                if (!Recorder.IsRecording())
+                {
+                    Recorder.StartRecording();
+                    EditorApplication.ExecuteMenuItem("Window/General/Game");
+                }
+                else
+                {
+                    Recorder.StopRecording();
+                    AssetDatabase.SaveAssets();
+                }
             }
         }
 
@@ -121,8 +120,6 @@ namespace MrPuppet
         {
             if (EditorApplication.isPlaying == true)
             {
-                ShowInfo = true;
-
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     Action();
@@ -145,12 +142,10 @@ namespace MrPuppet
                         }
                     }
                 }
-                //ColorState = Color.red;
             }
             else
             {
                 CountdownValue = 0;
-                //ShowInfo = false;
                 ColorState = Color.gray;
             }
 
@@ -172,12 +167,14 @@ namespace MrPuppet
                 _AudioSource.Play();
 
                 if (Recorder)
+                {
                     if (Recorder.IsRecording())
                     {
                         Recorder.StopRecording();
                         CountdownValue = -1;
                         yield break;
                     }
+                }
 
                 StatusBox = "Recorder Starting in..." + CountdownValue.ToString();
                 ButtonMessage = CountdownValue.ToString();
@@ -186,8 +183,8 @@ namespace MrPuppet
                 yield return new WaitForSeconds(1.0f);
                 CountdownValue--;
             }
-
-            Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
+            if (Camera.main.gameObject.GetComponent<AudioSource>())
+                Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
@@ -208,13 +205,11 @@ namespace MrPuppet
             {
                 if (state == UnityEditor.PlayModeStateChange.EnteredPlayMode)
                 {
-                    //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
                 }
                 else
                 {
-                    //ShowInfo = true;
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;

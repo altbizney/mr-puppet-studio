@@ -25,13 +25,13 @@ namespace MrPuppet
             infoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
         }*/
 
-        private GameObject clone;
-        private AudioClip audioClip;
+        private GameObject Clone;
+        //private AudioClip audioClip;
         //private AudioSource audioSource;
         //private bool inCoroutine;
-        private List<Renderer> activeRenderers;
+        private List<Renderer> ActiveRenderers;
         //private string hyperMeshURL;
-        private static string tempController = "temp.controller";
+        private static string TempController = "temp.controller";
         private static MrPuppetHubConnection HubConnection;
         private Coroutine AnimationCoroutine;
 
@@ -67,18 +67,20 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void StopAnimation()
         {
-            if (clone)
+            if (Clone)
             {
                 if (AnimationCoroutine != null)
                     Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
-                foreach (Renderer renderer in activeRenderers)
+                foreach (Renderer renderer in ActiveRenderers)
                     renderer.enabled = true;
 
                 //audioSource.Stop();
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
-                Destroy(clone);
-                AssetDatabase.DeleteAsset("Assets/Recordings/" + tempController);
+                if (HubConnection != null)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+
+                Destroy(Clone);
+                AssetDatabase.DeleteAsset("Assets/Recordings/" + TempController);
             }
         }
 
@@ -90,39 +92,39 @@ namespace MrPuppet
         private void PlayAnimation()
         {
             //if (!audioClip)//&& !inCoroutine
-                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
             //else
-                InitializeAnimation();
+            InitializeAnimation();
         }
 
         private void InitializeAnimation()
         {
 
-            if (!clone)//&& audioClip.loadState == AudioDataLoadState.Loaded
+            if (!Clone)//&& audioClip.loadState == AudioDataLoadState.Loaded
             {
 
-                clone = Instantiate(Actor, Actor.transform.position, Quaternion.identity);
+                Clone = Instantiate(Actor, Actor.transform.position, Quaternion.identity);
 
-               KillChildren(clone.GetComponentsInChildren<JawTransformMapper>());
-               KillChildren(clone.GetComponentsInChildren<ButtPuppet>());
-               KillChildren(clone.GetComponentsInChildren<Blink>());
-               KillChildren(clone.GetComponentsInChildren<HeadPuppet>());
-               KillChildren(clone.GetComponentsInChildren<JawBlendShapeMapper>());
-               KillChildren(clone.GetComponentsInChildren<JointFollower>());
-               KillChildren(clone.GetComponentsInChildren<LookAtTarget>());
-               KillChildren(clone.GetComponentsInChildren<CaptureMicrophone>());
-               KillChildren(clone.GetComponentsInChildren<OneShotAnimations>());
+                KillChildren(Clone.GetComponentsInChildren<JawTransformMapper>());
+                KillChildren(Clone.GetComponentsInChildren<ButtPuppet>());
+                KillChildren(Clone.GetComponentsInChildren<Blink>());
+                KillChildren(Clone.GetComponentsInChildren<HeadPuppet>());
+                KillChildren(Clone.GetComponentsInChildren<JawBlendShapeMapper>());
+                KillChildren(Clone.GetComponentsInChildren<JointFollower>());
+                KillChildren(Clone.GetComponentsInChildren<LookAtTarget>());
+                KillChildren(Clone.GetComponentsInChildren<CaptureMicrophone>());
+                KillChildren(Clone.GetComponentsInChildren<OneShotAnimations>());
 
-               Animator cloneAnim = clone.AddComponent<Animator>();
-               cloneAnim.enabled = true;
-               cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + tempController, _AnimationClip);
-               AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneAnim));
+                Animator cloneAnim = Clone.AddComponent<Animator>();
+                cloneAnim.enabled = true;
+                cloneAnim.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + TempController, _AnimationClip);
+                AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation(cloneAnim));
 
                 foreach (Renderer renderer in Actor.GetComponentsInChildren<Renderer>())
                 {
                     if (renderer.enabled == true)
                     {
-                        activeRenderers.Add(renderer);
+                        ActiveRenderers.Add(renderer);
                         renderer.enabled = false;
                     }
                 }
@@ -130,8 +132,10 @@ namespace MrPuppet
                 //audioSource = Actor.AddComponent<AudioSource>();
                 //audioSource.clip = audioClip;
                 //audioSource.Play();
+
                 HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
+                if (HubConnection != null)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
             }
         }
 
@@ -141,15 +145,8 @@ namespace MrPuppet
                 Destroy(child);
         }
 
-        private bool NotPlaying()
-        {
-            return !clone;
-        }
-
-        private bool IsPlaying()
-        {
-            return clone;
-        }
+        private bool NotPlaying() { return !Clone; }
+        private bool IsPlaying() { return Clone; }
 
         private void Update()
         {
@@ -157,7 +154,8 @@ namespace MrPuppet
             {
                 if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
                 {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    if (HubConnection != null)
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
                     HubConnection = null;
                 }
             }
@@ -241,7 +239,7 @@ namespace MrPuppet
         */
 
         /*
-        //Public variables should currently only be visible to enclosing type. 
+        //Public variables should currently only be visible to enclosing type.
         private class JsonData
         {
             public bool ok;
@@ -269,7 +267,7 @@ namespace MrPuppet
 
             private static void playModes(PlayModeStateChange state)
             {
-                AssetDatabase.DeleteAsset("Assets/Recordings/" + tempController);
+                AssetDatabase.DeleteAsset("Assets/Recordings/" + TempController);
             }
         }
     }
