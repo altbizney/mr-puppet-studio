@@ -37,14 +37,19 @@ namespace MrPuppet
         [HideInInspector]
         public bool ApplySensors = true;
 
-        private void Awake() {
+        private void Awake()
+        {
             ApplySensors = true;
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
+
+        public float JawPercentOverride;
+
         private void LateUpdate()
         {
-            _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, DataMapper.JawPercent, ref _jawPercentVelocity, SmoothTime);
+            _jawPercentSmoothed = Mathf.SmoothDamp(_jawPercentSmoothed, JawPercentOverride, ref _jawPercentVelocity, SmoothTime);
+
             if (ApplySensors == true)
             {
                 JawJoint.localRotation = Quaternion.LerpUnclamped(
