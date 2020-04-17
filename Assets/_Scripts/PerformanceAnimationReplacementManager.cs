@@ -147,11 +147,15 @@ namespace MrPuppet
 
                 //InfoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
 
-                if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
-                    Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                if (Actor.GetComponent<ButtPuppet>() != null){
+                    if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
+                        Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                }
 
-                if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                    Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                if (Actor.GetComponent<JawTransformMapper>() != null){
+                    if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                        Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                }
 
                 AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
@@ -159,7 +163,10 @@ namespace MrPuppet
 
         private void InitializeAnimation()
         {
-            JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            if (Actor.GetComponent<JawTransformMapper>() != null){
+                if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
+                    JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            }
 
             PuppetReplay = Instantiate(Actor, new Vector3(0, 0, 0), Actor.transform.rotation);
 
@@ -195,26 +202,29 @@ namespace MrPuppet
             TransformWrapper.transform.position += new Vector3(0, 0, 2);
             Actor.transform.parent = TransformWrapper.transform;
 
-            foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
-            {
-                if (child.name == JawJoint.name)
+            if (JawJoint != null){
+                foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
                 {
-                    JawJointMimic = child;
-                }
-            }
-
-            JointsClone.Clear();
-            JointsMimic.Clear();
-            foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
-            {
-                if (child.name != JawJointMimic.name)
-                {
-                    foreach (Transform nestedChild in Actor.transform.GetComponentsInChildren<Transform>())
+                    if (child.name == JawJoint.name)
                     {
-                        if (nestedChild.name == child.name)
+                        JawJointMimic = child;
+                    }
+                }
+
+
+                JointsClone.Clear();
+                JointsMimic.Clear();
+                foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
+                {
+                    if (child.name != JawJointMimic.name)
+                    {
+                        foreach (Transform nestedChild in Actor.transform.GetComponentsInChildren<Transform>())
                         {
-                            JointsMimic.Add(nestedChild);
-                            JointsClone.Add(child);
+                            if (nestedChild.name == child.name)
+                            {
+                                JointsMimic.Add(nestedChild);
+                                JointsClone.Add(child);
+                            }
                         }
                     }
                 }
@@ -359,24 +369,32 @@ namespace MrPuppet
                 {
                     if (PAR.OverwriteJaw == true)
                     {
-                        if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+                        }
 
-                        PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
-                        PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        if (PAR.JawJoint != null){
+                            PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
+                            PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        }
 
                     }
                     else
                     {
-                        if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                        }
 
                     }
 
                     if (PAR.OverwriteButtPuppet == true)
                     {
-                        if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
+                        if (PAR.Actor.GetComponent<ButtPuppet>() != null){
+                            if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
+                                PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
+                        }
 
                         for (var i = 0; i < PAR.JointsMimic.Count; i++)
                         {
@@ -387,8 +405,10 @@ namespace MrPuppet
                     }
                     else
                     {
-                        if (!PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                        if (PAR.Actor.GetComponent<ButtPuppet>() != null){
+                            if (!PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
+                                PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                        }
                     }
                 }
             }
