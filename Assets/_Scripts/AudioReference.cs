@@ -47,11 +47,16 @@ namespace MrPuppet
         [OnValueChanged("LoadFACs")]
         public GameObject Actor;
 
+        //weird stuff with FACS not loading?
+        ///Volumes/GoogleDrive/My Drive/Shows/DOJO/episode/E029/performance/DOJO-E029-A001.txt
+
         private void LoadFACs()
         {
             FacsData = new Dictionary<int, float>();
             //var filePath = @"/Users/melindalastyak/HyperMesh/DOJO-E029-A001.txt";
-            string filePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/" + Take + ".txt";
+            string[] parts = Take.Split('-');
+            string filePath = "/Volumes/GoogleDrive/My Drive/Shows/" + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+            Debug.Log(filePath);
             if (File.Exists(filePath))
             {
                 var data = File.ReadLines(filePath).Skip(21).Select(x => x.Split(',')).ToArray();
@@ -117,6 +122,7 @@ namespace MrPuppet
 
                             //if (found == true)
                             //{
+                            LoadFACs();
                             TakeAfterPlay = Take;
                             HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
                             AudioIsPlaying = true;
@@ -128,6 +134,8 @@ namespace MrPuppet
 
                     if (EnableFACSPlayback == true)
                     {
+                        if (!Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                            Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000;
 
@@ -163,6 +171,9 @@ namespace MrPuppet
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                         AudioIsPlaying = false;
                     }
+
+                    if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                        Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
                 }
             }
 
@@ -173,8 +184,9 @@ namespace MrPuppet
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                     AudioIsPlaying = false;
                 }
-
                 TakeAfterPlay = "";
+                if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                    Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
             }
         }
     }
