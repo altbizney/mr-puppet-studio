@@ -36,6 +36,8 @@ namespace MrPuppet
         [OnValueChanged("LoadFACs")]
         public string Take;
 
+        public string TestDataPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
+
         [ToggleLeft]
         public bool EnableAudioPlayback = true;
         [ToggleLeft]
@@ -47,16 +49,23 @@ namespace MrPuppet
         [OnValueChanged("LoadFACs")]
         public GameObject Actor;
 
-        //weird stuff with FACS not loading?
-        ///Volumes/GoogleDrive/My Drive/Shows/DOJO/episode/E029/performance/DOJO-E029-A001.txt
-
         private void LoadFACs()
         {
             FacsData = new Dictionary<int, float>();
-            //var filePath = @"/Users/melindalastyak/HyperMesh/DOJO-E029-A001.txt";
-            string[] parts = Take.Split('-');
-            string filePath = "/Volumes/GoogleDrive/My Drive/Shows/" + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
-            Debug.Log(filePath);
+
+            // var filePath = @"/Users/melindalastyak/HyperMesh/DOJO-E029-A001.txt";
+            // /Volumes/GoogleDrive/My Drive/Shows/DOJO/episode/E029/performance/DOJO-E029-A001.txt
+
+            var parts = new List<string>();
+            if (Take.Contains('-'))
+                parts = Take.Split('-').ToList();
+
+            string filePath;
+            if (parts.Count > 1)
+                filePath = TestDataPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+            else
+                filePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/" + "temp" + "/episode/" + "temp2" + "/performance/" + Take + ".txt";
+
             if (File.Exists(filePath))
             {
                 var data = File.ReadLines(filePath).Skip(21).Select(x => x.Split(',')).ToArray();
@@ -185,8 +194,12 @@ namespace MrPuppet
                     AudioIsPlaying = false;
                 }
                 TakeAfterPlay = "";
-                if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                    Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+
+                if (Actor != null)
+                {
+                    if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                        Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+                }
             }
         }
     }
