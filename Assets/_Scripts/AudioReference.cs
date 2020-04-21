@@ -36,7 +36,7 @@ namespace MrPuppet
         [OnValueChanged("LoadFACs")]
         public string Take;
 
-        public string TestDataPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
+        //public string TestDataPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
 
         [ToggleLeft]
         public bool EnableAudioPlayback = true;
@@ -53,18 +53,25 @@ namespace MrPuppet
         {
             FacsData = new Dictionary<int, float>();
 
-            // var filePath = @"/Users/melindalastyak/HyperMesh/DOJO-E029-A001.txt";
-            // /Volumes/GoogleDrive/My Drive/Shows/DOJO/episode/E029/performance/DOJO-E029-A001.txt
+            var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>("Assets/__Config/MrPuppetSettings.asset");
 
-            var parts = new List<string>();
-            if (Take.Contains('-'))
-                parts = Take.Split('-').ToList();
+            string filePath = "";
+            if (settings != null)
+            {
+                var parts = new List<string>();
+                if (Take.Contains('-'))
+                    parts = Take.Split('-').ToList();
 
-            string filePath;
-            if (parts.Count > 1)
-                filePath = TestDataPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                if (parts.Count > 1)
+                    filePath = settings.FACSFilePath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                else
+                    filePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/" + "temp" + "/episode/" + "temp2" + "/performance/" + Take + ".txt";
+            }
             else
-                filePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/" + "temp" + "/episode/" + "temp2" + "/performance/" + Take + ".txt";
+            {
+                MrPuppetSettings.GetOrCreateSettings();
+                //Debug.Log("Could NOT find MrPuppetSettings. A new instance was created.");
+            }
 
             if (File.Exists(filePath))
             {
