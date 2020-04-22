@@ -32,11 +32,9 @@ namespace MrPuppet
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
 
-        [InfoBox("Will play an audio file with the given filename in ~/Downloads in sync with recording. \n\nFor example: to play FC_day1.aif in sync with recording, place the FC_day1.aif file in ~/Downloads, enter \"FC_day1\" as the filename, and start the `yarn run ableton` link script.")]
+        [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACs")]
         public string Take;
-
-        //public string TestDataPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
 
         [ToggleLeft]
         public bool EnableAudioPlayback = true;
@@ -63,26 +61,39 @@ namespace MrPuppet
                     parts = Take.Split('-').ToList();
 
                 if (parts.Count > 1)
-                    filePath = settings.FACSFilePath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
                 else
                     filePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/" + "temp" + "/episode/" + "temp2" + "/performance/" + Take + ".txt";
             }
             else
             {
                 MrPuppetSettings.GetOrCreateSettings();
-                //Debug.Log("Could NOT find MrPuppetSettings. A new instance was created.");
             }
 
             if (File.Exists(filePath))
             {
-                var data = File.ReadLines(filePath).Skip(21).Select(x => x.Split(',')).ToArray();
+                var data = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
 
-                for (int i = 1; i < data.Count(); i++)
+                int JawOpenIndex = new int();
+                for (int i = 1; i < data.GetLength(0); i++)
                 {
-                    FacsData.Add(int.Parse(data[i][1]), float.Parse(data[i][36]));
+                    if (data[i][0] == "bs")
+                    {
+                        for (int x = 1; x < data.Count(); x++) //Getlength(1)?
+                        {
+                            if (data[i][x] == "jawOpen")
+                            {
+                                JawOpenIndex = x + 11; // Add 11 to compensate for timestamp, head position, head eulerAngles,left-eye eulerAngles, right-eye eulerAngles
+                                break;
+                            }
+                        }
+                    }
+                    if (data[i][0] == "k")
+                    {
+                        FacsData.Add(int.Parse(data[i][1]), float.Parse(data[i][JawOpenIndex]));
+                    }
                 }
-                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FacsData.Keys.Last() + " frames.";
-
+                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FacsData.Count + " frames.";
                 Timer = 0;
             }
             else
@@ -150,10 +161,16 @@ namespace MrPuppet
 
                     if (EnableFACSPlayback == true)
                     {
-                        if (!Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                            Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = true;
+                        if (Actor != null)
+                        {
+                            if (Actor.GetComponent<JawTransformMapper>() && !Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                                Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = true;
+                        }
 
-                        Timer += Time.deltaTime * 1000;
+                        Timer += Time.deltaTime * 1000f;
+
+                        if (FacsData == null)
+                            LoadFACs();
 
                         foreach (KeyValuePair<int, float> item in FacsData)
                         {
@@ -161,8 +178,6 @@ namespace MrPuppet
                             {
                                 continue;
                             }
-
-                            DebugGraph.Log(item.Value);
 
                             if (Actor != null)
                                 Actor.GetComponent<JawTransformMapper>().JawPercentOverride = item.Value;
@@ -188,8 +203,11 @@ namespace MrPuppet
                         AudioIsPlaying = false;
                     }
 
-                    if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                        Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+                    if (Actor != null)
+                    {
+                        if (Actor.GetComponent<JawTransformMapper>() && Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                            Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+                    }
                 }
             }
 
@@ -204,7 +222,7 @@ namespace MrPuppet
 
                 if (Actor != null)
                 {
-                    if (Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
+                    if (Actor.GetComponent<JawTransformMapper>() && Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
                         Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
                 }
             }

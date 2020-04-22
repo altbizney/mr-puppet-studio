@@ -12,7 +12,7 @@ namespace MrPuppet
         public const string AssetPath = "Assets/__Config/MrPuppetSettings.asset";
 
         [SerializeField]
-        public string FACSFilePath;
+        public string ShowsRootPath;
 
         internal static MrPuppetSettings GetOrCreateSettings()
         {
@@ -20,16 +20,20 @@ namespace MrPuppet
             if (settings == null)
             {
                 settings = ScriptableObject.CreateInstance<MrPuppetSettings>();
-                settings.FACSFilePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
+                settings.ShowsRootPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
                 AssetDatabase.CreateAsset(settings, AssetPath);
                 AssetDatabase.SaveAssets();
             }
             return settings;
         }
 
-        internal static MrPuppetSettings SaveSettings(string ProviderPath){
+        internal static MrPuppetSettings SaveSettings(string ProviderPath)
+        {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>(AssetPath);
-                settings.FACSFilePath = ProviderPath;
+            //settings.FACSFilePath = ProviderPath;
+            settings.ShowsRootPath = ProviderPath;
+            if (settings.ShowsRootPath.Last() != '/')
+                settings.ShowsRootPath += '/';
 
             return settings;
         }
@@ -46,7 +50,7 @@ namespace MrPuppet
 
         class Styles
         {
-            public static GUIContent someString = new GUIContent("FACS File Path");
+            public static GUIContent RootPath = new GUIContent("Shows Root Path");
         }
 
         public MrPuppetSettingsProvider(string path, SettingsScope scope = SettingsScope.User)
@@ -59,11 +63,11 @@ namespace MrPuppet
 
         public override void OnGUI(string searchContext)
         {
-            EditorGUILayout.PropertyField(Settings.FindProperty("FACSFilePath"), Styles.someString);
-            
+            EditorGUILayout.PropertyField(Settings.FindProperty("ShowsRootPath"), Styles.RootPath);
+
             if (GUI.changed)
             {
-                MrPuppetSettings.SaveSettings( Settings.FindProperty("FACSFilePath").stringValue );
+                MrPuppetSettings.SaveSettings(Settings.FindProperty("ShowsRootPath").stringValue);
             }
             //Settings.ApplyModifiedProperties();
         }
@@ -71,7 +75,7 @@ namespace MrPuppet
         [SettingsProvider]
         public static SettingsProvider CreateMrPuppetSettingsProvider()
         {
-            var provider = new MrPuppetSettingsProvider("Preferences/Mr.Puppet", SettingsScope.User){};
+            var provider = new MrPuppetSettingsProvider("Preferences/Mr.Puppet", SettingsScope.User) { };
 
             provider.keywords = GetSearchKeywordsFromGUIContentProperties<Styles>();
             return provider;

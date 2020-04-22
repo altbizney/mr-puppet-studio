@@ -44,8 +44,9 @@ namespace MrPuppet
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
         }
 
-        //hide both of these
+        [HideInInspector]
         public float JawPercentOverride;
+        [HideInInspector]
         public bool UseJawPercentOverride = false;
 
         private void LateUpdate()

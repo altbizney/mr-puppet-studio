@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff8d1dd190af47269735809bb1c6251, type: 3}
   m_Name: MrPuppetSettings
   m_EditorClassIdentifier: 
-  FACSFilePath: /Volumes/GoogleDrive/My Drive/Thinko/Shows/
+  ShowsRootPath: /Volumes/GoogleDrive/My Drive/Thinko/Shows/
