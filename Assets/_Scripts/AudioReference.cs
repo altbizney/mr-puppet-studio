@@ -164,11 +164,8 @@ namespace MrPuppet
 
                     if (EnableFACSPlayback == true)
                     {
-                        if (Actor != null)
-                        {
-                            if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
-                                _JawTransformMapper.UseJawPercentOverride = true;
-                        }
+                        if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
+                            _JawTransformMapper.UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000f;
 
@@ -182,7 +179,7 @@ namespace MrPuppet
                                 continue;
                             }
 
-                            if (Actor != null)
+                            if (_JawTransformMapper)
                                 _JawTransformMapper.JawPercentOverride = item.Value;
 
                             // TODO: Better way to check when animation is over
@@ -206,11 +203,8 @@ namespace MrPuppet
                         AudioIsPlaying = false;
                     }
 
-                    if (Actor != null)
-                    {
-                        if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
-                            _JawTransformMapper.UseJawPercentOverride = false;
-                    }
+                    if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                        _JawTransformMapper.UseJawPercentOverride = false;
                 }
             }
 
@@ -223,16 +217,14 @@ namespace MrPuppet
                 }
                 TakeAfterPlay = "";
 
-                if (Actor != null)
-                {
-                    if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
-                        _JawTransformMapper.UseJawPercentOverride = false;
-                }
+                if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                    _JawTransformMapper.UseJawPercentOverride = false;
             }
         }
 
         private void CacheJawTransformMapper()
         {
+            _JawTransformMapper = null;
             if (Actor != null)
             {
                 if (Actor.GetComponent<JawTransformMapper>())
