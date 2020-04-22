@@ -31,9 +31,11 @@ namespace MrPuppet
         private Dictionary<int, float> FacsData;
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
+        private JawTransformMapper _JawTransformMapper;
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACs")]
+        [OnValueChanged("CacheJawTransformMapper")]
         public string Take;
 
         [ToggleLeft]
@@ -62,8 +64,6 @@ namespace MrPuppet
 
                 if (parts.Count > 1)
                     filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
-                else
-                    filePath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/" + "temp" + "/episode/" + "temp2" + "/performance/" + Take + ".txt";
             }
             else
             {
@@ -79,11 +79,11 @@ namespace MrPuppet
                 {
                     if (data[i][0] == "bs")
                     {
-                        for (int x = 1; x < data.Count(); x++) //Getlength(1)?
+                        for (int x = 1; x < data.Count(); x++)
                         {
                             if (data[i][x] == "jawOpen")
                             {
-                                JawOpenIndex = x + 11; // Add 11 to compensate for timestamp, head position, head eulerAngles,left-eye eulerAngles, right-eye eulerAngles
+                                JawOpenIndex = x + 11; // Add 11 to compensate for timestamp, head position, head eulerAngles, left-eye eulerAngles, right-eye eulerAngles
                                 break;
                             }
                         }
@@ -131,6 +131,9 @@ namespace MrPuppet
                 if (!Recorder || !HubConnection)
                     return;
 
+                if (!_JawTransformMapper)
+                    CacheJawTransformMapper();
+
                 if (Recorder.IsRecording())
                 {
                     if (EnableAudioPlayback == true)
@@ -163,8 +166,8 @@ namespace MrPuppet
                     {
                         if (Actor != null)
                         {
-                            if (Actor.GetComponent<JawTransformMapper>() && !Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                                Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = true;
+                            if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
+                                _JawTransformMapper.UseJawPercentOverride = true;
                         }
 
                         Timer += Time.deltaTime * 1000f;
@@ -180,7 +183,7 @@ namespace MrPuppet
                             }
 
                             if (Actor != null)
-                                Actor.GetComponent<JawTransformMapper>().JawPercentOverride = item.Value;
+                                _JawTransformMapper.JawPercentOverride = item.Value;
 
                             // TODO: Better way to check when animation is over
                             // Jacob: "frame loop you can store the value of the last timestamp. then you know once your time accumulation is >= that its done"
@@ -205,8 +208,8 @@ namespace MrPuppet
 
                     if (Actor != null)
                     {
-                        if (Actor.GetComponent<JawTransformMapper>() && Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                            Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+                        if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                            _JawTransformMapper.UseJawPercentOverride = false;
                     }
                 }
             }
@@ -222,9 +225,18 @@ namespace MrPuppet
 
                 if (Actor != null)
                 {
-                    if (Actor.GetComponent<JawTransformMapper>() && Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride)
-                        Actor.GetComponent<JawTransformMapper>().UseJawPercentOverride = false;
+                    if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                        _JawTransformMapper.UseJawPercentOverride = false;
                 }
+            }
+        }
+
+        private void CacheJawTransformMapper()
+        {
+            if (Actor != null)
+            {
+                if (Actor.GetComponent<JawTransformMapper>())
+                    _JawTransformMapper = Actor.GetComponent<JawTransformMapper>();
             }
         }
     }

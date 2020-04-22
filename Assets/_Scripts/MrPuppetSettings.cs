@@ -30,9 +30,8 @@ namespace MrPuppet
         internal static MrPuppetSettings SaveSettings(string ProviderPath)
         {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>(AssetPath);
-            //settings.FACSFilePath = ProviderPath;
             settings.ShowsRootPath = ProviderPath;
-            if (settings.ShowsRootPath.Last() != '/')
+            if (settings.ShowsRootPath.Length > 0 && settings.ShowsRootPath.Last() != '/')
                 settings.ShowsRootPath += '/';
 
             return settings;
