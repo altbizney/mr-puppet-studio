@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -32,6 +33,7 @@ namespace MrPuppet
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private JawTransformMapper _JawTransformMapper;
+        private static ValueDropdownList<int> BlendShapeNames = new ValueDropdownList<int>();
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACs")]
@@ -47,7 +49,101 @@ namespace MrPuppet
         [ShowIf("EnableFACSPlayback")]
         [InfoBox("$InfoBoxMsg")]
         [OnValueChanged("LoadFACs")]
+        [OnValueChanged("GetBlendShapeNames")]
         public GameObject Actor;
+
+        [BoxGroup]
+        [ShowIf("EnableFACSPlayback")]
+        public List<Mapping> Mappings = new List<Mapping>();
+
+        [Serializable]
+        public class Mapping
+        {
+            public enum FACSChannels
+            {
+                browInnerUp,
+                browDown_L,
+                browDown_R,
+                browOuterUp_L,
+                browOuterUp_R,
+                eyeLookUp_L,
+                eyeLookUp_R,
+                eyeLookDown_L,
+                eyeLookDown_R,
+                eyeLookIn_L,
+                eyeLookIn_R,
+                eyeLookOut_L,
+                eyeLookOut_R,
+                eyeBlink_L,
+                eyeBlink_R,
+                eyeSquint_L,
+                eyeSquint_R,
+                eyeWide_L,
+                eyeWide_R,
+                cheekPuff,
+                cheekSquint_L,
+                cheekSquint_R,
+                noseSneer_L,
+                noseSneer_R,
+                jawOpen,
+                jawForward,
+                jawLeft,
+                jawRight,
+                mouthFunnel,
+                mouthPucker,
+                mouthLeft,
+                mouthRight,
+                mouthRollUpper,
+                mouthRollLower,
+                mouthShrugUpper,
+                mouthShrugLower,
+                mouthClose,
+                mouthSmile_L,
+                mouthSmile_R,
+                mouthFrown_L,
+                mouthFrown_R,
+                mouthDimple_L,
+                mouthDimple_R,
+                mouthUpperUp_L,
+                mouthUpperUp_R,
+                mouthLowerDown_L,
+                mouthLowerDown_R,
+                mouthPress_L,
+                mouthPress_R,
+                mouthStretch_L,
+                mouthStretch_R,
+                tongueOut
+            };
+            private ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
+
+
+            [ValueDropdown("_BlendShapeNames")]
+            public int BlendShape;
+            public FACSChannels Channel;
+
+            public Mapping()
+            {
+                _BlendShapeNames = AudioReference.BlendShapeNames;
+            }
+        }
+
+        //[Button(ButtonSizes.Large)]
+        public void GetBlendShapeNames()
+        {
+            BlendShapeNames.Clear();
+            foreach (Transform child in Actor.GetComponentsInChildren<Transform>())
+            {
+                if (child.gameObject.GetComponent<SkinnedMeshRenderer>())
+                {
+                    SkinnedMeshRenderer childMesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
+
+                    for (var i = 0; i < childMesh.sharedMesh.blendShapeCount; i++)
+                    {
+                        BlendShapeNames.Add(childMesh.sharedMesh.GetBlendShapeName(i), i);
+                    }
+                }
+            }
+        }
 
         private void LoadFACs()
         {
@@ -133,6 +229,9 @@ namespace MrPuppet
 
                 if (!_JawTransformMapper)
                     CacheJawTransformMapper();
+
+                if (!BlendShapeNames.Any())
+                    GetBlendShapeNames();
 
                 if (Recorder.IsRecording())
                 {
