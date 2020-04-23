@@ -29,6 +29,7 @@ namespace MrPuppet
         public enum Rating { Trash, Blooper, Keeper };
 
         [TableList(DefaultMinColumnWidth = 160)]
+        [PropertyOrder(1)]
         public List<ExportTake> Exports = new List<ExportTake>();
 
         private GameObject RecorderTarget;
@@ -117,6 +118,7 @@ namespace MrPuppet
         }
 
         [Button(ButtonSizes.Large)]
+        [PropertyOrder(-1)]
         private void Export()
         {
             int success = 0;
