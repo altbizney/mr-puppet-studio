@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Collections;
 
 using System;
 
@@ -29,11 +30,12 @@ namespace MrPuppet
         private bool AudioIsPlaying;
         private string TakeAfterPlay;
 
-        private Dictionary<int, float> FacsData;
+        private Dictionary<int, float> JawFacsData;
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private JawTransformMapper _JawTransformMapper;
-        private static ValueDropdownList<int> BlendShapeNames = new ValueDropdownList<int>();
+        private static ValueDropdownList<SkinnedMeshRenderer> SkinnedMeshRenderers = new ValueDropdownList<SkinnedMeshRenderer>();
+
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACs")]
@@ -49,12 +51,13 @@ namespace MrPuppet
         [ShowIf("EnableFACSPlayback")]
         [InfoBox("$InfoBoxMsg")]
         [OnValueChanged("LoadFACs")]
-        [OnValueChanged("GetBlendShapeNames")]
         public GameObject Actor;
 
         [BoxGroup]
         [ShowIf("EnableFACSPlayback")]
         public List<Mapping> Mappings = new List<Mapping>();
+
+        private string[][] FACSData;
 
         [Serializable]
         public class Mapping
@@ -114,32 +117,49 @@ namespace MrPuppet
                 mouthStretch_R,
                 tongueOut
             };
-            private ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
+            public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
+            private ValueDropdownList<SkinnedMeshRenderer> _SkinnedMeshRenderers = new ValueDropdownList<SkinnedMeshRenderer>();
 
 
-            [ValueDropdown("_BlendShapeNames")]
+
+            [ValueDropdown("_BlendShapeNames")] //showif
             public int BlendShape;
             public FACSChannels Channel;
+            [ValueDropdown("_SkinnedMeshRenderers")]
+            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+
 
             public Mapping()
             {
-                _BlendShapeNames = AudioReference.BlendShapeNames;
+                _SkinnedMeshRenderers = AudioReference.SkinnedMeshRenderers;
+            }
+
+
+            [Button(ButtonSizes.Small)]
+            public void GetBlendShapeNames()
+            {
+                _BlendShapeNames.Clear();
+
+                for (var i = 0; i < _SkinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
+                {
+                    _BlendShapeNames.Add(_SkinnedMeshRenderer.sharedMesh.GetBlendShapeName(i), i);
+                }
             }
         }
 
         //[Button(ButtonSizes.Large)]
-        public void GetBlendShapeNames()
+        public void GetSkinnedMeshRenderers()
         {
-            BlendShapeNames.Clear();
-            foreach (Transform child in Actor.GetComponentsInChildren<Transform>())
+            SkinnedMeshRenderers.Clear();
+            if (Actor)
             {
-                if (child.gameObject.GetComponent<SkinnedMeshRenderer>())
+                foreach (Transform child in Actor.GetComponentsInChildren<Transform>())
                 {
-                    SkinnedMeshRenderer childMesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
-
-                    for (var i = 0; i < childMesh.sharedMesh.blendShapeCount; i++)
+                    if (child.gameObject.GetComponent<SkinnedMeshRenderer>())
                     {
-                        BlendShapeNames.Add(childMesh.sharedMesh.GetBlendShapeName(i), i);
+                        SkinnedMeshRenderer childMesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
+                        if (childMesh.sharedMesh.blendShapeCount > 0)
+                            SkinnedMeshRenderers.Add(childMesh);
                     }
                 }
             }
@@ -147,7 +167,7 @@ namespace MrPuppet
 
         private void LoadFACs()
         {
-            FacsData = new Dictionary<int, float>();
+            JawFacsData = new Dictionary<int, float>();
 
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>("Assets/__Config/MrPuppetSettings.asset");
 
@@ -168,28 +188,28 @@ namespace MrPuppet
 
             if (File.Exists(filePath))
             {
-                var data = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
+                FACSData = File.ReadLines(filePath).Skip(21).Select(x => x.Split(',')).ToArray();
 
                 int JawOpenIndex = new int();
-                for (int i = 1; i < data.GetLength(0); i++)
+                for (int i = 1; i < FACSData.GetLength(0); i++)
                 {
-                    if (data[i][0] == "bs")
+                    if (FACSData[i][0] == "bs")
                     {
-                        for (int x = 1; x < data.Count(); x++)
+                        for (int x = 1; x < FACSData.Count(); x++)
                         {
-                            if (data[i][x] == "jawOpen")
+                            if (FACSData[i][x] == "jawOpen")
                             {
                                 JawOpenIndex = x + 11; // Add 11 to compensate for timestamp, head position, head eulerAngles, left-eye eulerAngles, right-eye eulerAngles
                                 break;
                             }
                         }
                     }
-                    if (data[i][0] == "k")
+                    if (FACSData[i][0] == "k")
                     {
-                        FacsData.Add(int.Parse(data[i][1]), float.Parse(data[i][JawOpenIndex]));
+                        //FacsData.Add(int.Parse(FACSData[i][1]), float.Parse(FACSData[i][JawOpenIndex]));
                     }
                 }
-                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FacsData.Count + " frames.";
+                InfoBoxMsg = "Found " + Take + ".txt, loaded " + JawFacsData.Count + " frames.";
                 Timer = 0;
             }
             else
@@ -230,8 +250,14 @@ namespace MrPuppet
                 if (!_JawTransformMapper)
                     CacheJawTransformMapper();
 
-                if (!BlendShapeNames.Any())
-                    GetBlendShapeNames();
+                foreach (Mapping map in Mappings)
+                {
+                    if (!map._BlendShapeNames.Any())
+                        map.GetBlendShapeNames();
+                }
+
+                if (!SkinnedMeshRenderers.Any())
+                    GetSkinnedMeshRenderers();
 
                 if (Recorder.IsRecording())
                 {
@@ -263,14 +289,16 @@ namespace MrPuppet
 
                     if (EnableFACSPlayback == true)
                     {
+
                         if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
                             _JawTransformMapper.UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000f;
 
-                        if (FacsData == null)
+                        if (FACSData == null) //if jawfacsdata == null
                             LoadFACs();
 
+                        /*
                         foreach (KeyValuePair<int, float> item in FacsData)
                         {
                             if (Timer >= item.Key)
@@ -278,8 +306,14 @@ namespace MrPuppet
                                 continue;
                             }
 
-                            if (_JawTransformMapper)
-                                _JawTransformMapper.JawPercentOverride = item.Value;
+                            //if (_JawTransformMapper)
+                            //    _JawTransformMapper.JawPercentOverride = item.Value;
+                            //skinnedMeshRenderer.SetBlendShapeWeight(blendShapeIndex, output);
+
+                            foreach (Mapping map in Mappings)
+                            {
+                                map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, item.Value * 100);
+                            }
 
                             // TODO: Better way to check when animation is over
                             // Jacob: "frame loop you can store the value of the last timestamp. then you know once your time accumulation is >= that its done"
@@ -290,7 +324,9 @@ namespace MrPuppet
 
                             break;
                         }
+                        */
 
+                        MapFACs();
                     }
                 }
 
@@ -319,6 +355,34 @@ namespace MrPuppet
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
             }
+        }
+
+        private void MapFACs()
+        {
+            for (int y = 1; y < FACSData.GetLength(0); y++)
+            {
+                if (Timer >= float.Parse(FACSData[y][1]))
+                    continue;
+
+                for (int x = 0; x < FACSData.Count(); x++)
+                {
+                    bool found = false;
+                    foreach (Mapping map in Mappings)
+                    {
+                        //Debug.Log(FACSData[0][x]);
+                        if (map.Channel.ToString() == FACSData[0][x])
+                        {
+                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, float.Parse(FACSData[y][x + 11]) * 100f);
+                            //Debug.Log(FACSData[y][1] + " " + FACSData[0][x] + " " + FACSData[y][x + 11]);
+                            found = true;
+                        }
+                    }
+                    if (found == true)
+                        return;
+                }
+            }
+            //Tell when animation is over
+            //Reset timer
         }
 
         private void CacheJawTransformMapper()
