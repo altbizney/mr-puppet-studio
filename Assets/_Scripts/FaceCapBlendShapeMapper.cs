@@ -148,5 +148,33 @@ namespace MrPuppet
                     map._SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
         }
+
+        [Button(ButtonSizes.Large)]
+        public void AutoLoadMaps()
+        {
+            GetSkinnedMeshRenderers();
+
+            foreach (SkinnedMeshRenderer smr in SkinnedMeshRenderers)
+            {
+                for (var i = 0; i < smr.sharedMesh.blendShapeCount; i++)
+                {
+                    string name = smr.sharedMesh.GetBlendShapeName(i).Substring(smr.sharedMesh.GetBlendShapeName(i).IndexOf('.') + 1);
+
+                    foreach (BlendShapeMap.FACSChannels channel in Enum.GetValues(typeof(BlendShapeMap.FACSChannels)))
+                    {
+                        if (channel.ToString() != name) continue;
+                        if (Mappings.Exists(x => x.Channel == channel)) continue;
+
+                        BlendShapeMap map = new BlendShapeMap();
+                        map.Channel = channel;
+                        map._SkinnedMeshRenderer = smr;
+                        map.BlendShape = i;
+                        map.GetBlendShapeNames();
+                        Mappings.Add(map);
+                    }
+                }
+
+            }
+        }
     }
 }
