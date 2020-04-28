@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
     public class FaceCapBlendShapeMapper : MonoBehaviour
     {
         [Serializable]
@@ -79,6 +79,16 @@ namespace MrPuppet
             [OnValueChanged("ChangedSkinnedMesh")]
             public SkinnedMeshRenderer _SkinnedMeshRenderer;
 
+            [Range(0f, 100f)]
+            [OnValueChanged("SetBlendValue")]
+            [DisableInPlayMode]
+            public float BlendValue = 0f;
+
+            private void SetBlendValue()
+            {
+                _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
+            }
+
             public BlendShapeMap()
             {
                 _SkinnedMeshRenderers = SkinnedMeshRenderers;
@@ -117,18 +127,14 @@ namespace MrPuppet
         {
             SkinnedMeshRenderers.Clear();
 
-            foreach (Transform child in gameObject.GetComponentsInChildren<Transform>())
+            foreach (SkinnedMeshRenderer child in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
-                if (child.gameObject.GetComponent<SkinnedMeshRenderer>())
-                {
-                    SkinnedMeshRenderer childMesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
-                    if (childMesh.sharedMesh.blendShapeCount > 0)
-                        SkinnedMeshRenderers.Add(childMesh);
-                }
+                if (child.sharedMesh.blendShapeCount > 0)
+                    SkinnedMeshRenderers.Add(child);
             }
         }
 
-        private void Update()
+        private void OnValidate()
         {
             if (SkinnedMeshRenderers.Count == 0 || SkinnedMeshRenderers == null)
                 GetSkinnedMeshRenderers();
