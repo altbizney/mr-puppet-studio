@@ -2,7 +2,6 @@
 using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
-using UnityEditor;
 
 namespace MrPuppet
 {
@@ -69,25 +68,29 @@ namespace MrPuppet
             };
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
-            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
-
-            [ValueDropdown("_BlendShapeNames")] //showif
-            public int BlendShape;
-
             public FACSChannels Channel;
 
-            [ValueDropdown("_SkinnedMeshRenderers")]
-            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
+            [ValueDropdown("_BlendShapeNames")]
+            public int BlendShape;
+
+            [ValueDropdown("_SkinnedMeshRenderers")]
+            [OnValueChanged("ChangedSkinnedMesh")]
+            public SkinnedMeshRenderer _SkinnedMeshRenderer;
 
             public BlendShapeMap()
             {
                 _SkinnedMeshRenderers = SkinnedMeshRenderers;
+                GetBlendShapeNames();
+                if (_SkinnedMeshRenderers.Count > 0)
+                    _SkinnedMeshRenderer = _SkinnedMeshRenderers[0];
             }
 
             public void GetBlendShapeNames()
             {
                 _BlendShapeNames.Clear();
+
                 if (_SkinnedMeshRenderer)
                 {
                     for (var i = 0; i < _SkinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
@@ -96,12 +99,20 @@ namespace MrPuppet
                     }
                 }
             }
+
+            private void ChangedSkinnedMesh()
+            {
+                GetBlendShapeNames();
+                if (_BlendShapeNames.Count > 0)
+                    BlendShape = _BlendShapeNames[0].Value;
+                //Debug.Log(_BlendShapeNames[0]);
+                //Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
+            }
         }
 
         private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
         public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
 
-        //[Button(ButtonSizes.Small)]
         public void GetSkinnedMeshRenderers()
         {
             SkinnedMeshRenderers.Clear();
@@ -119,15 +130,17 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (SkinnedMeshRenderers.Count == 0)
+            if (SkinnedMeshRenderers.Count == 0 || SkinnedMeshRenderers == null)
                 GetSkinnedMeshRenderers();
 
             foreach (BlendShapeMap map in Mappings)
             {
-                if (map._BlendShapeNames.Count == 0)
+                if (map._BlendShapeNames.Count == 0 || map._BlendShapeNames == null)
                     map.GetBlendShapeNames();
+
+                if (map._SkinnedMeshRenderer == null)
+                    map._SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
         }
-
     }
 }
