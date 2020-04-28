@@ -95,7 +95,7 @@ namespace MrPuppet
                 {
                     for (var i = 0; i < _SkinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
                     {
-                        _BlendShapeNames.Add(_SkinnedMeshRenderer.sharedMesh.GetBlendShapeName(i), i);
+                        _BlendShapeNames.Add(_SkinnedMeshRenderer.sharedMesh.GetBlendShapeName(i).Substring(_SkinnedMeshRenderer.sharedMesh.GetBlendShapeName(i).IndexOf('.') + 1), i);
                     }
                 }
             }
