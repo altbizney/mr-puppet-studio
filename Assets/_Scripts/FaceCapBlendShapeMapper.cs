@@ -6,7 +6,8 @@ using UnityEditor;
 
 namespace MrPuppet
 {
-    public class BlendShapeMapping : MonoBehaviour
+    [ExecuteInEditMode]
+    public class FaceCapBlendShapeMapper : MonoBehaviour
     {
         [Serializable]
         public class BlendShapeMap
@@ -66,6 +67,7 @@ namespace MrPuppet
                 mouthStretch_R,
                 tongueOut
             };
+
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
             private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
@@ -83,12 +85,9 @@ namespace MrPuppet
                 _SkinnedMeshRenderers = SkinnedMeshRenderers;
             }
 
-
-            [Button(ButtonSizes.Small)]
             public void GetBlendShapeNames()
             {
                 _BlendShapeNames.Clear();
-
                 if (_SkinnedMeshRenderer)
                 {
                     for (var i = 0; i < _SkinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
@@ -97,10 +96,12 @@ namespace MrPuppet
                     }
                 }
             }
-
         }
 
-        [Button(ButtonSizes.Small)]
+        private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+        public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
+
+        //[Button(ButtonSizes.Small)]
         public void GetSkinnedMeshRenderers()
         {
             SkinnedMeshRenderers.Clear();
@@ -116,9 +117,6 @@ namespace MrPuppet
             }
         }
 
-        private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
-        public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
-
         private void Update()
         {
             if (SkinnedMeshRenderers.Count == 0)
@@ -130,19 +128,6 @@ namespace MrPuppet
                     map.GetBlendShapeNames();
             }
         }
-
-        /*
-        private void OnValidate()
-        {
-            try
-            {
-                EditorWindow.GetWindow<AudioReference>().GetBlendShapeMappings();
-                //ss.GetBlendShapeMappings();
-            }
-            catch
-            { return; }
-        }
-        */
 
     }
 }

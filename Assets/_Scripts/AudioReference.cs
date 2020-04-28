@@ -30,6 +30,7 @@ namespace MrPuppet
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private JawTransformMapper _JawTransformMapper;
+        private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACs")]
@@ -45,21 +46,10 @@ namespace MrPuppet
         [ShowIf("EnableFACSPlayback")]
         [InfoBox("$InfoBoxMsg")]
         [OnValueChanged("LoadFACs")]
-        [OnValueChanged("GetBlendShapeMappings")]
+        [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
 
         private List<List<string>> FACSData = new List<List<string>>();
-        public List<BlendShapeMapping.BlendShapeMap> BlendMappings = new List<BlendShapeMapping.BlendShapeMap>();
-
-        [Button(ButtonSizes.Small)]
-        public void GetBlendShapeMappings()
-        {
-            if (Actor)
-            {
-                if (Actor.GetComponent<BlendShapeMapping>())
-                    BlendMappings = Actor.GetComponent<BlendShapeMapping>().Mappings;
-            }
-        }
 
         private void LoadFACs()
         {
@@ -148,13 +138,8 @@ namespace MrPuppet
                 if (!_JawTransformMapper)
                     CacheJawTransformMapper();
 
-                /*
-                foreach (Mapping map in Mappings)
-                {
-                    if (!map._BlendShapeNames.Any())
-                        map.GetBlendShapeNames();
-                }
-                */
+                if (!_FaceCapBlendShapeMapper)
+                    CacheFaceCapBlendShapeMapper();
 
                 if (Recorder.IsRecording())
                 {
@@ -228,7 +213,7 @@ namespace MrPuppet
                         found = true;
                     }
 
-                    foreach (BlendShapeMapping.BlendShapeMap map in BlendMappings)
+                    foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
                     {
                         if (map.Channel.ToString() == FACSData[0][x])
                         {
@@ -250,6 +235,16 @@ namespace MrPuppet
             {
                 if (Actor.GetComponent<JawTransformMapper>())
                     _JawTransformMapper = Actor.GetComponent<JawTransformMapper>();
+            }
+        }
+
+        public void CacheFaceCapBlendShapeMapper()
+        {
+            _FaceCapBlendShapeMapper = null;
+            if (Actor)
+            {
+                if (Actor.GetComponent<FaceCapBlendShapeMapper>())
+                    _FaceCapBlendShapeMapper = Actor.GetComponent<FaceCapBlendShapeMapper>();
             }
         }
     }
