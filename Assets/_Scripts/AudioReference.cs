@@ -50,6 +50,9 @@ namespace MrPuppet
         public GameObject Actor;
 
         private List<List<string>> FACSData = new List<List<string>>();
+        private List<string> FACS_bs = new List<string>();
+        private List<List<float>> FACS_k = new List<List<float>>();
+
 
         private void LoadFACs()
         {
@@ -72,28 +75,33 @@ namespace MrPuppet
 
             if (File.Exists(filePath))
             {
-                var TempData = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
+                // clear old data
+                FACS_bs.Clear();
+                FACS_k.Clear();
 
-                FACSData.Clear();
+                // load txt file, split each line into csv
+                var Lines = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
 
-                for (int y = 0; y < TempData.Length; y++)
+                // step thru every line
+                for (int y = 0; y < Lines.Length; y++)
                 {
-                    if (TempData[y][0] != "info")
+                    // 0 is the string "info", "bs", "k"
+                    // ignore info lines
+                    if (Lines[y][0] == "info") continue;
+                    // load bs lines
+                    if (Lines[y][0] == "bs")
                     {
-                        var tempList = new List<string>();
-                        for (int x = 0; x < TempData[y].Length; x++)
-                        {
-                            // TODO: Cache .ToString, etc.
-                            // Load 'bs' into its own array?
-                            if (TempData[y][0] == "k")
-                            {
-                                if (!(x > 1 && x <= 12))
-                                    tempList.Add(TempData[y][x]);
-                            }
-                            else
-                                tempList.Add(TempData[y][x]);
-                        }
-                        FACSData.Add(tempList);
+                        // remainder of line is array of channel names
+                        FACS_bs = Lines[y].Skip(1).ToList();
+                    }
+
+                    if (Lines[y][0] == "k")
+                    {
+                        // 0 is k
+                        // 1 is timestamp
+                        // 2 to 12 are eulers
+                        // remainder are blendshape values
+
                     }
                 }
 
@@ -111,6 +119,16 @@ namespace MrPuppet
             if (Actor == null)
                 InfoBoxMsg += "\n\nPlease select the actor in the scene.";
         }
+
+        /*
+        private void Print()
+        {
+            for (int y = 0; y < FACS_k.Count; y++)
+            {
+
+            }
+        }
+        */
 
         private void Update()
         {
@@ -210,6 +228,8 @@ namespace MrPuppet
                     {
                         if (_JawTransformMapper)
                             _JawTransformMapper.JawPercentOverride = float.Parse(FACSData[y][x]);
+
+                        Debug.Log(FACSData[y][1] + " " + FACSData[y][x]);
                         found = true;
                     }
 
@@ -222,10 +242,14 @@ namespace MrPuppet
                         }
                     }
                 }
+                if (float.Parse(FACSData[y][1]) >= FACSData.Count)
+                    Timer = 0;
+
+                //Found is not neccesary
+                //Youll found no matter what.
                 if (found == true)
                     return;
             }
-            // TODO: Detect end of animation + Reset timer
         }
 
         private void CacheJawTransformMapper()
