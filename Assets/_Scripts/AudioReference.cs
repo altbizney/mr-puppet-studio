@@ -49,7 +49,6 @@ namespace MrPuppet
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
 
-        private List<List<string>> FACSData = new List<List<string>>();
         private List<string> FACS_bs = new List<string>();
         private List<List<float>> FACS_k = new List<List<float>>();
 
@@ -129,30 +128,11 @@ namespace MrPuppet
                 InfoBoxMsg += "\n\nPlease select the actor in the scene.";
         }
 
-        /*
-        [Button(ButtonSizes.Small)]
-        private void Print()
-        {
-            for (int y = 0; y < FACS_k.Count; y++)
-            {
-                for (int x = 0; x < FACS_k[y].Count; x++)
-                {
-                    Debug.Log(FACS_k[y][x]);
-                }
-            }
-
-            Debug.Log("Length k " + FACS_k[0].Count); //53
-            Debug.Log("Length bs " + FACS_bs.Count); //52
-
-            //DOJO-E029-A001
-            //TEST-E000-stub2
-        }
-        */
-
         private void Update()
         {
             if (EditorApplication.isPlaying)
             {
+
                 if (!Recorder)
                 {
                     try
@@ -198,8 +178,9 @@ namespace MrPuppet
                             _JawTransformMapper.UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000f;
+                        //Debug.Log("Timer outside of frame loop" + Timer);
 
-                        if (!FACSData.Any()) // facs.any
+                        if (!FACS_k.Any())
                             LoadFACs();
 
                         MapFACs();
@@ -235,8 +216,23 @@ namespace MrPuppet
 
         private void MapFACs()
         {
+            //Timer += Time.deltaTime * 1000f;
+            //Debug.Log("Timer outside of frame loop" + Timer);
+
             for (int y = 0; y < FACS_k.Count; y++)
             {
+
+                if (Timer >= FACS_k[FACS_k.Count - 1][0])
+                {
+                    Timer = 0;
+                    /*
+                    //Potentially inconvenient for testing
+                    if (Recorder.IsRecording())
+                        Recorder.StopRecording();
+                    return;
+                    */
+                }
+
                 if (Timer >= FACS_k[y][0])
                     continue;
 
@@ -255,17 +251,14 @@ namespace MrPuppet
                     {
                         if (map.Channel.ToString() == FACS_bs[x])
                         {
-                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x]);
-                            found = true;
+                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x]); //Map or multiply value when not testing.
                         }
                     }
                 }
 
-                if (float.Parse(FACSData[y][0]) >= FACS_k.Count)
-                    Timer = 0;
-
                 //Found is probably not neccesary
-                //Youll found no matter what.
+                //Youll found no matter what
+                //Potentially convenient for testing
                 if (found == true)
                     return;
             }
