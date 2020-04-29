@@ -2,10 +2,11 @@
 using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
+using System.Linq;
+
 
 namespace MrPuppet
 {
-    //[ExecuteInEditMode]
     public class FaceCapBlendShapeMapper : MonoBehaviour
     {
         [Serializable]
@@ -70,8 +71,6 @@ namespace MrPuppet
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
             public FACSChannels Channel;
 
-            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
-
             [ValueDropdown("_BlendShapeNames")]
             public int BlendShape;
 
@@ -83,6 +82,8 @@ namespace MrPuppet
             [OnValueChanged("SetBlendValue")]
             [DisableInPlayMode]
             public float BlendValue = 0f;
+
+            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
             private void SetBlendValue()
             {
@@ -115,8 +116,6 @@ namespace MrPuppet
                 GetBlendShapeNames();
                 if (_BlendShapeNames.Count > 0)
                     BlendShape = _BlendShapeNames[0].Value;
-                //Debug.Log(_BlendShapeNames[0]);
-                //Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
             }
         }
 
@@ -130,24 +129,31 @@ namespace MrPuppet
             foreach (SkinnedMeshRenderer child in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
                 if (child.sharedMesh.blendShapeCount > 0)
+                {
                     SkinnedMeshRenderers.Add(child);
+                }
             }
         }
 
         private void OnValidate()
         {
-            if (SkinnedMeshRenderers.Count == 0 || SkinnedMeshRenderers == null)
+            if (SkinnedMeshRenderers == null || SkinnedMeshRenderers.Count == 0 || SkinnedMeshRenderers.Any(i => i == null))
+            {
                 GetSkinnedMeshRenderers();
+            }
 
             foreach (BlendShapeMap map in Mappings)
             {
+                if (!map._SkinnedMeshRenderer)
+                {
+                    map._SkinnedMeshRenderer = SkinnedMeshRenderers[0];
+                }
+
                 if (map._BlendShapeNames.Count == 0 || map._BlendShapeNames == null)
                     map.GetBlendShapeNames();
-
-                if (map._SkinnedMeshRenderer == null)
-                    map._SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
         }
+
 
         [Button(ButtonSizes.Large)]
         public void AutoLoadMaps()
@@ -175,6 +181,7 @@ namespace MrPuppet
                 }
 
             }
+
         }
     }
 }

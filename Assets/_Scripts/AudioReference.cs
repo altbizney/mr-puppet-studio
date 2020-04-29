@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -49,9 +50,8 @@ namespace MrPuppet
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
 
-        private List<string> FACS_bs = new List<string>();
+        private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
         private List<List<float>> FACS_k = new List<List<float>>();
-
 
         private void LoadFACs()
         {
@@ -91,7 +91,7 @@ namespace MrPuppet
                     if (Lines[y][0] == "bs")
                     {
                         // remainder of line is array of channel names
-                        FACS_bs = Lines[y].ToList();
+                        FACS_bs = Lines[y].Skip(1).ToList().ConvertAll(delegate (string x) { return (FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels)Enum.Parse(typeof(FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels), x); });
                     }
 
                     var tempList = new List<float>();
@@ -112,7 +112,6 @@ namespace MrPuppet
                         FACS_k.Add(tempList);
                     }
                 }
-
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
             }
@@ -123,13 +122,16 @@ namespace MrPuppet
                 else
                     InfoBoxMsg = "Could not find " + Take + ".txt";
             }
-
-            if (Actor == null)
-                InfoBoxMsg += "\n\nPlease select the actor in the scene.";
         }
 
         private void Update()
         {
+            if (!Actor)
+            {
+                if (!InfoBoxMsg.Contains("Please select the actor in the scene"))
+                    InfoBoxMsg += "\n\nPlease select the actor in the scene.";
+            }
+
             if (EditorApplication.isPlaying)
             {
 
@@ -178,7 +180,6 @@ namespace MrPuppet
                             _JawTransformMapper.UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000f;
-                        //Debug.Log("Timer outside of frame loop" + Timer);
 
                         if (!FACS_k.Any())
                             LoadFACs();
@@ -216,51 +217,42 @@ namespace MrPuppet
 
         private void MapFACs()
         {
-            //Timer += Time.deltaTime * 1000f;
-            //Debug.Log("Timer outside of frame loop" + Timer);
-
             for (int y = 0; y < FACS_k.Count; y++)
             {
 
                 if (Timer >= FACS_k[FACS_k.Count - 1][0])
                 {
                     Timer = 0;
-                    /*
-                    //Potentially inconvenient for testing
+
                     if (Recorder.IsRecording())
                         Recorder.StopRecording();
+
                     return;
-                    */
                 }
 
                 if (Timer >= FACS_k[y][0])
                     continue;
 
-                bool found = false;
-                for (int x = 0; x < FACS_k[y].Count(); x++)
+                for (int x = 0; x < FACS_bs.Count(); x++)
                 {
-                    if (FACS_bs[x] == "jawOpen")
+                    if (FACS_bs[x] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
                     {
                         if (_JawTransformMapper)
-                            _JawTransformMapper.JawPercentOverride = FACS_k[y][x];
-
-                        found = true;
+                        {
+                            _JawTransformMapper.JawPercentOverride = FACS_k[y][x + 1];
+                        }
                     }
 
-                    foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
+                    if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
                     {
-                        if (map.Channel.ToString() == FACS_bs[x])
+                        foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
                         {
-                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x]); //Map or multiply value when not testing.
+                            if (map.Channel == FACS_bs[x])
+                                map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x + 1]);
                         }
                     }
                 }
-
-                //Found is probably not neccesary
-                //Youll found no matter what
-                //Potentially convenient for testing
-                if (found == true)
-                    return;
+                return;
             }
         }
 
