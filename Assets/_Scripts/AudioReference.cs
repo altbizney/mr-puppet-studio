@@ -92,8 +92,10 @@ namespace MrPuppet
                     if (Lines[y][0] == "bs")
                     {
                         // remainder of line is array of channel names
-                        FACS_bs = Lines[y].Skip(1).ToList();
+                        FACS_bs = Lines[y].ToList();
                     }
+
+                    var tempList = new List<float>();
 
                     if (Lines[y][0] == "k")
                     {
@@ -101,7 +103,14 @@ namespace MrPuppet
                         // 1 is timestamp
                         // 2 to 12 are eulers
                         // remainder are blendshape values
+                        tempList.Add(float.Parse(Lines[y][1]));
 
+                        for (int x = 12; x < Lines[y].Length; x++)
+                        {
+                            tempList.Add(float.Parse(Lines[y][x]));
+                        }
+
+                        FACS_k.Add(tempList);
                     }
                 }
 
@@ -121,12 +130,22 @@ namespace MrPuppet
         }
 
         /*
+        [Button(ButtonSizes.Small)]
         private void Print()
         {
             for (int y = 0; y < FACS_k.Count; y++)
             {
-
+                for (int x = 0; x < FACS_k[y].Count; x++)
+                {
+                    Debug.Log(FACS_k[y][x]);
+                }
             }
+
+            Debug.Log("Length k " + FACS_k[0].Count); //53
+            Debug.Log("Length bs " + FACS_bs.Count); //52
+
+            //DOJO-E029-A001
+            //TEST-E000-stub2
         }
         */
 
@@ -216,36 +235,36 @@ namespace MrPuppet
 
         private void MapFACs()
         {
-            for (int y = 1; y < FACSData.Count; y++)
+            for (int y = 0; y < FACS_k.Count; y++)
             {
-                if (Timer >= float.Parse(FACSData[y][1]))
+                if (Timer >= FACS_k[y][0])
                     continue;
 
                 bool found = false;
-                for (int x = 0; x < FACSData[0].Count(); x++)
+                for (int x = 0; x < FACS_k[y].Count(); x++)
                 {
-                    if (FACSData[0][x] == "jawOpen")
+                    if (FACS_bs[x] == "jawOpen")
                     {
                         if (_JawTransformMapper)
-                            _JawTransformMapper.JawPercentOverride = float.Parse(FACSData[y][x]);
+                            _JawTransformMapper.JawPercentOverride = FACS_k[y][x];
 
-                        Debug.Log(FACSData[y][1] + " " + FACSData[y][x]);
                         found = true;
                     }
 
                     foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
                     {
-                        if (map.Channel.ToString() == FACSData[0][x])
+                        if (map.Channel.ToString() == FACS_bs[x])
                         {
-                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, float.Parse(FACSData[y][x]) * 100f);
+                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x]);
                             found = true;
                         }
                     }
                 }
+
                 if (float.Parse(FACSData[y][1]) >= FACSData.Count)
                     Timer = 0;
 
-                //Found is not neccesary
+                //Found is probably not neccesary
                 //Youll found no matter what.
                 if (found == true)
                     return;
