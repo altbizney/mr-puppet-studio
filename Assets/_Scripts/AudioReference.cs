@@ -114,7 +114,7 @@ namespace MrPuppet
                     }
                 }
 
-                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACSData.Count + " frames.";
+                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
             }
             else
@@ -261,7 +261,7 @@ namespace MrPuppet
                     }
                 }
 
-                if (float.Parse(FACSData[y][1]) >= FACSData.Count)
+                if (float.Parse(FACSData[y][0]) >= FACS_k.Count)
                     Timer = 0;
 
                 //Found is probably not neccesary
