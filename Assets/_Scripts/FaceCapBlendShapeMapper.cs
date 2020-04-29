@@ -163,7 +163,7 @@ namespace MrPuppet
                     foreach (BlendShapeMap.FACSChannels channel in Enum.GetValues(typeof(BlendShapeMap.FACSChannels)))
                     {
                         if (channel.ToString() != name) continue;
-                        if (Mappings.Exists(x => x.Channel == channel)) continue;
+                        if (Mappings.Exists(x => x._SkinnedMeshRenderer == smr && x.Channel == channel)) continue;
 
                         BlendShapeMap map = new BlendShapeMap();
                         map.Channel = channel;
