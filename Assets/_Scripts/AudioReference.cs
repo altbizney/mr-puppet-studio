@@ -184,7 +184,54 @@ namespace MrPuppet
                         if (!FACS_k.Any())
                             LoadFACS();
 
-                        MapFACS();
+                        for (int k = 0; k < FACS_k.Count; k++)
+                        {
+
+                            //Stop recording when the time since we started recording is greater than the last keyframe
+                            if (Timer >= FACS_k[FACS_k.Count - 1][0])
+                            {
+                                Timer = 0;
+
+                                if (Recorder.IsRecording())
+                                    Recorder.StopRecording();
+
+                                break;
+                            }
+
+                            //Don't continue to the bottom of the loop, until we a value bigger than timer.
+                            //This guarantees we get the next biggest value after all the values smaller then us.
+                            //This logic allows us to drop frames when needed.
+                            if (Timer >= FACS_k[k][0])
+                                continue;
+
+                            //Go through the list of channels
+                            //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings within the FaceCapBlendShapeMapper component
+                            //we take corresponding value associated with that channel at that timestamp
+                            //and apply it to either a value within JawTransformMapper, or to the corresponding BlendShape dictated by FaceCapeBlendShapeMapper
+                            //We must provide an offset to bs because of the difference in size of the Lists
+                            for (int bs = 0; bs < FACS_bs.Count(); bs++)
+                            {
+                                if (FACS_bs[bs] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
+                                {
+                                    if (_JawTransformMapper)
+                                    {
+                                        _JawTransformMapper.JawPercentOverride = FACS_k[k][bs + 1];
+                                    }
+                                }
+
+                                if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
+                                {
+                                    foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
+                                    {
+                                        if (map.Channel == FACS_bs[bs])
+                                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100);
+                                    }
+                                }
+                            }
+
+                            //We are only interested in the next valid frame, and should only perform logic for said frame. A break ensures that.
+                            break;
+                        }
                     }
                 }
 
@@ -212,47 +259,6 @@ namespace MrPuppet
 
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
-            }
-        }
-
-        private void MapFACS()
-        {
-            for (int y = 0; y < FACS_k.Count; y++)
-            {
-
-                if (Timer >= FACS_k[FACS_k.Count - 1][0])
-                {
-                    Timer = 0;
-
-                    if (Recorder.IsRecording())
-                        Recorder.StopRecording();
-
-                    return;
-                }
-
-                if (Timer >= FACS_k[y][0])
-                    continue;
-
-                for (int x = 0; x < FACS_bs.Count(); x++)
-                {
-                    if (FACS_bs[x] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
-                    {
-                        if (_JawTransformMapper)
-                        {
-                            _JawTransformMapper.JawPercentOverride = FACS_k[y][x + 1];
-                        }
-                    }
-
-                    if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
-                    {
-                        foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
-                        {
-                            if (map.Channel == FACS_bs[x])
-                                map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x + 1] * 100);
-                        }
-                    }
-                }
-                return;
             }
         }
 
