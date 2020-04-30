@@ -34,7 +34,7 @@ namespace MrPuppet
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
-        [OnValueChanged("LoadFACs")]
+        [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheJawTransformMapper")]
         public string Take;
 
@@ -46,14 +46,14 @@ namespace MrPuppet
         [BoxGroup]
         [ShowIf("EnableFACSPlayback")]
         [InfoBox("$InfoBoxMsg")]
-        [OnValueChanged("LoadFACs")]
+        [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
 
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
         private List<List<float>> FACS_k = new List<List<float>>();
 
-        private void LoadFACs()
+        private void LoadFACS()
         {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>("Assets/__Config/MrPuppetSettings.asset");
 
@@ -166,7 +166,7 @@ namespace MrPuppet
                     {
                         if (AudioIsPlaying == false)
                         {
-                            LoadFACs();
+                            LoadFACS();
                             TakeAfterPlay = Take;
                             HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
                             AudioIsPlaying = true;
@@ -182,9 +182,9 @@ namespace MrPuppet
                         Timer += Time.deltaTime * 1000f;
 
                         if (!FACS_k.Any())
-                            LoadFACs();
+                            LoadFACS();
 
-                        MapFACs();
+                        MapFACS();
                     }
                 }
 
@@ -215,7 +215,7 @@ namespace MrPuppet
             }
         }
 
-        private void MapFACs()
+        private void MapFACS()
         {
             for (int y = 0; y < FACS_k.Count; y++)
             {
