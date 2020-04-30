@@ -198,7 +198,7 @@ namespace MrPuppet
                                 break;
                             }
 
-                            //Don't continue to the bottom of the loop, until we a value bigger than timer.
+                            //Don't continue to the bottom of the loop, until we get a value bigger than timer.
                             //This guarantees we get the next biggest value after all the values smaller then us.
                             //This logic allows us to drop frames when needed.
                             if (Timer >= FACS_k[k][0])
@@ -206,7 +206,7 @@ namespace MrPuppet
 
                             //Go through the list of channels
                             //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings within the FaceCapBlendShapeMapper component
-                            //we take corresponding value associated with that channel at that timestamp
+                            //we take the corresponding value associated with that channel at that timestamp
                             //and apply it to either a value within JawTransformMapper, or to the corresponding BlendShape dictated by FaceCapeBlendShapeMapper
                             //We must provide an offset to bs because of the difference in size of the Lists
                             for (int bs = 0; bs < FACS_bs.Count(); bs++)
