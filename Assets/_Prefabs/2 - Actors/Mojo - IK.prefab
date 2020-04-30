@@ -533,6 +533,10 @@ MonoBehaviour:
     BlendShape: 23
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendValue: 0
+  - Channel: 24
+    BlendShape: 24
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
   - Channel: 25
     BlendShape: 25
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
@@ -547,6 +551,10 @@ MonoBehaviour:
     BlendValue: 0
   - Channel: 28
     BlendShape: 28
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
+  - Channel: 29
+    BlendShape: 29
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendValue: 0
   - Channel: 30
@@ -577,6 +585,14 @@ MonoBehaviour:
     BlendShape: 36
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendValue: 0
+  - Channel: 37
+    BlendShape: 37
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
+  - Channel: 38
+    BlendShape: 38
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
   - Channel: 39
     BlendShape: 39
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
@@ -599,6 +615,14 @@ MonoBehaviour:
     BlendValue: 0
   - Channel: 44
     BlendShape: 44
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
+  - Channel: 45
+    BlendShape: 45
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+    BlendValue: 0
+  - Channel: 46
+    BlendShape: 46
     _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendValue: 0
   - Channel: 47
