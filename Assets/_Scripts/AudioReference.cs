@@ -251,7 +251,7 @@ namespace MrPuppet
                     {
                         if (map.Channel.ToString() == FACS_bs[x])
                         {
-                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x] * 100f); //Map or multiply value when not testing.
+                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[y][x]); //Map or multiply value when not testing.
                         }
                     }
                 }
