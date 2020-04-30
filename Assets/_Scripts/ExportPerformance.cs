@@ -188,10 +188,10 @@ namespace MrPuppet
                 ExportPerformanceInstance = instance;
                 window = (RecorderPrompt)EditorWindow.GetWindow(typeof(RecorderPrompt), true, "Rate Take");
                 window.ShowUtility();
-                window.position = new Rect((Screen.currentResolution.width / 2) - (320 / 2), (Screen.currentResolution.height / 2) - (100 / 2), 320, 100);
+                window.position = new Rect((Screen.currentResolution.width / 2) - (320 / 2), (Screen.currentResolution.height / 2) - (100 / 2), 340, 100);
 
-                InstructionsLineOne = "Select “Keeper (↵)” or “Blooper (B)” to create FBX of take.";
-                InstructionsLineTwo = "Select “Trash (T)” to skip FBX.";
+                InstructionsLineTwo = "Select “Blooper (W)” or “Keeper (↵, E)” to create FBX of take.";
+                InstructionsLineOne = "Select “Trash (Q)” to skip FBX.";
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
 
@@ -199,7 +199,7 @@ namespace MrPuppet
             }
 
             [HorizontalGroup]
-            [Button("Trash (T)", ButtonSizes.Medium)]
+            [Button("Trash (Q)", ButtonSizes.Medium)]
             public void Trash()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Trash;
@@ -207,7 +207,7 @@ namespace MrPuppet
             }
 
             [HorizontalGroup]
-            [Button("Blooper (B)", ButtonSizes.Medium)]
+            [Button("Blooper (W)", ButtonSizes.Medium)]
             public void Blooper()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Blooper;
@@ -216,7 +216,7 @@ namespace MrPuppet
 
             [HorizontalGroup]
             [GUIColor(0.5f, 0.8f, 0.5f)]
-            [Button("Keeper (↵)", ButtonSizes.Medium)]
+            [Button("Keeper (↵, E)", ButtonSizes.Medium)]
             public void Keeper()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
@@ -239,10 +239,13 @@ namespace MrPuppet
                     case KeyCode.Return:
                         Keeper();
                         break;
-                    case KeyCode.T:
+                    case KeyCode.Q:
                         Trash();
                         break;
-                    case KeyCode.B:
+                    case KeyCode.W:
+                        Blooper();
+                        break;
+                    case KeyCode.E:
                         Blooper();
                         break;
                 }
