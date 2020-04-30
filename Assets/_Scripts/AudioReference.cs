@@ -224,7 +224,7 @@ namespace MrPuppet
                                     foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
                                     {
                                         if (map.Channel == FACS_bs[bs])
-                                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100);
+                                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100f);
                                     }
                                 }
                             }
