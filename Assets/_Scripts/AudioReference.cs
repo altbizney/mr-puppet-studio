@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
-
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,13 +28,13 @@ namespace MrPuppet
         private bool AudioIsPlaying;
         private string TakeAfterPlay;
 
-        private Dictionary<int, float> FacsData;
         private float Timer;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private JawTransformMapper _JawTransformMapper;
+        private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
-        [OnValueChanged("LoadFACs")]
+        [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheJawTransformMapper")]
         public string Take;
 
@@ -46,13 +46,15 @@ namespace MrPuppet
         [BoxGroup]
         [ShowIf("EnableFACSPlayback")]
         [InfoBox("$InfoBoxMsg")]
-        [OnValueChanged("LoadFACs")]
+        [OnValueChanged("LoadFACS")]
+        [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
 
-        private void LoadFACs()
-        {
-            FacsData = new Dictionary<int, float>();
+        private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
+        private List<List<float>> FACS_k = new List<List<float>>();
 
+        private void LoadFACS()
+        {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>("Assets/__Config/MrPuppetSettings.asset");
 
             string filePath = "";
@@ -72,28 +74,45 @@ namespace MrPuppet
 
             if (File.Exists(filePath))
             {
-                var data = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
+                // clear old data
+                FACS_bs.Clear();
+                FACS_k.Clear();
 
-                int JawOpenIndex = new int();
-                for (int i = 1; i < data.GetLength(0); i++)
+                // load txt file, split each line into csv
+                var Lines = File.ReadLines(filePath).Select(x => x.Split(',')).ToArray();
+
+                // step thru every line
+                for (int y = 0; y < Lines.Length; y++)
                 {
-                    if (data[i][0] == "bs")
+                    // 0 is the string "info", "bs", "k"
+                    // ignore info lines
+                    if (Lines[y][0] == "info") continue;
+                    // load bs lines
+                    if (Lines[y][0] == "bs")
                     {
-                        for (int x = 1; x < data.Count(); x++)
-                        {
-                            if (data[i][x] == "jawOpen")
-                            {
-                                JawOpenIndex = x + 11; // Add 11 to compensate for timestamp, head position, head eulerAngles, left-eye eulerAngles, right-eye eulerAngles
-                                break;
-                            }
-                        }
+                        // remainder of line is array of channel names
+                        FACS_bs = Lines[y].Skip(1).ToList().ConvertAll(delegate (string x) { return (FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels)Enum.Parse(typeof(FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels), x); });
                     }
-                    if (data[i][0] == "k")
+
+                    var tempList = new List<float>();
+
+                    if (Lines[y][0] == "k")
                     {
-                        FacsData.Add(int.Parse(data[i][1]), float.Parse(data[i][JawOpenIndex]));
+                        // 0 is k
+                        // 1 is timestamp
+                        // 2 to 12 are eulers
+                        // remainder are blendshape values
+                        tempList.Add(float.Parse(Lines[y][1]));
+
+                        for (int x = 12; x < Lines[y].Length; x++)
+                        {
+                            tempList.Add(float.Parse(Lines[y][x]));
+                        }
+
+                        FACS_k.Add(tempList);
                     }
                 }
-                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FacsData.Count + " frames.";
+                InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
             }
             else
@@ -103,15 +122,19 @@ namespace MrPuppet
                 else
                     InfoBoxMsg = "Could not find " + Take + ".txt";
             }
-
-            if (Actor == null)
-                InfoBoxMsg += "\n\nPlease select the actor in the scene.";
         }
 
         private void Update()
         {
+            if (!Actor)
+            {
+                if (!InfoBoxMsg.Contains("Please select the actor in the scene"))
+                    InfoBoxMsg += "\n\nPlease select the actor in the scene.";
+            }
+
             if (EditorApplication.isPlaying)
             {
+
                 if (!Recorder)
                 {
                     try
@@ -134,64 +157,81 @@ namespace MrPuppet
                 if (!_JawTransformMapper)
                     CacheJawTransformMapper();
 
+                if (!_FaceCapBlendShapeMapper)
+                    CacheFaceCapBlendShapeMapper();
+
                 if (Recorder.IsRecording())
                 {
                     if (EnableAudioPlayback == true)
                     {
                         if (AudioIsPlaying == false)
                         {
-                            //bool found = false;
-                            //string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Downloads";
-                            //DirectoryInfo d = new DirectoryInfo(DataPath);
-                            //FileInfo[] Files = d.GetFiles("*.wav");
-                            //foreach (FileInfo file in Files)
-                            //{
-                            //  if (file.Name == Take.ToUpper() + ".wav")
-                            //       found = true;
-                            //}
-
-                            //if (found == true)
-                            //{
-                            LoadFACs();
+                            LoadFACS();
                             TakeAfterPlay = Take;
                             HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
                             AudioIsPlaying = true;
-                            //}
-                            //else
-                            //  Debug.Log("Could not find the audio file associated with Audio Reference Take");
                         }
                     }
 
                     if (EnableFACSPlayback == true)
                     {
+
                         if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
                             _JawTransformMapper.UseJawPercentOverride = true;
 
                         Timer += Time.deltaTime * 1000f;
 
-                        if (FacsData == null)
-                            LoadFACs();
+                        if (!FACS_k.Any())
+                            LoadFACS();
 
-                        foreach (KeyValuePair<int, float> item in FacsData)
+                        for (int k = 0; k < FACS_k.Count; k++)
                         {
-                            if (Timer >= item.Key)
-                            {
-                                continue;
-                            }
 
-                            if (_JawTransformMapper)
-                                _JawTransformMapper.JawPercentOverride = item.Value;
-
-                            // TODO: Better way to check when animation is over
-                            // Jacob: "frame loop you can store the value of the last timestamp. then you know once your time accumulation is >= that its done"
-                            if (item.Key == FacsData.Keys.Last())
+                            //Stop recording when the time since we started recording is greater than the last keyframe
+                            if (Timer >= FACS_k[FACS_k.Count - 1][0])
                             {
                                 Timer = 0;
+
+                                if (Recorder.IsRecording())
+                                    Recorder.StopRecording();
+
+                                break;
                             }
 
+                            //Don't continue to the bottom of the loop, until we get a value bigger than timer.
+                            //This guarantees we get the next biggest value after all the values smaller then us.
+                            //This logic allows us to drop frames when needed.
+                            if (Timer >= FACS_k[k][0])
+                                continue;
+
+                            //Go through the list of channels
+                            //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings within the FaceCapBlendShapeMapper component
+                            //we take the corresponding value associated with that channel at that timestamp
+                            //and apply it to either a value within JawTransformMapper, or to the corresponding BlendShape dictated by FaceCapeBlendShapeMapper
+                            //We must provide an offset to bs because of the difference in size of the Lists
+                            for (int bs = 0; bs < FACS_bs.Count(); bs++)
+                            {
+                                if (FACS_bs[bs] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
+                                {
+                                    if (_JawTransformMapper)
+                                    {
+                                        _JawTransformMapper.JawPercentOverride = FACS_k[k][bs + 1];
+                                    }
+                                }
+
+                                if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
+                                {
+                                    foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
+                                    {
+                                        if (map.Channel == FACS_bs[bs])
+                                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100f);
+                                    }
+                                }
+                            }
+
+                            //We are only interested in the next valid frame, and should only perform logic for said frame. A break ensures that.
                             break;
                         }
-
                     }
                 }
 
@@ -229,6 +269,16 @@ namespace MrPuppet
             {
                 if (Actor.GetComponent<JawTransformMapper>())
                     _JawTransformMapper = Actor.GetComponent<JawTransformMapper>();
+            }
+        }
+
+        public void CacheFaceCapBlendShapeMapper()
+        {
+            _FaceCapBlendShapeMapper = null;
+            if (Actor)
+            {
+                if (Actor.GetComponent<FaceCapBlendShapeMapper>())
+                    _FaceCapBlendShapeMapper = Actor.GetComponent<FaceCapBlendShapeMapper>();
             }
         }
     }
