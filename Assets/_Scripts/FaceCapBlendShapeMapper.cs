@@ -69,20 +69,27 @@ namespace MrPuppet
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
 
+            /*
+            [HideLabel]
+            public int MappingIndex;
+            */
 
             [ValueDropdown("_SkinnedMeshRenderers", DropdownWidth = 200)]
             [OnValueChanged("ChangedSkinnedMesh")]
             [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
             [HideLabel]
+            [TableColumnWidth(250)]
             public SkinnedMeshRenderer _SkinnedMeshRenderer;
 
             [ValueDropdown("_BlendShapeNames", DropdownWidth = 150)]
             [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
             [HideLabel]
+            [TableColumnWidth(250)]
             public int BlendShape;
 
             [HideLabel]
             [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [TableColumnWidth(250)]
             public FACSChannels Channel;
 
             [Range(0f, 100f)]
@@ -95,7 +102,7 @@ namespace MrPuppet
 
             private void SetBlendValue()
             {
-                Debug.Log("Blend Value: " + BlendValue + " Blend Index: " + BlendShape + " SMR: " + _SkinnedMeshRenderer.name);
+                //Debug.Log("Blend Value: " + BlendValue + " Blend Index: " + BlendShape + " SMR: " + _SkinnedMeshRenderer.name);
                 _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
             }
 
@@ -110,6 +117,13 @@ namespace MrPuppet
                 if (SkinnedMeshRenderers.Count > 0)
                     _SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
+
+            /*
+            ~BlendShapeMap()
+            {
+                Debug.Log("deconstruct");
+            }
+            */
 
             public void GetBlendShapeNames()
             {

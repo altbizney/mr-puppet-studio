@@ -316,6 +316,7 @@ namespace MrPuppet
                         if (AudioIsPlaying == true)
                         {
                             HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
                             AudioIsPlaying = false;
                         }
                     }
@@ -328,6 +329,7 @@ namespace MrPuppet
                     if (AudioIsPlaying == true)
                     {
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
                         AudioIsPlaying = false;
                     }
 
