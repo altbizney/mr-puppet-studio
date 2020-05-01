@@ -33,7 +33,7 @@ namespace MrPuppet
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
-        private bool PlayFACS;
+        private bool FACSPlayButton;
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACS")]
@@ -55,16 +55,16 @@ namespace MrPuppet
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
         private List<List<float>> FACS_k = new List<List<float>>();
 
-        private bool DisablePlayButton; //edge case with this. onenable = false. when exiti play mode = false?
+        private bool DisablePlayButton;
 
         private bool NotPlaying()
         {
-            return !PlayFACS;
+            return !FACSPlayButton;
         }
 
         private bool IsPlaying()
         {
-            return PlayFACS;
+            return FACSPlayButton;
         }
 
         [HideIf("IsPlaying", false)]
@@ -75,7 +75,7 @@ namespace MrPuppet
         public void Play()
         {
             Timer = 0;
-            PlayFACS = true;
+            FACSPlayButton = true;
         }
 
         [HideIf("NotPlaying", false)]
@@ -86,7 +86,7 @@ namespace MrPuppet
         public void Stop()
         {
             Timer = 0;
-            PlayFACS = false;
+            FACSPlayButton = false;
         }
 
         private void PlaybackLogic()
@@ -276,13 +276,12 @@ namespace MrPuppet
                 if (Recorder.IsRecording())
                 {
                     DisablePlayButton = true;
-                    //PlayFACS = true;
                     PlaybackLogic();
                 }
                 else
                     DisablePlayButton = false;
 
-                if (PlayFACS)
+                if (FACSPlayButton)
                 {
                     if (Recorder.IsRecording())
                     {
@@ -297,7 +296,7 @@ namespace MrPuppet
                     PlaybackLogic();
                 }
 
-                if (!Recorder.IsRecording() && !PlayFACS)
+                if (!Recorder.IsRecording() && !FACSPlayButton)
                 {
                     if (AudioIsPlaying == true)
                     {
@@ -320,7 +319,7 @@ namespace MrPuppet
 
                 TakeAfterPlay = "";
 
-                PlayFACS = false;
+                FACSPlayButton = false;
                 DisablePlayButton = false;
 
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
