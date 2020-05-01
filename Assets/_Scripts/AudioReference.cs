@@ -33,6 +33,8 @@ namespace MrPuppet
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
+        private bool PlayFACS;
+
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheJawTransformMapper")]
@@ -52,6 +54,115 @@ namespace MrPuppet
 
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
         private List<List<float>> FACS_k = new List<List<float>>();
+
+        private bool DisablePlayButton; //edge case with this. onenable = false. when exiti play mode = false?
+
+        private bool NotPlaying()
+        {
+            return !PlayFACS;
+        }
+
+        private bool IsPlaying()
+        {
+            return PlayFACS;
+        }
+
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
+        [DisableInEditorMode]
+        [Button(ButtonSizes.Large)]
+	    [DisableIf("DisablePlayButton")]
+        public void Play()
+        {
+            Timer = 0;
+            PlayFACS = true;
+        }
+
+        [HideIf("NotPlaying", false)]
+        [ShowIf("IsPlaying", false)]
+        [DisableInEditorMode]
+        [Button(ButtonSizes.Large)]
+        [DisableIf("DisablePlayButton")]
+        public void Stop()
+        {
+            Timer = 0;
+            PlayFACS = false;
+        }
+
+        private void PlaybackLogic()
+        {            
+            if (EnableAudioPlayback == true)
+            {
+                if (AudioIsPlaying == false)
+                {
+                    LoadFACS();
+                    TakeAfterPlay = Take;
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
+                    AudioIsPlaying = true;
+                }
+            }
+
+            if (EnableFACSPlayback == true)
+            {
+
+                if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
+                    _JawTransformMapper.UseJawPercentOverride = true;
+
+                Timer += Time.deltaTime * 1000f;
+
+                if (!FACS_k.Any())
+                    LoadFACS();
+
+                for (int k = 0; k < FACS_k.Count; k++)
+                {
+
+                    //Stop recording when the time since we started recording is greater than the last keyframe
+                    if (Timer >= FACS_k[FACS_k.Count - 1][0])
+                    {
+                        Timer = 0;
+
+                        if (Recorder.IsRecording())
+                            Recorder.StopRecording();
+
+                        break;
+                    }
+
+                    //Don't continue to the bottom of the loop, until we get a value bigger than timer.
+                    //This guarantees we get the next biggest value after all the values smaller then us.
+                    //This logic allows us to drop frames when needed.
+                    if (Timer >= FACS_k[k][0])
+                        continue;
+
+                    //Go through the list of channels
+                    //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings inside of the FaceCapBlendShapeMapper component
+                    //we take the corresponding value associated with that channel at that timestamp
+                    //and apply it to either a value within JawTransformMapper, or to the corresponding BlendShape dictated by FaceCapeBlendShapeMapper
+                    //We must provide an offset to bs because of the difference in size of the Lists
+                    for (int bs = 0; bs < FACS_bs.Count(); bs++)
+                    {
+                        if (FACS_bs[bs] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
+                        {
+                            if (_JawTransformMapper)
+                            {
+                                _JawTransformMapper.JawPercentOverride = FACS_k[k][bs + 1];
+                            }
+                        }
+
+                        if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
+                        {
+                            foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
+                            {
+                                if (map.Channel == FACS_bs[bs])
+                                    map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100f);
+                            }
+                        }
+                    }
+
+                    //We are only interested in the next valid frame, and should only perform logic for said frame. A break ensures that.
+                    break;
+                }
+            }
+        }
 
         private void LoadFACS()
         {
@@ -114,6 +225,9 @@ namespace MrPuppet
                 }
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
+
+                if (EnableAudioPlayback)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
             else
             {
@@ -134,7 +248,6 @@ namespace MrPuppet
 
             if (EditorApplication.isPlaying)
             {
-
                 if (!Recorder)
                 {
                     try
@@ -162,80 +275,29 @@ namespace MrPuppet
 
                 if (Recorder.IsRecording())
                 {
-                    if (EnableAudioPlayback == true)
+                    DisablePlayButton = true;
+                    //PlayFACS = true;
+                    PlaybackLogic();
+                }
+                else
+                    DisablePlayButton = false;
+
+                if (PlayFACS)
+                {
+                    if (Recorder.IsRecording())
                     {
-                        if (AudioIsPlaying == false)
+                        Stop();
+                        if (AudioIsPlaying == true)
                         {
-                            LoadFACS();
-                            TakeAfterPlay = Take;
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
-                            AudioIsPlaying = true;
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                            AudioIsPlaying = false;
                         }
                     }
 
-                    if (EnableFACSPlayback == true)
-                    {
-
-                        if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
-                            _JawTransformMapper.UseJawPercentOverride = true;
-
-                        Timer += Time.deltaTime * 1000f;
-
-                        if (!FACS_k.Any())
-                            LoadFACS();
-
-                        for (int k = 0; k < FACS_k.Count; k++)
-                        {
-
-                            //Stop recording when the time since we started recording is greater than the last keyframe
-                            if (Timer >= FACS_k[FACS_k.Count - 1][0])
-                            {
-                                Timer = 0;
-
-                                if (Recorder.IsRecording())
-                                    Recorder.StopRecording();
-
-                                break;
-                            }
-
-                            //Don't continue to the bottom of the loop, until we get a value bigger than timer.
-                            //This guarantees we get the next biggest value after all the values smaller then us.
-                            //This logic allows us to drop frames when needed.
-                            if (Timer >= FACS_k[k][0])
-                                continue;
-
-                            //Go through the list of channels
-                            //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings within the FaceCapBlendShapeMapper component
-                            //we take the corresponding value associated with that channel at that timestamp
-                            //and apply it to either a value within JawTransformMapper, or to the corresponding BlendShape dictated by FaceCapeBlendShapeMapper
-                            //We must provide an offset to bs because of the difference in size of the Lists
-                            for (int bs = 0; bs < FACS_bs.Count(); bs++)
-                            {
-                                if (FACS_bs[bs] == FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels.jawOpen)
-                                {
-                                    if (_JawTransformMapper)
-                                    {
-                                        _JawTransformMapper.JawPercentOverride = FACS_k[k][bs + 1];
-                                    }
-                                }
-
-                                if (_FaceCapBlendShapeMapper && _FaceCapBlendShapeMapper.Mappings != null && _FaceCapBlendShapeMapper.Mappings.Count > 0)
-                                {
-                                    foreach (FaceCapBlendShapeMapper.BlendShapeMap map in _FaceCapBlendShapeMapper.Mappings)
-                                    {
-                                        if (map.Channel == FACS_bs[bs])
-                                            map._SkinnedMeshRenderer.SetBlendShapeWeight(map.BlendShape, FACS_k[k][bs + 1] * 100f);
-                                    }
-                                }
-                            }
-
-                            //We are only interested in the next valid frame, and should only perform logic for said frame. A break ensures that.
-                            break;
-                        }
-                    }
+                    PlaybackLogic();
                 }
 
-                if (!Recorder.IsRecording())
+                if (!Recorder.IsRecording() && !PlayFACS)
                 {
                     if (AudioIsPlaying == true)
                     {
@@ -255,7 +317,11 @@ namespace MrPuppet
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                     AudioIsPlaying = false;
                 }
+
                 TakeAfterPlay = "";
+
+                PlayFACS = false;
+                DisablePlayButton = false;
 
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
