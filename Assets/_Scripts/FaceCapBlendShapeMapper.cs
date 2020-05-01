@@ -93,20 +93,22 @@ namespace MrPuppet
 
             //maybe tiny bit less room for slider. set width of groups/tablelist?
 
-            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
-
             private void SetBlendValue()
             {
                 Debug.Log("Blend Value: " + BlendValue + " Blend Index: " + BlendShape + " SMR: " + _SkinnedMeshRenderer.name);
                 _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
             }
 
+            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers()
+            {
+                return SkinnedMeshRenderers;
+            }
+
             public BlendShapeMap()
             {
-                _SkinnedMeshRenderers = SkinnedMeshRenderers;
                 GetBlendShapeNames();
-                if (_SkinnedMeshRenderers.Count > 0)
-                    _SkinnedMeshRenderer = _SkinnedMeshRenderers[0];
+                if (SkinnedMeshRenderers.Count > 0)
+                    _SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
 
             public void GetBlendShapeNames()
