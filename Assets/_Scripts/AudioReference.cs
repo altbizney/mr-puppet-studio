@@ -1,15 +1,14 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Linq;
-using System;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Recorder;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using UnityEditor.Recorder;
 #endif
 
 namespace MrPuppet
@@ -71,7 +70,7 @@ namespace MrPuppet
         [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
         [Button(ButtonSizes.Large)]
-	    [DisableIf("DisablePlayButton")]
+        [DisableIf("DisablePlayButton")]
         public void Play()
         {
             Timer = 0;
@@ -87,15 +86,46 @@ namespace MrPuppet
         {
             Timer = 0;
             FACSPlayButton = false;
+            //ResetBlendShapes();
+
+            foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if (smr.sharedMesh.blendShapeCount > 0)
+                {
+                    for (var i = 0; i < smr.sharedMesh.blendShapeCount; i++)
+                    {
+                        smr.SetBlendShapeWeight(i, 0);
+                    }
+                }
+            }
         }
 
+        /*
+        private void ResetBlendShapes()
+        {
+            foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if (smr.sharedMesh.blendShapeCount > 0)
+                {
+                    for (var i = 0; i < smr.sharedMesh.blendShapeCount; i++)
+                    {
+                        smr.SetBlendShapeWeight(i, 0);
+                    }
+                }
+            }
+        }
+        */
+        //Possible reset on entering play mode?
+
         private void PlaybackLogic()
-        {            
+        {
+            if (!FACS_k.Any())
+                LoadFACS();
+
             if (EnableAudioPlayback == true)
             {
                 if (AudioIsPlaying == false)
                 {
-                    LoadFACS();
                     TakeAfterPlay = Take;
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + TakeAfterPlay);
                     AudioIsPlaying = true;
@@ -110,16 +140,15 @@ namespace MrPuppet
 
                 Timer += Time.deltaTime * 1000f;
 
-                if (!FACS_k.Any())
-                    LoadFACS();
-
                 for (int k = 0; k < FACS_k.Count; k++)
                 {
 
                     //Stop recording when the time since we started recording is greater than the last keyframe
                     if (Timer >= FACS_k[FACS_k.Count - 1][0])
                     {
-                        Timer = 0;
+                        //Timer = 0;
+                        //Maybe stop?
+                        Stop();
 
                         if (Recorder.IsRecording())
                             Recorder.StopRecording();
@@ -248,20 +277,18 @@ namespace MrPuppet
 
             if (EditorApplication.isPlaying)
             {
+                Repaint();
+
                 if (!Recorder)
                 {
-                    try
-                    { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
-                    catch
-                    { return; }
+                    try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                    catch { return; }
                 }
 
                 if (!HubConnection)
                 {
-                    try
-                    { HubConnection = FindObjectOfType<MrPuppetHubConnection>(); }
-                    catch
-                    { return; }
+                    try { HubConnection = FindObjectOfType<MrPuppetHubConnection>(); }
+                    catch { return; }
                 }
 
                 if (!Recorder || !HubConnection)
@@ -349,7 +376,6 @@ namespace MrPuppet
     }
 #else
     public class AnimationPlayback : MonoBehaviour
-    {
-    }
+    { }
 #endif
 }

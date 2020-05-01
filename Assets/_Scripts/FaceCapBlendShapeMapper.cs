@@ -4,7 +4,6 @@ using System;
 using Sirenix.OdinInspector;
 using System.Linq;
 
-
 namespace MrPuppet
 {
     public class FaceCapBlendShapeMapper : MonoBehaviour
@@ -69,24 +68,36 @@ namespace MrPuppet
             };
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
-            public FACSChannels Channel;
 
-            [ValueDropdown("_BlendShapeNames")]
+
+            [ValueDropdown("_SkinnedMeshRenderers", DropdownWidth = 200)]
+            [OnValueChanged("ChangedSkinnedMesh")]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [HideLabel]
+            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+
+            [ValueDropdown("_BlendShapeNames", DropdownWidth = 150)]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [HideLabel]
             public int BlendShape;
 
-            [ValueDropdown("_SkinnedMeshRenderers")]
-            [OnValueChanged("ChangedSkinnedMesh")]
-            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+            [HideLabel]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            public FACSChannels Channel;
 
             [Range(0f, 100f)]
             [OnValueChanged("SetBlendValue")]
             [DisableInPlayMode]
+            [HideLabel]
             public float BlendValue = 0f;
+
+            //maybe tiny bit less room for slider. set width of groups/tablelist?
 
             private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
             private void SetBlendValue()
             {
+                Debug.Log("Blend Value: " + BlendValue + " Blend Index: " + BlendShape + " SMR: " + _SkinnedMeshRenderer.name);
                 _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
             }
 
@@ -120,6 +131,7 @@ namespace MrPuppet
         }
 
         private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+        [TableList]
         public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
 
         public void GetSkinnedMeshRenderers()
