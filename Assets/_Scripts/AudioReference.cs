@@ -257,17 +257,18 @@ namespace MrPuppet
                     InfoBoxMsg += "\n\nPlease select the actor in the scene.";
             }
 
-            if (PlayModeEntered == false)
-            {
-                if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
-                {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                }
-                PlayModeEntered = true;
-            }
-
             if (EditorApplication.isPlaying)
             {
+
+                if (PlayModeEntered == false)
+                {
+                    if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
+                    {
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                    }
+                    PlayModeEntered = true;
+                }
+
                 Repaint();
 
                 if (!Recorder)
