@@ -33,6 +33,7 @@ namespace MrPuppet
         private bool PlayModeEntered;
         private bool FACSPlayButton;
         private bool AudioIsPlaying;
+        private bool RecorderStartedRecording;
 
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
         private List<List<float>> FACS_k = new List<List<float>>();
@@ -84,7 +85,11 @@ namespace MrPuppet
         {
             Timer = 0;
             FACSPlayButton = false;
+            ResetBlendShapes();
+        }
 
+        private void ResetBlendShapes()
+        {
             foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
                 if (smr.sharedMesh.blendShapeCount > 0)
@@ -259,16 +264,6 @@ namespace MrPuppet
 
             if (EditorApplication.isPlaying)
             {
-
-                if (PlayModeEntered == false)
-                {
-                    if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
-                    {
-                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                    }
-                    PlayModeEntered = true;
-                }
-
                 Repaint();
 
                 if (!Recorder)
@@ -292,8 +287,25 @@ namespace MrPuppet
                 if (!_FaceCapBlendShapeMapper)
                     CacheFaceCapBlendShapeMapper();
 
+                if (PlayModeEntered == false)
+                {
+                    if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
+                    {
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                    }
+                    PlayModeEntered = true;
+                }
+
+                if (RecorderStartedRecording == true && !Recorder.IsRecording())
+                {
+                    RecorderStartedRecording = false;
+                    ResetBlendShapes();
+                }
+
                 if (Recorder.IsRecording())
                 {
+                    RecorderStartedRecording = true;
+
                     DisablePlayButton = true;
                     PlaybackLogic();
                 }
@@ -338,16 +350,19 @@ namespace MrPuppet
                     AudioIsPlaying = false;
                 }
 
-                TakeAfterPlay = "";
-
-                FACSPlayButton = false;
-                DisablePlayButton = false;
-
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
 
                 if (PlayModeEntered == true)
                     PlayModeEntered = false;
+                if (FACSPlayButton == true)
+                    FACSPlayButton = false;
+                if (DisablePlayButton == true)
+                    DisablePlayButton = false;
+                if (RecorderStartedRecording == true)
+                    RecorderStartedRecording = false;
+                if (TakeAfterPlay != "")
+                    TakeAfterPlay = "";
             }
         }
 
