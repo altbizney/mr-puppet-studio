@@ -69,10 +69,10 @@ namespace MrPuppet
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
 
-            /*
             [HideLabel]
+            [DisplayAsString]
+            [HorizontalGroup("SMR - BlendShape - Channel", Width = 0.1f)]
             public int MappingIndex;
-            */
 
             [ValueDropdown("_SkinnedMeshRenderers", DropdownWidth = 200)]
             [OnValueChanged("ChangedSkinnedMesh")]
@@ -98,11 +98,8 @@ namespace MrPuppet
             [HideLabel]
             public float BlendValue = 0f;
 
-            //maybe tiny bit less room for slider. set width of groups/tablelist?
-
             private void SetBlendValue()
             {
-                //Debug.Log("Blend Value: " + BlendValue + " Blend Index: " + BlendShape + " SMR: " + _SkinnedMeshRenderer.name);
                 _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
             }
 
@@ -117,13 +114,6 @@ namespace MrPuppet
                 if (SkinnedMeshRenderers.Count > 0)
                     _SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
-
-            /*
-            ~BlendShapeMap()
-            {
-                Debug.Log("deconstruct");
-            }
-            */
 
             public void GetBlendShapeNames()
             {
@@ -147,6 +137,7 @@ namespace MrPuppet
         }
 
         private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+
         [TableList]
         public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
 
@@ -170,6 +161,7 @@ namespace MrPuppet
                 GetSkinnedMeshRenderers();
             }
 
+            int MappingCount = 1;
             foreach (BlendShapeMap map in Mappings)
             {
                 if (!map._SkinnedMeshRenderer)
@@ -179,9 +171,11 @@ namespace MrPuppet
 
                 if (map._BlendShapeNames.Count == 0 || map._BlendShapeNames == null)
                     map.GetBlendShapeNames();
+
+                map.MappingIndex = MappingCount;
+                MappingCount += 1;
             }
         }
-
 
         [Button(ButtonSizes.Large)]
         public void AutoLoadMaps()
@@ -207,9 +201,7 @@ namespace MrPuppet
                         Mappings.Add(map);
                     }
                 }
-
             }
-
         }
     }
 }

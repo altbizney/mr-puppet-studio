@@ -24,15 +24,18 @@ namespace MrPuppet
 
         private MrPuppetHubConnection HubConnection;
         private RecorderWindow Recorder;
-        private bool AudioIsPlaying;
-        private string TakeAfterPlay;
-
-        private float Timer;
-        private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
-
+        private float Timer;
+        private string TakeAfterPlay;
+        private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
+        private bool DisablePlayButton;
+        private bool PlayModeEntered;
         private bool FACSPlayButton;
+        private bool AudioIsPlaying;
+
+        private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
+        private List<List<float>> FACS_k = new List<List<float>>();
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACS")]
@@ -50,11 +53,6 @@ namespace MrPuppet
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
         public GameObject Actor;
-
-        private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
-        private List<List<float>> FACS_k = new List<List<float>>();
-
-        private bool DisablePlayButton;
 
         private bool NotPlaying()
         {
@@ -86,7 +84,6 @@ namespace MrPuppet
         {
             Timer = 0;
             FACSPlayButton = false;
-            //ResetBlendShapes();
 
             foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
@@ -99,23 +96,6 @@ namespace MrPuppet
                 }
             }
         }
-
-        /*
-        private void ResetBlendShapes()
-        {
-            foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
-            {
-                if (smr.sharedMesh.blendShapeCount > 0)
-                {
-                    for (var i = 0; i < smr.sharedMesh.blendShapeCount; i++)
-                    {
-                        smr.SetBlendShapeWeight(i, 0);
-                    }
-                }
-            }
-        }
-        */
-        //Possible reset on entering play mode?
 
         private void PlaybackLogic()
         {
@@ -124,6 +104,8 @@ namespace MrPuppet
 
             if (EnableAudioPlayback == true)
             {
+                //Reset Blend Shapes when entering PlayMode?
+
                 if (AudioIsPlaying == false)
                 {
                     TakeAfterPlay = Take;
@@ -255,7 +237,7 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback)
+                if (EnableAudioPlayback && EditorApplication.isPlaying)
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
             else
@@ -273,6 +255,15 @@ namespace MrPuppet
             {
                 if (!InfoBoxMsg.Contains("Please select the actor in the scene"))
                     InfoBoxMsg += "\n\nPlease select the actor in the scene.";
+            }
+
+            if (PlayModeEntered == false)
+            {
+                if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                }
+                PlayModeEntered = true;
             }
 
             if (EditorApplication.isPlaying)
@@ -353,6 +344,9 @@ namespace MrPuppet
 
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
+
+                if (PlayModeEntered == true)
+                    PlayModeEntered = false;
             }
         }
 
