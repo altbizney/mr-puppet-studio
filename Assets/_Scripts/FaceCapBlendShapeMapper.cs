@@ -4,7 +4,6 @@ using System;
 using Sirenix.OdinInspector;
 using System.Linq;
 
-
 namespace MrPuppet
 {
     public class FaceCapBlendShapeMapper : MonoBehaviour
@@ -69,33 +68,51 @@ namespace MrPuppet
             };
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
-            public FACSChannels Channel;
 
-            [ValueDropdown("_BlendShapeNames")]
+            [HideLabel]
+            [DisplayAsString]
+            [HorizontalGroup("SMR - BlendShape - Channel", Width = 0.1f)]
+            public int MappingIndex;
+
+            [ValueDropdown("_SkinnedMeshRenderers", DropdownWidth = 200)]
+            [OnValueChanged("ChangedSkinnedMesh")]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [HideLabel]
+            [TableColumnWidth(250)]
+            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+
+            [ValueDropdown("_BlendShapeNames", DropdownWidth = 150)]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [HideLabel]
+            [TableColumnWidth(250)]
             public int BlendShape;
 
-            [ValueDropdown("_SkinnedMeshRenderers")]
-            [OnValueChanged("ChangedSkinnedMesh")]
-            public SkinnedMeshRenderer _SkinnedMeshRenderer;
+            [HideLabel]
+            [HorizontalGroup("SMR - BlendShape - Channel", MarginLeft = 0.01f, MarginRight = 0.01f)]
+            [TableColumnWidth(250)]
+            public FACSChannels Channel;
 
             [Range(0f, 100f)]
             [OnValueChanged("SetBlendValue")]
             [DisableInPlayMode]
+            [HideLabel]
             public float BlendValue = 0f;
-
-            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
             private void SetBlendValue()
             {
                 _SkinnedMeshRenderer.SetBlendShapeWeight(BlendShape, BlendValue);
             }
 
+            private List<SkinnedMeshRenderer> _SkinnedMeshRenderers()
+            {
+                return SkinnedMeshRenderers;
+            }
+
             public BlendShapeMap()
             {
-                _SkinnedMeshRenderers = SkinnedMeshRenderers;
                 GetBlendShapeNames();
-                if (_SkinnedMeshRenderers.Count > 0)
-                    _SkinnedMeshRenderer = _SkinnedMeshRenderers[0];
+                if (SkinnedMeshRenderers.Count > 0)
+                    _SkinnedMeshRenderer = SkinnedMeshRenderers[0];
             }
 
             public void GetBlendShapeNames()
@@ -120,6 +137,8 @@ namespace MrPuppet
         }
 
         private static List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+
+        [TableList]
         public List<BlendShapeMap> Mappings = new List<BlendShapeMap>();
 
         public void GetSkinnedMeshRenderers()
@@ -142,6 +161,7 @@ namespace MrPuppet
                 GetSkinnedMeshRenderers();
             }
 
+            int MappingCount = 1;
             foreach (BlendShapeMap map in Mappings)
             {
                 if (!map._SkinnedMeshRenderer)
@@ -151,9 +171,11 @@ namespace MrPuppet
 
                 if (map._BlendShapeNames.Count == 0 || map._BlendShapeNames == null)
                     map.GetBlendShapeNames();
+
+                map.MappingIndex = MappingCount;
+                MappingCount += 1;
             }
         }
-
 
         [Button(ButtonSizes.Large)]
         public void AutoLoadMaps()
@@ -179,9 +201,7 @@ namespace MrPuppet
                         Mappings.Add(map);
                     }
                 }
-
             }
-
         }
     }
 }
