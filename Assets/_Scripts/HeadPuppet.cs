@@ -58,8 +58,24 @@ namespace MrPuppet
         [DisableInEditorMode()]
         public void GrabAttachPose()
         {
-            // grab the attach position and rotation of the wrist joint
+            AttachPoseSet = true;
 
+            // grab the attach position and rotation of the wrist joint
+            AttachPoseWristPosition = DataMapper.WristJoint.position;
+            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
+
+            FinalAttachPoseWristRotation = AttachPoseWristRotation;
+            FinalAttachPoseWristPosition = AttachPoseWristPosition;
+
+            GentleReattachLerpValue = 1;
+
+            // TODO: generic support for ATTACH command
+            // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
+        }
+
+        public void GentleGrabAttachPose()
+        {
+            // grab the attach position and rotation of the wrist joint
             if (!AttachPoseSet)
             {
                 AttachPoseWristPosition = DataMapper.WristJoint.position;
@@ -76,9 +92,6 @@ namespace MrPuppet
 
             GentleReattachLerpValue = 0;
             AttachPoseSet = true;
-
-            // TODO: generic support for ATTACH command
-            // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
         }
 
         // public string AttachPoseToString()
@@ -119,6 +132,8 @@ namespace MrPuppet
             {
                 if (GentleReattachLerpValue < 1)
                     GentleReattachLerpValue += Time.deltaTime / GentleReattachTimeFrame;
+                else
+                    GentleReattachLerpValue = 1;
 
                 if (AttachPoseWristPosition != FinalAttachPoseWristPosition)
                     AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, GentleReattachLerpValue);
@@ -130,8 +145,6 @@ namespace MrPuppet
 
                 // apply position delta to bind pose
                 Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - AttachPoseWristPosition);
-
-
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -153,6 +166,10 @@ namespace MrPuppet
             if (Input.GetKeyDown(KeyCode.A))
             {
                 GrabAttachPose();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                GentleGrabAttachPose();
             }
         }
 
