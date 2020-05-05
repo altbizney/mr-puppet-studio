@@ -51,7 +51,7 @@ namespace MrPuppet
         private Quaternion FinalAttachPoseWristRotation;
 
         public float GentleReattachTimeFrame;
-        private float GentleReattachLerpValue;
+        private float LerpTimer;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -67,7 +67,7 @@ namespace MrPuppet
             FinalAttachPoseWristRotation = AttachPoseWristRotation;
             FinalAttachPoseWristPosition = AttachPoseWristPosition;
 
-            GentleReattachLerpValue = 1;
+            LerpTimer = GentleReattachTimeFrame;
 
             // TODO: generic support for ATTACH command
             // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
@@ -90,7 +90,7 @@ namespace MrPuppet
                 FinalAttachPoseWristRotation = DataMapper.WristJoint.rotation;
             }
 
-            GentleReattachLerpValue = 0;
+            LerpTimer = 0;
             AttachPoseSet = true;
         }
 
@@ -130,18 +130,19 @@ namespace MrPuppet
         {
             if (AttachPoseSet)
             {
-                if (GentleReattachLerpValue < 1)
-                    GentleReattachLerpValue += Time.deltaTime / GentleReattachTimeFrame;
+                if (LerpTimer < GentleReattachTimeFrame)
+                    LerpTimer += Time.deltaTime;
                 else
-                    GentleReattachLerpValue = 1;
+                    LerpTimer = GentleReattachTimeFrame;
 
                 if (AttachPoseWristPosition != FinalAttachPoseWristPosition)
-                    AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, GentleReattachLerpValue);
+                    AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, LerpTimer / GentleReattachTimeFrame);
 
                 if (AttachPoseWristRotation != FinalAttachPoseWristRotation)
-                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, GentleReattachLerpValue);
+                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, LerpTimer / GentleReattachTimeFrame);
 
-                DebugGraph.Log(GentleReattachLerpValue);
+                //DebugGraph.Log(LerpTimer);
+                //DebugGraph.Log(LerpTimer / GentleReattachTimeFrame);
 
                 // apply position delta to bind pose
                 Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - AttachPoseWristPosition);
