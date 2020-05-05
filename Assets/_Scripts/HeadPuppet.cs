@@ -47,16 +47,35 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
+        private Vector3 FinalAttachPoseWristPosition;
+        private Quaternion FinalAttachPoseWristRotation;
+
+        public float GentleReattachTimeFrame;
+        private float GentleReattachLerpValue;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
         public void GrabAttachPose()
         {
-            AttachPoseSet = true;
-
             // grab the attach position and rotation of the wrist joint
-            AttachPoseWristPosition = DataMapper.WristJoint.position;
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
+
+            if (!AttachPoseSet)
+            {
+                AttachPoseWristPosition = DataMapper.WristJoint.position;
+                FinalAttachPoseWristPosition = AttachPoseWristPosition;
+
+                AttachPoseWristRotation = DataMapper.WristJoint.rotation;
+                FinalAttachPoseWristRotation = AttachPoseWristRotation;
+            }
+            else
+            {
+                FinalAttachPoseWristPosition = DataMapper.WristJoint.position;
+                FinalAttachPoseWristRotation = DataMapper.WristJoint.rotation;
+            }
+
+            GentleReattachLerpValue = 0;
+            AttachPoseSet = true;
 
             // TODO: generic support for ATTACH command
             // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
@@ -98,8 +117,21 @@ namespace MrPuppet
         {
             if (AttachPoseSet)
             {
+                if (GentleReattachLerpValue < 1)
+                    GentleReattachLerpValue += Time.deltaTime / GentleReattachTimeFrame;
+
+                if (AttachPoseWristPosition != FinalAttachPoseWristPosition)
+                    AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, GentleReattachLerpValue);
+
+                if (AttachPoseWristRotation != FinalAttachPoseWristRotation)
+                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, GentleReattachLerpValue);
+
+                DebugGraph.Log(GentleReattachLerpValue);
+
                 // apply position delta to bind pose
                 Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - AttachPoseWristPosition);
+
+
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
