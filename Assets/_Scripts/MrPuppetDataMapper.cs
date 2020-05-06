@@ -60,19 +60,15 @@ namespace MrPuppet
         }
         */
 
-        public PoseData Lerp(PoseData to, PoseData from, float t)
+        public void Lerp(PoseData to, PoseData from, float t)
         {
-            PoseData LerpPose = new PoseData();
+            this.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
+            this.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
+            this.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
 
-            LerpPose.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
-            LerpPose.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
-            LerpPose.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
-
-            LerpPose.ShoulderPosition = Vector3.Lerp(from.ShoulderPosition, to.ShoulderPosition, t);
-            LerpPose.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
-            LerpPose.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
-
-            return LerpPose;
+            this.ShoulderPosition = Vector3.Lerp(from.ShoulderPosition, to.ShoulderPosition, t);
+            this.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
+            this.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
         }
     }
 
@@ -161,7 +157,7 @@ namespace MrPuppet
 
             if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
             {
-                AttachPose = AttachPose.Lerp(TargetAttachPose, FromAttachPose, LerpTimer / GentleReattachTimeFrame);
+                AttachPose.Lerp(TargetAttachPose, FromAttachPose, LerpTimer / GentleReattachTimeFrame);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
