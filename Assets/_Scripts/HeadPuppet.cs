@@ -53,6 +53,7 @@ namespace MrPuppet
         public float GentleReattachTimeFrame;
         private float LerpTimer;
 
+        /*
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
@@ -93,6 +94,7 @@ namespace MrPuppet
             LerpTimer = 0;
             AttachPoseSet = true;
         }
+        */
 
         // public string AttachPoseToString()
         // {
@@ -114,7 +116,7 @@ namespace MrPuppet
 
         private Quaternion RotationDeltaFromAttachWrist()
         {
-            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper._AttachPose.WristRotation) * RootSpawnRotation;
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.CurrentAttachPose.WristRotation) * RootSpawnRotation;
         }
 
         private void Awake()
@@ -128,22 +130,11 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (DataMapper._AttachPose.AttachPoseSet)
+            if (DataMapper.AttachPoseSet)
             {
-                /*
-                if (LerpTimer < GentleReattachTimeFrame)
-                    LerpTimer += Time.deltaTime;
-                else
-                    LerpTimer = GentleReattachTimeFrame;
-
-                if (AttachPoseWristPosition != FinalAttachPoseWristPosition)
-                    AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, LerpTimer / GentleReattachTimeFrame);
-
-                if (AttachPoseWristRotation != FinalAttachPoseWristRotation)
-                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, LerpTimer / GentleReattachTimeFrame);*/
 
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper._AttachPose.WristPosition);
+                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper.CurrentAttachPose.WristPosition);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -161,18 +152,6 @@ namespace MrPuppet
                     RotationSpeed * Time.deltaTime
                 );
             }
-
-            /*
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                GrabAttachPose();
-            }
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                //GentleGrabAttachPose();
-            }
-            */
         }
 
         private void OnDrawGizmos()
