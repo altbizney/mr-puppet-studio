@@ -17,7 +17,6 @@ namespace MrPuppet
             [Range(0f, 1f)]
             public float amount = 1f;
 
-            private Quaternion attach;
             private Quaternion spawn;
             private Quaternion full;
             private Quaternion weighted;
@@ -29,19 +28,6 @@ namespace MrPuppet
                 // proxy.SetParent(target.parent, false);
 
                 spawn = target.rotation;
-            }
-
-            public void SnapshotAttach(Quaternion elbow, Quaternion wrist)
-            {
-                switch (joint)
-                {
-                    case MrPuppetDataMapper.Joint.Elbow:
-                        attach = elbow;
-                        return;
-                    case MrPuppetDataMapper.Joint.Wrist:
-                        attach = wrist;
-                        return;
-                }
             }
 
             private Quaternion Attach(MrPuppetDataMapper DataMapper)
@@ -83,12 +69,6 @@ namespace MrPuppet
 
         private MrPuppetDataMapper DataMapper;
         private MrPuppetHubConnection HubConnection;
-
-        // performer attach position
-        private bool AttachPoseSet = false;
-        private Quaternion AttachPoseElbowRotation;
-        private Quaternion AttachPoseWristRotation;
-        private Vector3 AttachPoseElbowPosition;
 
         // spawn position of proxy geo
         private Vector3 HipSpawnPosition;
@@ -138,50 +118,6 @@ namespace MrPuppet
 
         [HideInInspector]
         public bool ApplySensors = true;
-
-
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0f, 1f, 0f)]
-        [DisableInEditorMode()]
-        public void GrabAttachPose()
-        {
-            AttachPoseSet = true;
-
-            // grab the attach position of the elbow joint
-            AttachPoseElbowPosition = DataMapper.ElbowAnchorJoint.position;
-
-            // grab the attach rotation of the joints
-            AttachPoseElbowRotation = DataMapper.ElbowJoint.rotation;
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-
-            // send attach poses to weighted infleunces
-            foreach (var influence in WeightedInfluences)
-            {
-                influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
-            }
-
-            HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
-        }
-
-        public string AttachPoseToString()
-        {
-            string packet = "";
-
-            packet += AttachPoseElbowPosition.x + "," + AttachPoseElbowPosition.y + "," + AttachPoseElbowPosition.z + ";";
-            packet += AttachPoseElbowRotation.x + "," + AttachPoseElbowRotation.y + "," + AttachPoseElbowRotation.z + "," + AttachPoseElbowRotation.w + ";";
-            packet += AttachPoseWristRotation.x + "," + AttachPoseWristRotation.y + "," + AttachPoseWristRotation.z + "," + AttachPoseWristRotation.w;
-
-            return packet;
-        }
-
-        public void AttachPoseFromString(string[] elbowPos, string[] elbowRot, string[] wristRot)
-        {
-            AttachPoseElbowPosition = new Vector3(float.Parse(elbowPos[0]), float.Parse(elbowPos[1]), float.Parse(elbowPos[2]));
-            AttachPoseElbowRotation = new Quaternion(float.Parse(elbowRot[0]), float.Parse(elbowRot[1]), float.Parse(elbowRot[2]), float.Parse(elbowRot[3]));
-            AttachPoseWristRotation = new Quaternion(float.Parse(wristRot[0]), float.Parse(wristRot[1]), float.Parse(wristRot[2]), float.Parse(wristRot[3]));
-
-            AttachPoseSet = true;
-        }
 
         private void Awake()
         {
@@ -258,11 +194,6 @@ namespace MrPuppet
                     }
                 }
             }
-
-            //if (Input.GetKeyDown(KeyCode.A))
-            //{
-            //  GrabAttachPose();
-            //}
         }
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;

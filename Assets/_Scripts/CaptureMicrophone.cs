@@ -71,7 +71,7 @@ namespace MrPuppet
                 HubConnection.SendSocketMessage("COMMAND;TPOSE;" + DataMapper.TPose.ToString());
                 HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;" + DataMapper.JawOpened);
                 HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;" + DataMapper.JawClosed);
-                HubConnection.SendSocketMessage("COMMAND;ATTACH;" + FindObjectOfType<ButtPuppet>().AttachPoseToString());
+                //HubConnection.SendSocketMessage("COMMAND;ATTACH;" + FindObjectOfType<ButtPuppet>().AttachPoseToString());
                 // TODO: COMMAND;ARM_LENGTH
                 // TODO: COMMAND;FOREARM_LENGTH
             }
