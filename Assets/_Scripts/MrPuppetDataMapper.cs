@@ -62,6 +62,7 @@ namespace MrPuppet
 
         public void Lerp(PoseData from, PoseData to, float t)
         {
+
             this.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
             this.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
             this.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
@@ -106,15 +107,18 @@ namespace MrPuppet
         [MinValue(0f)]
         public float ForearmAnchorOffset = 0f;
 
-        [MinValue(0.01f)]
+        [MinValue(0.1f)]
         public float GentleReattachTimeFrame;
 
-        public PoseData AttachPose = new PoseData();
+        [HideInInspector]
         public bool AttachPoseSet;
+
+        public PoseData AttachPose = new PoseData();
 
         private PoseData TargetAttachPose = new PoseData();
         private PoseData FromAttachPose = new PoseData();
         private float LerpTimer;
+        private float TimeFrameAfterAttach;
 
         private void Awake()
         {
@@ -150,14 +154,14 @@ namespace MrPuppet
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
-            if (LerpTimer < GentleReattachTimeFrame)
+            if (LerpTimer < TimeFrameAfterAttach)
                 LerpTimer += Time.deltaTime;
             else
-                LerpTimer = GentleReattachTimeFrame;
+                LerpTimer = TimeFrameAfterAttach;
 
             if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
             {
-                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimer / GentleReattachTimeFrame);
+                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimer / TimeFrameAfterAttach);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
@@ -180,60 +184,6 @@ namespace MrPuppet
             }
 
             throw new ArgumentException("Invalid Joint");
-        }
-
-        public void GrabAttachPose()
-        {
-            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
-            AttachPose.ElbowRotation = ElbowJoint.rotation;
-            AttachPose.WristRotation = WristJoint.rotation;
-
-            AttachPose.ShoulderPosition = ShoulderJoint.position;
-            AttachPose.ElbowPosition = ElbowJoint.position;
-            AttachPose.WristPosition = WristJoint.position;
-
-            TargetAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
-            TargetAttachPose.ElbowRotation = AttachPose.ElbowRotation;
-            TargetAttachPose.WristRotation = AttachPose.WristRotation;
-
-            TargetAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
-            TargetAttachPose.ElbowPosition = AttachPose.ElbowPosition;
-            TargetAttachPose.WristPosition = AttachPose.WristPosition;
-
-            AttachPoseSet = true;
-
-            LerpTimer = GentleReattachTimeFrame;
-        }
-
-        public void GrabGentleAttachPose()
-        {
-
-            if (!AttachPoseSet)
-            {
-                GrabAttachPose();
-            }
-            else
-            {
-                TargetAttachPose.ShoulderRotation = ShoulderJoint.rotation;
-                TargetAttachPose.ElbowRotation = ElbowJoint.rotation;
-                TargetAttachPose.WristRotation = WristJoint.rotation;
-
-                TargetAttachPose.ShoulderPosition = ShoulderJoint.position;
-                TargetAttachPose.ElbowPosition = ElbowJoint.position;
-                TargetAttachPose.WristPosition = WristJoint.position;
-
-                FromAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
-                FromAttachPose.ElbowRotation = AttachPose.ElbowRotation;
-                FromAttachPose.WristRotation = AttachPose.WristRotation;
-
-                FromAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
-                FromAttachPose.ElbowPosition = AttachPose.ElbowPosition;
-                FromAttachPose.WristPosition = AttachPose.WristPosition;
-
-                LerpTimer = 0;
-            }
-
-            AttachPoseSet = true;
         }
 
 
@@ -289,6 +239,72 @@ namespace MrPuppet
             JawOpened = 1023f;
             HubConnection.SendSocketMessage("COMMAND;JAW_OPENED;0");
             HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;1023");
+        }
+
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode]
+        public void GrabAttachPose()
+        {
+            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            AttachPose.ElbowRotation = ElbowJoint.rotation;
+            AttachPose.WristRotation = WristJoint.rotation;
+
+            AttachPose.ShoulderPosition = ShoulderJoint.position;
+            AttachPose.ElbowPosition = ElbowJoint.position;
+            AttachPose.WristPosition = WristJoint.position;
+
+            TargetAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+            TargetAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+            TargetAttachPose.WristRotation = AttachPose.WristRotation;
+
+            TargetAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+            TargetAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+            TargetAttachPose.WristPosition = AttachPose.WristPosition;
+
+            AttachPoseSet = true;
+
+            LerpTimer = GentleReattachTimeFrame;
+
+            TimeFrameAfterAttach = GentleReattachTimeFrame;
+        }
+
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode]
+        public void GrabGentleAttachPose()
+        {
+
+            if (!AttachPoseSet)
+            {
+                GrabAttachPose();
+            }
+            else
+            {
+                TargetAttachPose.ShoulderRotation = ShoulderJoint.rotation;
+                TargetAttachPose.ElbowRotation = ElbowJoint.rotation;
+                TargetAttachPose.WristRotation = WristJoint.rotation;
+
+                TargetAttachPose.ShoulderPosition = ShoulderJoint.position;
+                TargetAttachPose.ElbowPosition = ElbowJoint.position;
+                TargetAttachPose.WristPosition = WristJoint.position;
+
+                FromAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+                FromAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+                FromAttachPose.WristRotation = AttachPose.WristRotation;
+
+                FromAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+                FromAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+                FromAttachPose.WristPosition = AttachPose.WristPosition;
+
+                TimeFrameAfterAttach = GentleReattachTimeFrame;
+
+                LerpTimer = 0;
+            }
+
+            AttachPoseSet = true;
         }
 
 #if UNITY_EDITOR

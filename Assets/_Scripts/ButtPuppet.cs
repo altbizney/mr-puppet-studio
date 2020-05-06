@@ -198,12 +198,12 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (AttachPoseSet)
+            if (DataMapper.AttachPoseSet)
             {
                 // apply position delta to bind pose
                 if (ApplySensors == true)
                 {
-                    Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - AttachPoseElbowPosition);
+                    Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
                     // clamp to XYZ extents (BEFORE smooth)
                     position.Set(
@@ -216,8 +216,8 @@ namespace MrPuppet
                     Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                     // apply rotation deltas to bind pose
-                    Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
-                    Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
                     if (EnableJawHeadMixer)
                     {
@@ -245,10 +245,10 @@ namespace MrPuppet
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                GrabAttachPose();
-            }
+            //if (Input.GetKeyDown(KeyCode.A))
+            //{
+            //  GrabAttachPose();
+            //}
         }
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
