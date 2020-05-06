@@ -44,12 +44,25 @@ namespace MrPuppet
                 }
             }
 
+            private Quaternion Attach(MrPuppetDataMapper DataMapper)
+            {
+                switch (joint)
+                {
+                    case MrPuppetDataMapper.Joint.Elbow:
+                        return DataMapper.AttachPose.ElbowRotation;
+                    case MrPuppetDataMapper.Joint.Wrist:
+                        return DataMapper.AttachPose.WristRotation;
+                    default:
+                        return Quaternion.identity;
+                }
+            }
+
             public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed)
             {
                 if (!target) return;
 
                 // calculate fully blended extent
-                full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(attach)) * spawn;
+                full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(Attach(DataMapper))) * spawn;
 
                 // calculate weighted rotation
                 weighted = Quaternion.Slerp(spawn, full, amount);
@@ -125,6 +138,7 @@ namespace MrPuppet
 
         [HideInInspector]
         public bool ApplySensors = true;
+
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
