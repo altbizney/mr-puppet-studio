@@ -43,9 +43,9 @@ namespace MrPuppet
         public Quaternion ElbowRotation = Quaternion.identity;
         public Quaternion WristRotation = Quaternion.identity;
 
-        public Vector3 ShoulderPosition = new Vector3();
-        public Vector3 ElbowPosition = new Vector3();
-        public Vector3 WristPosition = new Vector3();
+        public Vector3 ShoulderPosition = Vector3.zero;
+        public Vector3 ElbowPosition = Vector3.zero;
+        public Vector3 WristPosition = Vector3.zero;
 
         /*
         public void SnapShot()
@@ -60,7 +60,7 @@ namespace MrPuppet
         }
         */
 
-        public void Lerp(PoseData to, PoseData from, float t)
+        public void Lerp(PoseData from, PoseData to, float t)
         {
             this.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
             this.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
@@ -157,7 +157,7 @@ namespace MrPuppet
 
             if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
             {
-                AttachPose.Lerp(TargetAttachPose, FromAttachPose, LerpTimer / GentleReattachTimeFrame);
+                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimer / GentleReattachTimeFrame);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
