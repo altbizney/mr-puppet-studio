@@ -37,7 +37,7 @@ namespace MrPuppet
         }
     }
 
-    public class AttachPose
+    public class PoseData
     {
         public Quaternion ShoulderRotation = Quaternion.identity;
         public Quaternion ElbowRotation = Quaternion.identity;
@@ -60,15 +60,19 @@ namespace MrPuppet
         }
         */
 
-        public void Lerp(AttachPose from, float t)
+        public PoseData Lerp(PoseData to, PoseData from, float t)
         {
-            this.ShoulderRotation = Quaternion.Slerp(this.ShoulderRotation, from.ShoulderRotation, t);
-            this.ElbowRotation = Quaternion.Slerp(this.ElbowRotation, from.ElbowRotation, t);
-            this.WristRotation = Quaternion.Slerp(this.WristRotation, from.WristRotation, t);
+            PoseData LerpPose = new PoseData();
 
-            this.ShoulderPosition = Vector3.Lerp(this.ShoulderPosition, from.ShoulderPosition, t);
-            this.ElbowPosition = Vector3.Lerp(this.ElbowPosition, from.ElbowPosition, t);
-            this.WristPosition = Vector3.Lerp(this.WristPosition, from.WristPosition, t);
+            LerpPose.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
+            LerpPose.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
+            LerpPose.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
+
+            LerpPose.ShoulderPosition = Vector3.Lerp(from.ShoulderPosition, to.ShoulderPosition, t);
+            LerpPose.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
+            LerpPose.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
+
+            return LerpPose;
         }
     }
 
@@ -109,12 +113,12 @@ namespace MrPuppet
         [MinValue(0.01f)]
         public float GentleReattachTimeFrame;
 
-        public AttachPose CurrentAttachPose = new AttachPose();
-        private AttachPose FinalAttachPose = new AttachPose();
-        private float LerpTimer;
-
+        public PoseData AttachPose = new PoseData();
         public bool AttachPoseSet;
 
+        private PoseData TargetAttachPose = new PoseData();
+        private PoseData FromAttachPose = new PoseData();
+        private float LerpTimer;
 
         private void Awake()
         {
@@ -155,9 +159,9 @@ namespace MrPuppet
             else
                 LerpTimer = GentleReattachTimeFrame;
 
-            if (CurrentAttachPose != FinalAttachPose && CurrentAttachPose != null && FinalAttachPose != null)
+            if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
             {
-                CurrentAttachPose.Lerp(FinalAttachPose, LerpTimer / GentleReattachTimeFrame);
+                AttachPose = AttachPose.Lerp(TargetAttachPose, FromAttachPose, LerpTimer / GentleReattachTimeFrame);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
@@ -184,21 +188,21 @@ namespace MrPuppet
 
         public void GrabAttachPose()
         {
-            CurrentAttachPose.ShoulderRotation = ShoulderJoint.rotation;
-            CurrentAttachPose.ElbowRotation = ElbowJoint.rotation;
-            CurrentAttachPose.WristRotation = WristJoint.rotation;
+            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            AttachPose.ElbowRotation = ElbowJoint.rotation;
+            AttachPose.WristRotation = WristJoint.rotation;
 
-            CurrentAttachPose.ShoulderPosition = ShoulderJoint.position;
-            CurrentAttachPose.ElbowPosition = ElbowJoint.position;
-            CurrentAttachPose.WristPosition = WristJoint.position;
+            AttachPose.ShoulderPosition = ShoulderJoint.position;
+            AttachPose.ElbowPosition = ElbowJoint.position;
+            AttachPose.WristPosition = WristJoint.position;
 
-            FinalAttachPose.ShoulderRotation = CurrentAttachPose.ShoulderRotation;
-            FinalAttachPose.ElbowRotation = CurrentAttachPose.ElbowRotation;
-            FinalAttachPose.WristRotation = CurrentAttachPose.WristRotation;
+            TargetAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+            TargetAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+            TargetAttachPose.WristRotation = AttachPose.WristRotation;
 
-            FinalAttachPose.ShoulderPosition = CurrentAttachPose.ShoulderPosition;
-            FinalAttachPose.ElbowPosition = CurrentAttachPose.ElbowPosition;
-            FinalAttachPose.WristPosition = CurrentAttachPose.WristPosition;
+            TargetAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+            TargetAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+            TargetAttachPose.WristPosition = AttachPose.WristPosition;
 
             AttachPoseSet = true;
 
@@ -214,13 +218,21 @@ namespace MrPuppet
             }
             else
             {
-                FinalAttachPose.ShoulderRotation = ShoulderJoint.rotation;
-                FinalAttachPose.ElbowRotation = ElbowJoint.rotation;
-                FinalAttachPose.WristRotation = WristJoint.rotation;
+                TargetAttachPose.ShoulderRotation = ShoulderJoint.rotation;
+                TargetAttachPose.ElbowRotation = ElbowJoint.rotation;
+                TargetAttachPose.WristRotation = WristJoint.rotation;
 
-                FinalAttachPose.ShoulderPosition = ShoulderJoint.position;
-                FinalAttachPose.ElbowPosition = ElbowJoint.position;
-                FinalAttachPose.WristPosition = WristJoint.position;
+                TargetAttachPose.ShoulderPosition = ShoulderJoint.position;
+                TargetAttachPose.ElbowPosition = ElbowJoint.position;
+                TargetAttachPose.WristPosition = WristJoint.position;
+
+                FromAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+                FromAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+                FromAttachPose.WristRotation = AttachPose.WristRotation;
+
+                FromAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+                FromAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+                FromAttachPose.WristPosition = AttachPose.WristPosition;
 
                 LerpTimer = 0;
             }

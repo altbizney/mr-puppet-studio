@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEditor;
 
 namespace MrPuppet
 {
@@ -9,11 +10,6 @@ namespace MrPuppet
     {
         private MrPuppetDataMapper DataMapper;
         private MrPuppetHubConnection HubConnection;
-
-        // performer attach position
-        private bool AttachPoseSet = false;
-        private Quaternion AttachPoseWristRotation;
-        private Vector3 AttachPoseWristPosition;
 
         private Vector3 RootSpawnPosition;
         private Quaternion RootSpawnRotation;
@@ -47,54 +43,13 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
-        private Vector3 FinalAttachPoseWristPosition;
-        private Quaternion FinalAttachPoseWristRotation;
-
-        public float GentleReattachTimeFrame;
-        private float LerpTimer;
-
-        /*
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        public void GrabAttachPose()
+        public void FocusDataMapper()
         {
-            AttachPoseSet = true;
-
-            // grab the attach position and rotation of the wrist joint
-            AttachPoseWristPosition = DataMapper.WristJoint.position;
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-
-            FinalAttachPoseWristRotation = AttachPoseWristRotation;
-            FinalAttachPoseWristPosition = AttachPoseWristPosition;
-
-            LerpTimer = GentleReattachTimeFrame;
-
-            // TODO: generic support for ATTACH command
-            // HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
+            Selection.activeGameObject = DataMapper.gameObject;
         }
-
-        public void GentleGrabAttachPose()
-        {
-            // grab the attach position and rotation of the wrist joint
-            if (!AttachPoseSet)
-            {
-                AttachPoseWristPosition = DataMapper.WristJoint.position;
-                FinalAttachPoseWristPosition = AttachPoseWristPosition;
-
-                AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-                FinalAttachPoseWristRotation = AttachPoseWristRotation;
-            }
-            else
-            {
-                FinalAttachPoseWristPosition = DataMapper.WristJoint.position;
-                FinalAttachPoseWristRotation = DataMapper.WristJoint.rotation;
-            }
-
-            LerpTimer = 0;
-            AttachPoseSet = true;
-        }
-        */
 
         // public string AttachPoseToString()
         // {
@@ -116,7 +71,7 @@ namespace MrPuppet
 
         private Quaternion RotationDeltaFromAttachWrist()
         {
-            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.CurrentAttachPose.WristRotation) * RootSpawnRotation;
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation) * RootSpawnRotation;
         }
 
         private void Awake()
@@ -134,7 +89,7 @@ namespace MrPuppet
             {
 
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper.CurrentAttachPose.WristPosition);
+                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper.AttachPose.WristPosition);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
