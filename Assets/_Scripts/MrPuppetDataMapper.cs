@@ -37,6 +37,46 @@ namespace MrPuppet
         }
     }
 
+    public class AttachPose
+    {
+        public Quaternion ShoulderRotation = Quaternion.identity;
+        public Quaternion ElbowRotation = Quaternion.identity;
+        public Quaternion WristRotation = Quaternion.identity;
+
+        public Vector3 ShoulderPosition = new Vector3();
+        public Vector3 ElbowPosition = new Vector3();
+        public Vector3 WristPosition = new Vector3();
+
+        public bool AttachPoseSet;
+
+        /*
+        public void SnapShot()
+        {
+            this.ShoulderRotation = ShoulderJoint.rotation;
+            this.ElbowRotation = ElbowJoint.rotation;
+            this.WristRotation = WristJoint.rotation;
+
+            this.ShoulderPosition = ShoulderJoint.position;
+            this.ElbowPosition = ElbowJoint.position;
+            this.WristPosition = WristJoint.position;
+        }
+        */
+
+        public AttachPose Lerp(AttachPose from, float t)
+        {
+            AttachPose to = new AttachPose();
+            to.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
+            to.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
+            to.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
+
+            to.ShoulderPosition = Vector3.Lerp(from.ShoulderPosition, to.ShoulderPosition, t);
+            to.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
+            to.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
+
+            return to;
+        }
+    }
+
     public class MrPuppetDataMapper : MonoBehaviour
     {
         private MrPuppetHubConnection HubConnection;
@@ -70,6 +110,13 @@ namespace MrPuppet
 
         [MinValue(0f)]
         public float ForearmAnchorOffset = 0f;
+
+        [MinValue(0.01f)]
+        public float GentleReattachTimeFrame;
+
+        public AttachPose _AttachPose = new AttachPose();
+        public AttachPose FinalAttachPose = new AttachPose();
+        private float LerpTimer;
 
         private void Awake()
         {
@@ -105,6 +152,14 @@ namespace MrPuppet
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
+            if (LerpTimer < GentleReattachTimeFrame)
+                LerpTimer += Time.deltaTime;
+            else
+                LerpTimer = GentleReattachTimeFrame;
+
+            if (_AttachPose != FinalAttachPose && _AttachPose != null && FinalAttachPose != null)
+                _AttachPose.Lerp(FinalAttachPose, LerpTimer / GentleReattachTimeFrame);
+
             if (Input.GetKeyDown(KeyCode.T))
             {
                 GrabTPose();
@@ -118,6 +173,16 @@ namespace MrPuppet
             if (Input.GetKeyDown(KeyCode.C))
             {
                 GrabJawClosed();
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GrabAttachPose();
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                GrabGentleAttachPose();
             }
         }
 
@@ -135,6 +200,42 @@ namespace MrPuppet
 
             throw new ArgumentException("Invalid Joint");
         }
+
+        public void GrabAttachPose()
+        {
+            _AttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            _AttachPose.ElbowRotation = ElbowJoint.rotation;
+            _AttachPose.WristRotation = WristJoint.rotation;
+
+            _AttachPose.ShoulderPosition = ShoulderJoint.position;
+            _AttachPose.ElbowPosition = ElbowJoint.position;
+            _AttachPose.WristPosition = WristJoint.position;
+
+            _AttachPose.AttachPoseSet = true;
+
+            FinalAttachPose = _AttachPose;
+
+            LerpTimer = GentleReattachTimeFrame;
+        }
+
+        public void GrabGentleAttachPose()
+        {
+
+            //If attach pose isnt set at first, do something different
+
+            FinalAttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            FinalAttachPose.ElbowRotation = ElbowJoint.rotation;
+            FinalAttachPose.WristRotation = WristJoint.rotation;
+
+            FinalAttachPose.ShoulderPosition = ShoulderJoint.position;
+            FinalAttachPose.ElbowPosition = ElbowJoint.position;
+            FinalAttachPose.WristPosition = WristJoint.position;
+
+            FinalAttachPose.AttachPoseSet = true;
+
+            LerpTimer = 0;
+        }
+
 
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
@@ -210,7 +311,8 @@ namespace MrPuppet
             Gizmos.matrix = ElbowJoint.localToWorldMatrix;
             Gizmos.DrawWireCube(new Vector3(0f, 0f, ForearmLength * -0.5f), new Vector3(0.25f, 0.25f, ForearmLength));
 
-            if (ForearmAnchorOffset > 0f) {
+            if (ForearmAnchorOffset > 0f)
+            {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(new Vector3(0f, 0f, -ForearmAnchorOffset), 0.1f);
                 Gizmos.color = Color.white;

@@ -114,7 +114,7 @@ namespace MrPuppet
 
         private Quaternion RotationDeltaFromAttachWrist()
         {
-            return DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation) * RootSpawnRotation;
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper._AttachPose.WristRotation) * RootSpawnRotation;
         }
 
         private void Awake()
@@ -128,8 +128,9 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (AttachPoseSet)
+            if (DataMapper._AttachPose.AttachPoseSet)
             {
+                /*
                 if (LerpTimer < GentleReattachTimeFrame)
                     LerpTimer += Time.deltaTime;
                 else
@@ -139,13 +140,10 @@ namespace MrPuppet
                     AttachPoseWristPosition = Vector3.Lerp(AttachPoseWristPosition, FinalAttachPoseWristPosition, LerpTimer / GentleReattachTimeFrame);
 
                 if (AttachPoseWristRotation != FinalAttachPoseWristRotation)
-                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, LerpTimer / GentleReattachTimeFrame);
-
-                //DebugGraph.Log(LerpTimer);
-                //DebugGraph.Log(LerpTimer / GentleReattachTimeFrame);
+                    AttachPoseWristRotation = Quaternion.Slerp(AttachPoseWristRotation, FinalAttachPoseWristRotation, LerpTimer / GentleReattachTimeFrame);*/
 
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - AttachPoseWristPosition);
+                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper._AttachPose.WristPosition);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -164,14 +162,17 @@ namespace MrPuppet
                 );
             }
 
+            /*
             if (Input.GetKeyDown(KeyCode.A))
             {
                 GrabAttachPose();
             }
+
             if (Input.GetKeyDown(KeyCode.S))
             {
-                GentleGrabAttachPose();
+                //GentleGrabAttachPose();
             }
+            */
         }
 
         private void OnDrawGizmos()
