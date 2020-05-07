@@ -21,7 +21,7 @@ namespace MrPuppet
         public Transform HipTranslation;
         public Transform Head;
 
-        public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
+        public List<ButtPuppet.WeightedInfluence> WeightedInfluences = new List<ButtPuppet.WeightedInfluence>();
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -681,62 +681,7 @@ namespace MrPuppet
     }
 
     #region Classes
-    [Serializable]
-    public class WeightedInfluence
-    {
-        public MrPuppetDataMapper.Joint joint = MrPuppetDataMapper.Joint.Wrist;
-        public Transform target;
 
-        [Range(0f, 1f)]
-        public float amount = 1f;
-
-        private Quaternion spawn;
-        private Quaternion full;
-        private Quaternion weighted;
-
-        public void SnapshotSpawn()
-        {
-            spawn = target.rotation;
-        }
-
-        private Quaternion Attach(MrPuppetDataMapper DataMapper)
-        {
-            switch (joint)
-            {
-                case MrPuppetDataMapper.Joint.Elbow:
-                    return DataMapper.AttachPose.ElbowRotation;
-                case MrPuppetDataMapper.Joint.Wrist:
-                    return DataMapper.AttachPose.WristRotation;
-                default:
-                    return Quaternion.identity;
-            }
-        }
-
-        public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed)
-        {
-            if (!target)
-                return;
-
-            // calculate fully blended extent
-            full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(Attach(DataMapper))) * spawn;
-
-            // calculate weighted rotation
-            weighted = Quaternion.Slerp(spawn, full, amount);
-
-            // apply with smoothing
-            target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.deltaTime);
-        }
-
-        public void OnDrawGizmos()
-        {
-            if (!target)
-                return;
-
-            Debug.DrawRay(target.position, target.up * 0.5f, Color.green, 0f, false);
-            Debug.DrawRay(target.position, target.right * 0.5f, Color.red, 0f, false);
-            Debug.DrawRay(target.position, target.forward * 0.5f, Color.blue, 0f, false);
-        }
-    }
     #endregion
 
     #region Enums

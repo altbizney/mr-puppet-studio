@@ -72,6 +72,35 @@ namespace MrPuppet
             this.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
             this.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
         }
+
+        public bool IsValid()
+        {
+            //Can this == null ever be true?
+            if (this == null)
+                return false;
+
+            if (Single.IsNaN(ShoulderPosition.x) || Single.IsNaN(ShoulderPosition.y) || Single.IsNaN(ShoulderPosition.z))
+                return false;
+            if (Single.IsNaN(ElbowPosition.x) || Single.IsNaN(ElbowPosition.y) || Single.IsNaN(ElbowPosition.z))
+                return false;
+            if (Single.IsNaN(WristPosition.x) || Single.IsNaN(WristPosition.y) || Single.IsNaN(WristPosition.z))
+                return false;
+
+            if (Single.IsNaN(ShoulderRotation.x) || Single.IsNaN(ShoulderRotation.y) || Single.IsNaN(ShoulderRotation.z))
+                return false;
+            if (Single.IsNaN(ElbowRotation.x) || Single.IsNaN(ElbowRotation.y) || Single.IsNaN(ElbowRotation.z))
+                return false;
+            if (Single.IsNaN(WristRotation.x) || Single.IsNaN(WristRotation.y) || Single.IsNaN(WristRotation.z))
+                return false;
+
+            return true;
+        }
+
+        public bool IsEqual(PoseData PoseA, PoseData PoseB)
+        {
+
+            return false;
+        }
     }
 
     public class MrPuppetDataMapper : MonoBehaviour
@@ -109,7 +138,8 @@ namespace MrPuppet
         public float ForearmAnchorOffset = 0f;
 
         [MinValue(0.5f)]
-        public float GentleReattachTimeFrame = 2f;
+        [SuffixLabel("Seconds", Overlay = true)]
+        public float GentleReattachDuration = 2f;
 
         [HideInInspector]
         public bool AttachPoseSet;
@@ -156,18 +186,21 @@ namespace MrPuppet
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
-            if (LerpTimer < TimeFrameAfterAttach)
-                LerpTimer += Time.deltaTime;
-            else
-                LerpTimer = TimeFrameAfterAttach;
-
-            LerpTimerProgress = LerpTimer / TimeFrameAfterAttach;
-            // smooth step
-            LerpTimerProgress = LerpTimerProgress * LerpTimerProgress * (3f - 2f * LerpTimerProgress);
-
-            if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
+            if (AttachPose.IsValid() && TargetAttachPose.IsValid() && FromAttachPose.IsValid())
             {
-                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimerProgress);
+                if (LerpTimer < TimeFrameAfterAttach)
+                {
+                    LerpTimer += Time.deltaTime;
+
+                    LerpTimerProgress = LerpTimer / TimeFrameAfterAttach;
+                    LerpTimerProgress = LerpTimerProgress * LerpTimerProgress * (3f - 2f * LerpTimerProgress);
+                    AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimerProgress);
+                }
+                else
+                {
+                    LerpTimer = TimeFrameAfterAttach;
+                }
+                Debug.Log(LerpTimer);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
@@ -191,7 +224,6 @@ namespace MrPuppet
 
             throw new ArgumentException("Invalid Joint");
         }
-
 
         [Button(ButtonSizes.Large)]
         [HorizontalGroup("TPose")]
@@ -269,11 +301,13 @@ namespace MrPuppet
             TargetAttachPose.ElbowPosition = AttachPose.ElbowPosition;
             TargetAttachPose.WristPosition = AttachPose.WristPosition;
 
+            FromAttachPose = new PoseData();
+
             AttachPoseSet = true;
 
-            LerpTimer = GentleReattachTimeFrame;
+            LerpTimer = GentleReattachDuration;
 
-            TimeFrameAfterAttach = GentleReattachTimeFrame;
+            TimeFrameAfterAttach = GentleReattachDuration;
         }
 
         [Button(ButtonSizes.Large)]
@@ -305,7 +339,7 @@ namespace MrPuppet
                 FromAttachPose.ElbowPosition = AttachPose.ElbowPosition;
                 FromAttachPose.WristPosition = AttachPose.WristPosition;
 
-                TimeFrameAfterAttach = GentleReattachTimeFrame;
+                TimeFrameAfterAttach = GentleReattachDuration;
 
                 LerpTimer = 0;
             }
