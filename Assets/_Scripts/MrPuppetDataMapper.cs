@@ -37,6 +37,7 @@ namespace MrPuppet
         }
     }
 
+    [Serializable]
     public class PoseData
     {
         public Quaternion ShoulderRotation = Quaternion.identity;
