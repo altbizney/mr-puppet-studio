@@ -107,8 +107,8 @@ namespace MrPuppet
         [MinValue(0f)]
         public float ForearmAnchorOffset = 0f;
 
-        [MinValue(0.1f)]
-        public float GentleReattachTimeFrame;
+        [MinValue(0.5f)]
+        public float GentleReattachTimeFrame = 2f;
 
         [HideInInspector]
         public bool AttachPoseSet;
