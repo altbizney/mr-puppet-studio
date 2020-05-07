@@ -96,11 +96,6 @@ namespace MrPuppet
             return true;
         }
 
-        public bool IsEqual(PoseData PoseA, PoseData PoseB)
-        {
-
-            return false;
-        }
     }
 
     public class MrPuppetDataMapper : MonoBehaviour
@@ -200,7 +195,7 @@ namespace MrPuppet
                 {
                     LerpTimer = TimeFrameAfterAttach;
                 }
-                Debug.Log(LerpTimer);
+                Debug.Log(LerpTimer); f
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
