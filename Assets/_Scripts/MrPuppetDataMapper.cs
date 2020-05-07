@@ -119,6 +119,7 @@ namespace MrPuppet
         private PoseData FromAttachPose = new PoseData();
         private float LerpTimer;
         private float TimeFrameAfterAttach;
+        private float LerpTimerProgress;
 
         private void Awake()
         {
@@ -159,9 +160,13 @@ namespace MrPuppet
             else
                 LerpTimer = TimeFrameAfterAttach;
 
+            LerpTimerProgress = LerpTimer / TimeFrameAfterAttach;
+            // smooth step
+            LerpTimerProgress = LerpTimerProgress * LerpTimerProgress * (3f - 2f * LerpTimerProgress);
+
             if (AttachPose != TargetAttachPose && AttachPose != null && TargetAttachPose != null && FromAttachPose != null)
             {
-                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimer / TimeFrameAfterAttach);
+                AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimerProgress);
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
