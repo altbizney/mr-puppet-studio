@@ -195,7 +195,6 @@ namespace MrPuppet
                 {
                     LerpTimer = TimeFrameAfterAttach;
                 }
-                Debug.Log(LerpTimer); f
             }
 
             if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
