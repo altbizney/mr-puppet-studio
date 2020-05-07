@@ -201,7 +201,7 @@ namespace MrPuppet
             if (Input.GetKeyDown(KeyCode.O)) { GrabJawOpened(); }
             if (Input.GetKeyDown(KeyCode.C)) { GrabJawClosed(); }
             if (Input.GetKeyDown(KeyCode.A)) { GrabAttachPose(); }
-            if (Input.GetKeyDown(KeyCode.S)) { GrabGentleAttachPose(); }
+            if (Input.GetKey(KeyCode.S)) { GrabGentleAttachPose(); }
         }
 
         public Transform GetJoint(Joint joint)
