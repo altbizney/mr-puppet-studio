@@ -81,8 +81,6 @@ namespace MrPuppet
                 Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
                 RecorderPrompt.ShowUtilityWindow(this);
             }
-
-            Repaint();
         }
 
         private void OnDestroy()
@@ -203,6 +201,7 @@ namespace MrPuppet
             public void Trash()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Trash;
+                ExportPerformanceInstance.Repaint();
                 Close();
             }
 
@@ -211,6 +210,7 @@ namespace MrPuppet
             public void Blooper()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Blooper;
+                ExportPerformanceInstance.Repaint();
                 Close();
             }
 
@@ -220,12 +220,14 @@ namespace MrPuppet
             public void Keeper()
             {
                 ExportPerformanceInstance.Exports[ExportPerformanceInstance.Exports.Count - 1]._Rating = ExportPerformance.Rating.Keeper;
+                ExportPerformanceInstance.Repaint();
                 Close();
             }
 
             private void OnDestroy()
             {
                 ExportPerformanceInstance.PromptShowing = false;
+                ExportPerformanceInstance.Repaint();
             }
 
             private void OnGUI()
@@ -250,12 +252,6 @@ namespace MrPuppet
                         break;
                 }
             }
-
-            void OnInspectorUpdate()
-            {
-                Repaint();
-            }
-
         }
     }
 #else

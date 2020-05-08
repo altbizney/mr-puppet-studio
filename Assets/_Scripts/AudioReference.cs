@@ -264,7 +264,7 @@ namespace MrPuppet
 
             if (EditorApplication.isPlaying)
             {
-                Repaint();
+                //Repaint();
 
                 if (!Recorder)
                 {

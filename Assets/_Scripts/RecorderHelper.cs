@@ -154,7 +154,7 @@ namespace MrPuppet
                 ColorState = Color.gray;
             }
 
-            Repaint();
+            //Repaint();
         }
 
         public class CountDown : MonoBehaviour
