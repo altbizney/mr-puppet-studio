@@ -37,6 +37,67 @@ namespace MrPuppet
         }
     }
 
+    [Serializable]
+    public class PoseData
+    {
+        public Quaternion ShoulderRotation = Quaternion.identity;
+        public Quaternion ElbowRotation = Quaternion.identity;
+        public Quaternion WristRotation = Quaternion.identity;
+
+        public Vector3 ShoulderPosition = Vector3.zero;
+        public Vector3 ElbowPosition = Vector3.zero;
+        public Vector3 WristPosition = Vector3.zero;
+
+        /*
+        public void SnapShot()
+        {
+            this.ShoulderRotation = ShoulderJoint.rotation;
+            this.ElbowRotation = ElbowJoint.rotation;
+            this.WristRotation = WristJoint.rotation;
+
+            this.ShoulderPosition = ShoulderJoint.position;
+            this.ElbowPosition = ElbowJoint.position;
+            this.WristPosition = WristJoint.position;
+        }
+        */
+
+        public void Lerp(PoseData from, PoseData to, float t)
+        {
+
+            this.ShoulderRotation = Quaternion.Slerp(from.ShoulderRotation, to.ShoulderRotation, t);
+            this.ElbowRotation = Quaternion.Slerp(from.ElbowRotation, to.ElbowRotation, t);
+            this.WristRotation = Quaternion.Slerp(from.WristRotation, to.WristRotation, t);
+
+            this.ShoulderPosition = Vector3.Lerp(from.ShoulderPosition, to.ShoulderPosition, t);
+            this.ElbowPosition = Vector3.Lerp(from.ElbowPosition, to.ElbowPosition, t);
+            this.WristPosition = Vector3.Lerp(from.WristPosition, to.WristPosition, t);
+        }
+
+        public bool IsValid()
+        {
+            //Can this == null ever be true?
+            if (this == null)
+                return false;
+
+            if (Single.IsNaN(ShoulderPosition.x) || Single.IsNaN(ShoulderPosition.y) || Single.IsNaN(ShoulderPosition.z))
+                return false;
+            if (Single.IsNaN(ElbowPosition.x) || Single.IsNaN(ElbowPosition.y) || Single.IsNaN(ElbowPosition.z))
+                return false;
+            if (Single.IsNaN(WristPosition.x) || Single.IsNaN(WristPosition.y) || Single.IsNaN(WristPosition.z))
+                return false;
+
+            if (Single.IsNaN(ShoulderRotation.x) || Single.IsNaN(ShoulderRotation.y) || Single.IsNaN(ShoulderRotation.z))
+                return false;
+            if (Single.IsNaN(ElbowRotation.x) || Single.IsNaN(ElbowRotation.y) || Single.IsNaN(ElbowRotation.z))
+                return false;
+            if (Single.IsNaN(WristRotation.x) || Single.IsNaN(WristRotation.y) || Single.IsNaN(WristRotation.z))
+                return false;
+
+            return true;
+        }
+
+    }
+
     public class MrPuppetDataMapper : MonoBehaviour
     {
         private MrPuppetHubConnection HubConnection;
@@ -70,6 +131,21 @@ namespace MrPuppet
 
         [MinValue(0f)]
         public float ForearmAnchorOffset = 0f;
+
+        [MinValue(0.5f)]
+        [SuffixLabel("Seconds", Overlay = true)]
+        public float GentleReattachDuration = 2f;
+
+        [HideInInspector]
+        public bool AttachPoseSet;
+
+        public PoseData AttachPose = new PoseData();
+
+        private PoseData TargetAttachPose = new PoseData();
+        private PoseData FromAttachPose = new PoseData();
+        private float LerpTimer;
+        private float TimeFrameAfterAttach;
+        private float LerpTimerProgress;
 
         private void Awake()
         {
@@ -105,20 +181,27 @@ namespace MrPuppet
             WristJoint.localPosition = Vector3.back * ForearmLength;
             WristJoint.rotation = TPose.WristRotation * HubConnection.WristRotation;
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (AttachPose.IsValid() && TargetAttachPose.IsValid() && FromAttachPose.IsValid())
             {
-                GrabTPose();
+                if (LerpTimer < TimeFrameAfterAttach)
+                {
+                    LerpTimer += Time.deltaTime;
+
+                    LerpTimerProgress = LerpTimer / TimeFrameAfterAttach;
+                    LerpTimerProgress = LerpTimerProgress * LerpTimerProgress * (3f - 2f * LerpTimerProgress);
+                    AttachPose.Lerp(FromAttachPose, TargetAttachPose, LerpTimerProgress);
+                }
+                else
+                {
+                    LerpTimer = TimeFrameAfterAttach;
+                }
             }
 
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                GrabJawOpened();
-            }
-
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                GrabJawClosed();
-            }
+            if (Input.GetKeyDown(KeyCode.T)) { GrabTPose(); }
+            if (Input.GetKeyDown(KeyCode.O)) { GrabJawOpened(); }
+            if (Input.GetKeyDown(KeyCode.C)) { GrabJawClosed(); }
+            if (Input.GetKeyDown(KeyCode.A)) { GrabAttachPose(); }
+            if (Input.GetKeyDown(KeyCode.S)) { GrabGentleAttachPose(); }
         }
 
         public Transform GetJoint(Joint joint)
@@ -190,6 +273,74 @@ namespace MrPuppet
             HubConnection.SendSocketMessage("COMMAND;JAW_CLOSED;1023");
         }
 
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode]
+        public void GrabAttachPose()
+        {
+            AttachPose.ShoulderRotation = ShoulderJoint.rotation;
+            AttachPose.ElbowRotation = ElbowJoint.rotation;
+            AttachPose.WristRotation = WristJoint.rotation;
+
+            AttachPose.ShoulderPosition = ShoulderJoint.position;
+            AttachPose.ElbowPosition = ElbowJoint.position;
+            AttachPose.WristPosition = WristJoint.position;
+
+            TargetAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+            TargetAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+            TargetAttachPose.WristRotation = AttachPose.WristRotation;
+
+            TargetAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+            TargetAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+            TargetAttachPose.WristPosition = AttachPose.WristPosition;
+
+            FromAttachPose = new PoseData();
+
+            AttachPoseSet = true;
+
+            LerpTimer = GentleReattachDuration;
+
+            TimeFrameAfterAttach = GentleReattachDuration;
+        }
+
+        [Button(ButtonSizes.Large)]
+        [HorizontalGroup("AttachPose")]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode]
+        public void GrabGentleAttachPose()
+        {
+
+            if (!AttachPoseSet)
+            {
+                GrabAttachPose();
+            }
+            else
+            {
+                TargetAttachPose.ShoulderRotation = ShoulderJoint.rotation;
+                TargetAttachPose.ElbowRotation = ElbowJoint.rotation;
+                TargetAttachPose.WristRotation = WristJoint.rotation;
+
+                TargetAttachPose.ShoulderPosition = ShoulderJoint.position;
+                TargetAttachPose.ElbowPosition = ElbowJoint.position;
+                TargetAttachPose.WristPosition = WristJoint.position;
+
+                FromAttachPose.ShoulderRotation = AttachPose.ShoulderRotation;
+                FromAttachPose.ElbowRotation = AttachPose.ElbowRotation;
+                FromAttachPose.WristRotation = AttachPose.WristRotation;
+
+                FromAttachPose.ShoulderPosition = AttachPose.ShoulderPosition;
+                FromAttachPose.ElbowPosition = AttachPose.ElbowPosition;
+                FromAttachPose.WristPosition = AttachPose.WristPosition;
+
+                TimeFrameAfterAttach = GentleReattachDuration;
+
+                LerpTimer = 0;
+            }
+
+            AttachPoseSet = true;
+        }
+
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
@@ -210,7 +361,8 @@ namespace MrPuppet
             Gizmos.matrix = ElbowJoint.localToWorldMatrix;
             Gizmos.DrawWireCube(new Vector3(0f, 0f, ForearmLength * -0.5f), new Vector3(0.25f, 0.25f, ForearmLength));
 
-            if (ForearmAnchorOffset > 0f) {
+            if (ForearmAnchorOffset > 0f)
+            {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(new Vector3(0f, 0f, -ForearmAnchorOffset), 0.1f);
                 Gizmos.color = Color.white;

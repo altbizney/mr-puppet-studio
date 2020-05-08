@@ -48,10 +48,12 @@ namespace MrPuppet
 
         public void AttachAll()
         {
+            /*
             foreach (var puppet in FindObjectsOfType<ButtPuppet>())
             {
                 puppet.GrabAttachPose();
             }
+            */
         }
     }
 }

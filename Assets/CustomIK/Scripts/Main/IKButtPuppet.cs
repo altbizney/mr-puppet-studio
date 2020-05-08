@@ -5,8 +5,10 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
 
-namespace MrPuppet {
-    public class IKButtPuppet : MonoBehaviour {
+namespace MrPuppet
+{
+    public class IKButtPuppet : MonoBehaviour
+    {
 
         #region Static Variables
 
@@ -19,7 +21,7 @@ namespace MrPuppet {
         public Transform HipTranslation;
         public Transform Head;
 
-        public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
+        public List<ButtPuppet.WeightedInfluence> WeightedInfluences = new List<ButtPuppet.WeightedInfluence>();
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -180,12 +182,6 @@ namespace MrPuppet {
         private MrPuppetDataMapper DataMapper;
         private MrPuppetHubConnection HubConnection;
 
-        // performer attach position
-        private bool AttachPoseSet = false;
-        private Quaternion AttachPoseElbowRotation;
-        private Quaternion AttachPoseWristRotation;
-        private Vector3 AttachPoseElbowPosition;
-
         // spawn position of proxy geo
         private Vector3 HipSpawnPosition;
         private Quaternion HipSpawnRotation;
@@ -195,11 +191,13 @@ namespace MrPuppet {
         #endregion
 
         #region Unity Methods
-        private void Awake() {
+        private void Awake()
+        {
             LegacyAwake();
         }
 
-        private void Update() {
+        private void Update()
+        {
             IKUpdate();
             LegacyUpdate();
         }
@@ -222,76 +220,98 @@ namespace MrPuppet {
         [Button("Assign IK Nodes", 25, ButtonStyle.Box)]
         [GUIColor(1f, 1f, 0f)]
         [DisableInPlayMode()]
-        private void AssignIKNodes() {
+        private void AssignIKNodes()
+        {
             List<IKTag> tags = new List<IKTag>();
-            foreach (Transform t in ikNodes) {
+            foreach (Transform t in ikNodes)
+            {
                 tags.AddRange(t.GetComponentsInChildren<IKTag>());
             }
-            foreach (IKTag tag in tags) {
-                if (tag.iKTagId == IKTagId.Hip) {
+            foreach (IKTag tag in tags)
+            {
+                if (tag.iKTagId == IKTagId.Hip)
+                {
                     hipIK = tag.GetComponent<TrigonometricIK>();
-                    if (hipIK && hipIK.solver.bone3.transform) {
+                    if (hipIK && hipIK.solver.bone3.transform)
+                    {
                         hipIK.transform.position = hipIK.solver.bone3.transform.position;
                         hipIK.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.Spine) {
+                if (tag.iKTagId == IKTagId.Spine)
+                {
                     spineIK = tag.GetComponent<TrigonometricIK>();
-                    if (spineIK && spineIK.solver.bone3.transform) {
+                    if (spineIK && spineIK.solver.bone3.transform)
+                    {
                         spineIK.transform.position = spineIK.solver.bone3.transform.position;
                         spineIK.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.Neck) {
+                if (tag.iKTagId == IKTagId.Neck)
+                {
                     neckIK = tag.GetComponent<TrigonometricIK>();
-                    if (neckIK && neckIK.solver.bone3.transform) {
+                    if (neckIK && neckIK.solver.bone3.transform)
+                    {
                         neckIK.transform.position = neckIK.solver.bone3.transform.position;
                         neckIK.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.Head) {
+                if (tag.iKTagId == IKTagId.Head)
+                {
                     headIK = tag.GetComponent<TrigonometricIK>();
-                    if (headIK && headIK.solver.bone3.transform) {
+                    if (headIK && headIK.solver.bone3.transform)
+                    {
                         headIK.transform.position = headIK.solver.bone3.transform.position;
                         headIK.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.LeftArm && enableLeftArmLimb) {
+                if (tag.iKTagId == IKTagId.LeftArm && enableLeftArmLimb)
+                {
                     leftArmLimb = tag.GetComponent<LimbIK>();
-                    if (leftArmLimb && leftArmLimb.solver.bone1.transform) {
+                    if (leftArmLimb && leftArmLimb.solver.bone1.transform)
+                    {
                         leftArmLimb.transform.position = leftArmLimb.solver.bone1.transform.position;
                         leftArmLimb.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.RightArm && enableRightArmLimb) {
+                if (tag.iKTagId == IKTagId.RightArm && enableRightArmLimb)
+                {
                     rightArmLimb = tag.GetComponent<LimbIK>();
-                    if (rightArmLimb && rightArmLimb.solver.bone1.transform) {
+                    if (rightArmLimb && rightArmLimb.solver.bone1.transform)
+                    {
                         rightArmLimb.transform.position = rightArmLimb.solver.bone1.transform.position;
                         rightArmLimb.transform.rotation = rigNode.rotation;
                     }
                 }
-                if (tag.iKTagId == IKTagId.Grounder) {
+                if (tag.iKTagId == IKTagId.Grounder)
+                {
                     grounderIK = tag.GetComponent<GrounderIK>();
                 }
-                if (tag.iKTagId == IKTagId.LeftLeg) {
+                if (tag.iKTagId == IKTagId.LeftLeg)
+                {
                     leftLegLimb = tag.GetComponent<LimbIK>();
-                    if (leftLegLimb && leftLegLimb.solver.bone3.transform) {
+                    if (leftLegLimb && leftLegLimb.solver.bone3.transform)
+                    {
                         leftLegLimb.transform.position = leftLegLimb.solver.bone3.transform.position;
                         leftLegLimb.transform.rotation = rigNode.rotation;
 
-                        if (leftLegLimb.solver.target) {
+                        if (leftLegLimb.solver.target)
+                        {
                             leftLegLimb.solver.target.position = leftLegLimb.transform.position;
                             leftLegLimb.solver.target.rotation = leftLegLimb.transform.rotation;
                         }
                     }
                 }
-                if (tag.iKTagId == IKTagId.RightLeg) {
+                if (tag.iKTagId == IKTagId.RightLeg)
+                {
                     rightLegLimb = tag.GetComponent<LimbIK>();
-                    if (rightLegLimb && rightLegLimb.solver.bone3.transform) {
+                    if (rightLegLimb && rightLegLimb.solver.bone3.transform)
+                    {
                         rightLegLimb.transform.position = rightLegLimb.solver.bone3.transform.position;
                         rightLegLimb.transform.rotation = rigNode.rotation;
 
-                        if (rightLegLimb.solver.target) {
+                        if (rightLegLimb.solver.target)
+                        {
                             rightLegLimb.solver.target.position = rightLegLimb.transform.position;
                             rightLegLimb.solver.target.rotation = rightLegLimb.transform.rotation;
                         }
@@ -303,15 +323,20 @@ namespace MrPuppet {
         [Button("Assign IK Bones", 25, ButtonStyle.Box)]
         [GUIColor(1f, 1f, 0f)]
         [DisableInPlayMode()]
-        private void AssignIKBones() {
+        private void AssignIKBones()
+        {
             IKTag[] tags = rigNode.GetComponentsInChildren<IKTag>();
 
             //Hip
-            if (hipIK) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.Hip) {
+            if (hipIK)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.Hip)
+                    {
                         hipIK.solver.target = hipIKTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 hipIK.solver.bone1.transform = tag.transform;
                                 break;
@@ -327,11 +352,15 @@ namespace MrPuppet {
             }
 
             //Spine
-            if (spineIK) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.Spine) {
+            if (spineIK)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.Spine)
+                    {
                         spineIK.solver.target = spineIKTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 spineIK.solver.bone1.transform = tag.transform;
                                 break;
@@ -347,11 +376,15 @@ namespace MrPuppet {
             }
 
             //Neck
-            if (neckIK) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.Neck) {
+            if (neckIK)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.Neck)
+                    {
                         neckIK.solver.target = neckIKTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 neckIK.solver.bone1.transform = tag.transform;
                                 break;
@@ -367,11 +400,15 @@ namespace MrPuppet {
             }
 
             //Head
-            if (headIK) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.Head) {
+            if (headIK)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.Head)
+                    {
                         headIK.solver.target = headIKTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 headIK.solver.bone1.transform = tag.transform;
                                 break;
@@ -387,11 +424,15 @@ namespace MrPuppet {
             }
 
             //Left Arm
-            if (enableLeftArmLimb) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.LeftArm) {
+            if (enableLeftArmLimb)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.LeftArm)
+                    {
                         leftArmLimb.solver.target = leftArmTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 leftArmLimb.solver.bone1.transform = tag.transform;
                                 break;
@@ -407,11 +448,15 @@ namespace MrPuppet {
             }
 
             //Right Arm
-            if (enableRightArmLimb) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.RightArm) {
+            if (enableRightArmLimb)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.RightArm)
+                    {
                         rightArmLimb.solver.target = rightArmTarget;
-                        switch (tag.chainId) {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 rightArmLimb.solver.bone1.transform = tag.transform;
                                 break;
@@ -427,10 +472,14 @@ namespace MrPuppet {
             }
 
             //Grounder
-            if (grounderIK) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.Grounder) {
-                        switch (tag.chainId) {
+            if (grounderIK)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.Grounder)
+                    {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 grounderIK.pelvis = tag.transform;
                                 break;
@@ -443,10 +492,14 @@ namespace MrPuppet {
             }
 
             //Left Leg
-            if (leftLegLimb) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.LeftLeg) {
-                        switch (tag.chainId) {
+            if (leftLegLimb)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.LeftLeg)
+                    {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 leftLegLimb.solver.bone1.transform = tag.transform;
                                 break;
@@ -462,10 +515,14 @@ namespace MrPuppet {
             }
 
             //Right Leg
-            if (rightLegLimb) {
-                foreach (IKTag tag in tags) {
-                    if (tag.iKTagId == IKTagId.RightLeg) {
-                        switch (tag.chainId) {
+            if (rightLegLimb)
+            {
+                foreach (IKTag tag in tags)
+                {
+                    if (tag.iKTagId == IKTagId.RightLeg)
+                    {
+                        switch (tag.chainId)
+                        {
                             case 1:
                                 rightLegLimb.solver.bone1.transform = tag.transform;
                                 break;
@@ -484,107 +541,82 @@ namespace MrPuppet {
         [Button("Update IK Weights", 25, ButtonStyle.Box)]
         [GUIColor(1f, 1f, 0f)]
         [DisableInPlayMode()]
-        private void UpdateIKWeights() {
+        private void UpdateIKWeights()
+        {
             //Hip
-            if (hipIK) {
+            if (hipIK)
+            {
                 hipIK.solver.IKPositionWeight = hipIKPositionWeight;
                 hipIK.solver.IKRotationWeight = hipIKRotationWeight;
             }
 
             //Spine
-            if (spineIK) {
+            if (spineIK)
+            {
                 spineIK.solver.IKPositionWeight = spineIKPositionWeight;
                 spineIK.solver.IKRotationWeight = spineIKRotationWeight;
             }
 
             //Neck
-            if (neckIK) {
+            if (neckIK)
+            {
                 neckIK.solver.IKPositionWeight = neckIKPositionWeight;
                 neckIK.solver.IKRotationWeight = neckIKRotationWeight;
             }
 
             //Head
-            if (headIK) {
+            if (headIK)
+            {
                 headIK.solver.IKPositionWeight = headIKPositionWeight;
                 headIK.solver.IKRotationWeight = headIKRotationWeight;
             }
 
             //Left Arm
-            if (leftArmLimb) {
-                if (enableLeftArmLimb) {
+            if (leftArmLimb)
+            {
+                if (enableLeftArmLimb)
+                {
                     leftArmLimb.solver.IKPositionWeight = leftArmLimbPositionWeight;
                     leftArmLimb.solver.IKRotationWeight = leftArmLimbRotationWeight;
                 }
             }
 
             //Right Arm
-            if (rightArmLimb) {
-                if (enableRightArmLimb) {
+            if (rightArmLimb)
+            {
+                if (enableRightArmLimb)
+                {
                     rightArmLimb.solver.IKPositionWeight = rightArmLimbPositionWeight;
                     rightArmLimb.solver.IKRotationWeight = rightArmLimbRotationWeight;
                 }
             }
 
             //Grounder
-            if (grounderIK) {
+            if (grounderIK)
+            {
                 grounderIK.weight = grounderIKWeight;
             }
 
             //Left Leg
-            if (leftLegLimb) {
+            if (leftLegLimb)
+            {
                 leftLegLimb.solver.IKRotationWeight = leftLegLimbRotationWeight;
             }
 
             //Right Leg
-            if (rightLegLimb) {
+            if (rightLegLimb)
+            {
                 rightLegLimb.solver.IKRotationWeight = rightLegLimbRotationWeight;
             }
         }
 
-        private void IKUpdate() {
+        private void IKUpdate()
+        {
             UpdateIKWeights();
         }
 
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0f, 1f, 0f)]
-        [DisableInEditorMode()]
-        private void GrabAttachPose() {
-            AttachPoseSet = true;
-
-            // grab the attach position of the elbow joint
-            AttachPoseElbowPosition = DataMapper.ElbowAnchorJoint.position;
-
-            // grab the attach rotation of the joints
-            AttachPoseElbowRotation = DataMapper.ElbowJoint.rotation;
-            AttachPoseWristRotation = DataMapper.WristJoint.rotation;
-
-            // send attach poses to weighted infleunces
-            foreach (var influence in WeightedInfluences) {
-                influence.SnapshotAttach(AttachPoseElbowRotation, AttachPoseWristRotation);
-            }
-
-            HubConnection.SendSocketMessage("COMMAND;ATTACH;" + AttachPoseToString());
-        }
-
-        private string AttachPoseToString() {
-            string packet = "";
-
-            packet += AttachPoseElbowPosition.x + "," + AttachPoseElbowPosition.y + "," + AttachPoseElbowPosition.z + ";";
-            packet += AttachPoseElbowRotation.x + "," + AttachPoseElbowRotation.y + "," + AttachPoseElbowRotation.z + "," + AttachPoseElbowRotation.w + ";";
-            packet += AttachPoseWristRotation.x + "," + AttachPoseWristRotation.y + "," + AttachPoseWristRotation.z + "," + AttachPoseWristRotation.w;
-
-            return packet;
-        }
-
-        private void AttachPoseFromString(string[] elbowPos, string[] elbowRot, string[] wristRot) {
-            AttachPoseElbowPosition = new Vector3(float.Parse(elbowPos[0]), float.Parse(elbowPos[1]), float.Parse(elbowPos[2]));
-            AttachPoseElbowRotation = new Quaternion(float.Parse(elbowRot[0]), float.Parse(elbowRot[1]), float.Parse(elbowRot[2]), float.Parse(elbowRot[3]));
-            AttachPoseWristRotation = new Quaternion(float.Parse(wristRot[0]), float.Parse(wristRot[1]), float.Parse(wristRot[2]), float.Parse(wristRot[3]));
-
-            AttachPoseSet = true;
-        }
-
-        private void LegacyAwake() {
+        private void LegacyAwake()
+        {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
@@ -593,15 +625,18 @@ namespace MrPuppet {
             HeadSpawnRotation = Head.rotation;
 
             // snapshot bind poses of weighted influence targets
-            foreach (var influence in WeightedInfluences) {
+            foreach (var influence in WeightedInfluences)
+            {
                 influence.SnapshotSpawn();
             }
         }
 
-        private void LegacyUpdate() {
-            if (AttachPoseSet) {
+        private void LegacyUpdate()
+        {
+            if (DataMapper.AttachPoseSet)
+            {
                 // apply position delta to bind pose
-                Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - AttachPoseElbowPosition);
+                Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -614,11 +649,13 @@ namespace MrPuppet {
                 HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(AttachPoseElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
-                Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(AttachPoseWristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
+                HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
-                if (EnableJawHeadMixer) {
-                    switch (JawHeadRotate) {
+                if (EnableJawHeadMixer)
+                {
+                    switch (JawHeadRotate)
+                    {
                         case JawHeadAxis.x:
                             Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
                             break;
@@ -634,70 +671,17 @@ namespace MrPuppet {
                 }
 
                 // apply weighted influences
-                foreach (var influence in WeightedInfluences) {
+                foreach (var influence in WeightedInfluences)
+                {
                     influence.Update(DataMapper, RotationSpeed);
                 }
-            }
-
-            if (Input.GetKeyDown(KeyCode.A)) {
-                GrabAttachPose();
             }
         }
         #endregion
     }
 
     #region Classes
-    [Serializable]
-    public class WeightedInfluence {
-        public MrPuppetDataMapper.Joint joint = MrPuppetDataMapper.Joint.Wrist;
-        public Transform target;
 
-        [Range(0f, 1f)]
-        public float amount = 1f;
-
-        private Quaternion attach;
-        private Quaternion spawn;
-        private Quaternion full;
-        private Quaternion weighted;
-
-        public void SnapshotSpawn() {
-            spawn = target.rotation;
-        }
-
-        public void SnapshotAttach(Quaternion elbow, Quaternion wrist) {
-            switch (joint) {
-                case MrPuppetDataMapper.Joint.Elbow:
-                    attach = elbow;
-                    return;
-                case MrPuppetDataMapper.Joint.Wrist:
-                    attach = wrist;
-                    return;
-            }
-        }
-
-        public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed) {
-            if (!target)
-                return;
-
-            // calculate fully blended extent
-            full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(attach)) * spawn;
-
-            // calculate weighted rotation
-            weighted = Quaternion.Slerp(spawn, full, amount);
-
-            // apply with smoothing
-            target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.deltaTime);
-        }
-
-        public void OnDrawGizmos() {
-            if (!target)
-                return;
-
-            Debug.DrawRay(target.position, target.up * 0.5f, Color.green, 0f, false);
-            Debug.DrawRay(target.position, target.right * 0.5f, Color.red, 0f, false);
-            Debug.DrawRay(target.position, target.forward * 0.5f, Color.blue, 0f, false);
-        }
-    }
     #endregion
 
     #region Enums
