@@ -150,7 +150,7 @@ namespace MrPuppet
                             AudioClipParseAfterPlay = _AnimationClip.name;
 
                         if (HubConnectionCheck())
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParseMessageBox);
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + AudioClipParseAfterPlay);
                     }
                 }
                 //audioSource = Actor.AddComponent<AudioSource>();
