@@ -289,7 +289,7 @@ namespace MrPuppet
 
             TransformWrapper = new GameObject("TransformWrapper");
             PuppetReplay.transform.parent = TransformWrapper.transform;
-            TransformWrapper.transform.position += new Vector3(0, 0, 2.5f);
+            TransformWrapper.transform.position += new Vector3(0, 0, 3.5f);
             Actor.transform.parent = TransformWrapper.transform;
 
             foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
@@ -328,7 +328,7 @@ namespace MrPuppet
             {
                 if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
                 {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
                     HubConnection = null;
                 }
                 if (PlayModeEntered == true)
