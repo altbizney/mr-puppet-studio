@@ -34,13 +34,13 @@ namespace MrPuppet
         //private AudioClip _AudioClip;
         //private AudioSource _AudioSource;
         private Transform JawJointMimic;
-        private bool InCoroutine;
+        //private bool InCoroutine;
         private GameObject TransformWrapper;
         private RecorderWindow Recorder;
         private Transform JawJoint;
         private Coroutine AnimationCoroutine;
         private static MrPuppetHubConnection HubConnection;
-        private static string _AnimationClipName;
+        //private static string _AnimationClipName;
 
         private List<Transform> JointsMimic;
         private List<Transform> JointsClone;
@@ -55,7 +55,7 @@ namespace MrPuppet
         [OnValueChanged("ParseMessageBoxUpdate")]
         public AnimationClip _AnimationClip;
 
-        private string ButtComponent;
+        //private string ButtComponent;
         private string ParseMessageBox;
         private string AudioClipParseAfterPlay = "Waiting for Animation Clip";
         private bool PlayModeEntered;
@@ -506,8 +506,6 @@ namespace MrPuppet
             static PlayModeStateChanged()
             {
                 EditorApplication.playModeStateChanged += playModes;
-                //HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClipName);
             }
 
             private static void playModes(PlayModeStateChange state)
