@@ -43,6 +43,9 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
+        [Range(0f, 1f)]
+        public float DeattachValue = 1f;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
@@ -89,7 +92,7 @@ namespace MrPuppet
             {
 
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper.AttachPose.WristPosition);
+                Vector3 position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)) * DeattachValue);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -103,8 +106,8 @@ namespace MrPuppet
 
                 Root.rotation = Quaternion.Slerp(
                     Root.rotation,
-                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
-                    RotationSpeed * Time.deltaTime
+                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier * DeattachValue),
+                    RotationSpeed * Time.deltaTime 
                 );
             }
         }
