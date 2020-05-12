@@ -132,6 +132,7 @@ namespace MrPuppet
         private float AttachAmountValue;
         private Quaternion AttachHipRotation;
         private Quaternion AttachHeadRotation;
+        private Vector3 position;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -178,7 +179,7 @@ namespace MrPuppet
                 // apply position delta to bind pose
                 if (ApplySensors == true)
                 {
-                    Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
+                    position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
                     if(DeattachPoseSet)
                     {
