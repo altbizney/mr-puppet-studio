@@ -29,7 +29,7 @@ namespace MrPuppet
 
         [ShowInInspector]
         private double Timer;
-    [   ShowInInspector]
+        [ShowInInspector]
         private double TimerOffset;
 
         private string TakeAfterPlay;
