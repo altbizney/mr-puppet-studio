@@ -4,23 +4,23 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Recorder;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-#endif
+//using Sirenix.OdinInspector.Editor;
+//#endif
 
 namespace MrPuppet
 {
 #if UNITY_EDITOR
-    public class AudioReference : OdinEditorWindow
+    public class AudioReference : MonoBehaviour
     {
-        [MenuItem("Tools/Audio Reference")]
+        /*[MenuItem("Tools/Audio Reference")]
         private static void OpenWindow()
         {
             GetWindow<AudioReference>().Show();
-        }
+        }*/
 
         private MrPuppetHubConnection HubConnection;
         private RecorderWindow Recorder;
@@ -33,7 +33,7 @@ namespace MrPuppet
         private double TimerOffset;
 
         private string TakeAfterPlay;
-        private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
+        private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
         private bool PlayModeEntered;
         private bool FACSPlayButton;
@@ -46,6 +46,7 @@ namespace MrPuppet
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheJawTransformMapper")]
+        [InfoBox("$InfoBoxMsg")]
         public string Take;
 
         [ToggleLeft]
@@ -53,12 +54,11 @@ namespace MrPuppet
         [ToggleLeft]
         public bool EnableFACSPlayback;
 
-        [BoxGroup]
+        /*[BoxGroup]
         [ShowIf("EnableFACSPlayback")]
-        [InfoBox("$InfoBoxMsg")]
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
-        public GameObject Actor;
+        public GameObject Actor;*/
 
         private bool NotPlaying()
         {
@@ -77,7 +77,7 @@ namespace MrPuppet
         [DisableIf("DisablePlayButton")]
         public void Play()
         {
-            Timer = TimerOffset = EditorApplication.timeSinceStartup * 1000f;
+            Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
             FACSPlayButton = true;
         }
 
@@ -89,13 +89,14 @@ namespace MrPuppet
         public void Stop()
         {
             Timer = 0;
+            //TimerOffset = Timer = 0f;
             FACSPlayButton = false;
             ResetBlendShapes();
         }
 
         private void ResetBlendShapes()
         {
-            foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
+            foreach (SkinnedMeshRenderer smr in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
                 if (smr.sharedMesh.blendShapeCount > 0)
                 {
@@ -105,6 +106,10 @@ namespace MrPuppet
                     }
                 }
             }
+        }
+
+        private void Awake() {
+            LoadFACS();
         }
 
         private void PlaybackLogic()
@@ -130,14 +135,14 @@ namespace MrPuppet
                 if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = true;
 
-                //Timer += Time.deltaTime * 1000f;
-                Timer = EditorApplication.timeSinceStartup * 1000f;
+                //Timer = EditorApplication.timeSinceStartup * 1000f;
+                Timer += Time.deltaTime * 1000f;
 
                 for (int k = 0; k < FACS_k.Count; k++)
                 {
 
                     //Stop recording when the time since we started recording is greater than the last keyframe
-                    if ((Timer - TimerOffset) >= FACS_k[FACS_k.Count - 1][0])
+                    if (Timer  >= FACS_k[FACS_k.Count - 1][0])
                     {
                         //Timer = 0;
                         Stop();
@@ -151,7 +156,7 @@ namespace MrPuppet
                     //Don't continue to the bottom of the loop, until we get a value bigger than timer.
                     //This guarantees we get the next biggest value after all the values smaller then us.
                     //This logic allows us to drop frames when needed.
-                    if ((Timer - TimerOffset)>= FACS_k[k][0])
+                    if (Timer >= FACS_k[k][0])
                         continue;
                     
                     //Go through the list of channels
@@ -247,8 +252,12 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && EditorApplication.isPlaying)
+                if (EnableAudioPlayback){   //&& EditorApplication.isPlaying
+                    if (!HubConnection)
+                        HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                }
             }
             else
             {
@@ -261,14 +270,16 @@ namespace MrPuppet
 
         private void Update()
         {
+            /*
             if (!Actor)
             {
                 if (!InfoBoxMsg.Contains("Please select the actor in the scene"))
                     InfoBoxMsg += "\n\nPlease select the actor in the scene.";
             }
+            */
 
-            if (EditorApplication.isPlaying)
-            {
+            //if (EditorApplication.isPlaying)
+           // {
                 //Repaint();
 
                 if (!Recorder)
@@ -312,7 +323,7 @@ namespace MrPuppet
                     if(!RecorderStartedRecording)
                     {
                         RecorderStartedRecording = true;
-                        Timer = TimerOffset = EditorApplication.timeSinceStartup * 1000f;
+                        //Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
                     }
 
                     DisablePlayButton = true;
@@ -350,8 +361,8 @@ namespace MrPuppet
                     if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                         _JawTransformMapper.UseJawPercentOverride = false;
                 }
-            }
-
+            //}
+            /*
             if (!EditorApplication.isPlaying)
             {
                 if (AudioIsPlaying == true)
@@ -374,26 +385,52 @@ namespace MrPuppet
                 if (TakeAfterPlay != "")
                     TakeAfterPlay = "";
             }
+            */
         }
+
+        public void OnApplicationQuit(){
+                if (AudioIsPlaying == true)
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                    AudioIsPlaying = false;
+                }
+
+                if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                    _JawTransformMapper.UseJawPercentOverride = false;
+
+                if (PlayModeEntered == true)
+                    PlayModeEntered = false;
+                if (FACSPlayButton == true)
+                    FACSPlayButton = false;
+                if (DisablePlayButton == true)
+                    DisablePlayButton = false;
+                if (RecorderStartedRecording == true)
+                    RecorderStartedRecording = false;
+                if (TakeAfterPlay != "")
+                    TakeAfterPlay = "";
+                
+                //LoadFACS();
+        }
+
 
         private void CacheJawTransformMapper()
         {
             _JawTransformMapper = null;
-            if (Actor != null)
-            {
-                if (Actor.GetComponent<JawTransformMapper>())
-                    _JawTransformMapper = Actor.GetComponent<JawTransformMapper>();
-            }
+            //if (Actor != null)
+            //{
+                if (gameObject.GetComponent<JawTransformMapper>())
+                    _JawTransformMapper = gameObject.GetComponent<JawTransformMapper>();
+            //}
         }
 
         public void CacheFaceCapBlendShapeMapper()
         {
             _FaceCapBlendShapeMapper = null;
-            if (Actor)
-            {
-                if (Actor.GetComponent<FaceCapBlendShapeMapper>())
-                    _FaceCapBlendShapeMapper = Actor.GetComponent<FaceCapBlendShapeMapper>();
-            }
+            //if (Actor)
+            //{
+                if (gameObject.GetComponent<FaceCapBlendShapeMapper>())
+                    _FaceCapBlendShapeMapper = gameObject.GetComponent<FaceCapBlendShapeMapper>();
+            //}
         }
     }
 #else
