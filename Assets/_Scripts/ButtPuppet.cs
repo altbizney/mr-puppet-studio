@@ -53,10 +53,10 @@ namespace MrPuppet
                 full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(Attach(DataMapper))) * spawn;
 
                 // calculate weighted rotation
-                weighted = Quaternion.Slerp(spawn, full, amount);
+                weighted = Quaternion.Slerp(spawn, full, amount * AttachAmount);
                 
                 // calculate deattach rotation
-                attach = Quaternion.Slerp(weighted, spawn, AttachAmount);
+                //attach = Quaternion.Slerp(weighted, spawn, AttachAmount);
 
                 // apply with smoothing
                 target.rotation = Quaternion.Slerp(target.rotation, attach, RotationSpeed * Time.deltaTime);
