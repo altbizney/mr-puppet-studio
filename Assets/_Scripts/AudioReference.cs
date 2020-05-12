@@ -26,7 +26,12 @@ namespace MrPuppet
         private RecorderWindow Recorder;
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
-        private float Timer;
+
+        [ShowInInspector]
+        private double Timer;
+    [   ShowInInspector]
+        private double TimerOffset;
+
         private string TakeAfterPlay;
         private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
         private bool DisablePlayButton;
@@ -72,7 +77,7 @@ namespace MrPuppet
         [DisableIf("DisablePlayButton")]
         public void Play()
         {
-            Timer = 0;
+            Timer = TimerOffset = EditorApplication.timeSinceStartup * 1000f;
             FACSPlayButton = true;
         }
 
@@ -125,30 +130,30 @@ namespace MrPuppet
                 if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = true;
 
-                Timer += Time.deltaTime * 1000f;
+                //Timer += Time.deltaTime * 1000f;
+                Timer = EditorApplication.timeSinceStartup * 1000f;
 
                 for (int k = 0; k < FACS_k.Count; k++)
                 {
 
                     //Stop recording when the time since we started recording is greater than the last keyframe
-                    if (Timer >= FACS_k[FACS_k.Count - 1][0])
+                    if ((Timer - TimerOffset) >= FACS_k[FACS_k.Count - 1][0])
                     {
                         //Timer = 0;
-                        //Maybe stop?
                         Stop();
 
                         if (Recorder.IsRecording())
                             Recorder.StopRecording();
 
                         break;
-                    }
+                    }                    
 
                     //Don't continue to the bottom of the loop, until we get a value bigger than timer.
                     //This guarantees we get the next biggest value after all the values smaller then us.
                     //This logic allows us to drop frames when needed.
-                    if (Timer >= FACS_k[k][0])
+                    if ((Timer - TimerOffset)>= FACS_k[k][0])
                         continue;
-
+                    
                     //Go through the list of channels
                     //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings inside of the FaceCapBlendShapeMapper component
                     //we take the corresponding value associated with that channel at that timestamp
@@ -304,7 +309,11 @@ namespace MrPuppet
 
                 if (Recorder.IsRecording())
                 {
-                    RecorderStartedRecording = true;
+                    if(!RecorderStartedRecording)
+                    {
+                        RecorderStartedRecording = true;
+                        Timer = TimerOffset = EditorApplication.timeSinceStartup * 1000f;
+                    }
 
                     DisablePlayButton = true;
                     PlaybackLogic();
