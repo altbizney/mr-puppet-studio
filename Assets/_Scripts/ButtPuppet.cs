@@ -20,6 +20,8 @@ namespace MrPuppet
             private Quaternion spawn;
             private Quaternion full;
             private Quaternion weighted;
+            private Quaternion attach;
+
 
             public void SnapshotSpawn()
             {
@@ -43,7 +45,7 @@ namespace MrPuppet
                 }
             }
 
-            public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed)
+            public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed, float AttachAmount)
             {
                 if (!target) return;
 
@@ -52,9 +54,12 @@ namespace MrPuppet
 
                 // calculate weighted rotation
                 weighted = Quaternion.Slerp(spawn, full, amount);
+                
+                // calculate deattach rotation
+                attach = Quaternion.Slerp(weighted, spawn, AttachAmount);
 
                 // apply with smoothing
-                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.deltaTime);
+                target.rotation = Quaternion.Slerp(target.rotation, attach, RotationSpeed * Time.deltaTime);
             }
 
             public void OnDrawGizmos()
@@ -119,6 +124,26 @@ namespace MrPuppet
         [HideInInspector]
         public bool ApplySensors = true;
 
+
+        private float LerpTimer;
+        private bool DeattachPoseSet;
+        [Range(1f, 4f)]
+        public float AttachAmountDuration = 3f;
+        private float AttachAmountValue;
+        private Quaternion AttachHipRotation;
+        private Quaternion AttachHeadRotation;
+
+        [Button(ButtonSizes.Large)]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode()]
+        public void TestDeattach()
+        {
+            LerpTimer = 0;
+            DeattachPoseSet = true;
+            AttachAmountValue = 0;
+            //RootRotationTarget = RotationDeltaFromAttachWrist();
+        }
+
         private void Awake()
         {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -155,6 +180,19 @@ namespace MrPuppet
                 {
                     Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
+                    if(DeattachPoseSet)
+                    {
+                        LerpTimer += Time.deltaTime;
+                    }
+
+                    if (LerpTimer > AttachAmountDuration) 
+                        LerpTimer = AttachAmountDuration;
+                    AttachAmountValue = LerpTimer / AttachAmountDuration;
+
+                    position = Vector3.Lerp(position, HipSpawnPosition, AttachAmountValue);
+                    AttachHipRotation = Quaternion.Slerp((DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, HipSpawnRotation, AttachAmountValue);
+                    AttachHeadRotation = Quaternion.Slerp((DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, HeadSpawnRotation, AttachAmountValue);
+
                     // clamp to XYZ extents (BEFORE smooth)
                     position.Set(
                         LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
@@ -166,8 +204,8 @@ namespace MrPuppet
                     Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                     // apply rotation deltas to bind pose
-                    Hip.rotation = Quaternion.Slerp(Hip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
-                    Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Hip.rotation = Quaternion.Slerp(Hip.rotation, AttachHipRotation, RotationSpeed * Time.deltaTime);
+                    Head.rotation = Quaternion.Slerp(Head.rotation, AttachHeadRotation, RotationSpeed * Time.deltaTime);
 
                     if (EnableJawHeadMixer)
                     {
@@ -190,7 +228,7 @@ namespace MrPuppet
                     // apply weighted influences
                     foreach (var influence in WeightedInfluences)
                     {
-                        influence.Update(DataMapper, RotationSpeed);
+                        influence.Update(DataMapper, RotationSpeed, AttachAmountValue);
                     }
                 }
             }

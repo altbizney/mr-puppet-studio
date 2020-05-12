@@ -673,7 +673,7 @@ namespace MrPuppet
                 // apply weighted influences
                 foreach (var influence in WeightedInfluences)
                 {
-                    influence.Update(DataMapper, RotationSpeed);
+                    influence.Update(DataMapper, RotationSpeed, 0);
                 }
             }
         }
