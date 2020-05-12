@@ -185,8 +185,11 @@ namespace MrPuppet
                         LerpTimer += Time.deltaTime;
                     }
 
-                    if (LerpTimer > AttachAmountDuration) 
-                        LerpTimer = AttachAmountDuration;
+                    if (LerpTimer > AttachAmountDuration){ 
+                        DeattachPoseSet = false;
+                        AttachAmountValue = 0;
+                        LerpTimer = 0; // = AttachAmountDuration;
+                    }
                     AttachAmountValue = LerpTimer / AttachAmountDuration;
 
                     position = Vector3.Lerp(position, HipSpawnPosition, AttachAmountValue);
