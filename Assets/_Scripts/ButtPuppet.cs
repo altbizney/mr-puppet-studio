@@ -125,24 +125,39 @@ namespace MrPuppet
         public bool ApplySensors = true;
 
 
-        private float LerpTimer;
-        private bool DeattachPoseSet;
         [Range(1f, 4f)]
         public float AttachAmountDuration = 3f;
-        private float AttachAmountValue;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        public float AttachAmountValue;
+
+        private float LerpTimer;
+        private bool DeattachPoseSet;
+
         private Quaternion AttachHipRotation;
         private Quaternion AttachHeadRotation;
         private Vector3 position;
+        private bool GentleAttachForward;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
         public void TestDeattach()
         {
-            LerpTimer = 0;
-            DeattachPoseSet = true;
-            AttachAmountValue = 0;
-            //RootRotationTarget = RotationDeltaFromAttachWrist();
+            if(!DeattachPoseSet)
+            {
+                LerpTimer = 0;
+                DeattachPoseSet = true;
+                AttachAmountValue = 0;
+                GentleAttachForward = true;
+            }
+            else
+            {
+                GentleAttachForward = false;
+                LerpTimer = AttachAmountDuration;
+            }
+        
         }
 
         private void Awake()
@@ -181,16 +196,26 @@ namespace MrPuppet
                 {
                     position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                    if(DeattachPoseSet)
+                    if(DeattachPoseSet && GentleAttachForward)
                     {
                         LerpTimer += Time.deltaTime;
                     }
-
-                    if (LerpTimer > AttachAmountDuration){ 
-                        DeattachPoseSet = false;
-                        AttachAmountValue = 0;
-                        LerpTimer = 0; // = AttachAmountDuration;
+                    else if(DeattachPoseSet && !GentleAttachForward)
+                    {
+                        LerpTimer -= Time.deltaTime;
                     }
+
+                    if (LerpTimer > AttachAmountDuration && GentleAttachForward)
+                    { 
+                        LerpTimer = AttachAmountDuration;
+                    }
+                    else if(LerpTimer < 0 && !GentleAttachForward)
+                    {
+                        DeattachPoseSet = false;
+                        LerpTimer = 0;
+                        AttachAmountValue = 0;
+                    }
+
                     AttachAmountValue = LerpTimer / AttachAmountDuration;
 
                     position = Vector3.Lerp(position, HipSpawnPosition, AttachAmountValue);
