@@ -1,6 +1,8 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -147,6 +149,8 @@ namespace MrPuppet
         private float TimeFrameAfterAttach;
         private float LerpTimerProgress;
 
+        UnityEvent EventAttachPose = new UnityEvent();
+
         private void Awake()
         {
             HubConnection = FindObjectOfType<MrPuppetHubConnection>();
@@ -166,6 +170,13 @@ namespace MrPuppet
 
             WristJoint = new GameObject("Wrist").transform;
             WristJoint.SetParent(ElbowJoint);
+
+            EventAttachPose.AddListener(AttachPoseEventCalled);
+        }
+
+        private void AttachPoseEventCalled()
+        {
+            Debug.Log("Attach event pose was called");
         }
 
         private void Update()
@@ -302,6 +313,8 @@ namespace MrPuppet
             LerpTimer = GentleReattachDuration;
 
             TimeFrameAfterAttach = GentleReattachDuration;
+
+            EventAttachPose.Invoke();
         }
 
         [Button(ButtonSizes.Large)]
@@ -336,6 +349,8 @@ namespace MrPuppet
                 TimeFrameAfterAttach = GentleReattachDuration;
 
                 LerpTimer = 0;
+                EventAttachPose.Invoke();
+
             }
 
             AttachPoseSet = true;
