@@ -16,6 +16,11 @@ namespace MrPuppet
 
         public Transform Root;
 
+        private float LerpTimer;
+        private bool DeattachPoseSet;
+        private Quaternion RootRotationTarget;
+        private Quaternion RotationModifiedTarget;
+
         [MinValue(0f)]
         public float RotationSpeed = 7f;
         [MinValue(0f)]
@@ -44,11 +49,8 @@ namespace MrPuppet
         public float RotationModifier = 1f;
 
         [Range(1f, 4f)]
-        public float DeattachDuration = 1f;
-        private float DeattachValue;
-
-        private float LerpTimer;
-        private bool DeattachPoseSet;
+        public float AttachAmountDuration = 1f;
+        private float AttachAmountValue;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -65,8 +67,11 @@ namespace MrPuppet
         {
             LerpTimer = 0;
             DeattachPoseSet = true;
-            DeattachValue = 0;
+            AttachAmountValue = 0;
+            RootRotationTarget = RotationDeltaFromAttachWrist();
         }
+
+        //AttachAmountDuration, AttachAmountValue
 
         // public string AttachPoseToString()
         // {
@@ -98,6 +103,10 @@ namespace MrPuppet
 
             RootSpawnPosition = Root.localPosition;
             RootSpawnRotation = Root.rotation;
+
+            AttachAmountValue = 0;
+            RotationModifiedTarget = Root.rotation;
+            LerpTimer = 0;
         }
 
         private void Update()
@@ -107,8 +116,8 @@ namespace MrPuppet
                 // apply position delta to bind pose
                 Vector3 position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)));
 
-                Root.rotation = Quaternion.Slerp(
-                    Root.rotation,
+                RotationModifiedTarget = Quaternion.Slerp(
+                    RotationModifiedTarget,
                     Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
                     RotationSpeed * Time.deltaTime 
                 );
@@ -116,14 +125,15 @@ namespace MrPuppet
                 if(DeattachPoseSet)
                 {
                     LerpTimer += Time.deltaTime;
-                    if (LerpTimer > DeattachDuration) {
-                        LerpTimer = DeattachDuration;
-                    }
-                    DeattachValue = LerpTimer / DeattachDuration;
-
-                    position = Vector3.Lerp(position, RootSpawnPosition, DeattachValue);
-                    Root.rotation = Quaternion.Slerp(Root.rotation, RootSpawnRotation, DeattachValue);
                 }
+
+                if (LerpTimer > AttachAmountDuration) 
+                    LerpTimer = AttachAmountDuration;
+                AttachAmountValue = LerpTimer / AttachAmountDuration;
+
+                RootRotationTarget = Quaternion.Slerp(RotationModifiedTarget, RootSpawnRotation, AttachAmountValue);
+                Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
+                position = Vector3.Lerp(position, RootSpawnPosition, AttachAmountValue);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -134,6 +144,7 @@ namespace MrPuppet
 
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
+
             }
         }
 
