@@ -116,11 +116,7 @@ namespace MrPuppet
                 // apply position delta to bind pose
                 Vector3 position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)));
 
-                RotationModifiedTarget = Quaternion.Slerp(
-                    RotationModifiedTarget,
-                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
-                    RotationSpeed * Time.deltaTime 
-                );
+                RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
 
                 if(DeattachPoseSet)
                 {
