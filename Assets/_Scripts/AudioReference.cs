@@ -267,7 +267,7 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && EntererdPlayMode){   //&& EditorApplication.isPlaying
+                if (EnableAudioPlayback && PlayModeEntered){   //&& EditorApplication.isPlaying
                     if (!HubConnection)
                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
