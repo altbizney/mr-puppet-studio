@@ -113,6 +113,7 @@ namespace MrPuppet
 
         private void Awake() {
             LoadFACS();
+            EnteredPlayMode = true;
         }
 
         private void Start()
@@ -121,7 +122,7 @@ namespace MrPuppet
             {
                 if (!HubConnection)
                     HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                    
+
                 HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
         }
@@ -266,7 +267,7 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback){   //&& EditorApplication.isPlaying
+                if (EnableAudioPlayback && EntererdPlayMode){   //&& EditorApplication.isPlaying
                     if (!HubConnection)
                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
@@ -403,8 +404,8 @@ namespace MrPuppet
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
 
-                //if (PlayModeEntered == true)
-                //    PlayModeEntered = false;
+                if (PlayModeEntered == true)
+                   PlayModeEntered = false;
                 if (FACSPlayButton == true)
                     FACSPlayButton = false;
                 if (DisablePlayButton == true)
