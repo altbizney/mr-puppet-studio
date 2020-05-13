@@ -176,6 +176,8 @@ namespace MrPuppet
 
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
+
+                if (Input.GetKeyDown(KeyCode.D)) { TestDeattach(); }
             }
         }
 

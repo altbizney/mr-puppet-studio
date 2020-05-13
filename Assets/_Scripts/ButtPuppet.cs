@@ -152,12 +152,15 @@ namespace MrPuppet
                 AttachAmountValue = 0;
                 GentleAttachForward = true;
             }
-            else
-            {
+        }
+
+        public void AttachEventButtPuppet()
+        {
+           if(DeattachPoseSet)
+           {
                 GentleAttachForward = false;
                 LerpTimer = AttachAmountDuration;
-            }
-        
+           }
         }
 
         private void Awake()
@@ -185,6 +188,8 @@ namespace MrPuppet
             {
                 influence.SnapshotSpawn();
             }
+
+            DataMapper.OnAttachEvent += AttachEventButtPuppet;
         }
 
         private void Update()
@@ -259,6 +264,8 @@ namespace MrPuppet
                     {
                         influence.Update(DataMapper, RotationSpeed, AttachAmountValue);
                     }
+
+                    if (Input.GetKeyDown(KeyCode.D)) { TestDeattach(); }
                 }
             }
         }
