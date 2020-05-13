@@ -13,7 +13,9 @@ using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
+
+    [ExecuteInEditMode] 
     public class AudioReference : MonoBehaviour
     {
         /*[MenuItem("Tools/Audio Reference")]
@@ -27,20 +29,21 @@ namespace MrPuppet
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
 
-        [ShowInInspector]
         private double Timer;
-        [ShowInInspector]
         private double TimerOffset;
 
         private string TakeAfterPlay;
         private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
-        private bool PlayModeEntered;
+        //private bool PlayModeEntered;
         private bool FACSPlayButton;
         private bool AudioIsPlaying;
         private bool RecorderStartedRecording;
 
+        //[SerializeField]
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
+
+        [ListDrawerSettings(IsReadOnly = true)]
         private List<List<float>> FACS_k = new List<List<float>>();
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
@@ -110,6 +113,17 @@ namespace MrPuppet
 
         private void Awake() {
             LoadFACS();
+        }
+
+        private void Start()
+        {
+            if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
+            {
+                if (!HubConnection)
+                    HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+                    
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+            }
         }
 
         private void PlaybackLogic()
@@ -303,15 +317,6 @@ namespace MrPuppet
                 if (!_FaceCapBlendShapeMapper)
                     CacheFaceCapBlendShapeMapper();
 
-                if (PlayModeEntered == false)
-                {
-                    if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
-                    {
-                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                    }
-                    PlayModeEntered = true;
-                }
-
                 if (RecorderStartedRecording == true && !Recorder.IsRecording())
                 {
                     RecorderStartedRecording = false;
@@ -398,8 +403,8 @@ namespace MrPuppet
                 if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = false;
 
-                if (PlayModeEntered == true)
-                    PlayModeEntered = false;
+                //if (PlayModeEntered == true)
+                //    PlayModeEntered = false;
                 if (FACSPlayButton == true)
                     FACSPlayButton = false;
                 if (DisablePlayButton == true)
@@ -433,8 +438,8 @@ namespace MrPuppet
             //}
         }
     }
-#else
-    public class AnimationPlayback : MonoBehaviour
-    { }
-#endif
+//#else
+    //public class AnimationPlayback : MonoBehaviour
+    //{ }
+//#endif
 }
