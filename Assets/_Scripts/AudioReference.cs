@@ -124,7 +124,7 @@ namespace MrPuppet
 
         IEnumerator LateStart()
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
             if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
             {
                 if (!HubConnection)
