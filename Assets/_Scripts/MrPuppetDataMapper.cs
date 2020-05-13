@@ -157,7 +157,6 @@ namespace MrPuppet
         {
             if (OnAttachEvent != null)
             {  
-                Debug.Log("AttachEvent");
                 OnAttachEvent();
             }
         }
