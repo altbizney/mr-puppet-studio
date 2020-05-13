@@ -35,7 +35,7 @@ namespace MrPuppet
         private string TakeAfterPlay;
         private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
-        //private bool PlayModeEntered;
+        private bool PlayModeEntered;
         private bool FACSPlayButton;
         private bool AudioIsPlaying;
         private bool RecorderStartedRecording;
@@ -113,7 +113,7 @@ namespace MrPuppet
 
         private void Awake() {
             LoadFACS();
-            EnteredPlayMode = true;
+            PlayModeEntered = true;
         }
 
         private void Start()
