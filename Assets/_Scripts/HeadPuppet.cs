@@ -54,6 +54,9 @@ namespace MrPuppet
         [Range(1f, 4f)]
         public float AttachAmountDuration = 1f;
         private float AttachAmountValue;
+        private bool GentleAttachForward;
+
+        private Vector3 position;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -68,19 +71,29 @@ namespace MrPuppet
         [DisableInEditorMode()]
         public void TestDeattach()
         {
-            LerpTimer = 0;
-            DeattachPoseSet = true;
-            AttachAmountValue = 0;
-            RootRotationTarget = RotationDeltaFromAttachWrist();
+            if(!DeattachPoseSet)
+            {
+                LerpTimer = 0;
+                DeattachPoseSet = true;
+                AttachAmountValue = 0;
+                GentleAttachForward = true;
+                RootRotationTarget = RotationDeltaFromAttachWrist();
+            }
         }
 
         public void AttachEventHeadPuppet()
         {
-            Debug.Log("Head Puppet Recieved Attach Event");
+           if(DeattachPoseSet)
+           {
+                GentleAttachForward = false;
+                LerpTimer = AttachAmountDuration;
+           }
         }
 
-        //AttachAmountDuration, AttachAmountValue
-
+        //deattach only deattaches.
+        //remove ability to ease back from deattach button
+        //put it in attach eventheadpuppet
+        
         // public string AttachPoseToString()
         // {
         //     string packet = "";
@@ -124,17 +137,30 @@ namespace MrPuppet
             if (DataMapper.AttachPoseSet)
             {
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)));
+                position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)));
 
                 RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
 
-                if(DeattachPoseSet)
+                if(DeattachPoseSet && GentleAttachForward)
                 {
                     LerpTimer += Time.deltaTime;
                 }
+                else if(DeattachPoseSet && !GentleAttachForward)
+                {
+                    LerpTimer -= Time.deltaTime;
+                }
 
-                if (LerpTimer > AttachAmountDuration) 
+                if (LerpTimer > AttachAmountDuration && GentleAttachForward)
+                { 
                     LerpTimer = AttachAmountDuration;
+                }
+                else if(LerpTimer < 0 && !GentleAttachForward)
+                {
+                    DeattachPoseSet = false;
+                    LerpTimer = 0;
+                    AttachAmountValue = 0;
+                }
+
                 AttachAmountValue = LerpTimer / AttachAmountDuration;
 
                 RootRotationTarget = Quaternion.Slerp(RotationModifiedTarget, RootSpawnRotation, AttachAmountValue);
@@ -150,7 +176,6 @@ namespace MrPuppet
 
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
-
             }
         }
 
