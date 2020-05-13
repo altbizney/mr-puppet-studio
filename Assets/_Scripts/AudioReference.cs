@@ -113,9 +113,9 @@ namespace MrPuppet
             }
         }
 
-        //private void Awake() {
-          //  LoadFACS();
-        //}
+        private void Awake() {
+            LoadFACS();
+        }
 
         private void Start()
         {
@@ -129,8 +129,9 @@ namespace MrPuppet
             {
                 if (!HubConnection)
                     HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                
+                if(Application.isPlaying)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
         }
 
@@ -219,12 +220,14 @@ namespace MrPuppet
             string filePath = "";
             if (settings != null)
             {
-                var parts = new List<string>();
-                if (Take.Contains('-'))
-                    parts = Take.Split('-').ToList();
+                if(Take != null){
+                    var parts = new List<string>();
+                    if (Take.Contains('-'))
+                        parts = Take.Split('-').ToList();
 
-                if (parts.Count > 1)
-                    filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    if (parts.Count > 1)
+                        filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                }
             }
             else
             {
@@ -422,7 +425,7 @@ namespace MrPuppet
                 if (TakeAfterPlay != "")
                     TakeAfterPlay = "";
                 
-                //LoadFACS();
+                LoadFACS();
         }
 
 
