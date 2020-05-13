@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using System.Collections;
+
 
 //#if UNITY_EDITOR
 using UnityEditor;
@@ -35,7 +37,7 @@ namespace MrPuppet
         private string TakeAfterPlay;
         private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
-        private bool PlayModeEntered;
+        private bool PlayModeEntered = false;
         private bool FACSPlayButton;
         private bool AudioIsPlaying;
         private bool RecorderStartedRecording;
@@ -111,13 +113,18 @@ namespace MrPuppet
             }
         }
 
-        private void Awake() {
-            LoadFACS();
-            PlayModeEntered = true;
-        }
+        //private void Awake() {
+          //  LoadFACS();
+        //}
 
         private void Start()
         {
+            StartCoroutine(LateStart());
+        }
+
+        IEnumerator LateStart()
+        {
+            yield return new WaitForSeconds(0.5f);
             if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
             {
                 if (!HubConnection)
@@ -267,7 +274,7 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && PlayModeEntered){   //&& EditorApplication.isPlaying
+                if (EnableAudioPlayback && Application.isPlaying){   //&& EditorApplication.isPlaying
                     if (!HubConnection)
                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
