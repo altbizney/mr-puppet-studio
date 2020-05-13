@@ -286,7 +286,7 @@ namespace MrPuppet
             }
             else
             {
-                if (Take == "")
+                if (Take == "" || Take == null)
                     InfoBoxMsg = "Waiting for Take name...";
                 else
                     InfoBoxMsg = "Could not find " + Take + ".txt";
