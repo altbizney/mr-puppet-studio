@@ -128,9 +128,9 @@ namespace MrPuppet
         [Range(1f, 4f)]
         public float AttachAmountDuration = 3f;
 
-        [ReadOnly]
-        [Range(0f, 1f)]
-        public float AttachAmountValue;
+        //[ReadOnly]
+        //[Range(0f, 1f)]
+        private float AttachAmountValue;
 
         private float LerpTimer;
         private bool DeattachPoseSet;
