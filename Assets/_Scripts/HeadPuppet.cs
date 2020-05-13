@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MrPuppet
 {
@@ -71,6 +74,11 @@ namespace MrPuppet
             RootRotationTarget = RotationDeltaFromAttachWrist();
         }
 
+        public void AttachEventHeadPuppet()
+        {
+            Debug.Log("Head Puppet Recieved Attach Event");
+        }
+
         //AttachAmountDuration, AttachAmountValue
 
         // public string AttachPoseToString()
@@ -107,6 +115,8 @@ namespace MrPuppet
             AttachAmountValue = 0;
             RotationModifiedTarget = Root.rotation;
             LerpTimer = 0;
+
+            DataMapper.OnAttachEvent += AttachEventHeadPuppet;
         }
 
         private void Update()
