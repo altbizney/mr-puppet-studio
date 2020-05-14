@@ -45,7 +45,7 @@ namespace MrPuppet
                 }
             }
 
-            public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed, float AttachAmount)
+            public void Update(MrPuppetDataMapper DataMapper, float RotationSpeed, float SensorAmount)
             {
                 if (!target) return;
 
@@ -53,8 +53,8 @@ namespace MrPuppet
                 full = (DataMapper.GetJoint(joint).rotation * Quaternion.Inverse(Attach(DataMapper))) * spawn;
 
                 // calculate weighted rotation
-                weighted = Quaternion.Slerp(spawn, full, amount * AttachAmount);
-                
+                weighted = Quaternion.Slerp(spawn, full, amount * SensorAmount);
+
                 // calculate deattach rotation
                 //attach = Quaternion.Slerp(weighted, spawn, AttachAmount);
 
@@ -141,7 +141,7 @@ namespace MrPuppet
         [DisableInEditorMode()]
         public void UnsubscribeFromSensors()
         {
-            if(!Unsubscribed)
+            if (!Unsubscribed)
             {
                 LerpTimer = 0;
                 Unsubscribed = true;
@@ -152,11 +152,11 @@ namespace MrPuppet
 
         public void SubscribeEventButtPuppet()
         {
-           if(Unsubscribed)
-           {
+            if (Unsubscribed)
+            {
                 UnsubscribeForward = false;
                 LerpTimer = UnsubscribeDuration;
-           }
+            }
         }
 
         private void Awake()
@@ -197,20 +197,20 @@ namespace MrPuppet
                 {
                     position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                    if(Unsubscribed && UnsubscribeForward)
+                    if (Unsubscribed && UnsubscribeForward)
                     {
                         LerpTimer += Time.deltaTime;
                     }
-                    else if(Unsubscribed && !UnsubscribeForward)
+                    else if (Unsubscribed && !UnsubscribeForward)
                     {
                         LerpTimer -= Time.deltaTime;
                     }
 
                     if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
-                    { 
+                    {
                         LerpTimer = UnsubscribeDuration;
                     }
-                    else if(LerpTimer < 0 && !UnsubscribeForward)
+                    else if (LerpTimer < 0 && !UnsubscribeForward)
                     {
                         Unsubscribed = false;
                         LerpTimer = 0;

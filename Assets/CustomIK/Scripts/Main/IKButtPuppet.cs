@@ -746,15 +746,15 @@ namespace MrPuppet
                     switch (JawHeadRotate)
                     {
                         case JawHeadAxis.x:
-                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
+                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, 0f, Space.Self);
                             break;
 
                         case JawHeadAxis.y:
-                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
+                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, Space.Self);
                             break;
 
                         case JawHeadAxis.z:
-                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
+                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), Space.Self);
                             break;
                     }
                 }
