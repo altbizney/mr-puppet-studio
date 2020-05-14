@@ -133,7 +133,7 @@ namespace MrPuppet
         [HideInInspector]
         public bool ApplySensors = true;
 
-        [Range(1f, 4f)]
+        [MinValue(0.01f)]
         public float UnsubscribeDuration = 3f;
 
         [Button(ButtonSizes.Large)]

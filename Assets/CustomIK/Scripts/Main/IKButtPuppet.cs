@@ -187,7 +187,7 @@ namespace MrPuppet
         private Quaternion HipSpawnRotation;
         private Quaternion HeadSpawnRotation;
 
-        [Range(1f, 4f)]
+        [MinValue(0.01f)]
         public float UnsubscribeDuration = 3f;
         private Quaternion UnsubscribeHeadRotation;
         private Quaternion UnsubscribeHipRotation;

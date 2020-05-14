@@ -54,7 +54,7 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
-        [Range(1f, 4f)]
+        [MinValue(0.01f)]
         public float UnsubscribeDuration = 1f;
 
         [Button(ButtonSizes.Large)]
