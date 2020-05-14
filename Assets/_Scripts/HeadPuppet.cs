@@ -84,10 +84,10 @@ namespace MrPuppet
 
         private void ChangedDuration()
         {
-            if (Unsubscribed)
+            if (!Unsubscribed)
             {
-                SensorAmount = 1;
                 LerpTimer = UnsubscribeDuration;
+                SensorAmount = 1f;
             }
         }
 
