@@ -69,12 +69,6 @@ namespace MrPuppet
         [TitleGroup("Sensor Subscribition")]
         public float SensorAmount = 0f;
 
-        //[ReadOnly]
-        //[Range(0f, 1f)]
-        //[TitleGroup("Sensor Subscribition")]
-        //[LabelText("Sensor Amount")]
-        private float SensorAmount2;
-
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
@@ -105,8 +99,6 @@ namespace MrPuppet
             if (Unsubscribed)
             {
                 UnsubscribeForward = true;
-                //if (LerpTimer)
-                //LerpTimer = UnsubscribeDuration;
             }
         }
 
