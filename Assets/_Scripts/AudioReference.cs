@@ -3,44 +3,55 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using System.Collections;
 
-#if UNITY_EDITOR
+
+//#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Recorder;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-#endif
+//using Sirenix.OdinInspector.Editor;
+//#endif
 
 namespace MrPuppet
 {
-#if UNITY_EDITOR
-    public class AudioReference : OdinEditorWindow
+//#if UNITY_EDITOR
+
+    [ExecuteInEditMode] 
+    public class AudioReference : MonoBehaviour
     {
-        [MenuItem("Tools/Audio Reference")]
+        /*[MenuItem("Tools/Audio Reference")]
         private static void OpenWindow()
         {
             GetWindow<AudioReference>().Show();
-        }
+        }*/
 
         private MrPuppetHubConnection HubConnection;
         private RecorderWindow Recorder;
         private JawTransformMapper _JawTransformMapper;
         private FaceCapBlendShapeMapper _FaceCapBlendShapeMapper;
-        private float Timer;
+
+        private double Timer;
+        private double TimerOffset;
+
         private string TakeAfterPlay;
-        private string InfoBoxMsg = "Waiting for Take name... \n\nPlease select the actor in the scene";
+        private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
-        private bool PlayModeEntered;
+        private bool PlayModeEntered = false;
         private bool FACSPlayButton;
         private bool AudioIsPlaying;
         private bool RecorderStartedRecording;
 
+        //[SerializeField]
         private List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels> FACS_bs = new List<FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels>();
+
+        [ListDrawerSettings(IsReadOnly = true)]
         private List<List<float>> FACS_k = new List<List<float>>();
 
         [InfoBox("Play an audio file in sync with recordings. \nEnter the performance name, and choose if you want audio and/or FaceCap playback. e.g. DOJO-E012 will attempt to play DOJO/episode/E012/performances/DOJO-E012.wav, .aif, .txt")]
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheJawTransformMapper")]
+        [InfoBox("$InfoBoxMsg")]
         public string Take;
 
         [ToggleLeft]
@@ -48,12 +59,11 @@ namespace MrPuppet
         [ToggleLeft]
         public bool EnableFACSPlayback;
 
-        [BoxGroup]
+        /*[BoxGroup]
         [ShowIf("EnableFACSPlayback")]
-        [InfoBox("$InfoBoxMsg")]
         [OnValueChanged("LoadFACS")]
         [OnValueChanged("CacheFaceCapBlendShapeMapper")]
-        public GameObject Actor;
+        public GameObject Actor;*/
 
         private bool NotPlaying()
         {
@@ -72,7 +82,7 @@ namespace MrPuppet
         [DisableIf("DisablePlayButton")]
         public void Play()
         {
-            Timer = 0;
+            Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
             FACSPlayButton = true;
         }
 
@@ -84,13 +94,14 @@ namespace MrPuppet
         public void Stop()
         {
             Timer = 0;
+            //TimerOffset = Timer = 0f;
             FACSPlayButton = false;
             ResetBlendShapes();
         }
 
         private void ResetBlendShapes()
         {
-            foreach (SkinnedMeshRenderer smr in Actor.GetComponentsInChildren<SkinnedMeshRenderer>())
+            foreach (SkinnedMeshRenderer smr in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
             {
                 if (smr.sharedMesh.blendShapeCount > 0)
                 {
@@ -99,6 +110,28 @@ namespace MrPuppet
                         smr.SetBlendShapeWeight(i, 0);
                     }
                 }
+            }
+        }
+
+        private void Awake() {
+            LoadFACS();
+        }
+
+        private void Start()
+        {
+            StartCoroutine(LateStart());
+        }
+
+        IEnumerator LateStart()
+        {
+            yield return new WaitForSeconds(0.25f);
+            if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
+            {
+                if (!HubConnection)
+                    HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+                
+                if(Application.isPlaying)
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
         }
 
@@ -125,30 +158,30 @@ namespace MrPuppet
                 if (_JawTransformMapper && !_JawTransformMapper.UseJawPercentOverride)
                     _JawTransformMapper.UseJawPercentOverride = true;
 
+                //Timer = EditorApplication.timeSinceStartup * 1000f;
                 Timer += Time.deltaTime * 1000f;
 
                 for (int k = 0; k < FACS_k.Count; k++)
                 {
 
                     //Stop recording when the time since we started recording is greater than the last keyframe
-                    if (Timer >= FACS_k[FACS_k.Count - 1][0])
+                    if (Timer  >= FACS_k[FACS_k.Count - 1][0])
                     {
                         //Timer = 0;
-                        //Maybe stop?
                         Stop();
 
                         if (Recorder.IsRecording())
                             Recorder.StopRecording();
 
                         break;
-                    }
+                    }                    
 
                     //Don't continue to the bottom of the loop, until we get a value bigger than timer.
                     //This guarantees we get the next biggest value after all the values smaller then us.
                     //This logic allows us to drop frames when needed.
                     if (Timer >= FACS_k[k][0])
                         continue;
-
+                    
                     //Go through the list of channels
                     //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings inside of the FaceCapBlendShapeMapper component
                     //we take the corresponding value associated with that channel at that timestamp
@@ -187,12 +220,14 @@ namespace MrPuppet
             string filePath = "";
             if (settings != null)
             {
-                var parts = new List<string>();
-                if (Take.Contains('-'))
-                    parts = Take.Split('-').ToList();
+                if(Take != null){
+                    var parts = new List<string>();
+                    if (Take.Contains('-'))
+                        parts = Take.Split('-').ToList();
 
-                if (parts.Count > 1)
-                    filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    if (parts.Count > 1)
+                        filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                }
             }
             else
             {
@@ -242,12 +277,16 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && EditorApplication.isPlaying)
+                if (EnableAudioPlayback && Application.isPlaying){   //&& EditorApplication.isPlaying
+                    if (!HubConnection)
+                        HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                }
             }
             else
             {
-                if (Take == "")
+                if (Take == "" || Take == null)
                     InfoBoxMsg = "Waiting for Take name...";
                 else
                     InfoBoxMsg = "Could not find " + Take + ".txt";
@@ -256,14 +295,16 @@ namespace MrPuppet
 
         private void Update()
         {
+            /*
             if (!Actor)
             {
                 if (!InfoBoxMsg.Contains("Please select the actor in the scene"))
                     InfoBoxMsg += "\n\nPlease select the actor in the scene.";
             }
+            */
 
-            if (EditorApplication.isPlaying)
-            {
+            //if (EditorApplication.isPlaying)
+           // {
                 //Repaint();
 
                 if (!Recorder)
@@ -287,15 +328,6 @@ namespace MrPuppet
                 if (!_FaceCapBlendShapeMapper)
                     CacheFaceCapBlendShapeMapper();
 
-                if (PlayModeEntered == false)
-                {
-                    if (!string.IsNullOrEmpty(Take) && EnableAudioPlayback == true)
-                    {
-                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                    }
-                    PlayModeEntered = true;
-                }
-
                 if (RecorderStartedRecording == true && !Recorder.IsRecording())
                 {
                     RecorderStartedRecording = false;
@@ -304,7 +336,11 @@ namespace MrPuppet
 
                 if (Recorder.IsRecording())
                 {
-                    RecorderStartedRecording = true;
+                    if(!RecorderStartedRecording)
+                    {
+                        RecorderStartedRecording = true;
+                        //Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
+                    }
 
                     DisablePlayButton = true;
                     PlaybackLogic();
@@ -332,6 +368,7 @@ namespace MrPuppet
                 {
                     if (AudioIsPlaying == true)
                     {
+                        Stop();
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
                         AudioIsPlaying = false;
@@ -340,8 +377,8 @@ namespace MrPuppet
                     if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
                         _JawTransformMapper.UseJawPercentOverride = false;
                 }
-            }
-
+            //}
+            /*
             if (!EditorApplication.isPlaying)
             {
                 if (AudioIsPlaying == true)
@@ -364,30 +401,56 @@ namespace MrPuppet
                 if (TakeAfterPlay != "")
                     TakeAfterPlay = "";
             }
+            */
         }
+
+        public void OnApplicationQuit(){
+                if (AudioIsPlaying == true)
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                    AudioIsPlaying = false;
+                }
+
+                if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                    _JawTransformMapper.UseJawPercentOverride = false;
+
+                if (PlayModeEntered == true)
+                   PlayModeEntered = false;
+                if (FACSPlayButton == true)
+                    FACSPlayButton = false;
+                if (DisablePlayButton == true)
+                    DisablePlayButton = false;
+                if (RecorderStartedRecording == true)
+                    RecorderStartedRecording = false;
+                if (TakeAfterPlay != "")
+                    TakeAfterPlay = "";
+                
+                LoadFACS();
+        }
+
 
         private void CacheJawTransformMapper()
         {
             _JawTransformMapper = null;
-            if (Actor != null)
-            {
-                if (Actor.GetComponent<JawTransformMapper>())
-                    _JawTransformMapper = Actor.GetComponent<JawTransformMapper>();
-            }
+            //if (Actor != null)
+            //{
+                if (gameObject.GetComponent<JawTransformMapper>())
+                    _JawTransformMapper = gameObject.GetComponent<JawTransformMapper>();
+            //}
         }
 
         public void CacheFaceCapBlendShapeMapper()
         {
             _FaceCapBlendShapeMapper = null;
-            if (Actor)
-            {
-                if (Actor.GetComponent<FaceCapBlendShapeMapper>())
-                    _FaceCapBlendShapeMapper = Actor.GetComponent<FaceCapBlendShapeMapper>();
-            }
+            //if (Actor)
+            //{
+                if (gameObject.GetComponent<FaceCapBlendShapeMapper>())
+                    _FaceCapBlendShapeMapper = gameObject.GetComponent<FaceCapBlendShapeMapper>();
+            //}
         }
     }
-#else
-    public class AnimationPlayback : MonoBehaviour
-    { }
-#endif
+//#else
+    //public class AnimationPlayback : MonoBehaviour
+    //{ }
+//#endif
 }
