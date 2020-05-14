@@ -87,9 +87,9 @@ namespace MrPuppet
 
         private Quaternion UnsubscribeHipRotation;
         private Quaternion UnsubscribeHeadRotation;
-        private bool Unsubscribed;
+        private bool Unsubscribed = true;
         private bool UnsubscribeForward;
-        private float SensorAmount;
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
 
         private Vector3 position;
@@ -134,19 +134,30 @@ namespace MrPuppet
         public bool ApplySensors = true;
 
         [MinValue(0.01f)]
+        [TitleGroup("Sensor Subscribition")]
+        [OnValueChanged("ChangedDuration")]
         public float UnsubscribeDuration = 3f;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        [TitleGroup("Sensor Subscription")]
+        public float SensorAmount = 0f;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
+        [TitleGroup("Sensor Subscription")]
+        [LabelText("$UnsubscribeButtonLabel")]
+        [DisableIf("$Unsubscribed")]
         public void UnsubscribeFromSensors()
         {
             if (!Unsubscribed)
             {
-                LerpTimer = 0;
+                LerpTimer = UnsubscribeDuration;
                 Unsubscribed = true;
                 SensorAmount = 0;
-                UnsubscribeForward = true;
+                UnsubscribeForward = false;
+                UnsubscribeButtonLabel = "Hardware control disabled. Re-attach to enable";
             }
         }
 
@@ -154,7 +165,15 @@ namespace MrPuppet
         {
             if (Unsubscribed)
             {
-                UnsubscribeForward = false;
+                UnsubscribeForward = true;
+            }
+        }
+
+        private void ChangedDuration()
+        {
+            if (Unsubscribed)
+            {
+                SensorAmount = 1;
                 LerpTimer = UnsubscribeDuration;
             }
         }
@@ -209,19 +228,20 @@ namespace MrPuppet
                     if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                     {
                         LerpTimer = UnsubscribeDuration;
+                        UnsubscribeButtonLabel = "Disable hardware control";
+                        Unsubscribed = false;
                     }
                     else if (LerpTimer < 0 && !UnsubscribeForward)
                     {
-                        Unsubscribed = false;
                         LerpTimer = 0;
                         SensorAmount = 0;
                     }
 
                     SensorAmount = LerpTimer / UnsubscribeDuration;
 
-                    position = Vector3.Lerp(position, HipSpawnPosition, SensorAmount);
-                    UnsubscribeHipRotation = Quaternion.Slerp((DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, HipSpawnRotation, SensorAmount);
-                    UnsubscribeHeadRotation = Quaternion.Slerp((DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, HeadSpawnRotation, SensorAmount);
+                    position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
+                    UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
+                    UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
 
                     // clamp to XYZ extents (BEFORE smooth)
                     position.Set(
@@ -242,15 +262,15 @@ namespace MrPuppet
                         switch (JawHeadRotate)
                         {
                             case JawHeadAxis.x:
-                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
+                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, 0f, Space.Self);
                                 break;
 
                             case JawHeadAxis.y:
-                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
+                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, Space.Self);
                                 break;
 
                             case JawHeadAxis.z:
-                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
+                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), Space.Self);
                                 break;
                         }
                     }

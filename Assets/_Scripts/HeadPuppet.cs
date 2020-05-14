@@ -22,10 +22,10 @@ namespace MrPuppet
 
         private Quaternion RootRotationTarget;
         private Quaternion RotationModifiedTarget;
-        private bool Unsubscribed;
+        private bool Unsubscribed = true;
         private bool UnsubscribeForward;
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
-        private float SensorAmount;
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -55,44 +55,54 @@ namespace MrPuppet
         public float RotationModifier = 1f;
 
         [MinValue(0.01f)]
-        public float UnsubscribeDuration = 1f;
+        [TitleGroup("Sensor Subscription")]
+        [OnValueChanged("ChangedDuration")]
+        public float UnsubscribeDuration = 3f;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        [TitleGroup("Sensor Subscription")]
+        public float SensorAmount = 0f;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        public void FocusDataMapper()
-        {
-            Selection.activeGameObject = DataMapper.gameObject;
-        }
-
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0f, 1f, 0f)]
-        [DisableInEditorMode()]
+        [TitleGroup("Sensor Subscription")]
+        [LabelText("$UnsubscribeButtonLabel")]
+        [DisableIf("$Unsubscribed")]
         public void UnsubscribeFromSensors()
         {
-            if(!Unsubscribed)
+            if (!Unsubscribed)
             {
-                LerpTimer = 0;
+                LerpTimer = UnsubscribeDuration;
                 Unsubscribed = true;
                 SensorAmount = 0;
-                UnsubscribeForward = true;
-                RootRotationTarget = RotationDeltaFromAttachWrist();
+                UnsubscribeForward = false;
+                UnsubscribeButtonLabel = "Hardware control disabled. Re-attach to enable";
+            }
+        }
+
+        private void ChangedDuration()
+        {
+            if (Unsubscribed)
+            {
+                SensorAmount = 1;
+                LerpTimer = UnsubscribeDuration;
             }
         }
 
         public void SubscribeEventHeadPuppet()
         {
-           if(Unsubscribed)
-           {
-                UnsubscribeForward = false;
-                LerpTimer = UnsubscribeDuration;
-           }
+            if (Unsubscribed)
+            {
+                UnsubscribeForward = true;
+            }
         }
 
         //deattach only deattaches.
         //remove ability to ease back from deattach button
         //put it in attach eventheadpuppet
-        
+
         // public string AttachPoseToString()
         // {
         //     string packet = "";
@@ -140,31 +150,32 @@ namespace MrPuppet
 
                 RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
 
-                if(Unsubscribed && UnsubscribeForward)
+                if (Unsubscribed && UnsubscribeForward)
                 {
                     LerpTimer += Time.deltaTime;
                 }
-                else if(Unsubscribed && !UnsubscribeForward)
+                else if (Unsubscribed && !UnsubscribeForward)
                 {
                     LerpTimer -= Time.deltaTime;
                 }
 
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
-                { 
-                    LerpTimer = UnsubscribeDuration;
-                }
-                else if(LerpTimer < 0 && !UnsubscribeForward)
                 {
+                    LerpTimer = UnsubscribeDuration;
+                    UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
+                }
+                else if (LerpTimer < 0 && !UnsubscribeForward)
+                {
                     LerpTimer = 0;
                     SensorAmount = 0;
                 }
 
                 SensorAmount = LerpTimer / UnsubscribeDuration;
 
-                RootRotationTarget = Quaternion.Slerp(RotationModifiedTarget, RootSpawnRotation, SensorAmount);
+                RootRotationTarget = Quaternion.Slerp(RootSpawnRotation, RotationModifiedTarget, SensorAmount);
                 Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
-                position = Vector3.Lerp(position, RootSpawnPosition, SensorAmount);
+                position = Vector3.Lerp(RootSpawnPosition, position, SensorAmount);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(

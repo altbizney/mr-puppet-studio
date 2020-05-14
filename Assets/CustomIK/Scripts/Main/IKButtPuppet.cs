@@ -60,20 +60,20 @@ namespace MrPuppet
         #region SensorSubscription
 
         [MinValue(0.01f)]
-        [TitleGroup("Sensor Subscribition")]
+        [TitleGroup("Sensor Subscription")]
         [OnValueChanged("ChangedDuration")]
         public float UnsubscribeDuration = 3f;
 
         [ReadOnly]
         [Range(0f, 1f)]
-        [TitleGroup("Sensor Subscribition")]
+        [TitleGroup("Sensor Subscription")]
         public float SensorAmount = 0f;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        [TitleGroup("Sensor Subscribition")]
-        [LabelText("$UnsubscribButtonLabel")]
+        [TitleGroup("Sensor Subscription")]
+        [LabelText("$UnsubscribeButtonLabel")]
         [DisableIf("$Unsubscribed")]
         public void UnsubscribeFromSensors()
         {
@@ -83,7 +83,7 @@ namespace MrPuppet
                 Unsubscribed = true;
                 SensorAmount = 0;
                 UnsubscribeForward = false;
-                UnsubscribButtonLabel = "Hardware control disabled. Re-attach to enable";
+                UnsubscribeButtonLabel = "Hardware control disabled. Re-attach to enable";
             }
         }
 
@@ -92,7 +92,7 @@ namespace MrPuppet
         private bool Unsubscribed = true;
         private bool UnsubscribeForward;
         private float LerpTimer;
-        private string UnsubscribButtonLabel = "Hardware control disabled. Attach to enable";
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
 
         public void SubscribeEventIKButtPuppet()
         {
@@ -711,7 +711,7 @@ namespace MrPuppet
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                 {
                     LerpTimer = UnsubscribeDuration;
-                    UnsubscribButtonLabel = "Disable hardware control";
+                    UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
 
                 }
