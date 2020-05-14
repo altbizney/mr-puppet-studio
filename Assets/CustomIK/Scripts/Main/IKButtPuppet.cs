@@ -58,7 +58,6 @@ namespace MrPuppet
         #endregion
 
         #region SensorSubscription
-
         [MinValue(0.01f)]
         [TitleGroup("Sensor Subscription")]
         [OnValueChanged("ChangedDuration")]
@@ -87,13 +86,6 @@ namespace MrPuppet
             }
         }
 
-        private Quaternion UnsubscribeHeadRotation;
-        private Quaternion UnsubscribeHipRotation;
-        private bool Unsubscribed = true;
-        private bool UnsubscribeForward;
-        private float LerpTimer;
-        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
-
         public void SubscribeEventIKButtPuppet()
         {
             if (Unsubscribed)
@@ -101,16 +93,6 @@ namespace MrPuppet
                 UnsubscribeForward = true;
             }
         }
-
-        private void ChangedDuration()
-        {
-            if (!Unsubscribed)
-            {
-                LerpTimer = UnsubscribeDuration;
-                SensorAmount = 1f;
-            }
-        }
-
         #endregion
 
 
@@ -245,8 +227,14 @@ namespace MrPuppet
         private Quaternion HeadSpawnRotation;
 
         private Vector3 position;
-
         private Vector3 PositionVelocity;
+
+        private Quaternion UnsubscribeHeadRotation;
+        private Quaternion UnsubscribeHipRotation;
+        private bool Unsubscribed = true;
+        private bool UnsubscribeForward;
+        private float LerpTimer;
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         #endregion
 
         #region Unity Methods
@@ -669,6 +657,14 @@ namespace MrPuppet
             }
         }
 
+        private void ChangedDuration()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                SensorAmount = 1f;
+            }
+        }
 
         private void IKUpdate()
         {
