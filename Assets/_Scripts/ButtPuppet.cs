@@ -134,7 +134,7 @@ namespace MrPuppet
         public bool ApplySensors = true;
 
         [MinValue(0.01f)]
-        [TitleGroup("Sensor Subscribition")]
+        [TitleGroup("Sensor Subscription")]
         [OnValueChanged("ChangedDuration")]
         public float UnsubscribeDuration = 3f;
 
@@ -230,6 +230,7 @@ namespace MrPuppet
                         LerpTimer = UnsubscribeDuration;
                         UnsubscribeButtonLabel = "Disable hardware control";
                         Unsubscribed = false;
+                        SensorAmount = 1;
                     }
                     else if (LerpTimer < 0 && !UnsubscribeForward)
                     {
@@ -237,7 +238,8 @@ namespace MrPuppet
                         SensorAmount = 0;
                     }
 
-                    SensorAmount = LerpTimer / UnsubscribeDuration;
+                    if (Unsubscribed)
+                        SensorAmount = LerpTimer / UnsubscribeDuration;
 
                     position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
                     UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);

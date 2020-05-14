@@ -164,6 +164,7 @@ namespace MrPuppet
                     LerpTimer = UnsubscribeDuration;
                     UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
+                    SensorAmount = 1;
                 }
                 else if (LerpTimer < 0 && !UnsubscribeForward)
                 {
@@ -171,7 +172,8 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                SensorAmount = LerpTimer / UnsubscribeDuration;
+                if (Unsubscribed)
+                    SensorAmount = LerpTimer / UnsubscribeDuration;
 
                 RootRotationTarget = Quaternion.Slerp(RootSpawnRotation, RotationModifiedTarget, SensorAmount);
                 Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
