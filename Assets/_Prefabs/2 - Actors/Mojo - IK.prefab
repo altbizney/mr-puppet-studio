@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 3348738741927305387}
   - component: {fileID: 3348738741927305384}
   - component: {fileID: 417409397}
+  - component: {fileID: 4311242599435230159}
   m_Layer: 0
   m_Name: Mojo - IK
   m_TagString: Untagged
@@ -413,346 +414,446 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mappings:
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 1
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 0
     Channel: 19
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 2
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 1
     Channel: 24
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 3
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 2
     Channel: 25
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 4
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 3
     Channel: 26
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 5
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 4
     Channel: 27
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 6
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 5
     Channel: 36
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 7
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 6
     Channel: 29
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 8
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 7
     Channel: 28
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 9
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 8
     Channel: 30
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 10
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 9
     Channel: 31
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 11
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 10
     Channel: 32
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 12
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 11
     Channel: 33
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 13
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 12
     Channel: 34
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 14
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 13
     Channel: 35
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 15
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 14
     Channel: 37
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 16
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 15
     Channel: 38
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 17
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 16
     Channel: 39
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 18
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 17
     Channel: 40
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 19
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 18
     Channel: 41
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 20
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 19
     Channel: 43
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 21
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 20
     Channel: 44
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 22
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 21
     Channel: 45
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 23
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 22
     Channel: 46
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 24
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 23
     Channel: 47
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 25
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 24
     Channel: 48
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 26
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 25
     Channel: 50
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 125212443691025314}
+  - MappingIndex: 27
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 26
     Channel: 49
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 2244055039547509543}
+  - MappingIndex: 28
+    _SkinnedMeshRenderer: {fileID: 2244055039547509543}
     BlendShape: 7
     Channel: 15
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 2244055039547509543}
+  - MappingIndex: 29
+    _SkinnedMeshRenderer: {fileID: 2244055039547509543}
     BlendShape: 8
     Channel: 16
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 2244055039547509543}
+  - MappingIndex: 30
+    _SkinnedMeshRenderer: {fileID: 2244055039547509543}
     BlendShape: 9
     Channel: 17
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 2244055039547509543}
+  - MappingIndex: 31
+    _SkinnedMeshRenderer: {fileID: 2244055039547509543}
     BlendShape: 10
     Channel: 18
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 32
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 0
     Channel: 0
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 33
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 1
     Channel: 1
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 34
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 2
     Channel: 2
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 35
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 3
     Channel: 3
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 36
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 4
     Channel: 4
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 37
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 5
     Channel: 5
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 38
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 6
     Channel: 6
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 39
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 7
     Channel: 7
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 40
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 8
     Channel: 8
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 41
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 9
     Channel: 9
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 42
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 10
     Channel: 10
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 43
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 11
     Channel: 11
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 44
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 12
     Channel: 12
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 45
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 13
     Channel: 13
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 46
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 14
     Channel: 14
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 47
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 15
     Channel: 15
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 48
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 16
     Channel: 16
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 49
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 17
     Channel: 17
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 50
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 18
     Channel: 18
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 51
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 19
     Channel: 19
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 52
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 20
     Channel: 20
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 53
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 21
     Channel: 21
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 54
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 22
     Channel: 22
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 55
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 23
     Channel: 23
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 56
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 24
     Channel: 24
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 57
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 25
     Channel: 25
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 58
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 26
     Channel: 26
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 59
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 27
     Channel: 27
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 60
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 28
     Channel: 28
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 61
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 29
     Channel: 29
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 62
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 30
     Channel: 30
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 63
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 31
     Channel: 31
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 64
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 32
     Channel: 32
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 65
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 33
     Channel: 33
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 66
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 34
     Channel: 34
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 67
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 35
     Channel: 35
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 68
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 36
     Channel: 36
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 69
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 37
     Channel: 37
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 70
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 38
     Channel: 38
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 71
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 39
     Channel: 39
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 72
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 40
     Channel: 40
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 73
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 41
     Channel: 41
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 74
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 42
     Channel: 42
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 75
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 43
     Channel: 43
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 76
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 44
     Channel: 44
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 77
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 45
     Channel: 45
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 78
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 46
     Channel: 46
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 79
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 47
     Channel: 47
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 80
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 48
     Channel: 48
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 81
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 49
     Channel: 49
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 82
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 50
     Channel: 50
     BlendValue: 0
-  - _SkinnedMeshRenderer: {fileID: 6923369171349713430}
+  - MappingIndex: 83
+    _SkinnedMeshRenderer: {fileID: 6923369171349713430}
     BlendShape: 51
     Channel: 51
     BlendValue: 0
-  - Channel: 40
+  - MappingIndex: 84
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 27
-    _SkinnedMeshRenderer: {fileID: 125212443691025314}
+    Channel: 40
     BlendValue: 0
-  - Channel: 39
+  - MappingIndex: 85
+    _SkinnedMeshRenderer: {fileID: 125212443691025314}
     BlendShape: 28
-    _SkinnedMeshRenderer: {fileID: 125212443691025314}
+    Channel: 39
     BlendValue: 0
+--- !u!114 &4311242599435230159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3348738741927305390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128fe79aa54474eb18ce65bf7c5a0e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Take: DOJO-E056
+  EnableAudioPlayback: 1
+  EnableFACSPlayback: 1
 --- !u!114 &1804658643
 MonoBehaviour:
   m_ObjectHideFlags: 0
