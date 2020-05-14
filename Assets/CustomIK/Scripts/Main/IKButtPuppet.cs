@@ -57,6 +57,71 @@ namespace MrPuppet
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
         #endregion
 
+        #region SensorSubscription
+
+        [MinValue(0.01f)]
+        [TitleGroup("Sensor Subscribition")]
+        [OnValueChanged("ChangedDuration")]
+        public float UnsubscribeDuration = 3f;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        [TitleGroup("Sensor Subscribition")]
+        public float SensorAmount = 0f;
+
+        //[ReadOnly]
+        //[Range(0f, 1f)]
+        //[TitleGroup("Sensor Subscribition")]
+        //[LabelText("Sensor Amount")]
+        private float SensorAmount2;
+
+        [Button(ButtonSizes.Large)]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode()]
+        [TitleGroup("Sensor Subscribition")]
+        [LabelText("$UnsubscribButtonLabel")]
+        [DisableIf("$Unsubscribed")]
+        public void UnsubscribeFromSensors()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                Unsubscribed = true;
+                SensorAmount = 0;
+                UnsubscribeForward = false;
+                UnsubscribButtonLabel = "Hardware control disabled. Re-attach to enable";
+            }
+        }
+
+        private Quaternion UnsubscribeHeadRotation;
+        private Quaternion UnsubscribeHipRotation;
+        private bool Unsubscribed = true;
+        private bool UnsubscribeForward;
+        private float LerpTimer;
+        private string UnsubscribButtonLabel = "Hardware control disabled. Attach to enable";
+
+        public void SubscribeEventIKButtPuppet()
+        {
+            if (Unsubscribed)
+            {
+                UnsubscribeForward = true;
+                //if (LerpTimer)
+                //LerpTimer = UnsubscribeDuration;
+            }
+        }
+
+        private void ChangedDuration()
+        {
+            if (Unsubscribed)
+            {
+                SensorAmount = 1;
+                LerpTimer = UnsubscribeDuration;
+            }
+        }
+
+        #endregion
+
+
         #region IK
         [DetailedInfoBox("IK bones help", "For the Bones 1-3 in each IK component (minus the 'Grounder') they will be oriented from tip to root instead of root to tip and example is as follows - \n\n Example Rig: UpperArm => Forearm => Wrist \n UpperArm: Bone 3 \n Forearm: Bone 2 \n Wrist: Bone 1 \n\n **The exception to this rule is the legs")]
         [DetailedInfoBox("IK tags help", "To assign tags to bones and IK objects simply add the IKTag component to the needed objects \n\n ikTagId: The bone reference \n chainId: The order of the bone relative to the bone reference")]
@@ -187,14 +252,6 @@ namespace MrPuppet
         private Quaternion HipSpawnRotation;
         private Quaternion HeadSpawnRotation;
 
-        [MinValue(0.01f)]
-        public float UnsubscribeDuration = 3f;
-        private Quaternion UnsubscribeHeadRotation;
-        private Quaternion UnsubscribeHipRotation;
-        private bool Unsubscribed;
-        private bool UnsubscribeForward;
-        private float SensorAmount;
-        private float LerpTimer;
         private Vector3 position;
 
         private Vector3 PositionVelocity;
@@ -620,28 +677,6 @@ namespace MrPuppet
             }
         }
 
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0f, 1f, 0f)]
-        [DisableInEditorMode()]
-        public void UnsubscribeFromSensors()
-        {
-            if(!Unsubscribed)
-            {
-                LerpTimer = 0;
-                Unsubscribed = true;
-                SensorAmount = 0;
-                UnsubscribeForward = true;
-            }
-        }
-
-        public void SubscribeEventIKButtPuppet()
-        {
-           if(Unsubscribed)
-           {
-                UnsubscribeForward = false;
-                LerpTimer = UnsubscribeDuration;
-           }
-        }
 
         private void IKUpdate()
         {
@@ -672,31 +707,33 @@ namespace MrPuppet
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                if(Unsubscribed && UnsubscribeForward)
+                if (Unsubscribed && UnsubscribeForward)
                 {
                     LerpTimer += Time.deltaTime;
                 }
-                else if(Unsubscribed && !UnsubscribeForward)
+                else if (Unsubscribed && !UnsubscribeForward)
                 {
                     LerpTimer -= Time.deltaTime;
                 }
 
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
-                { 
-                    LerpTimer = UnsubscribeDuration;
-                }
-                else if(LerpTimer < 0 && !UnsubscribeForward)
                 {
+                    LerpTimer = UnsubscribeDuration;
+                    UnsubscribButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
+
+                }
+                else if (LerpTimer < 0 && !UnsubscribeForward)
+                {
                     LerpTimer = 0;
                     SensorAmount = 0;
                 }
 
                 SensorAmount = LerpTimer / UnsubscribeDuration;
 
-                position = Vector3.Lerp(position, HipSpawnPosition, SensorAmount);
-                UnsubscribeHipRotation = Quaternion.Slerp((DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, HipSpawnRotation, SensorAmount);
-                UnsubscribeHeadRotation = Quaternion.Slerp((DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, HeadSpawnRotation, SensorAmount);
+                position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
+                UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
+                UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
