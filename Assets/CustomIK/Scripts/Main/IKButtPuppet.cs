@@ -188,20 +188,14 @@ namespace MrPuppet
         private Quaternion HeadSpawnRotation;
 
         [Range(1f, 4f)]
-        public float AttachAmountDuration = 3f;
-
-        //[ReadOnly]
-        //[Range(0f, 1f)]
-        private float AttachAmountValue;
-
+        public float UnsubscribeDuration = 3f;
+        private Quaternion UnsubscribeHeadRotation;
+        private Quaternion UnsubscribeHipRotation;
+        private bool Unsubscribed;
+        private bool UnsubscribeForward;
+        private float SensorAmount;
         private float LerpTimer;
-        private bool DeattachPoseSet;
-
-        private Quaternion AttachHipRotation;
-        private Quaternion AttachHeadRotation;
         private Vector3 position;
-        private bool GentleAttachForward;
-
 
         private Vector3 PositionVelocity;
         #endregion
@@ -629,23 +623,23 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        public void TestDeattach()
+        public void UnsubscribeFromSensors()
         {
-            if(!DeattachPoseSet)
+            if(!Unsubscribed)
             {
                 LerpTimer = 0;
-                DeattachPoseSet = true;
-                AttachAmountValue = 0;
-                GentleAttachForward = true;
+                Unsubscribed = true;
+                SensorAmount = 0;
+                UnsubscribeForward = true;
             }
         }
 
-        public void AttachEventIKButtPuppet()
+        public void SubscribeEventIKButtPuppet()
         {
-           if(DeattachPoseSet)
+           if(Unsubscribed)
            {
-                GentleAttachForward = false;
-                LerpTimer = AttachAmountDuration;
+                UnsubscribeForward = false;
+                LerpTimer = UnsubscribeDuration;
            }
         }
 
@@ -669,7 +663,7 @@ namespace MrPuppet
                 influence.SnapshotSpawn();
             }
 
-            DataMapper.OnAttachEvent += AttachEventIKButtPuppet;
+            DataMapper.OnSubscribeEvent += SubscribeEventIKButtPuppet;
         }
 
         private void LegacyUpdate()
@@ -678,31 +672,31 @@ namespace MrPuppet
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                if(DeattachPoseSet && GentleAttachForward)
+                if(Unsubscribed && UnsubscribeForward)
                 {
                     LerpTimer += Time.deltaTime;
                 }
-                else if(DeattachPoseSet && !GentleAttachForward)
+                else if(Unsubscribed && !UnsubscribeForward)
                 {
                     LerpTimer -= Time.deltaTime;
                 }
 
-                if (LerpTimer > AttachAmountDuration && GentleAttachForward)
+                if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                 { 
-                    LerpTimer = AttachAmountDuration;
+                    LerpTimer = UnsubscribeDuration;
                 }
-                else if(LerpTimer < 0 && !GentleAttachForward)
+                else if(LerpTimer < 0 && !UnsubscribeForward)
                 {
-                    DeattachPoseSet = false;
+                    Unsubscribed = false;
                     LerpTimer = 0;
-                    AttachAmountValue = 0;
+                    SensorAmount = 0;
                 }
 
-                AttachAmountValue = LerpTimer / AttachAmountDuration;
+                SensorAmount = LerpTimer / UnsubscribeDuration;
 
-                position = Vector3.Lerp(position, HipSpawnPosition, AttachAmountValue);
-                AttachHipRotation = Quaternion.Slerp((DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, HipSpawnRotation, AttachAmountValue);
-                AttachHeadRotation = Quaternion.Slerp((DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, HeadSpawnRotation, AttachAmountValue);
+                position = Vector3.Lerp(position, HipSpawnPosition, SensorAmount);
+                UnsubscribeHipRotation = Quaternion.Slerp((DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, HipSpawnRotation, SensorAmount);
+                UnsubscribeHeadRotation = Quaternion.Slerp((DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, HeadSpawnRotation, SensorAmount);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -715,8 +709,8 @@ namespace MrPuppet
                 HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                HipRotation.rotation = Quaternion.Slerp(HipTranslation.rotation, AttachHipRotation, RotationSpeed * Time.deltaTime);
-                Head.rotation = Quaternion.Slerp(Head.rotation, AttachHeadRotation, RotationSpeed * Time.deltaTime);
+                HipRotation.rotation = Quaternion.Slerp(HipTranslation.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
+                Head.rotation = Quaternion.Slerp(Head.rotation, UnsubscribeHeadRotation, RotationSpeed * Time.deltaTime);
 
                 if (EnableJawHeadMixer)
                 {
@@ -739,10 +733,10 @@ namespace MrPuppet
                 // apply weighted influences
                 foreach (var influence in WeightedInfluences)
                 {
-                    influence.Update(DataMapper, RotationSpeed, AttachAmountValue);
+                    influence.Update(DataMapper, RotationSpeed, SensorAmount);
                 }
 
-                if (Input.GetKeyDown(KeyCode.D)) { TestDeattach(); }
+                if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
         }
         #endregion

@@ -18,11 +18,14 @@ namespace MrPuppet
         private Quaternion RootSpawnRotation;
 
         public Transform Root;
+        private Vector3 position;
 
-        private float LerpTimer;
-        private bool DeattachPoseSet;
         private Quaternion RootRotationTarget;
         private Quaternion RotationModifiedTarget;
+        private bool Unsubscribed;
+        private bool UnsubscribeForward;
+        private float LerpTimer;
+        private float SensorAmount;
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -52,11 +55,7 @@ namespace MrPuppet
         public float RotationModifier = 1f;
 
         [Range(1f, 4f)]
-        public float AttachAmountDuration = 1f;
-        private float AttachAmountValue;
-        private bool GentleAttachForward;
-
-        private Vector3 position;
+        public float UnsubscribeDuration = 1f;
 
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
@@ -69,24 +68,24 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        public void TestDeattach()
+        public void UnsubscribeFromSensors()
         {
-            if(!DeattachPoseSet)
+            if(!Unsubscribed)
             {
                 LerpTimer = 0;
-                DeattachPoseSet = true;
-                AttachAmountValue = 0;
-                GentleAttachForward = true;
+                Unsubscribed = true;
+                SensorAmount = 0;
+                UnsubscribeForward = true;
                 RootRotationTarget = RotationDeltaFromAttachWrist();
             }
         }
 
-        public void AttachEventHeadPuppet()
+        public void SubscribeEventHeadPuppet()
         {
-           if(DeattachPoseSet)
+           if(Unsubscribed)
            {
-                GentleAttachForward = false;
-                LerpTimer = AttachAmountDuration;
+                UnsubscribeForward = false;
+                LerpTimer = UnsubscribeDuration;
            }
         }
 
@@ -125,11 +124,11 @@ namespace MrPuppet
             RootSpawnPosition = Root.localPosition;
             RootSpawnRotation = Root.rotation;
 
-            AttachAmountValue = 0;
+            SensorAmount = 0;
             RotationModifiedTarget = Root.rotation;
             LerpTimer = 0;
 
-            DataMapper.OnAttachEvent += AttachEventHeadPuppet;
+            DataMapper.OnSubscribeEvent += SubscribeEventHeadPuppet;
         }
 
         private void Update()
@@ -141,31 +140,31 @@ namespace MrPuppet
 
                 RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
 
-                if(DeattachPoseSet && GentleAttachForward)
+                if(Unsubscribed && UnsubscribeForward)
                 {
                     LerpTimer += Time.deltaTime;
                 }
-                else if(DeattachPoseSet && !GentleAttachForward)
+                else if(Unsubscribed && !UnsubscribeForward)
                 {
                     LerpTimer -= Time.deltaTime;
                 }
 
-                if (LerpTimer > AttachAmountDuration && GentleAttachForward)
+                if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                 { 
-                    LerpTimer = AttachAmountDuration;
+                    LerpTimer = UnsubscribeDuration;
                 }
-                else if(LerpTimer < 0 && !GentleAttachForward)
+                else if(LerpTimer < 0 && !UnsubscribeForward)
                 {
-                    DeattachPoseSet = false;
+                    Unsubscribed = false;
                     LerpTimer = 0;
-                    AttachAmountValue = 0;
+                    SensorAmount = 0;
                 }
 
-                AttachAmountValue = LerpTimer / AttachAmountDuration;
+                SensorAmount = LerpTimer / UnsubscribeDuration;
 
-                RootRotationTarget = Quaternion.Slerp(RotationModifiedTarget, RootSpawnRotation, AttachAmountValue);
+                RootRotationTarget = Quaternion.Slerp(RotationModifiedTarget, RootSpawnRotation, SensorAmount);
                 Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
-                position = Vector3.Lerp(position, RootSpawnPosition, AttachAmountValue);
+                position = Vector3.Lerp(position, RootSpawnPosition, SensorAmount);
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -177,7 +176,7 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                if (Input.GetKeyDown(KeyCode.D)) { TestDeattach(); }
+                if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
         }
 

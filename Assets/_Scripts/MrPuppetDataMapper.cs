@@ -151,13 +151,13 @@ namespace MrPuppet
         private float TimeFrameAfterAttach;
         private float LerpTimerProgress;
 
-        public event Action OnAttachEvent;
+        public event Action OnSubscribeEvent;
 
-        public void AttachEvent()
+        public void SubscribeEvent()
         {
-            if (OnAttachEvent != null)
+            if (OnSubscribeEvent != null)
             {  
-                OnAttachEvent();
+                OnSubscribeEvent();
             }
         }
 
@@ -317,7 +317,7 @@ namespace MrPuppet
 
             TimeFrameAfterAttach = GentleReattachDuration;
 
-            AttachEvent();
+            SubscribeEvent();
         }
 
         [Button(ButtonSizes.Large)]
@@ -352,7 +352,7 @@ namespace MrPuppet
                 TimeFrameAfterAttach = GentleReattachDuration;
 
                 LerpTimer = 0;
-                AttachEvent();
+                SubscribeEvent();
             }
 
             AttachPoseSet = true;
