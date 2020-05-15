@@ -93,6 +93,8 @@ namespace MrPuppet
 
         public float SensorAmount = 0f;
 
+        private void Awake() { SensorAmount = 0f; }
+
         void OnValidate()
         {
             if (!skinnedMeshRenderer) return;

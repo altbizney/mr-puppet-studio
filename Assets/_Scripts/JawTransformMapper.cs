@@ -43,6 +43,7 @@ namespace MrPuppet
             ApplySensors = true;
             UseJawPercentOverride = false;
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+            SensorAmount = 0f;
         }
 
         [HideInInspector]
