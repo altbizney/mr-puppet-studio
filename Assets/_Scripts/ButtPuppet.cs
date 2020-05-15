@@ -91,7 +91,8 @@ namespace MrPuppet
         private bool UnsubscribeForward;
         private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
-        private List<Component> JawComponents = new List<Component>();
+        private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
+        private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
 
         private Vector3 position;
 
@@ -206,13 +207,14 @@ namespace MrPuppet
             }
 
             DataMapper.OnSubscribeEvent += SubscribeEventButtPuppet;
-            if (gameObject.GetComponent<JawTransformMapper>())
+
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
             {
-                JawComponents.Add(gameObject.GetComponent<JawTransformMapper>());
+                JawTransformComponents.Add(jaw);
             }
-            if (gameObject.GetComponent<JawBlendShapeMapper>())
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
             {
-                JawComponents.Add(gameObject.GetComponent<JawBlendShapeMapper>());
+                JawBlendshapeComponents.Add(jaw);
             }
         }
 
@@ -225,13 +227,14 @@ namespace MrPuppet
                 {
                     position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                    if (Unsubscribed && UnsubscribeForward)
+                    if (Unsubscribed)
                     {
-                        LerpTimer += Time.deltaTime;
-                    }
-                    else if (Unsubscribed && !UnsubscribeForward)
-                    {
-                        LerpTimer -= Time.deltaTime;
+                        if (UnsubscribeForward)
+                            LerpTimer += Time.deltaTime;
+                        else
+                            LerpTimer -= Time.deltaTime;
+
+                        SensorAmount = LerpTimer / UnsubscribeDuration;
                     }
 
                     if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
@@ -247,12 +250,12 @@ namespace MrPuppet
                         SensorAmount = 0;
                     }
 
-                    if (Unsubscribed)
-                        SensorAmount = LerpTimer / UnsubscribeDuration;
-
                     position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
                     UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
                     UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
+
+                    foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
+                    foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
 
                     // clamp to XYZ extents (BEFORE smooth)
                     position.Set(
@@ -260,16 +263,6 @@ namespace MrPuppet
                         LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
                         LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
                     );
-
-
-                    foreach (Component Jaw in JawComponents)
-                    {
-                        if (Jaw is JawBlendShapeMapper)
-                            (Jaw as JawBlendShapeMapper).SensorAmount = SensorAmount;
-
-                        if (Jaw is JawTransformMapper)
-                            (Jaw as JawTransformMapper).SensorAmount = SensorAmount;
-                    }
 
                     // smoothly apply changes to position
                     Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);

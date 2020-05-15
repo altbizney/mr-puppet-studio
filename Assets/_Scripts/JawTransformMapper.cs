@@ -33,6 +33,9 @@ namespace MrPuppet
         private float _jawPercentSmoothed;
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
         public float SensorAmount = 0f;
 
         [HideInInspector]

@@ -88,10 +88,12 @@ namespace MrPuppet
         [Range(0f, 0.5f)]
         public float smoothTime = 0.02f;
 
+        [ReadOnly]
+        [Range(0f, 1f)]
+        public float SensorAmount = 0f;
+
         [ShowIf("skinnedMeshRenderer")]
         public List<BlendShapeMap> maps = new List<BlendShapeMap>();
-
-        public float SensorAmount = 0f;
 
         private void Awake() { SensorAmount = 0f; }
 

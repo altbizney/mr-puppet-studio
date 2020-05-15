@@ -26,7 +26,9 @@ namespace MrPuppet
         private bool UnsubscribeForward;
         private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
-        private List<Component> JawComponents = new List<Component>();
+        private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
+        private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
+
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -140,13 +142,13 @@ namespace MrPuppet
             LerpTimer = 0;
 
             DataMapper.OnSubscribeEvent += SubscribeEventHeadPuppet;
-            if (gameObject.GetComponent<JawTransformMapper>())
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
             {
-                JawComponents.Add(gameObject.GetComponent<JawTransformMapper>());
+                JawTransformComponents.Add(jaw);
             }
-            if (gameObject.GetComponent<JawBlendShapeMapper>())
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
             {
-                JawComponents.Add(gameObject.GetComponent<JawBlendShapeMapper>());
+                JawBlendshapeComponents.Add(jaw);
             }
         }
 
@@ -159,13 +161,14 @@ namespace MrPuppet
 
                 RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
 
-                if (Unsubscribed && UnsubscribeForward)
+                if (Unsubscribed)
                 {
-                    LerpTimer += Time.deltaTime;
-                }
-                else if (Unsubscribed && !UnsubscribeForward)
-                {
-                    LerpTimer -= Time.deltaTime;
+                    if (UnsubscribeForward)
+                        LerpTimer += Time.deltaTime;
+                    else
+                        LerpTimer -= Time.deltaTime;
+
+                    SensorAmount = LerpTimer / UnsubscribeDuration;
                 }
 
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
@@ -181,21 +184,12 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                if (Unsubscribed)
-                    SensorAmount = LerpTimer / UnsubscribeDuration;
-
                 RootRotationTarget = Quaternion.Slerp(RootSpawnRotation, RotationModifiedTarget, SensorAmount);
                 Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
                 position = Vector3.Lerp(RootSpawnPosition, position, SensorAmount);
 
-                foreach (Component Jaw in JawComponents)
-                {
-                    if (Jaw is JawBlendShapeMapper)
-                        (Jaw as JawBlendShapeMapper).SensorAmount = SensorAmount;
-
-                    if (Jaw is JawTransformMapper)
-                        (Jaw as JawTransformMapper).SensorAmount = SensorAmount;
-                }
+                foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
+                foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(

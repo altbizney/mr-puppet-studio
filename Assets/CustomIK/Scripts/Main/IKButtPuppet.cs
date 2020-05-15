@@ -233,8 +233,10 @@ namespace MrPuppet
         private Quaternion UnsubscribeHipRotation;
         private bool Unsubscribed = true;
         private bool UnsubscribeForward;
-        private float LerpTimer;
         private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
+        private float LerpTimer;
+        private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
+        private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
         #endregion
 
         #region Unity Methods
@@ -687,6 +689,16 @@ namespace MrPuppet
             }
 
             DataMapper.OnSubscribeEvent += SubscribeEventIKButtPuppet;
+
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
+            {
+                JawTransformComponents.Add(jaw);
+            }
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
+            {
+                JawBlendshapeComponents.Add(jaw);
+            }
+
         }
 
         private void LegacyUpdate()
@@ -695,13 +707,14 @@ namespace MrPuppet
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
-                if (Unsubscribed && UnsubscribeForward)
+                if (Unsubscribed)
                 {
-                    LerpTimer += Time.deltaTime;
-                }
-                else if (Unsubscribed && !UnsubscribeForward)
-                {
-                    LerpTimer -= Time.deltaTime;
+                    if (UnsubscribeForward)
+                        LerpTimer += Time.deltaTime;
+                    else
+                        LerpTimer -= Time.deltaTime;
+
+                    SensorAmount = LerpTimer / UnsubscribeDuration;
                 }
 
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
@@ -710,7 +723,6 @@ namespace MrPuppet
                     UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
                     SensorAmount = 1;
-
                 }
                 else if (LerpTimer < 0 && !UnsubscribeForward)
                 {
@@ -718,12 +730,12 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                if (Unsubscribed)
-                    SensorAmount = LerpTimer / UnsubscribeDuration;
-
                 position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
                 UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
                 UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
+
+                foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
+                foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
