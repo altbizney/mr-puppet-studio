@@ -26,6 +26,7 @@ namespace MrPuppet
         private bool UnsubscribeForward;
         private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
+        private List<Component> JawComponents = new List<Component>();
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -139,6 +140,14 @@ namespace MrPuppet
             LerpTimer = 0;
 
             DataMapper.OnSubscribeEvent += SubscribeEventHeadPuppet;
+            if (gameObject.GetComponent<JawTransformMapper>())
+            {
+                JawComponents.Add(gameObject.GetComponent<JawTransformMapper>());
+            }
+            if (gameObject.GetComponent<JawBlendShapeMapper>())
+            {
+                JawComponents.Add(gameObject.GetComponent<JawBlendShapeMapper>());
+            }
         }
 
         private void Update()
@@ -178,6 +187,15 @@ namespace MrPuppet
                 RootRotationTarget = Quaternion.Slerp(RootSpawnRotation, RotationModifiedTarget, SensorAmount);
                 Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
                 position = Vector3.Lerp(RootSpawnPosition, position, SensorAmount);
+
+                foreach (Component Jaw in JawComponents)
+                {
+                    if (Jaw is JawBlendShapeMapper)
+                        (Jaw as JawBlendShapeMapper).SensorAmount = SensorAmount;
+
+                    if (Jaw is JawTransformMapper)
+                        (Jaw as JawTransformMapper).SensorAmount = SensorAmount;
+                }
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(

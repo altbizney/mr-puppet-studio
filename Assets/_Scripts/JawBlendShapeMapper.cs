@@ -23,7 +23,7 @@ namespace MrPuppet
 
             private float velocity = 0f;
             private float normalized = 0f;
-            private float output = 0f;
+            public float output = 0f;
 
             public bool spring = false;
             [ShowIf("spring"), MinValue(0f)]
@@ -91,6 +91,8 @@ namespace MrPuppet
         [ShowIf("skinnedMeshRenderer")]
         public List<BlendShapeMap> maps = new List<BlendShapeMap>();
 
+        public float SensorAmount = 0f;
+
         void OnValidate()
         {
             if (!skinnedMeshRenderer) return;
@@ -109,7 +111,7 @@ namespace MrPuppet
         {
             foreach (var map in maps)
             {
-                map.Update(DataMapper.JawPercent, smoothTime, skinnedMeshRenderer);
+                map.Update(DataMapper.JawPercent * SensorAmount, smoothTime, skinnedMeshRenderer);
             }
         }
     }

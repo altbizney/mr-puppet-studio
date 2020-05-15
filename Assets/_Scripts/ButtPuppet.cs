@@ -91,6 +91,7 @@ namespace MrPuppet
         private bool UnsubscribeForward;
         private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
         private float LerpTimer;
+        private List<Component> JawComponents = new List<Component>();
 
         private Vector3 position;
 
@@ -205,6 +206,14 @@ namespace MrPuppet
             }
 
             DataMapper.OnSubscribeEvent += SubscribeEventButtPuppet;
+            if (gameObject.GetComponent<JawTransformMapper>())
+            {
+                JawComponents.Add(gameObject.GetComponent<JawTransformMapper>());
+            }
+            if (gameObject.GetComponent<JawBlendShapeMapper>())
+            {
+                JawComponents.Add(gameObject.GetComponent<JawBlendShapeMapper>());
+            }
         }
 
         private void Update()
@@ -251,6 +260,16 @@ namespace MrPuppet
                         LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
                         LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
                     );
+
+
+                    foreach (Component Jaw in JawComponents)
+                    {
+                        if (Jaw is JawBlendShapeMapper)
+                            (Jaw as JawBlendShapeMapper).SensorAmount = SensorAmount;
+
+                        if (Jaw is JawTransformMapper)
+                            (Jaw as JawTransformMapper).SensorAmount = SensorAmount;
+                    }
 
                     // smoothly apply changes to position
                     Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);

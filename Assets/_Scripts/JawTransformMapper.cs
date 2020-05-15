@@ -33,6 +33,7 @@ namespace MrPuppet
         private float _jawPercentSmoothed;
         private float _jawPercentVelocity;
         private Vector3 _jawCurrentVelocity;
+        public float SensorAmount = 0f;
 
         [HideInInspector]
         public bool ApplySensors = true;
@@ -61,7 +62,7 @@ namespace MrPuppet
                 JawJoint.localRotation = Quaternion.LerpUnclamped(
                     AnimData.CloseRotation,
                     AnimData.OpenRotation,
-                    _jawPercentSmoothed);
+                    _jawPercentSmoothed * SensorAmount);
             }
         }
 
