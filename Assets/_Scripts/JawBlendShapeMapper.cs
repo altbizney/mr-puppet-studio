@@ -23,7 +23,7 @@ namespace MrPuppet
 
             private float velocity = 0f;
             private float normalized = 0f;
-            public float output = 0f;
+            private float output = 0f;
 
             public bool spring = false;
             [ShowIf("spring"), MinValue(0f)]
