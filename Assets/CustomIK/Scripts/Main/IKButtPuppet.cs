@@ -57,6 +57,45 @@ namespace MrPuppet
         public JawHeadAxis JawHeadRotate = JawHeadAxis.z;
         #endregion
 
+        #region SensorSubscription
+        [MinValue(0.01f)]
+        [TitleGroup("Sensor Subscription")]
+        [OnValueChanged("ChangedDuration")]
+        public float UnsubscribeDuration = 1f;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        [TitleGroup("Sensor Subscription")]
+        public float SensorAmount = 0f;
+
+        [Button(ButtonSizes.Large)]
+        [GUIColor(0f, 1f, 0f)]
+        [DisableInEditorMode()]
+        [TitleGroup("Sensor Subscription")]
+        [LabelText("$UnsubscribeButtonLabel")]
+        [DisableIf("$Unsubscribed")]
+        public void UnsubscribeFromSensors()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                Unsubscribed = true;
+                SensorAmount = 0;
+                UnsubscribeForward = false;
+                UnsubscribeButtonLabel = "Hardware control disabled. Re-attach to enable";
+            }
+        }
+
+        public void SubscribeEventIKButtPuppet()
+        {
+            if (Unsubscribed)
+            {
+                UnsubscribeForward = true;
+            }
+        }
+        #endregion
+
+
         #region IK
         [DetailedInfoBox("IK bones help", "For the Bones 1-3 in each IK component (minus the 'Grounder') they will be oriented from tip to root instead of root to tip and example is as follows - \n\n Example Rig: UpperArm => Forearm => Wrist \n UpperArm: Bone 3 \n Forearm: Bone 2 \n Wrist: Bone 1 \n\n **The exception to this rule is the legs")]
         [DetailedInfoBox("IK tags help", "To assign tags to bones and IK objects simply add the IKTag component to the needed objects \n\n ikTagId: The bone reference \n chainId: The order of the bone relative to the bone reference")]
@@ -187,10 +226,19 @@ namespace MrPuppet
         private Quaternion HipSpawnRotation;
         private Quaternion HeadSpawnRotation;
 
-        public bool ApplySensors = true;
         private Vector3 position;
-
         private Vector3 PositionVelocity;
+
+        private bool ApplySensors = true;
+
+        private Quaternion UnsubscribeHeadRotation;
+        private Quaternion UnsubscribeHipRotation;
+        private bool Unsubscribed = true;
+        private bool UnsubscribeForward;
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
+        private float LerpTimer;
+        private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
+        private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
         #endregion
 
         #region Unity Methods
@@ -613,6 +661,15 @@ namespace MrPuppet
             }
         }
 
+        private void ChangedDuration()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                SensorAmount = 1f;
+            }
+        }
+
         private void IKUpdate()
         {
             UpdateIKWeights();
@@ -645,6 +702,7 @@ namespace MrPuppet
             {
                 JawBlendshapeComponents.Add(jaw);
             }
+
         }
 
         private void LegacyUpdate()
