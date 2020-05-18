@@ -108,11 +108,16 @@ namespace MrPuppet
                 {
                     Recorder.StartRecording();
                     EditorApplication.ExecuteMenuItem("Window/General/Game");
+                    ButtonMessage = "STOP";
+                    Repaint();
                 }
                 else
                 {
                     Recorder.StopRecording();
                     AssetDatabase.SaveAssets();
+                    StatusBox = "READY TO REC";
+                    ButtonMessage = "START";
+                    Repaint();
                 }
             }
         }
@@ -153,8 +158,6 @@ namespace MrPuppet
                 //ShowInfo = false;
                 ColorState = Color.gray;
             }
-
-            //Repaint();
         }
 
         public class CountDown : MonoBehaviour
@@ -168,7 +171,8 @@ namespace MrPuppet
             CountdownValue = 3;
             while (CountdownValue > 0)
             {
-                AudioSource.PlayClipAtPoint(_AudioClip, Vector3.zero, AudioVolume);
+                Repaint();
+                AudioSource.PlayClipAtPoint(_AudioClip, Camera.main.gameObject.transform.position, AudioVolume);
 
                 if (Recorder)
                     if (Recorder.IsRecording())
@@ -186,8 +190,6 @@ namespace MrPuppet
                 CountdownValue--;
             }
 
-            //if (Camera.main.gameObject.GetComponent<AudioSource>())
-            //    Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
@@ -215,6 +217,7 @@ namespace MrPuppet
                 else
                 {
                     //ShowInfo = true;
+                    Instance.Repaint();
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;
