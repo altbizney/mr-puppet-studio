@@ -512,7 +512,7 @@ namespace MrPuppet
                         for (var i = 0; i < PAR.JointsMimic.Count; i++)
                         {
                             PAR.JointsMimic[i].localRotation = PAR.JointsClone[i].localRotation;
-                            PAR.JointsMimic[i].localPosition = PAR.JointsClone[i].localRotation;
+                            PAR.JointsMimic[i].localPosition = PAR.JointsClone[i].localPosition;
                         }
 
                     }

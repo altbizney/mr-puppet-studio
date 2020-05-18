@@ -34,7 +34,6 @@ namespace MrPuppet
         //private bool ShowInfo;
         private static int CountdownValue;
         private static Color ColorState;
-        private AudioSource _AudioSource;
         private AudioClip _AudioClip;
         private ExportPerformance _ExportPerformance;
 
@@ -84,10 +83,6 @@ namespace MrPuppet
                 if (CountdownValue < 1)
                 {
                     _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
-
-                    _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
-                    _AudioSource.volume = AudioVolume;
-                    _AudioSource.clip = _AudioClip;
 
                     Camera.main.gameObject.AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
@@ -173,8 +168,7 @@ namespace MrPuppet
             CountdownValue = 3;
             while (CountdownValue > 0)
             {
-                _AudioSource.volume = AudioVolume;
-                _AudioSource.Play();
+                AudioSource.PlayClipAtPoint(_AudioClip, Vector3.zero, AudioVolume);
 
                 if (Recorder)
                     if (Recorder.IsRecording())
@@ -192,8 +186,8 @@ namespace MrPuppet
                 CountdownValue--;
             }
 
-            if (Camera.main.gameObject.GetComponent<AudioSource>())
-                Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
+            //if (Camera.main.gameObject.GetComponent<AudioSource>())
+            //    Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
