@@ -235,6 +235,7 @@ namespace MrPuppet
                             LerpTimer -= Time.deltaTime;
 
                         SensorAmount = LerpTimer / UnsubscribeDuration;
+                        SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
                     }
 
                     if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
