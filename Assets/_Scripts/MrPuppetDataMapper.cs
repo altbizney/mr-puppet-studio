@@ -1,6 +1,10 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -146,6 +150,16 @@ namespace MrPuppet
         private float LerpTimer;
         private float TimeFrameAfterAttach;
         private float LerpTimerProgress;
+
+        public event Action OnSubscribeEvent;
+
+        public void SubscribeEvent()
+        {
+            if (OnSubscribeEvent != null)
+            {  
+                OnSubscribeEvent();
+            }
+        }
 
         private void Awake()
         {
@@ -302,6 +316,8 @@ namespace MrPuppet
             LerpTimer = GentleReattachDuration;
 
             TimeFrameAfterAttach = GentleReattachDuration;
+
+            SubscribeEvent();
         }
 
         [Button(ButtonSizes.Large)]
@@ -336,6 +352,7 @@ namespace MrPuppet
                 TimeFrameAfterAttach = GentleReattachDuration;
 
                 LerpTimer = 0;
+                SubscribeEvent();
             }
 
             AttachPoseSet = true;
