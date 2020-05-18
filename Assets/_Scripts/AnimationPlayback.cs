@@ -163,10 +163,11 @@ namespace MrPuppet
         {
             if (!EditorApplication.isPlaying)
             {
-                if (HubConnection == FindObjectOfType<MrPuppetHubConnection>() || HubConnection)
+              if ((HubConnection == FindObjectOfType<MrPuppetHubConnection>() || HubConnection) && !string.IsNullOrEmpty(AudioClipParseAfterPlay) && AudioClipParseAfterPlay != "Waiting for Animation Clip")
                 {
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
                     HubConnection = null;
+                    AudioClipParseAfterPlay = "";
                 }
                 if (PlayModeEntered == true)
                     PlayModeEntered = false;
@@ -346,8 +347,9 @@ namespace MrPuppet
         }
     }
 #else
-public class AnimationPlayback : MonoBehaviour {
+    public class AnimationPlayback : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }
