@@ -36,7 +36,7 @@ namespace MrPuppet
         private string Filename;
         private RecorderWindow Recorder;
         private bool StartedRecording;
-        private bool PromptShowing;
+        //private bool PromptShowing;
 
         [Serializable]
         public class ExportTake
@@ -193,7 +193,7 @@ namespace MrPuppet
                 filename = "Assets/Recordings/" + ExportPerformanceInstance.Filename + ".anim";
                 PromptBox = "TAKE: " + ExportPerformanceInstance.Filename;
 
-                ExportPerformanceInstance.PromptShowing = true;
+                //ExportPerformanceInstance.PromptShowing = true;
             }
 
             [HorizontalGroup]
@@ -226,7 +226,7 @@ namespace MrPuppet
 
             private void OnDestroy()
             {
-                ExportPerformanceInstance.PromptShowing = false;
+                //ExportPerformanceInstance.PromptShowing = false;
                 ExportPerformanceInstance.Repaint();
             }
 

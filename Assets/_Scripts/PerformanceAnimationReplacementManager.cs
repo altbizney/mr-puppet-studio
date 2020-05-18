@@ -223,7 +223,14 @@ namespace MrPuppet
                 if (AnimationCoroutine != null)
                     Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
-                //_AudioSource.Stop();
+                if (Recorder)
+                {
+                    if (Recorder.IsRecording())
+                    {
+                        Recorder.StopRecording();
+                    }
+                }
+
                 if (HubConnectionCheck())
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
 
@@ -236,8 +243,10 @@ namespace MrPuppet
 
                 SetButtPuppetSensors(true);
 
-                if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                    Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                if (Actor.GetComponent<JawTransformMapper>() != null){
+                    if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
+                        JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+                }
 
                 AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
@@ -245,7 +254,10 @@ namespace MrPuppet
 
         private void InitializeAnimation()
         {
-            JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            if (Actor.GetComponent<JawTransformMapper>() != null){
+                if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
+                    JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            }
 
             PuppetReplay = Instantiate(Actor, new Vector3(0, 0, 0), Actor.transform.rotation);
 
@@ -318,8 +330,13 @@ namespace MrPuppet
             }
 
             if (!Recorder)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-            Recorder.StartRecording();
+            {
+                try
+                { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                catch { return; }
+            }
+            if (Recorder)
+                Recorder.StartRecording();
         }
 
         private void Update()
@@ -469,17 +486,23 @@ namespace MrPuppet
                 {
                     if (PAR.OverwriteJaw == true)
                     {
-                        if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
 
-                        PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
-                        PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+                        }
+
+                        if (PAR.JawJoint != null){
+                            PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
+                            PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        }
                     }
                     else
                     {
-                        if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
-
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                        }
                     }
 
                     if (PAR.OverwriteButtPuppet == true)
@@ -489,6 +512,7 @@ namespace MrPuppet
                         for (var i = 0; i < PAR.JointsMimic.Count; i++)
                         {
                             PAR.JointsMimic[i].localRotation = PAR.JointsClone[i].localRotation;
+                            PAR.JointsMimic[i].localPosition = PAR.JointsClone[i].localRotation;
                         }
 
                     }

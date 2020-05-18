@@ -31,7 +31,7 @@ namespace MrPuppet
 
         private RecorderWindow Recorder;
         private static string ButtonMessage;
-        private bool ShowInfo;
+        //private bool ShowInfo;
         private static int CountdownValue;
         private static Color ColorState;
         private AudioSource _AudioSource;
@@ -72,8 +72,9 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
             if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
                 _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
@@ -102,18 +103,22 @@ namespace MrPuppet
         {
             ColorState = Color.red;
 
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
-            if (!Recorder.IsRecording())
+            if(Recorder)
             {
-                Recorder.StartRecording();
-                EditorApplication.ExecuteMenuItem("Window/General/Game");
-            }
-            else
-            {
-                Recorder.StopRecording();
-                AssetDatabase.SaveAssets();
+                if (!Recorder.IsRecording())
+                {
+                    Recorder.StartRecording();
+                    EditorApplication.ExecuteMenuItem("Window/General/Game");
+                }
+                else
+                {
+                    Recorder.StopRecording();
+                    AssetDatabase.SaveAssets();
+                }
             }
         }
 
@@ -121,7 +126,7 @@ namespace MrPuppet
         {
             if (EditorApplication.isPlaying == true)
             {
-                ShowInfo = true;
+                //ShowInfo = true;
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -187,7 +192,8 @@ namespace MrPuppet
                 CountdownValue--;
             }
 
-            Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
+            if (Camera.main.gameObject.GetComponent<AudioSource>())
+                Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
