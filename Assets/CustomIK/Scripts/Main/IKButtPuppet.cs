@@ -188,7 +188,6 @@ namespace MrPuppet
         private Quaternion HeadSpawnRotation;
 
         public bool ApplySensors = true;
-        private Vector3 position;
 
         private Vector3 PositionVelocity;
         #endregion
@@ -634,17 +633,6 @@ namespace MrPuppet
             }
 
             ApplySensors = true;
-
-            DataMapper.OnSubscribeEvent += SubscribeEventIKButtPuppet;
-
-            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
-            {
-                JawTransformComponents.Add(jaw);
-            }
-            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
-            {
-                JawBlendshapeComponents.Add(jaw);
-            }
         }
 
         private void LegacyUpdate()
@@ -653,38 +641,8 @@ namespace MrPuppet
             {
                 if (ApplySensors)
                 {
-                    position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
-
-                    if (Unsubscribed)
-                    {
-                        if (UnsubscribeForward)
-                            LerpTimer += Time.deltaTime;
-                        else
-                            LerpTimer -= Time.deltaTime;
-
-                        SensorAmount = LerpTimer / UnsubscribeDuration;
-                        SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
-                    }
-
-                    if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
-                    {
-                        LerpTimer = UnsubscribeDuration;
-                        UnsubscribeButtonLabel = "Disable hardware control";
-                        Unsubscribed = false;
-                        SensorAmount = 1;
-                    }
-                    else if (LerpTimer < 0 && !UnsubscribeForward)
-                    {
-                        LerpTimer = 0;
-                        SensorAmount = 0;
-                    }
-
-                    position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
-                    UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
-                    UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
-
-                    foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
-                    foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
+                    // apply position delta to bind pose
+                    Vector3 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
                     // clamp to XYZ extents (BEFORE smooth)
                     position.Set(
@@ -697,23 +655,23 @@ namespace MrPuppet
                     HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                     // apply rotation deltas to bind pose
-                    HipRotation.rotation = Quaternion.Slerp(HipTranslation.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
-                    Head.rotation = Quaternion.Slerp(Head.rotation, UnsubscribeHeadRotation, RotationSpeed * Time.deltaTime);
+                    HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, RotationSpeed * Time.deltaTime);
+                    Head.rotation = Quaternion.Slerp(Head.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, RotationSpeed * Time.deltaTime);
 
                     if (EnableJawHeadMixer)
                     {
                         switch (JawHeadRotate)
                         {
                             case JawHeadAxis.x:
-                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, 0f, Space.Self);
+                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, 0f, Space.Self);
                                 break;
 
                             case JawHeadAxis.y:
-                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, Space.Self);
+                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), 0f, Space.Self);
                                 break;
 
                             case JawHeadAxis.z:
-                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), Space.Self);
+                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent), Space.Self);
                                 break;
                         }
                     }
@@ -721,10 +679,8 @@ namespace MrPuppet
                     // apply weighted influences
                     foreach (var influence in WeightedInfluences)
                     {
-                        influence.Update(DataMapper, RotationSpeed, SensorAmount);
+                        influence.Update(DataMapper, RotationSpeed);
                     }
-
-                    if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
                 }
             }
         }
