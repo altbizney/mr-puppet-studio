@@ -61,7 +61,7 @@ namespace MrPuppet
         [MinValue(0.01f)]
         [TitleGroup("Sensor Subscription")]
         [OnValueChanged("ChangedDuration")]
-        public float UnsubscribeDuration = 3f;
+        public float UnsubscribeDuration = 1f;
 
         [ReadOnly]
         [Range(0f, 1f)]
