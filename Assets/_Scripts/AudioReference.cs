@@ -15,9 +15,9 @@ using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
-//#if UNITY_EDITOR
+    //#if UNITY_EDITOR
 
-    [ExecuteInEditMode] 
+    [ExecuteInEditMode]
     public class AudioReference : MonoBehaviour
     {
         /*[MenuItem("Tools/Audio Reference")]
@@ -113,7 +113,8 @@ namespace MrPuppet
             }
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             LoadFACS();
         }
 
@@ -129,8 +130,8 @@ namespace MrPuppet
             {
                 if (!HubConnection)
                     HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                
-                if(Application.isPlaying)
+
+                if (Application.isPlaying)
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
             }
         }
@@ -165,7 +166,7 @@ namespace MrPuppet
                 {
 
                     //Stop recording when the time since we started recording is greater than the last keyframe
-                    if (Timer  >= FACS_k[FACS_k.Count - 1][0])
+                    if (Timer >= FACS_k[FACS_k.Count - 1][0])
                     {
                         //Timer = 0;
                         Stop();
@@ -174,14 +175,14 @@ namespace MrPuppet
                             Recorder.StopRecording();
 
                         break;
-                    }                    
+                    }
 
                     //Don't continue to the bottom of the loop, until we get a value bigger than timer.
                     //This guarantees we get the next biggest value after all the values smaller then us.
                     //This logic allows us to drop frames when needed.
                     if (Timer >= FACS_k[k][0])
                         continue;
-                    
+
                     //Go through the list of channels
                     //When the channel we reached in our List matches either jawOpen or a channel found within the list of Mappings inside of the FaceCapBlendShapeMapper component
                     //we take the corresponding value associated with that channel at that timestamp
@@ -220,13 +221,19 @@ namespace MrPuppet
             string filePath = "";
             if (settings != null)
             {
-                if(Take != null){
+                if (Take != null)
+                {
                     var parts = new List<string>();
                     if (Take.Contains('-'))
                         parts = Take.Split('-').ToList();
 
                     if (parts.Count > 1)
-                        filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    {
+                        if (settings.UseHyperMeshPerformancePath)
+                            filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/HyperMesh/Performances/" + parts[0] + "/" + parts[1] + "/" + Take + ".FACS.txt";
+                        else
+                            filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    }
                 }
             }
             else
@@ -277,7 +284,8 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && Application.isPlaying){   //&& EditorApplication.isPlaying
+                if (EnableAudioPlayback && Application.isPlaying)
+                {
                     if (!HubConnection)
                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
@@ -304,79 +312,79 @@ namespace MrPuppet
             */
 
             //if (EditorApplication.isPlaying)
-           // {
-                //Repaint();
+            // {
+            //Repaint();
 
-                if (!Recorder)
+            if (!Recorder)
+            {
+                try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                catch { return; }
+            }
+
+            if (!HubConnection)
+            {
+                try { HubConnection = FindObjectOfType<MrPuppetHubConnection>(); }
+                catch { return; }
+            }
+
+            if (!Recorder || !HubConnection)
+                return;
+
+            if (!_JawTransformMapper)
+                CacheJawTransformMapper();
+
+            if (!_FaceCapBlendShapeMapper)
+                CacheFaceCapBlendShapeMapper();
+
+            if (RecorderStartedRecording == true && !Recorder.IsRecording())
+            {
+                RecorderStartedRecording = false;
+                ResetBlendShapes();
+            }
+
+            if (Recorder.IsRecording())
+            {
+                if (!RecorderStartedRecording)
                 {
-                    try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
-                    catch { return; }
+                    RecorderStartedRecording = true;
+                    //Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
                 }
 
-                if (!HubConnection)
-                {
-                    try { HubConnection = FindObjectOfType<MrPuppetHubConnection>(); }
-                    catch { return; }
-                }
+                DisablePlayButton = true;
+                PlaybackLogic();
+            }
+            else
+                DisablePlayButton = false;
 
-                if (!Recorder || !HubConnection)
-                    return;
-
-                if (!_JawTransformMapper)
-                    CacheJawTransformMapper();
-
-                if (!_FaceCapBlendShapeMapper)
-                    CacheFaceCapBlendShapeMapper();
-
-                if (RecorderStartedRecording == true && !Recorder.IsRecording())
-                {
-                    RecorderStartedRecording = false;
-                    ResetBlendShapes();
-                }
-
+            if (FACSPlayButton)
+            {
                 if (Recorder.IsRecording())
                 {
-                    if(!RecorderStartedRecording)
-                    {
-                        RecorderStartedRecording = true;
-                        //Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
-                    }
-
-                    DisablePlayButton = true;
-                    PlaybackLogic();
-                }
-                else
-                    DisablePlayButton = false;
-
-                if (FACSPlayButton)
-                {
-                    if (Recorder.IsRecording())
-                    {
-                        Stop();
-                        if (AudioIsPlaying == true)
-                        {
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                            AudioIsPlaying = false;
-                        }
-                    }
-
-                    PlaybackLogic();
-                }
-
-                if (!Recorder.IsRecording() && !FACSPlayButton)
-                {
+                    Stop();
                     if (AudioIsPlaying == true)
                     {
-                        Stop();
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
                         AudioIsPlaying = false;
                     }
-
-                    if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
-                        _JawTransformMapper.UseJawPercentOverride = false;
                 }
+
+                PlaybackLogic();
+            }
+
+            if (!Recorder.IsRecording() && !FACSPlayButton)
+            {
+                if (AudioIsPlaying == true)
+                {
+                    Stop();
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                    AudioIsPlaying = false;
+                }
+
+                if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                    _JawTransformMapper.UseJawPercentOverride = false;
+            }
             //}
             /*
             if (!EditorApplication.isPlaying)
@@ -404,28 +412,29 @@ namespace MrPuppet
             */
         }
 
-        public void OnApplicationQuit(){
-                if (AudioIsPlaying == true)
-                {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
-                    AudioIsPlaying = false;
-                }
+        public void OnApplicationQuit()
+        {
+            if (AudioIsPlaying == true)
+            {
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + TakeAfterPlay);
+                AudioIsPlaying = false;
+            }
 
-                if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
-                    _JawTransformMapper.UseJawPercentOverride = false;
+            if (_JawTransformMapper && _JawTransformMapper.UseJawPercentOverride)
+                _JawTransformMapper.UseJawPercentOverride = false;
 
-                if (PlayModeEntered == true)
-                   PlayModeEntered = false;
-                if (FACSPlayButton == true)
-                    FACSPlayButton = false;
-                if (DisablePlayButton == true)
-                    DisablePlayButton = false;
-                if (RecorderStartedRecording == true)
-                    RecorderStartedRecording = false;
-                if (TakeAfterPlay != "")
-                    TakeAfterPlay = "";
-                
-                LoadFACS();
+            if (PlayModeEntered == true)
+                PlayModeEntered = false;
+            if (FACSPlayButton == true)
+                FACSPlayButton = false;
+            if (DisablePlayButton == true)
+                DisablePlayButton = false;
+            if (RecorderStartedRecording == true)
+                RecorderStartedRecording = false;
+            if (TakeAfterPlay != "")
+                TakeAfterPlay = "";
+
+            LoadFACS();
         }
 
 
@@ -434,8 +443,8 @@ namespace MrPuppet
             _JawTransformMapper = null;
             //if (Actor != null)
             //{
-                if (gameObject.GetComponent<JawTransformMapper>())
-                    _JawTransformMapper = gameObject.GetComponent<JawTransformMapper>();
+            if (gameObject.GetComponent<JawTransformMapper>())
+                _JawTransformMapper = gameObject.GetComponent<JawTransformMapper>();
             //}
         }
 
@@ -444,13 +453,13 @@ namespace MrPuppet
             _FaceCapBlendShapeMapper = null;
             //if (Actor)
             //{
-                if (gameObject.GetComponent<FaceCapBlendShapeMapper>())
-                    _FaceCapBlendShapeMapper = gameObject.GetComponent<FaceCapBlendShapeMapper>();
+            if (gameObject.GetComponent<FaceCapBlendShapeMapper>())
+                _FaceCapBlendShapeMapper = gameObject.GetComponent<FaceCapBlendShapeMapper>();
             //}
         }
     }
-//#else
+    //#else
     //public class AnimationPlayback : MonoBehaviour
     //{ }
-//#endif
+    //#endif
 }
