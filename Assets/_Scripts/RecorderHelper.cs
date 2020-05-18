@@ -31,10 +31,9 @@ namespace MrPuppet
 
         private RecorderWindow Recorder;
         private static string ButtonMessage;
-        private bool ShowInfo;
+        //private bool ShowInfo;
         private static int CountdownValue;
         private static Color ColorState;
-        private AudioSource _AudioSource;
         private AudioClip _AudioClip;
         private ExportPerformance _ExportPerformance;
 
@@ -72,8 +71,9 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
             if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
                 _ExportPerformance = EditorWindow.GetWindow<ExportPerformance>();
@@ -83,10 +83,6 @@ namespace MrPuppet
                 if (CountdownValue < 1)
                 {
                     _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
-
-                    _AudioSource = Camera.main.gameObject.AddComponent<AudioSource>();
-                    _AudioSource.volume = AudioVolume;
-                    _AudioSource.clip = _AudioClip;
 
                     Camera.main.gameObject.AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
@@ -102,18 +98,27 @@ namespace MrPuppet
         {
             ColorState = Color.red;
 
-            if (Recorder != EditorWindow.GetWindow<RecorderWindow>())
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            try
+            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            catch { throw; }
 
-            if (!Recorder.IsRecording())
+            if(Recorder)
             {
-                Recorder.StartRecording();
-                EditorApplication.ExecuteMenuItem("Window/General/Game");
-            }
-            else
-            {
-                Recorder.StopRecording();
-                AssetDatabase.SaveAssets();
+                if (!Recorder.IsRecording())
+                {
+                    Recorder.StartRecording();
+                    EditorApplication.ExecuteMenuItem("Window/General/Game");
+                    ButtonMessage = "STOP";
+                    Repaint();
+                }
+                else
+                {
+                    Recorder.StopRecording();
+                    AssetDatabase.SaveAssets();
+                    StatusBox = "READY TO REC";
+                    ButtonMessage = "START";
+                    Repaint();
+                }
             }
         }
 
@@ -121,7 +126,7 @@ namespace MrPuppet
         {
             if (EditorApplication.isPlaying == true)
             {
-                ShowInfo = true;
+                //ShowInfo = true;
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -153,8 +158,6 @@ namespace MrPuppet
                 //ShowInfo = false;
                 ColorState = Color.gray;
             }
-
-            //Repaint();
         }
 
         public class CountDown : MonoBehaviour
@@ -168,8 +171,8 @@ namespace MrPuppet
             CountdownValue = 3;
             while (CountdownValue > 0)
             {
-                _AudioSource.volume = AudioVolume;
-                _AudioSource.Play();
+                Repaint();
+                AudioSource.PlayClipAtPoint(_AudioClip, Camera.main.gameObject.transform.position, AudioVolume);
 
                 if (Recorder)
                     if (Recorder.IsRecording())
@@ -187,7 +190,6 @@ namespace MrPuppet
                 CountdownValue--;
             }
 
-            Destroy(Camera.main.gameObject.GetComponent<AudioSource>());
             ControlRecording();
         }
 
@@ -215,6 +217,7 @@ namespace MrPuppet
                 else
                 {
                     //ShowInfo = true;
+                    Instance.Repaint();
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;

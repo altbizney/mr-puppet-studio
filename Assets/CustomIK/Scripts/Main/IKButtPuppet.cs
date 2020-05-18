@@ -228,8 +228,9 @@ namespace MrPuppet
 
         private Vector3 position;
         private Vector3 PositionVelocity;
-
-        private bool ApplySensors = true;
+        
+        [HideInInspector]
+        public bool ApplySensors = true;
 
         private Quaternion UnsubscribeHeadRotation;
         private Quaternion UnsubscribeHipRotation;
