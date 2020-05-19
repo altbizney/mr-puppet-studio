@@ -107,6 +107,9 @@ namespace MrPuppet
 
         private List<Transform> JointsMimic = new List<Transform>();
         private List<Transform> JointsClone = new List<Transform>();
+        private List<Vector3> JointsSpawnPosition = new List<Vector3>();
+        private List<Quaternion> JointsSpawnRotation = new List<Quaternion>();
+
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -250,10 +253,14 @@ namespace MrPuppet
                         {
                             JointsMimic.Add(nestedChild);
                             JointsClone.Add(child);
+
+                            JointsSpawnRotation.Add(nestedChild.localRotation);
+                            JointsSpawnPosition.Add(nestedChild.localPosition);
                         }
                     }
                 }
             }
+
         }
 
         private void Update()
@@ -351,8 +358,9 @@ namespace MrPuppet
         {
             for (var i = 0; i < JointsMimic.Count; i++)
             {
-                JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsMimic[i].localRotation, SensorAmount);
-                JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsMimic[i].localPosition, SensorAmount);
+                JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
+                JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
+                //Debug.Log(JointsMimic[i].localPosition + " " + JointsSpawn[i].localPosition);
             }
         }
 
