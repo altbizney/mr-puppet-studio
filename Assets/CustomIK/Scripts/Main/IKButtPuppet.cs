@@ -241,14 +241,7 @@ namespace MrPuppet
         private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
         private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
 
-        private GameObject PuppetIdle;
-        private Transform IdleHip;
-        private Transform IdleHead;
-
-        private List<Transform> JointsMimic = new List<Transform>();
-        private List<Transform> JointsClone = new List<Transform>();
-        private List<Vector3> JointsSpawnPosition = new List<Vector3>();
-        private List<Quaternion> JointsSpawnRotation = new List<Quaternion>();
+        private Animator _Animator;
         #endregion
 
         #region Unity Methods
@@ -683,21 +676,6 @@ namespace MrPuppet
         private void IKUpdate()
         {
             UpdateIKWeights();
-            /*
-            hipIKRotationWeight = SensorAmount;
-            hipIKPositionWeight = SensorAmount;
-            spineIKPositionWeight = SensorAmount;
-            spineIKRotationWeight = SensorAmount;
-            neckIKPositionWeight = SensorAmount;
-            neckIKRotationWeight = SensorAmount;
-            leftArmLimbPositionWeight = SensorAmount;
-            leftArmLimbRotationWeight = SensorAmount;
-            rightArmLimbRotationWeight = SensorAmount;
-            rightArmLimbPositionWeight = SensorAmount;
-            grounderIKWeight = SensorAmount;
-            leftLegLimbRotationWeight = SensorAmount;
-            rightLegLimbRotationWeight = SensorAmount;
-            */
         }
 
         private void LegacyAwake()
@@ -728,52 +706,14 @@ namespace MrPuppet
                 JawBlendshapeComponents.Add(jaw);
             }
 
-            Animator _Animator = gameObject.GetComponentInChildren<Animator>();
-            //gameObject.GetComponentInChildren<Test>().gameObject
+            _Animator = gameObject.GetComponentInChildren<Animator>();
 
-            PuppetIdle = Instantiate(_Animator.gameObject, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
-            PuppetIdle.transform.Rotate(0, 90f, 0);
-
-            _Animator.enabled = false;
-
-            foreach (Transform child in PuppetIdle.transform.GetComponentsInChildren<Transform>())
-            {
-                foreach (Transform nestedChild in gameObject.transform.GetComponentsInChildren<Transform>())
-                {
-                    if (nestedChild.name == child.name)
-                    {
-                        if (HipTranslation.name == child.name)
-                            IdleHip = child;
-                        else if ("C_Head_connector_JNT" == child.name)
-                        {
-                            IdleHead = child;
-                        }
-                        else
-                        {
-                            JointsMimic.Add(nestedChild);
-                            JointsClone.Add(child);
-
-                            JointsSpawnRotation.Add(nestedChild.localRotation);
-                            JointsSpawnPosition.Add(nestedChild.localPosition);
-                        }
-                    }
-                }
-            }
-
-            //KillChildren(PuppetIdle.GetComponentsInChildren<TrigonometricIK>());
-            //KillChildren(PuppetIdle.GetComponentsInChildren<IKTag>());
-
-        }
-
-        private void KillChildren(UnityEngine.Object[] children)
-        {
-            foreach (UnityEngine.Object child in children)
-                Destroy(child);
         }
 
         private void LegacyUpdate()
         {
-
+            //if (DataMapper.AttachPoseSet)
+            //{
             if (ApplySensors)
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
@@ -802,15 +742,23 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                for (var i = 0; i < JointsMimic.Count; i++)
-                {
-                    JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
-                    JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
-                }
+                hipIKRotationWeight = SensorAmount;
+                hipIKPositionWeight = SensorAmount;
+                headIKPositionWeight = SensorAmount;
+                headIKRotationWeight = SensorAmount;
+                leftArmLimbPositionWeight = SensorAmount;
+                leftArmLimbRotationWeight = SensorAmount;
+                rightArmLimbPositionWeight = SensorAmount;
+                rightArmLimbRotationWeight = SensorAmount;
+                grounderIKWeight = SensorAmount;
+                leftLegLimbRotationWeight = SensorAmount;
+                rightLegLimbRotationWeight = SensorAmount;
 
-                position = Vector3.Lerp(IdleHip.localPosition, position, SensorAmount);
-                UnsubscribeHipRotation = Quaternion.Slerp(IdleHip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
-                UnsubscribeHeadRotation = Quaternion.Slerp(IdleHead.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
+                _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
+
+                position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
+                UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
+                UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
 
                 foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
                 foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
@@ -855,6 +803,7 @@ namespace MrPuppet
 
                 if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
+            // }
         }
         #endregion
     }
