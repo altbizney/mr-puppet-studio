@@ -97,12 +97,7 @@ namespace MrPuppet
         private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
 
         private Vector3 position;
-
-        // TODO: Less public variables
         private GameObject PuppetIdle;
-        public GameObject ObjectToClone;
-        public AnimationClip IdleAnimationClip;
-        public Avatar IdleAvatar;
         private Transform IdleHip;
         private Transform IdleHead;
 
@@ -110,7 +105,6 @@ namespace MrPuppet
         private List<Transform> JointsClone = new List<Transform>();
         private List<Vector3> JointsSpawnPosition = new List<Vector3>();
         private List<Quaternion> JointsSpawnRotation = new List<Quaternion>();
-
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -233,11 +227,12 @@ namespace MrPuppet
                 JawBlendshapeComponents.Add(jaw);
             }
 
-            PuppetIdle = Instantiate(ObjectToClone, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
+            Animator _Animator = gameObject.GetComponentInChildren<Animator>();
+
+            PuppetIdle = Instantiate(_Animator.gameObject, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
             PuppetIdle.transform.Rotate(0, 90f, 0);
-            Animator IdleAnimator = PuppetIdle.AddComponent<Animator>();
-            IdleAnimator.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/IdleTemp.controller", IdleAnimationClip);
-            IdleAnimator.avatar = IdleAvatar;
+
+            _Animator.enabled = false;
 
             foreach (Transform child in PuppetIdle.transform.GetComponentsInChildren<Transform>())
             {
@@ -264,12 +259,7 @@ namespace MrPuppet
 
         private void Update()
         {
-            //_Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1));
-
-            //if (DataMapper.AttachPoseSet)
-            //{
             // apply position delta to bind pose
-
             if (ApplySensors == true)
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
@@ -296,6 +286,12 @@ namespace MrPuppet
                 {
                     LerpTimer = 0;
                     SensorAmount = 0;
+                }
+
+                for (var i = 0; i < JointsMimic.Count; i++)
+                {
+                    JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
+                    JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
                 }
 
                 position = Vector3.Lerp(IdleHip.localPosition, position, SensorAmount);
@@ -345,18 +341,8 @@ namespace MrPuppet
 
                 if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
-
-            //}
         }
 
-        void LateUpdate()
-        {
-            for (var i = 0; i < JointsMimic.Count; i++)
-            {
-                JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
-                JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
-            }
-        }
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
 
