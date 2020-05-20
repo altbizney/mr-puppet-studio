@@ -217,7 +217,7 @@ namespace MrPuppet
                 else
                 {
                     //ShowInfo = true;
-                    Instance.Repaint();
+                    //Instance.Repaint();
                     StatusBox = "Enter play mode to record";
                     ButtonMessage = "DISABLED";
                     CountdownValue = 0;
