@@ -98,12 +98,13 @@ namespace MrPuppet
 
         private Vector3 position;
 
+        // TODO: Less public variables
         private GameObject PuppetIdle;
         public GameObject ObjectToClone;
         public AnimationClip IdleAnimationClip;
         public Avatar IdleAvatar;
-        Transform IdleHip;
-        Transform IdleHead;
+        private Transform IdleHip;
+        private Transform IdleHead;
 
         private List<Transform> JointsMimic = new List<Transform>();
         private List<Transform> JointsClone = new List<Transform>();
@@ -234,7 +235,6 @@ namespace MrPuppet
 
             PuppetIdle = Instantiate(ObjectToClone, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
             PuppetIdle.transform.Rotate(0, 90f, 0);
-            //KillChildren(PuppetIdle.GetComponentsInChildren<MrPuppet.ButtPuppet>());
             Animator IdleAnimator = PuppetIdle.AddComponent<Animator>();
             IdleAnimator.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/IdleTemp.controller", IdleAnimationClip);
             IdleAnimator.avatar = IdleAvatar;
@@ -260,7 +260,6 @@ namespace MrPuppet
                     }
                 }
             }
-
         }
 
         private void Update()
@@ -298,10 +297,6 @@ namespace MrPuppet
                     LerpTimer = 0;
                     SensorAmount = 0;
                 }
-
-                //Set HipSpawn and stuff like that to sensor
-                //essentially mixing between sensor and idle animation;
-                //everyhting else we wanna mix between sensor and start pose / nothing pose? We just stop apply animation to them, or only apply so much animation to them. 
 
                 position = Vector3.Lerp(IdleHip.localPosition, position, SensorAmount);
                 UnsubscribeHipRotation = Quaternion.Slerp(IdleHip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
@@ -360,7 +355,6 @@ namespace MrPuppet
             {
                 JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
                 JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
-                //Debug.Log(JointsMimic[i].localPosition + " " + JointsSpawn[i].localPosition);
             }
         }
 
