@@ -241,6 +241,18 @@ namespace MrPuppet
         private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
         private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
 
+        private float InitialHipIKRotationWeight;
+        private float InitialHipIKPositionWeight;
+        private float InitialHeadIKPositionWeight;
+        private float InitialHeadIKRotationWeight;
+        private float InitialLeftArmLimbPositionWeight;
+        private float InitialLeftArmLimbRotationWeight;
+        private float InitialRightArmLimbPositionWeight;
+        private float InitialRightArmLimbRotationWeight;
+        private float InitialGrounderIKWeight;
+        private float InitialLeftLegLimbRotationWeight;
+        private float InitialRightLegLimbRotationWeight;
+
         private Animator _Animator;
         #endregion
 
@@ -670,12 +682,28 @@ namespace MrPuppet
             {
                 LerpTimer = UnsubscribeDuration;
                 SensorAmount = 1f;
+                SetInitialIKWeights();
             }
         }
 
         private void IKUpdate()
         {
             UpdateIKWeights();
+        }
+
+        private void SetInitialIKWeights()
+        {
+            InitialHipIKRotationWeight = hipIKRotationWeight;
+            InitialHipIKPositionWeight = hipIKPositionWeight;
+            InitialHeadIKPositionWeight = headIKPositionWeight;
+            InitialHeadIKRotationWeight = headIKRotationWeight;
+            InitialLeftArmLimbPositionWeight = leftArmLimbPositionWeight;
+            InitialLeftArmLimbRotationWeight = leftArmLimbRotationWeight;
+            InitialRightArmLimbPositionWeight = rightArmLimbPositionWeight;
+            InitialRightArmLimbRotationWeight = rightArmLimbRotationWeight;
+            InitialGrounderIKWeight = grounderIKWeight;
+            InitialLeftLegLimbRotationWeight = leftLegLimbRotationWeight;
+            InitialRightLegLimbRotationWeight = rightLegLimbRotationWeight;
         }
 
         private void LegacyAwake()
@@ -708,6 +736,7 @@ namespace MrPuppet
 
             _Animator = gameObject.GetComponentInChildren<Animator>();
 
+            SetInitialIKWeights();
         }
 
         private void LegacyUpdate()
@@ -735,6 +764,7 @@ namespace MrPuppet
                     UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
                     SensorAmount = 1;
+                    SetInitialIKWeights();
                 }
                 else if (LerpTimer < 0 && !UnsubscribeForward)
                 {
@@ -742,17 +772,17 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                hipIKRotationWeight = SensorAmount;
-                hipIKPositionWeight = SensorAmount;
-                headIKPositionWeight = SensorAmount;
-                headIKRotationWeight = SensorAmount;
-                leftArmLimbPositionWeight = SensorAmount;
-                leftArmLimbRotationWeight = SensorAmount;
-                rightArmLimbPositionWeight = SensorAmount;
-                rightArmLimbRotationWeight = SensorAmount;
-                grounderIKWeight = SensorAmount;
-                leftLegLimbRotationWeight = SensorAmount;
-                rightLegLimbRotationWeight = SensorAmount;
+                hipIKRotationWeight = Mathf.Lerp(0, InitialHipIKRotationWeight, SensorAmount);
+                hipIKPositionWeight = Mathf.Lerp(0, InitialHipIKPositionWeight, SensorAmount);
+                headIKPositionWeight = Mathf.Lerp(0, InitialHeadIKPositionWeight, SensorAmount);
+                headIKRotationWeight = Mathf.Lerp(0, InitialHeadIKRotationWeight, SensorAmount);
+                leftArmLimbPositionWeight = Mathf.Lerp(0, InitialLeftArmLimbPositionWeight, SensorAmount);
+                leftArmLimbRotationWeight = Mathf.Lerp(0, InitialLeftArmLimbRotationWeight, SensorAmount);
+                rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+                rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+                grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
+                leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
+                rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
 
                 _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
 

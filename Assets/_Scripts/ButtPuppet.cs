@@ -231,6 +231,7 @@ namespace MrPuppet
 
             PuppetIdle = Instantiate(_Animator.gameObject, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
             PuppetIdle.transform.Rotate(0, 90f, 0);
+            foreach (Transform child in PuppetIdle.GetComponentsInChildren<Transform>(true)) { child.gameObject.layer = 8; }
 
             _Animator.enabled = false;
 
