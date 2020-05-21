@@ -94,6 +94,9 @@ namespace MrPuppet
                 UnsubscribeForward = true;
             }
         }
+
+        [HideInInspector]
+        public bool ApplySensors = true;
         #endregion
 
 
@@ -230,9 +233,6 @@ namespace MrPuppet
         private Vector3 position;
         private Vector3 PositionVelocity;
 
-        [HideInInspector]
-        public bool ApplySensors = true;
-
         private Quaternion UnsubscribeHeadRotation;
         private Quaternion UnsubscribeHipRotation;
         private bool Unsubscribed = true;
@@ -256,8 +256,7 @@ namespace MrPuppet
         private float InitialNeckIKPositionWeight;
         private float InitialNeckIKRotationWeight;
 
-        private bool LerpIKWeights;
-
+        private bool ApplySensorsIKWeights;
 
         private Animator _Animator;
         #endregion
@@ -682,15 +681,6 @@ namespace MrPuppet
             }
         }
 
-        private void ChangedDuration()
-        {
-            if (!Unsubscribed)
-            {
-                LerpTimer = UnsubscribeDuration;
-                SensorAmount = 1f;
-            }
-        }
-
         private void IKUpdate()
         {
             UpdateIKWeights();
@@ -730,6 +720,15 @@ namespace MrPuppet
             neckIKPositionWeight = Mathf.Lerp(0, InitialNeckIKPositionWeight, SensorAmount);
         }
 
+        private void ChangedDuration()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                SensorAmount = 1f;
+            }
+        }
+
         private void LegacyAwake()
         {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
@@ -746,17 +745,12 @@ namespace MrPuppet
             }
 
             ApplySensors = true;
+            ApplySensorsIKWeights = true;
 
             DataMapper.OnSubscribeEvent += SubscribeEventIKButtPuppet;
 
-            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
-            {
-                JawTransformComponents.Add(jaw);
-            }
-            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
-            {
-                JawBlendshapeComponents.Add(jaw);
-            }
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>()) { JawTransformComponents.Add(jaw); }
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>()) { JawBlendshapeComponents.Add(jaw); }
 
             if (gameObject.GetComponentInChildren<Animator>() != null)
             {
@@ -764,17 +758,16 @@ namespace MrPuppet
                 SetInitialIKWeights();
                 IkWeightSensorSubscription();
             }
-
-            LerpIKWeights = true;
-
         }
 
         private void LegacyUpdate()
         {
             if (ApplySensors)
             {
+                // apply position delta to bind pose
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
+                // control subscription direction and apply easing logic
                 if (Unsubscribed)
                 {
                     if (UnsubscribeForward)
@@ -786,6 +779,7 @@ namespace MrPuppet
                     SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
                 }
 
+                // lock subsciption within range and logic flow
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                 {
                     LerpTimer = UnsubscribeDuration;
@@ -799,21 +793,23 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
+                // apply sensor subsciption to IK Weights and idle animation
                 if (_Animator)
                 {
                     if (SensorAmount != 1f && SensorAmount != 0)
-                        LerpIKWeights = true;
+                        ApplySensorsIKWeights = true;
 
-                    if (LerpIKWeights == true)
+                    if (ApplySensorsIKWeights == true)
                     {
                         IkWeightSensorSubscription();
 
                         if (SensorAmount == 1f || SensorAmount == 0f)
-                            LerpIKWeights = false;
+                            ApplySensorsIKWeights = false;
                     }
                     _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
                 }
 
+                // apply amount of control sensors provide
                 position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
                 UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
                 UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);

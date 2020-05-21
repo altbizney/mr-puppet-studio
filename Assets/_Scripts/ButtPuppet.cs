@@ -218,14 +218,8 @@ namespace MrPuppet
 
             DataMapper.OnSubscribeEvent += SubscribeEventButtPuppet;
 
-            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
-            {
-                JawTransformComponents.Add(jaw);
-            }
-            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
-            {
-                JawBlendshapeComponents.Add(jaw);
-            }
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>()) { JawTransformComponents.Add(jaw); }
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>()) { JawBlendshapeComponents.Add(jaw); }
 
             Animator _Animator = gameObject.GetComponentInChildren<Animator>();
 
@@ -260,11 +254,12 @@ namespace MrPuppet
 
         private void Update()
         {
-            // apply position delta to bind pose
             if (ApplySensors == true)
             {
+                // apply position delta to bind pose
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
 
+                // control subscription direction and apply easing logic
                 if (Unsubscribed)
                 {
                     if (UnsubscribeForward)
@@ -276,6 +271,7 @@ namespace MrPuppet
                     SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
                 }
 
+                // lock subsciption within range and logic flow
                 if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
                 {
                     LerpTimer = UnsubscribeDuration;
@@ -289,12 +285,14 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
+                // apply animation according to sensor subsciption
                 for (var i = 0; i < JointsMimic.Count; i++)
                 {
                     JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
                     JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
                 }
 
+                // apply amount of control sensors provide
                 position = Vector3.Lerp(IdleHip.localPosition, position, SensorAmount);
                 UnsubscribeHipRotation = Quaternion.Slerp(IdleHip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
                 UnsubscribeHeadRotation = Quaternion.Slerp(IdleHead.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
