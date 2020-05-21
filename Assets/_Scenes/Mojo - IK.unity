@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -189,6 +189,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdba7f84910fa42ab9803682e0fd33be, type: 3}
+--- !u!4 &368819727 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4254590583642127116, guid: d846c2d32fc8440b98b7396316272849,
+    type: 3}
+  m_PrefabInstance: {fileID: 4553085520682898155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &417409396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3348738741927305390, guid: d846c2d32fc8440b98b7396316272849,
@@ -697,5 +703,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6199546395237554930, guid: d846c2d32fc8440b98b7396316272849,
+        type: 3}
+      propertyPath: HipRotation
+      value: 
+      objectReference: {fileID: 368819727}
+    - target: {fileID: 6199546395237554930, guid: d846c2d32fc8440b98b7396316272849,
+        type: 3}
+      propertyPath: HipTranslation
+      value: 
+      objectReference: {fileID: 368819727}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d846c2d32fc8440b98b7396316272849, type: 3}

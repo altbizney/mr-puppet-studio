@@ -251,8 +251,6 @@ namespace MrPuppet
         private float InitialRightArmLimbPositionWeight;
         private float InitialRightArmLimbRotationWeight;
         private float InitialGrounderIKWeight;
-        private float InitialLeftLegLimbRotationWeight;
-        private float InitialRightLegLimbRotationWeight;
         private float InitialSpineIKRotationWeight;
         private float InitialSpineIKPositionWeight;
         private float InitialNeckIKPositionWeight;
@@ -709,8 +707,6 @@ namespace MrPuppet
             InitialRightArmLimbPositionWeight = rightArmLimbPositionWeight;
             InitialRightArmLimbRotationWeight = rightArmLimbRotationWeight;
             InitialGrounderIKWeight = grounderIKWeight;
-            InitialLeftLegLimbRotationWeight = leftLegLimbRotationWeight;
-            InitialRightLegLimbRotationWeight = rightLegLimbRotationWeight;
             InitialSpineIKRotationWeight = spineIKRotationWeight;
             InitialSpineIKPositionWeight = spineIKPositionWeight;
             InitialNeckIKPositionWeight = neckIKPositionWeight;
@@ -728,8 +724,6 @@ namespace MrPuppet
             rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
             rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
             grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
-            leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
-            rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
             spineIKPositionWeight = Mathf.Lerp(0, InitialSpineIKPositionWeight, SensorAmount);
             spineIKRotationWeight = Mathf.Lerp(0, InitialSpineIKRotationWeight, SensorAmount);
             neckIKRotationWeight = Mathf.Lerp(0, InitialNeckIKRotationWeight, SensorAmount);
