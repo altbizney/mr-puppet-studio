@@ -78,6 +78,7 @@ namespace MrPuppet
         {
             if (!Unsubscribed)
             {
+                SetInitialIKWeights();
                 LerpTimer = UnsubscribeDuration;
                 Unsubscribed = true;
                 SensorAmount = 0;
@@ -686,7 +687,6 @@ namespace MrPuppet
             {
                 LerpTimer = UnsubscribeDuration;
                 SensorAmount = 1f;
-                SetInitialIKWeights();
             }
         }
 
@@ -712,6 +712,25 @@ namespace MrPuppet
             InitialSpineIKPositionWeight = spineIKPositionWeight;
             InitialNeckIKPositionWeight = neckIKPositionWeight;
             InitialNeckIKRotationWeight = neckIKRotationWeight;
+        }
+
+        private void IkWeightSensorSubscription()
+        {
+            hipIKRotationWeight = Mathf.Lerp(0, InitialHipIKRotationWeight, SensorAmount);
+            hipIKPositionWeight = Mathf.Lerp(0, InitialHipIKPositionWeight, SensorAmount);
+            headIKPositionWeight = Mathf.Lerp(0, InitialHeadIKPositionWeight, SensorAmount);
+            headIKRotationWeight = Mathf.Lerp(0, InitialHeadIKRotationWeight, SensorAmount);
+            leftArmLimbPositionWeight = Mathf.Lerp(0, InitialLeftArmLimbPositionWeight, SensorAmount);
+            leftArmLimbRotationWeight = Mathf.Lerp(0, InitialLeftArmLimbRotationWeight, SensorAmount);
+            rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+            rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+            grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
+            leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
+            rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
+            spineIKPositionWeight = Mathf.Lerp(0, InitialSpineIKPositionWeight, SensorAmount);
+            spineIKRotationWeight = Mathf.Lerp(0, InitialSpineIKRotationWeight, SensorAmount);
+            neckIKRotationWeight = Mathf.Lerp(0, InitialNeckIKRotationWeight, SensorAmount);
+            neckIKPositionWeight = Mathf.Lerp(0, InitialNeckIKPositionWeight, SensorAmount);
         }
 
         private void LegacyAwake()
@@ -746,7 +765,9 @@ namespace MrPuppet
             {
                 _Animator = gameObject.GetComponentInChildren<Animator>();
                 SetInitialIKWeights();
+                IkWeightSensorSubscription();
             }
+
 
         }
 
@@ -773,7 +794,6 @@ namespace MrPuppet
                     UnsubscribeButtonLabel = "Disable hardware control";
                     Unsubscribed = false;
                     SensorAmount = 1;
-                    SetInitialIKWeights();
                 }
                 else if (LerpTimer < 0 && !UnsubscribeForward)
                 {
@@ -783,25 +803,10 @@ namespace MrPuppet
 
                 if (_Animator)
                 {
-                    //if (SensorAmount != 1f && SensorAmount != 0f)
-                    //{
-                    hipIKRotationWeight = Mathf.Lerp(0, InitialHipIKRotationWeight, SensorAmount);
-                    hipIKPositionWeight = Mathf.Lerp(0, InitialHipIKPositionWeight, SensorAmount);
-                    headIKPositionWeight = Mathf.Lerp(0, InitialHeadIKPositionWeight, SensorAmount);
-                    headIKRotationWeight = Mathf.Lerp(0, InitialHeadIKRotationWeight, SensorAmount);
-                    leftArmLimbPositionWeight = Mathf.Lerp(0, InitialLeftArmLimbPositionWeight, SensorAmount);
-                    leftArmLimbRotationWeight = Mathf.Lerp(0, InitialLeftArmLimbRotationWeight, SensorAmount);
-                    rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
-                    rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
-                    grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
-                    leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
-                    rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
-                    spineIKPositionWeight = Mathf.Lerp(0, InitialSpineIKPositionWeight, SensorAmount);
-                    spineIKRotationWeight = Mathf.Lerp(0, InitialSpineIKRotationWeight, SensorAmount);
-                    neckIKRotationWeight = Mathf.Lerp(0, InitialNeckIKRotationWeight, SensorAmount);
-                    neckIKPositionWeight = Mathf.Lerp(0, InitialNeckIKPositionWeight, SensorAmount);
-                    Debug.Log("Sensor amount: " + SensorAmount + " neckRotation: " + neckIKRotationWeight);
-                    // }
+                    if (SensorAmount != 1f && SensorAmount != 0f)
+                    {
+                        IkWeightSensorSubscription();
+                    }
                     _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
                 }
 
