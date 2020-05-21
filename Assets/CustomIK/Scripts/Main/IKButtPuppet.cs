@@ -252,6 +252,10 @@ namespace MrPuppet
         private float InitialGrounderIKWeight;
         private float InitialLeftLegLimbRotationWeight;
         private float InitialRightLegLimbRotationWeight;
+        private float InitialSpineIKRotationWeight;
+        private float InitialSpineIKPositionWeight;
+        private float InitialNeckIKPositionWeight;
+        private float InitialNeckIKRotationWeight;
 
         private Animator _Animator;
         #endregion
@@ -704,6 +708,10 @@ namespace MrPuppet
             InitialGrounderIKWeight = grounderIKWeight;
             InitialLeftLegLimbRotationWeight = leftLegLimbRotationWeight;
             InitialRightLegLimbRotationWeight = rightLegLimbRotationWeight;
+            InitialSpineIKRotationWeight = spineIKRotationWeight;
+            InitialSpineIKPositionWeight = spineIKPositionWeight;
+            InitialNeckIKPositionWeight = neckIKPositionWeight;
+            InitialNeckIKRotationWeight = neckIKRotationWeight;
         }
 
         private void LegacyAwake()
@@ -734,15 +742,16 @@ namespace MrPuppet
                 JawBlendshapeComponents.Add(jaw);
             }
 
-            _Animator = gameObject.GetComponentInChildren<Animator>();
+            if (gameObject.GetComponentInChildren<Animator>() != null)
+            {
+                _Animator = gameObject.GetComponentInChildren<Animator>();
+                SetInitialIKWeights();
+            }
 
-            SetInitialIKWeights();
         }
 
         private void LegacyUpdate()
         {
-            //if (DataMapper.AttachPoseSet)
-            //{
             if (ApplySensors)
             {
                 position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
@@ -772,19 +781,29 @@ namespace MrPuppet
                     SensorAmount = 0;
                 }
 
-                hipIKRotationWeight = Mathf.Lerp(0, InitialHipIKRotationWeight, SensorAmount);
-                hipIKPositionWeight = Mathf.Lerp(0, InitialHipIKPositionWeight, SensorAmount);
-                headIKPositionWeight = Mathf.Lerp(0, InitialHeadIKPositionWeight, SensorAmount);
-                headIKRotationWeight = Mathf.Lerp(0, InitialHeadIKRotationWeight, SensorAmount);
-                leftArmLimbPositionWeight = Mathf.Lerp(0, InitialLeftArmLimbPositionWeight, SensorAmount);
-                leftArmLimbRotationWeight = Mathf.Lerp(0, InitialLeftArmLimbRotationWeight, SensorAmount);
-                rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
-                rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
-                grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
-                leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
-                rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
-
-                _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
+                if (_Animator)
+                {
+                    //if (SensorAmount != 1f && SensorAmount != 0f)
+                    //{
+                    hipIKRotationWeight = Mathf.Lerp(0, InitialHipIKRotationWeight, SensorAmount);
+                    hipIKPositionWeight = Mathf.Lerp(0, InitialHipIKPositionWeight, SensorAmount);
+                    headIKPositionWeight = Mathf.Lerp(0, InitialHeadIKPositionWeight, SensorAmount);
+                    headIKRotationWeight = Mathf.Lerp(0, InitialHeadIKRotationWeight, SensorAmount);
+                    leftArmLimbPositionWeight = Mathf.Lerp(0, InitialLeftArmLimbPositionWeight, SensorAmount);
+                    leftArmLimbRotationWeight = Mathf.Lerp(0, InitialLeftArmLimbRotationWeight, SensorAmount);
+                    rightArmLimbPositionWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+                    rightArmLimbRotationWeight = Mathf.Lerp(0, InitialRightArmLimbRotationWeight, SensorAmount);
+                    grounderIKWeight = Mathf.Lerp(0, InitialGrounderIKWeight, SensorAmount);
+                    leftLegLimbRotationWeight = Mathf.Lerp(0, InitialLeftLegLimbRotationWeight, SensorAmount);
+                    rightLegLimbRotationWeight = Mathf.Lerp(0, InitialRightLegLimbRotationWeight, SensorAmount);
+                    spineIKPositionWeight = Mathf.Lerp(0, InitialSpineIKPositionWeight, SensorAmount);
+                    spineIKRotationWeight = Mathf.Lerp(0, InitialSpineIKRotationWeight, SensorAmount);
+                    neckIKRotationWeight = Mathf.Lerp(0, InitialNeckIKRotationWeight, SensorAmount);
+                    neckIKPositionWeight = Mathf.Lerp(0, InitialNeckIKPositionWeight, SensorAmount);
+                    Debug.Log("Sensor amount: " + SensorAmount + " neckRotation: " + neckIKRotationWeight);
+                    // }
+                    _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
+                }
 
                 position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
                 UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
@@ -796,9 +815,9 @@ namespace MrPuppet
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
                     LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
-                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
-                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
-                );
+                                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                                );
 
                 // smoothly apply changes to position
                 HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
@@ -833,7 +852,6 @@ namespace MrPuppet
 
                 if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
-            // }
         }
         #endregion
     }
