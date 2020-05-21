@@ -319,6 +319,8 @@ MonoBehaviour:
   EnableJawHeadMixer: 1
   JawHeadMaxExtent: -3
   JawHeadRotate: 0
+  UnsubscribeDuration: 1
+  SensorAmount: 0
   rigNode: {fileID: 7711192711817884036}
   ikNodes:
   - {fileID: 6979267811117936970}
@@ -355,6 +357,7 @@ MonoBehaviour:
   leftLegLimbRotationWeight: 0
   rightLegLimb: {fileID: 5288703387683833399}
   rightLegLimbRotationWeight: 0
+  ApplySensors: 1
 --- !u!114 &3348738741927305387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +375,7 @@ MonoBehaviour:
     OpenRotation: {x: 0.27610415, y: -0, z: -0.00000008940695, w: 0.96112776}
     CloseRotation: {x: -0.04990437, y: -0, z: 0.000000005587935, w: 0.9987541}
   SmoothTime: 0.02
+  SensorAmount: 0
   ApplySensors: 1
   JawPercentOverride: 0
   UseJawPercentOverride: 0
@@ -2776,6 +2780,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 60.884003
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b56833e18257e48ca9f6b1bcec716267, type: 2}
+    - target: {fileID: -6057140222963153312, guid: c4b7785e4c5f3406fb1d4ab81c9a7682,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b7785e4c5f3406fb1d4ab81c9a7682, type: 3}
