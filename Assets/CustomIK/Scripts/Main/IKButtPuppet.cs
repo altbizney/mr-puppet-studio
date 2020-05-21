@@ -258,6 +258,9 @@ namespace MrPuppet
         private float InitialNeckIKPositionWeight;
         private float InitialNeckIKRotationWeight;
 
+        private bool LerpIKWeights;
+
+
         private Animator _Animator;
         #endregion
 
@@ -768,6 +771,7 @@ namespace MrPuppet
                 IkWeightSensorSubscription();
             }
 
+            LerpIKWeights = true;
 
         }
 
@@ -803,9 +807,15 @@ namespace MrPuppet
 
                 if (_Animator)
                 {
-                    if (SensorAmount != 1f && SensorAmount != 0f)
+                    if (SensorAmount != 1f && SensorAmount != 0)
+                        LerpIKWeights = true;
+
+                    if (LerpIKWeights == true)
                     {
                         IkWeightSensorSubscription();
+
+                        if (SensorAmount == 1f || SensorAmount == 0f)
+                            LerpIKWeights = false;
                     }
                     _Animator.SetLayerWeight(1, Mathf.Abs(SensorAmount - 1f));
                 }
