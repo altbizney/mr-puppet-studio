@@ -56,7 +56,8 @@ namespace MrPuppet
         private float OpenedValue => Invert ? 1 : 0;
         private float ClosedValue => Invert ? 0 : 1;
 
-        private float _previousStep;
+        public float _previousStep;
+        private bool HasToUpdate;
 
         private void OnEnable()
         {
@@ -66,6 +67,7 @@ namespace MrPuppet
                 StartCoroutine(BlinkRoutine());
             }
         }
+
 
         protected virtual void Update()
         {
@@ -79,21 +81,30 @@ namespace MrPuppet
             {
                 StartCoroutine(ManualOpenRoutine());
             }
+        }
 
+        private void LateUpdate()
+        {
             if (Math.Abs(Step - _previousStep) > float.Epsilon)
             {
                 _previousStep = Step;
                 DoStep(Step);
             }
+
+            foreach (var blendShapeKey in BlendShapeKeys)
+            {
+                if (blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
+                    blendShapeKey.SkinnedMeshRenderer.SetBlendShapeWeight(blendShapeKey.BlendShapeIndex, Step.Remap(0, 1, blendShapeKey.BlendShapeMin, blendShapeKey.BlendShapeMax));
+            }
         }
 
         public void DoStep(float step)
         {
-            foreach (var blendShapeKey in BlendShapeKeys)
+            /*foreach (var blendShapeKey in BlendShapeKeys)
             {
                 if (blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
                     blendShapeKey.SkinnedMeshRenderer.SetBlendShapeWeight(blendShapeKey.BlendShapeIndex, step.Remap(0, 1, blendShapeKey.BlendShapeMin, blendShapeKey.BlendShapeMax));
-            }
+            }*/
 
             foreach (var transformKey in TransformKeys)
             {
