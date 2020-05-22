@@ -85,7 +85,7 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
-            if (Math.Abs(Step - _previousStep) > float.Epsilon) { _previousStep = Step; }
+            //if (Math.Abs(Step - _previousStep) > float.Epsilon) { _previousStep = Step; }
             DoStep(Step);
         }
 
