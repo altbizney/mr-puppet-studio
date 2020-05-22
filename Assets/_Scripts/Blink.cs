@@ -85,26 +85,17 @@ namespace MrPuppet
 
         private void LateUpdate()
         {
-            if (Math.Abs(Step - _previousStep) > float.Epsilon)
-            {
-                _previousStep = Step;
-                DoStep(Step);
-            }
-
-            foreach (var blendShapeKey in BlendShapeKeys)
-            {
-                if (blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
-                    blendShapeKey.SkinnedMeshRenderer.SetBlendShapeWeight(blendShapeKey.BlendShapeIndex, Step.Remap(0, 1, blendShapeKey.BlendShapeMin, blendShapeKey.BlendShapeMax));
-            }
+            if (Math.Abs(Step - _previousStep) > float.Epsilon) { _previousStep = Step; }
+            DoStep(Step);
         }
 
         public void DoStep(float step)
         {
-            /*foreach (var blendShapeKey in BlendShapeKeys)
+            foreach (var blendShapeKey in BlendShapeKeys)
             {
                 if (blendShapeKey.BlendShapeIndex < blendShapeKey.SkinnedMeshRenderer.sharedMesh.blendShapeCount)
                     blendShapeKey.SkinnedMeshRenderer.SetBlendShapeWeight(blendShapeKey.BlendShapeIndex, step.Remap(0, 1, blendShapeKey.BlendShapeMin, blendShapeKey.BlendShapeMax));
-            }*/
+            }
 
             foreach (var transformKey in TransformKeys)
             {
