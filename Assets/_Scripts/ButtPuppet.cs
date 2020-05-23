@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEditor.Animations;
+
 
 namespace MrPuppet
 {
@@ -95,6 +97,14 @@ namespace MrPuppet
         private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
 
         private Vector3 position;
+        private GameObject PuppetIdle;
+        private Transform IdleHip;
+        private Transform IdleHead;
+
+        private List<Transform> JointsMimic = new List<Transform>();
+        private List<Transform> JointsClone = new List<Transform>();
+        private List<Vector3> JointsSpawnPosition = new List<Vector3>();
+        private List<Quaternion> JointsSpawnRotation = new List<Quaternion>();
 
         public List<WeightedInfluence> WeightedInfluences = new List<WeightedInfluence>();
 
@@ -208,98 +218,130 @@ namespace MrPuppet
 
             DataMapper.OnSubscribeEvent += SubscribeEventButtPuppet;
 
-            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>()) { JawTransformComponents.Add(jaw); }
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>()) { JawBlendshapeComponents.Add(jaw); }
+
+            Animator _Animator = gameObject.GetComponentInChildren<Animator>();
+
+            PuppetIdle = Instantiate(_Animator.gameObject, gameObject.transform.position + new Vector3(0, 0, 3f), gameObject.transform.localRotation);
+            PuppetIdle.transform.Rotate(0, 90f, 0);
+            foreach (Transform child in PuppetIdle.GetComponentsInChildren<Transform>(true)) { child.gameObject.layer = 8; }
+
+            _Animator.enabled = false;
+
+            foreach (Transform child in PuppetIdle.transform.GetComponentsInChildren<Transform>())
             {
-                JawTransformComponents.Add(jaw);
-            }
-            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
-            {
-                JawBlendshapeComponents.Add(jaw);
+                foreach (Transform nestedChild in gameObject.transform.GetComponentsInChildren<Transform>())
+                {
+                    if (nestedChild.name == child.name)
+                    {
+                        if (Hip.name == child.name)
+                            IdleHip = child;
+                        else if (Head.name == child.name)
+                            IdleHead = child;
+                        else
+                        {
+                            JointsMimic.Add(nestedChild);
+                            JointsClone.Add(child);
+
+                            JointsSpawnRotation.Add(nestedChild.localRotation);
+                            JointsSpawnPosition.Add(nestedChild.localPosition);
+                        }
+                    }
+                }
             }
         }
 
         private void Update()
         {
-            if (DataMapper.AttachPoseSet)
+            if (ApplySensors == true)
             {
                 // apply position delta to bind pose
-                if (ApplySensors == true)
+                position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
+
+                // control subscription direction and apply easing logic
+                if (Unsubscribed)
                 {
-                    position = HipSpawnPosition + (DataMapper.ElbowAnchorJoint.position - DataMapper.AttachPose.ElbowPosition);
+                    if (UnsubscribeForward)
+                        LerpTimer += Time.deltaTime;
+                    else
+                        LerpTimer -= Time.deltaTime;
 
-                    if (Unsubscribed)
-                    {
-                        if (UnsubscribeForward)
-                            LerpTimer += Time.deltaTime;
-                        else
-                            LerpTimer -= Time.deltaTime;
-
-                        SensorAmount = LerpTimer / UnsubscribeDuration;
-                        SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
-                    }
-
-                    if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
-                    {
-                        LerpTimer = UnsubscribeDuration;
-                        UnsubscribeButtonLabel = "Disable hardware control";
-                        Unsubscribed = false;
-                        SensorAmount = 1;
-                    }
-                    else if (LerpTimer < 0 && !UnsubscribeForward)
-                    {
-                        LerpTimer = 0;
-                        SensorAmount = 0;
-                    }
-
-                    position = Vector3.Lerp(HipSpawnPosition, position, SensorAmount);
-                    UnsubscribeHipRotation = Quaternion.Slerp(HipSpawnRotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
-                    UnsubscribeHeadRotation = Quaternion.Slerp(HeadSpawnRotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
-
-                    foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
-                    foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
-
-                    // clamp to XYZ extents (BEFORE smooth)
-                    position.Set(
-                        LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
-                        LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
-                        LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
-                    );
-
-                    // smoothly apply changes to position
-                    Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
-
-                    // apply rotation deltas to bind pose
-                    Hip.rotation = Quaternion.Slerp(Hip.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
-                    Head.rotation = Quaternion.Slerp(Head.rotation, UnsubscribeHeadRotation, RotationSpeed * Time.deltaTime);
-
-                    if (EnableJawHeadMixer)
-                    {
-                        switch (JawHeadRotate)
-                        {
-                            case JawHeadAxis.x:
-                                Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, 0f, Space.Self);
-                                break;
-
-                            case JawHeadAxis.y:
-                                Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, Space.Self);
-                                break;
-
-                            case JawHeadAxis.z:
-                                Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), Space.Self);
-                                break;
-                        }
-                    }
-
-                    // apply weighted influences
-                    foreach (var influence in WeightedInfluences)
-                    {
-                        influence.Update(DataMapper, RotationSpeed, SensorAmount);
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
+                    SensorAmount = LerpTimer / UnsubscribeDuration;
+                    SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
                 }
+
+                // lock subsciption within range and logic flow
+                if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
+                {
+                    LerpTimer = UnsubscribeDuration;
+                    UnsubscribeButtonLabel = "Disable hardware control";
+                    Unsubscribed = false;
+                    SensorAmount = 1;
+                }
+                else if (LerpTimer < 0 && !UnsubscribeForward)
+                {
+                    LerpTimer = 0;
+                    SensorAmount = 0;
+                }
+
+                // apply animation according to sensor subsciption
+                for (var i = 0; i < JointsMimic.Count; i++)
+                {
+                    JointsMimic[i].localRotation = Quaternion.Slerp(JointsClone[i].localRotation, JointsSpawnRotation[i], SensorAmount);
+                    JointsMimic[i].localPosition = Vector3.Lerp(JointsClone[i].localPosition, JointsSpawnPosition[i], SensorAmount);
+                }
+
+                // apply amount of control sensors provide
+                position = Vector3.Lerp(IdleHip.localPosition, position, SensorAmount);
+                UnsubscribeHipRotation = Quaternion.Slerp(IdleHip.rotation, (DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation)) * HipSpawnRotation, SensorAmount);
+                UnsubscribeHeadRotation = Quaternion.Slerp(IdleHead.rotation, (DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation)) * HeadSpawnRotation, SensorAmount);
+
+                foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
+                foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
+
+                // clamp to XYZ extents (BEFORE smooth)
+                position.Set(
+                    LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
+                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                );
+
+                // smoothly apply changes to position
+                Hip.localPosition = Vector3.SmoothDamp(Hip.localPosition, position, ref PositionVelocity, PositionSpeed);
+
+                // apply rotation deltas to bind pose
+                Hip.rotation = Quaternion.Slerp(Hip.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
+                Head.rotation = Quaternion.Slerp(Head.rotation, UnsubscribeHeadRotation, RotationSpeed * Time.deltaTime);
+
+                if (EnableJawHeadMixer)
+                {
+                    switch (JawHeadRotate)
+                    {
+                        case JawHeadAxis.x:
+                            Head.Rotate(Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, 0f, Space.Self);
+                            break;
+
+                        case JawHeadAxis.y:
+                            Head.Rotate(0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), 0f, Space.Self);
+                            break;
+
+                        case JawHeadAxis.z:
+                            Head.Rotate(0f, 0f, Mathf.Lerp(0f, JawHeadMaxExtent, DataMapper.JawPercent * SensorAmount), Space.Self);
+                            break;
+                    }
+                }
+
+                // apply weighted influences
+                foreach (var influence in WeightedInfluences)
+                {
+                    influence.Update(DataMapper, RotationSpeed, SensorAmount);
+                }
+
+                if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
         }
+
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
 

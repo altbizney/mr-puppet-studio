@@ -56,7 +56,8 @@ namespace MrPuppet
         private float OpenedValue => Invert ? 1 : 0;
         private float ClosedValue => Invert ? 0 : 1;
 
-        private float _previousStep;
+        public float _previousStep;
+        private bool HasToUpdate;
 
         private void OnEnable()
         {
@@ -66,6 +67,7 @@ namespace MrPuppet
                 StartCoroutine(BlinkRoutine());
             }
         }
+
 
         protected virtual void Update()
         {
@@ -79,12 +81,12 @@ namespace MrPuppet
             {
                 StartCoroutine(ManualOpenRoutine());
             }
+        }
 
-            if (Math.Abs(Step - _previousStep) > float.Epsilon)
-            {
-                _previousStep = Step;
-                DoStep(Step);
-            }
+        private void LateUpdate()
+        {
+            //if (Math.Abs(Step - _previousStep) > float.Epsilon) { _previousStep = Step; }
+            DoStep(Step);
         }
 
         public void DoStep(float step)

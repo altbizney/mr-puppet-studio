@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Mojo_flatSurfaceShader
+    second: {fileID: 2100000, guid: 4770f47744abf43a7a388e4ef0ab25ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: black_MAT
     second: {fileID: 2100000, guid: b17afd3f8f7544e4e84f9c9954323dba, type: 2}
   - first:
@@ -97,7 +102,8 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
+  referencedClips:
+  - e6f87bbd6e4194557a4d59192e9676c4
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
