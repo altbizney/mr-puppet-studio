@@ -54,6 +54,15 @@ namespace MrPuppet
             WristEuler = WristRotation.eulerAngles;
             ShoulderEuler = ShoulderRotation.eulerAngles;
 
+            //Debug.Log(yRotation(ElbowRotation).eulerAngles.y);
+
+        }
+
+        private Quaternion yRotation(Quaternion q)
+        {
+            float theta = Mathf.Atan2(q.y, q.w);
+
+            return new Quaternion(0, Mathf.Sin(theta), 0, Mathf.Cos(theta));
         }
     }
 }
