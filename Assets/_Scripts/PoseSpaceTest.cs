@@ -1,26 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+
 
 namespace MrPuppet
 {
     public class PoseSpaceTest : MonoBehaviour
     {
-        MrPuppetDataMapper DataMapper;
-        Quaternion ElbowRotation;
-        Quaternion ShoulderRotation;
-        Quaternion WristRotation;
+        private MrPuppetDataMapper DataMapper;
+        private Quaternion ElbowRotation;
+        private Quaternion ShoulderRotation;
+        private Quaternion WristRotation;
 
+
+        [ReadOnly]
         public Vector3 ElbowAxis;
+        [ReadOnly]
         public float ElbowAngle;
+        [ReadOnly]
         public Vector3 ElbowEuler;
 
+        [ReadOnly]
         public Vector3 ShoulderAxis;
+        [ReadOnly]
         public float ShoulderAngle;
+        [ReadOnly]
         public Vector3 ShoulderEuler;
 
+        [ReadOnly]
         public Vector3 WristAxis;
+        [ReadOnly]
         public float WristAngle;
+        [ReadOnly]
         public Vector3 WristEuler;
 
         void Awake()
