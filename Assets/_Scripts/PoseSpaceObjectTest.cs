@@ -15,7 +15,9 @@ namespace MrPuppet
         [ReadOnly]
         public Vector3 DeltaEuler;
         [ReadOnly]
-        public Vector3 DeltaSeperate;
+        public Vector3 DeltaClamped;
+        [ReadOnly]
+        public Vector3 DeltaAngleMethod;
 
         void Awake()
         {
@@ -28,19 +30,48 @@ namespace MrPuppet
         {
             DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Snapshot);
 
-            //DeltaEuler = EulerAnglesBetween(DeltaQuat);
+            DeltaAngleMethod.y = Mathf.DeltaAngle(Snapshot.eulerAngles.y, gameObject.transform.localRotation.eulerAngles.y);
+            DeltaAngleMethod.x = Mathf.DeltaAngle(Snapshot.eulerAngles.x, gameObject.transform.localRotation.eulerAngles.x);
+            DeltaAngleMethod.z = Mathf.DeltaAngle(Snapshot.eulerAngles.z, gameObject.transform.localRotation.eulerAngles.z);
+
+            DeltaClamped = EulerAnglesClamp(DeltaQuat);
             DeltaEuler = DeltaQuat.eulerAngles;
 
-            DeltaSeperate.y = SeperateAxisY(DeltaQuat).eulerAngles.y;
-            DeltaSeperate.x = SeperateAxisX(DeltaQuat).eulerAngles.x;
-            DeltaSeperate.z = SeperateAxisZ(DeltaQuat).eulerAngles.z;
-
+            //DeltaSeperate.y = SeperateAxisY(DeltaQuat).eulerAngles.y;
+            //DeltaSeperate.x = SeperateAxisX(DeltaQuat).eulerAngles.x;
+            //DeltaSeperate.z = SeperateAxisZ(DeltaQuat).eulerAngles.z;
         }
 
         [Button(ButtonSizes.Large)]
         public void SnapshotRotation()
         {
             Snapshot = gameObject.transform.localRotation;
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void RotateUp()
+        {
+            transform.rotation *= Quaternion.AngleAxis(10, Vector3.up);
+        }
+
+
+        [Button(ButtonSizes.Large)]
+        public void RotateDown()
+        {
+            transform.rotation *= Quaternion.AngleAxis(10, Vector3.down);
+        }
+
+
+        [Button(ButtonSizes.Large)]
+        public void RotateLeft()
+        {
+            transform.rotation *= Quaternion.AngleAxis(10, Vector3.left);
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void RotateRight()
+        {
+            transform.rotation *= Quaternion.AngleAxis(10, Vector3.right);
         }
 
         /*
@@ -52,7 +83,7 @@ namespace MrPuppet
         }
         */
 
-        private Vector3 EulerAnglesBetween(Quaternion from)
+        private Vector3 EulerAnglesClamp(Quaternion from)
         {
             Vector3 delta = from.eulerAngles;
 
