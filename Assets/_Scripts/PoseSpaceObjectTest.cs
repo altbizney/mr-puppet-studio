@@ -9,43 +9,90 @@ namespace MrPuppet
     public class PoseSpaceObjectTest : MonoBehaviour
     {
 
-        Quaternion Snapshot;
+        Quaternion Attach;
+        Quaternion Pose1;
+        Quaternion Pose2;
+
         Quaternion DeltaQuat;
+        [InfoBox("DeltaEuler is quaternion subtraction, to euler conversion. DeltaClamped is quaternion subtraction to euler conversion, clamped. DeltaAngle~ is using the DeltaAngle method.")]
 
         [ReadOnly]
         public Vector3 DeltaEuler;
+
         [ReadOnly]
         public Vector3 DeltaClamped;
+
         [ReadOnly]
-        public Vector3 DeltaAngleMethod;
+        public Vector3 DeltaAngleAttach;
+        [ReadOnly]
+        public Vector3 DeltaAnglePose1;
+        [ReadOnly]
+        public Vector3 DeltaAnglePose2;
+
+        [ReadOnly]
+        public Vector3 DeltaScore;
 
         void Awake()
         {
-            SnapshotRotation();
+            SnapshotAttach();
+            SnapshotPose1();
+            SnapshotPose2();
+
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.up);
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.down);
         }
 
         void Update()
         {
-            DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Snapshot);
+            DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Attach);
 
-            DeltaAngleMethod.y = Mathf.DeltaAngle(Snapshot.eulerAngles.y, gameObject.transform.localRotation.eulerAngles.y);
-            DeltaAngleMethod.x = Mathf.DeltaAngle(Snapshot.eulerAngles.x, gameObject.transform.localRotation.eulerAngles.x);
-            DeltaAngleMethod.z = Mathf.DeltaAngle(Snapshot.eulerAngles.z, gameObject.transform.localRotation.eulerAngles.z);
+            DeltaAngleAttach = PopulateVector(Attach);
+            DeltaAnglePose1 = PopulateVector(Pose1);
+            DeltaAnglePose2 = PopulateVector(Pose2);
+
+            DeltaScore.y = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose1.eulerAngles.y, 0, 1);
+            DeltaScore.x = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose1.eulerAngles.x, 0, 1);
+            DeltaScore.z = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose1.eulerAngles.z, 0, 1);
+            //when current is the same as attach, deltascore is 0. When current is the same as pose, deltascore is 1.
+            //find difference between attach and snapshot. 
+            //where does current lie within that? if delta between current and attach is 0, deltascore is 0. if delta between current and pose is 0, deltascore is 1.
 
             DeltaClamped = EulerAnglesClamp(DeltaQuat);
             DeltaEuler = DeltaQuat.eulerAngles;
+        }
 
-            //DeltaSeperate.y = SeperateAxisY(DeltaQuat).eulerAngles.y;
-            //DeltaSeperate.x = SeperateAxisX(DeltaQuat).eulerAngles.x;
-            //DeltaSeperate.z = SeperateAxisZ(DeltaQuat).eulerAngles.z;
+        private Vector3 PopulateVector(Quaternion SnapshotPose)
+        {
+            Vector3 Delta = new Vector3();
+
+            Delta.y = Mathf.DeltaAngle(SnapshotPose.eulerAngles.y, gameObject.transform.localRotation.eulerAngles.y);
+            Delta.x = Mathf.DeltaAngle(SnapshotPose.eulerAngles.x, gameObject.transform.localRotation.eulerAngles.x);
+            Delta.z = Mathf.DeltaAngle(SnapshotPose.eulerAngles.z, gameObject.transform.localRotation.eulerAngles.z);
+
+            return Delta;
+        }
+
+        private float RemapAndClamp(float value, float from1, float to1, float from2, float to2)
+        {
+            return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
 
         [Button(ButtonSizes.Large)]
-        public void SnapshotRotation()
+        public void SnapshotAttach()
         {
-            Snapshot = gameObject.transform.localRotation;
+            Attach = gameObject.transform.localRotation;
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void SnapshotPose1()
+        {
+            Pose1 = gameObject.transform.localRotation;
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void SnapshotPose2()
+        {
+            Pose2 = gameObject.transform.localRotation;
         }
 
         [Button(ButtonSizes.Large)]
