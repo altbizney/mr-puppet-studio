@@ -9,7 +9,7 @@ namespace MrPuppet
     public class PoseSpaceObjectTest : MonoBehaviour
     {
 
-        Quaternion AwakeSnapshot;
+        Quaternion Snapshot;
         Quaternion DeltaQuat;
 
         [ReadOnly]
@@ -19,20 +19,28 @@ namespace MrPuppet
 
         void Awake()
         {
-            AwakeSnapshot = gameObject.transform.localRotation;
+            SnapshotRotation();
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.up);
+            //transform.rotation *= Quaternion.AngleAxis(30, Vector3.down);
         }
 
         void Update()
         {
-            DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(AwakeSnapshot);
+            DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Snapshot);
 
+            //DeltaEuler = EulerAnglesBetween(DeltaQuat);
             DeltaEuler = DeltaQuat.eulerAngles;
 
             DeltaSeperate.y = SeperateAxisY(DeltaQuat).eulerAngles.y;
             DeltaSeperate.x = SeperateAxisX(DeltaQuat).eulerAngles.x;
             DeltaSeperate.z = SeperateAxisZ(DeltaQuat).eulerAngles.z;
 
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void SnapshotRotation()
+        {
+            Snapshot = gameObject.transform.localRotation;
         }
 
         /*
@@ -43,6 +51,28 @@ namespace MrPuppet
             Debug.DrawRay(gameObject.transform.position, Vector3.one);
         }
         */
+
+        private Vector3 EulerAnglesBetween(Quaternion from)
+        {
+            Vector3 delta = from.eulerAngles;
+
+            if (delta.x > 180)
+                delta.x -= 360;
+            else if (delta.x < -180)
+                delta.x += 360;
+
+            if (delta.y > 180)
+                delta.y -= 360;
+            else if (delta.y < -180)
+                delta.y += 360;
+
+            if (delta.z > 180)
+                delta.z -= 360;
+            else if (delta.z < -180)
+                delta.z += 360;
+
+            return delta;
+        }
 
         private Quaternion SeperateAxisY(Quaternion q)
         {
