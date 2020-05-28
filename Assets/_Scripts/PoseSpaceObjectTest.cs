@@ -123,7 +123,7 @@ namespace MrPuppet
         private float RemapAndClamp(float value, float from1, float to1, float from2, float to2)
         {
             if (from1 == to1)
-                return from2;
+                return to2;
             else
                 return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
