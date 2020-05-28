@@ -87,6 +87,11 @@ namespace MrPuppet
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.down);
         }
 
+        private Quaternion RotationDeltaFromAttachWrist()
+        {
+            return DataMapper.ShoulderJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ShoulderRotation);
+        }
+
         void Update()
         {
             //DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Attach);
@@ -94,6 +99,7 @@ namespace MrPuppet
             //DeltaAngleAttach = PopulateVector(Attach);
             //DeltaAnglePose1 = PopulateVector(Pose1);
             //DeltaAnglePose2 = PopulateVector(Pose2);
+            /*
             Attach = DataMapper.AttachPose.ShoulderRotation;
 
             gameObject.transform.localRotation = DataMapper.ShoulderJoint.rotation;
@@ -125,7 +131,49 @@ namespace MrPuppet
             DebugGraph.Log(Quaternion.Angle(ay, py));
             DebugGraph.Log(Quaternion.Angle(ax, px));
             DebugGraph.Log(Quaternion.Angle(az, pz));
+            */
 
+            if (!DataMapper.AttachPoseSet) return;
+            gameObject.transform.localRotation = RotationDeltaFromAttachWrist();
+
+            Quaternion zero_y = Quaternion.AngleAxis(0f, Vector3.up);
+            Quaternion live_y = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.y, gameObject.transform.up);
+            Quaternion pose1_y = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.y, Clone1.transform.up);
+
+            Quaternion zero_x = Quaternion.AngleAxis(0f, Vector3.right);
+            Quaternion live_x = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.x, gameObject.transform.right);
+            Quaternion pose1_x = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.x, Clone1.transform.right);
+
+            Quaternion zero_z = Quaternion.AngleAxis(0f, Vector3.forward);
+            Quaternion live_z = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.z, gameObject.transform.forward);
+            Quaternion pose1_z = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.z, Clone1.transform.forward);
+
+            float pose_attach_delta_y = Quaternion.Angle(zero_y, pose1_y);
+            float pose_live_delta_y = Quaternion.Angle(live_y, pose1_y);
+
+            float pose_attach_delta_x = Quaternion.Angle(zero_x, pose1_x);
+            float pose_live_delta_x = Quaternion.Angle(live_x, pose1_x);
+
+            float pose_attach_delta_z = Quaternion.Angle(zero_z, pose1_z);
+            float pose_live_delta_z = Quaternion.Angle(live_z, pose1_z);
+
+            ScoreY1 = (pose_attach_delta_y / pose_live_delta_y).Clamp(0f, 1f);
+            ScoreX1 = (pose_attach_delta_x / pose_live_delta_x).Clamp(0f, 1f);
+            ScoreZ1 = (pose_attach_delta_z / pose_live_delta_z).Clamp(0f, 1f);
+
+            //how far localRotation is from the 
+            //how far pose and attach are from each other
+            //find how far you are from attach divide it by the total?
+            //same with from pose
+
+            /*
+            10 degrees away from attach
+            20 degrees away from pose
+            30 degrees in between themselves.
+            10/30 = 0.33
+            20/30 = 0.66
+
+            */
 
             // DeltaClamped = EulerAnglesClamp(DeltaQuat);
             // DeltaEuler = DeltaQuat.eulerAngles;
