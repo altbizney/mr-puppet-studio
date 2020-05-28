@@ -13,6 +13,7 @@ namespace MrPuppet
 
         private GameObject Clone1;
         private GameObject Clone2;
+        private MrPuppetDataMapper DataMapper;
         Quaternion DeltaQuat;
 
         /*
@@ -71,12 +72,14 @@ namespace MrPuppet
 
         private void Awake()
         {
+            DataMapper = FindObjectOfType<MrPuppetDataMapper>();
+
             GameObject Prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
 
             Clone1 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, 2f, 0), gameObject.transform.rotation);
             Clone2 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -2f, 0), gameObject.transform.rotation);
 
-            SnapshotAttach();
+            //SnapshotAttach();
             SnapshotPose1();
             SnapshotPose2();
 
@@ -91,20 +94,27 @@ namespace MrPuppet
             //DeltaAngleAttach = PopulateVector(Attach);
             //DeltaAnglePose1 = PopulateVector(Pose1);
             //DeltaAnglePose2 = PopulateVector(Pose2);
+            Attach = DataMapper.AttachPose.ShoulderRotation;
 
-            ScoreY1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose1.eulerAngles.y, 0f, 1f);
-            ScoreX1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose1.eulerAngles.x, 0f, 1f);
-            ScoreZ1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose1.eulerAngles.z, 0f, 1f);
+            gameObject.transform.localRotation = DataMapper.ShoulderJoint.rotation;
+
+            ScoreY1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, DataMapper.AttachPose.ShoulderRotation.eulerAngles.y, Pose1.eulerAngles.y, 0f, 1f);
+            ScoreX1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, DataMapper.AttachPose.ShoulderRotation.eulerAngles.x, Pose1.eulerAngles.x, 0f, 1f);
+            ScoreZ1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, DataMapper.AttachPose.ShoulderRotation.eulerAngles.z, Pose1.eulerAngles.z, 0f, 1f);
             ScoreTotal1 = ScoreY1 + ScoreX1 + ScoreZ1;
 
-            ScoreY2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose2.eulerAngles.y, 0f, 1f);
-            ScoreX2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose2.eulerAngles.x, 0f, 1f);
-            ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose2.eulerAngles.z, 0f, 1f);
+            ScoreY2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, DataMapper.AttachPose.ShoulderRotation.eulerAngles.y, Pose2.eulerAngles.y, 0f, 1f);
+            ScoreX2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, DataMapper.AttachPose.ShoulderRotation.eulerAngles.x, Pose2.eulerAngles.x, 0f, 1f);
+            ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, DataMapper.AttachPose.ShoulderRotation.eulerAngles.z, Pose2.eulerAngles.z, 0f, 1f);
             ScoreTotal2 = ScoreY2 + ScoreX2 + ScoreZ2; //RemapAndClamp(ScoreTotal2, 0f, , 0f, 1f);
-
 
             // DeltaClamped = EulerAnglesClamp(DeltaQuat);
             // DeltaEuler = DeltaQuat.eulerAngles;
+        }
+
+        private void LateUpdate()
+        {
+
         }
 
         /*
@@ -128,12 +138,6 @@ namespace MrPuppet
                 return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
 
-        [Button(ButtonSizes.Large)]
-        public void SnapshotAttach()
-        {
-            Attach = gameObject.transform.localRotation;
-        }
-
         [HorizontalGroup("Poses")]
         [Button(ButtonSizes.Large)]
         public void SnapshotPose1()
@@ -148,6 +152,13 @@ namespace MrPuppet
         {
             Pose2 = gameObject.transform.localRotation;
             Clone2.transform.rotation = gameObject.transform.rotation;
+        }
+
+        /*
+        [Button(ButtonSizes.Large)]
+        public void SnapshotAttach()
+        {
+            Attach = gameObject.transform.localRotation;
         }
 
         [HorizontalGroup("UpDown")]
@@ -177,6 +188,7 @@ namespace MrPuppet
         {
             transform.rotation *= Quaternion.AngleAxis(10, Vector3.right);
         }
+        */
 
         /*
         private void OnDrawGizmos()
