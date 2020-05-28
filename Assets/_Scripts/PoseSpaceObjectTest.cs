@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEditor;
+
 
 
 namespace MrPuppet
@@ -9,17 +11,13 @@ namespace MrPuppet
     public class PoseSpaceObjectTest : MonoBehaviour
     {
 
-        public ClonePrefab;
-        Quaternion Attach;
-        Quaternion Pose1;
-        Quaternion Pose2;
         private GameObject Clone1;
         private GameObject Clone2;
         Quaternion DeltaQuat;
 
+        /*
         [InfoBox("DeltaEuler is quaternion subtraction, to euler conversion. DeltaClamped is quaternion subtraction to euler conversion, clamped. DeltaAngle~ is using the DeltaAngle method.")]
 
-        /*
         [ReadOnly]
         public Vector3 DeltaEuler;
 
@@ -32,31 +30,55 @@ namespace MrPuppet
         public Vector3 DeltaAnglePose1;
         [ReadOnly]
         public Vector3 DeltaAnglePose2;
-        */
-
-        float ScoreX1;
-        float ScoreX2;
-        float ScoreY1;
-        float ScoreY2;
-        float ScoreZ1;
-        float ScoreZ2;
 
         [ReadOnly]
         public Vector3 DeltaScore;
 
         [ReadOnly]
         public Vector3 DeltaScore2;
+        */
+
+        [Title("Poses")]
+        [ReadOnly]
+        public Quaternion Attach;
+        [ReadOnly]
+        public Quaternion Pose1;
+        [ReadOnly]
+        public Quaternion Pose2;
+
+        [Title("First Scores")]
+        [ReadOnly]
+        public float ScoreX1;
+        [ReadOnly]
+        public float ScoreY1;
+        [ReadOnly]
+        public float ScoreZ1;
+
+        [Title("Second Scores")]
+        [ReadOnly]
+        public float ScoreX2;
+        [ReadOnly]
+        public float ScoreY2;
+        [ReadOnly]
+        public float ScoreZ2;
+
+        [Title("Total Scores")]
+        [ReadOnly]
+        public float ScoreTotal1;
+        [ReadOnly]
+        public float ScoreTotal2;
+
 
         private void Awake()
         {
-            Clone1 = Instantiate(ClonePrefab, gameObject.transform.position + new Vector3(0, 2f, 0), gameObject.transform.rotation);
-            Clone2 = Instantiate(ClonePrefab, gameObject.transform.position + new Vector3(0, -2f, 0), gameObject.transform.rotation);
+            GameObject Prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
+
+            Clone1 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, 2f, 0), gameObject.transform.rotation);
+            Clone2 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -2f, 0), gameObject.transform.rotation);
 
             SnapshotAttach();
             SnapshotPose1();
             SnapshotPose2();
-
-            Debug.Log("Awake Called");
 
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.up);
             //transform.rotation *= Quaternion.AngleAxis(30, Vector3.down);
@@ -70,13 +92,16 @@ namespace MrPuppet
             //DeltaAnglePose1 = PopulateVector(Pose1);
             //DeltaAnglePose2 = PopulateVector(Pose2);
 
-            ScoreY1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose1.eulerAngles.y, 0, 1);
-            ScoreX1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose1.eulerAngles.x, 0, 1);
-            ScoreZ1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose1.eulerAngles.z, 0, 1);
+            ScoreY1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose1.eulerAngles.y, 0f, 1f);
+            ScoreX1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose1.eulerAngles.x, 0f, 1f);
+            ScoreZ1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose1.eulerAngles.z, 0f, 1f);
+            ScoreTotal1 = ScoreY1 + ScoreX1 + ScoreZ1;
 
-            ScoreY2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose2.eulerAngles.y, 0, 1);
-            ScoreX2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose2.eulerAngles.x, 0, 1);
-            ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose2.eulerAngles.z, 0, 1);
+            ScoreY2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, Attach.eulerAngles.y, Pose2.eulerAngles.y, 0f, 1f);
+            ScoreX2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, Attach.eulerAngles.x, Pose2.eulerAngles.x, 0f, 1f);
+            ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, Attach.eulerAngles.z, Pose2.eulerAngles.z, 0f, 1f);
+            ScoreTotal2 = ScoreY2 + ScoreX2 + ScoreZ2; //RemapAndClamp(ScoreTotal2, 0f, , 0f, 1f);
+
 
             // DeltaClamped = EulerAnglesClamp(DeltaQuat);
             // DeltaEuler = DeltaQuat.eulerAngles;
@@ -97,7 +122,10 @@ namespace MrPuppet
 
         private float RemapAndClamp(float value, float from1, float to1, float from2, float to2)
         {
-            return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
+            if (from1 == to1)
+                return from2;
+            else
+                return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
 
         [Button(ButtonSizes.Large)]
@@ -106,6 +134,7 @@ namespace MrPuppet
             Attach = gameObject.transform.localRotation;
         }
 
+        [HorizontalGroup("Poses")]
         [Button(ButtonSizes.Large)]
         public void SnapshotPose1()
         {
@@ -113,6 +142,7 @@ namespace MrPuppet
             Clone1.transform.rotation = gameObject.transform.rotation;
         }
 
+        [HorizontalGroup("Poses")]
         [Button(ButtonSizes.Large)]
         public void SnapshotPose2()
         {
@@ -120,26 +150,28 @@ namespace MrPuppet
             Clone2.transform.rotation = gameObject.transform.rotation;
         }
 
+        [HorizontalGroup("UpDown")]
         [Button(ButtonSizes.Large)]
         public void RotateUp()
         {
             transform.rotation *= Quaternion.AngleAxis(10, Vector3.up);
         }
 
-
+        [HorizontalGroup("UpDown")]
         [Button(ButtonSizes.Large)]
         public void RotateDown()
         {
             transform.rotation *= Quaternion.AngleAxis(10, Vector3.down);
         }
 
-
+        [HorizontalGroup("LeftRight")]
         [Button(ButtonSizes.Large)]
         public void RotateLeft()
         {
             transform.rotation *= Quaternion.AngleAxis(10, Vector3.left);
         }
 
+        [HorizontalGroup("LeftRight")]
         [Button(ButtonSizes.Large)]
         public void RotateRight()
         {
