@@ -108,9 +108,19 @@ namespace MrPuppet
             ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, DataMapper.AttachPose.ShoulderRotation.eulerAngles.z, Pose2.eulerAngles.z, 0f, 1f);
             ScoreTotal2 = ScoreY2 + ScoreX2 + ScoreZ2; //RemapAndClamp(ScoreTotal2, 0f, , 0f, 1f);
 
-            Quaternion ay = Quaternion.AngleAxis(Attach.eulerAngles.y, Vector3.up);
-            Quaternion py = Quaternion.AngleAxis(Pose1.eulerAngles.y, Vector3.up);
-            Debug.Log(Quaternion.Angle(ay, py));
+            Quaternion ay = Quaternion.AngleAxis(Attach.localEulerAngles.y, Vector3.up);
+            Quaternion py = Quaternion.AngleAxis(Pose1.localEulerAngles.y, Vector3.up);
+
+            Quaternion ax = Quaternion.AngleAxis(Attach.localEulerAngles.x, Vector3.up);
+            Quaternion px = Quaternion.AngleAxis(Pose1.localEulerAngles.x, Vector3.up);
+
+            Quaternion az = Quaternion.AngleAxis(Attach.localEulerAngles.z, Vector3.up);
+            Quaternion pz = Quaternion.AngleAxis(Pose1.localEulerAngles.z, Vector3.up);
+
+            DebugGraph.Log(Quaternion.Angle(ay, py));
+            DebugGraph.Log(Quaternion.Angle(ax, px));
+            DebugGraph.Log(Quaternion.Angle(az, pz));
+
 
             // DeltaClamped = EulerAnglesClamp(DeltaQuat);
             // DeltaEuler = DeltaQuat.eulerAngles;
