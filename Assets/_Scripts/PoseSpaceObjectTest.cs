@@ -55,19 +55,29 @@ namespace MrPuppet
         [ReadOnly]
         public float ScoreZ1;
 
-        [Title("Second Scores")]
-        [ReadOnly]
-        public float ScoreX2;
-        [ReadOnly]
-        public float ScoreY2;
-        [ReadOnly]
-        public float ScoreZ2;
+        /*
+                [Title("Second Scores")]
+                [ReadOnly]
+                public float ScoreX2;
+                [ReadOnly]
+                public float ScoreY2;
+                [ReadOnly]
+                public float ScoreZ2;
+                */
 
         [Title("Total Scores")]
         [ReadOnly]
         public float ScoreTotal1;
         [ReadOnly]
         public float ScoreTotal2;
+
+        [Title("Formula - live_origin_dela_z / pose_attach_delta_z = score")]
+        [ReadOnly]
+        public string FormulaX;
+        [ReadOnly]
+        public string FormulaY;
+        [ReadOnly]
+        public string FormulaZ;
 
 
         private void Awake()
@@ -157,23 +167,17 @@ namespace MrPuppet
             float pose_attach_delta_z = Quaternion.Angle(zero_z, pose1_z);
             float pose_live_delta_z = Quaternion.Angle(live_z, pose1_z);
 
-            ScoreY1 = (pose_attach_delta_y / pose_live_delta_y).Clamp(0f, 1f);
-            ScoreX1 = (pose_attach_delta_x / pose_live_delta_x).Clamp(0f, 1f);
-            ScoreZ1 = (pose_attach_delta_z / pose_live_delta_z).Clamp(0f, 1f);
+            float live_origin_dela_y = Quaternion.Angle(zero_y, live_y);
+            float live_origin_dela_x = Quaternion.Angle(zero_x, live_x);
+            float live_origin_dela_z = Quaternion.Angle(zero_z, live_z);
 
-            //how far localRotation is from the 
-            //how far pose and attach are from each other
-            //find how far you are from attach divide it by the total?
-            //same with from pose
+            ScoreY1 = (live_origin_dela_y / pose_attach_delta_y).Clamp(0f, 1f);
+            ScoreX1 = (live_origin_dela_x / pose_attach_delta_x).Clamp(0f, 1f);
+            ScoreZ1 = (live_origin_dela_z / pose_attach_delta_z).Clamp(0f, 1f);
 
-            /*
-            10 degrees away from attach
-            20 degrees away from pose
-            30 degrees in between themselves.
-            10/30 = 0.33
-            20/30 = 0.66
-
-            */
+            FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
+            FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
+            FormulaZ = live_origin_dela_z + " / " + pose_attach_delta_z + " = " + live_origin_dela_z / pose_attach_delta_z;
 
             // DeltaClamped = EulerAnglesClamp(DeltaQuat);
             // DeltaEuler = DeltaQuat.eulerAngles;
