@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6224774217016061567}
   - component: {fileID: 6224774217016061537}
   - component: {fileID: 6224774217016061536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grounder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6224774217045789559}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UpperBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 6224774217280324896}
   - component: {fileID: 6224774217280324898}
   - component: {fileID: 6224774217280324897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LLegLimb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 6224774217450660627}
   - component: {fileID: 6224774217450660629}
   - component: {fileID: 6224774217450660628}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RArmLimb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 6224774217568262484}
   - component: {fileID: 6224774217568262486}
   - component: {fileID: 6224774217568262485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RLegLimb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 6224774217760523890}
   - component: {fileID: 6224774217760523892}
   - component: {fileID: 6224774217760523891}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LArmLimb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6224774218094703011}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: IK Biped Limbs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6224774218907183907}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LowerBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
