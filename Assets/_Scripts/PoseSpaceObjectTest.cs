@@ -57,7 +57,7 @@ namespace MrPuppet
         }
 
         private RotationPose[] Poses = new RotationPose[3];
-        private RotationPose[] IsolateJoiints = new RotationPose[3];
+        private RotationPose[] IsolateJoints = new RotationPose[3];
         private RotationPose ZeroAxis = new RotationPose();
         public Vector3 ScoreWrist;
         public Vector3 ScoreElbow;
@@ -79,7 +79,7 @@ namespace MrPuppet
             for (int p = 0; p < JointsPose.Length; p++)
             {
                 Poses[p] = new RotationPose();
-                IsolateJoiints[p] = new RotationPose();
+                IsolateJoints[p] = new RotationPose();
             }
 
             SnapshotPose1();
@@ -117,9 +117,9 @@ namespace MrPuppet
 
             for (int p = 0; p < Joints.Length; p++)
             {
-                IsolateJoiints[p].YAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.y, Joints[p].transform.up);
-                IsolateJoiints[p].XAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.x, Joints[p].transform.right);
-                IsolateJoiints[p].ZAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.z, Joints[p].transform.forward);
+                IsolateJoints[p].YAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.y, Joints[p].transform.up);
+                IsolateJoints[p].XAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.x, Joints[p].transform.right);
+                IsolateJoints[p].ZAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.z, Joints[p].transform.forward);
             }
 
             ZeroAxis.YAxis = Quaternion.AngleAxis(0f, Vector3.up);
@@ -142,9 +142,9 @@ namespace MrPuppet
             float pose_attach_delta_x = Quaternion.Angle(ZeroAxis.XAxis, Poses[index].XAxis);
             float pose_attach_delta_z = Quaternion.Angle(ZeroAxis.ZAxis, Poses[index].ZAxis);
 
-            float live_origin_dela_y = Quaternion.Angle(ZeroAxis.YAxis, IsolateJoiints[index].YAxis);
-            float live_origin_dela_x = Quaternion.Angle(ZeroAxis.XAxis, IsolateJoiints[index].YAxis);
-            float live_origin_dela_z = Quaternion.Angle(ZeroAxis.ZAxis, IsolateJoiints[index].YAxis);
+            float live_origin_dela_y = Quaternion.Angle(ZeroAxis.YAxis, IsolateJoints[index].YAxis);
+            float live_origin_dela_x = Quaternion.Angle(ZeroAxis.XAxis, IsolateJoints[index].YAxis);
+            float live_origin_dela_z = Quaternion.Angle(ZeroAxis.ZAxis, IsolateJoints[index].YAxis);
 
             Vector3 Score;
             Score.y = (live_origin_dela_y / pose_attach_delta_y).Clamp(0f, 1f);
@@ -167,12 +167,12 @@ namespace MrPuppet
         {
             for (int p = 0; p < JointsPose.Length; p++)
             {
-                Poses[p] = IsolateJoiints[p];
+                Poses[p] = IsolateJoints[p];
             }
 
             for (int p = 0; p < JointsPose.Length; p++)
             {
-                Quaternion totalQ = Quaternion.Euler(IsolateJoiints[p].XAxis.eulerAngles.x, IsolateJoiints[p].YAxis.eulerAngles.y, IsolateJoiints[p].ZAxis.eulerAngles.z);
+                Quaternion totalQ = Quaternion.Euler(IsolateJoints[p].XAxis.eulerAngles.x, IsolateJoints[p].YAxis.eulerAngles.y, IsolateJoints[p].ZAxis.eulerAngles.z);
 
                 JointsPose[p].transform.rotation = totalQ;
             }
