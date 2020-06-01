@@ -173,7 +173,7 @@ MonoBehaviour:
   HipExtentY: 0
   LimitHipExtentZ: 0
   HipExtentZ: 0
-  EnableJawHeadMixer: 1
+  EnableJawHeadMixer: 0
   JawHeadMaxExtent: -3
   JawHeadRotate: 0
   UnsubscribeDuration: 1
@@ -5702,20 +5702,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &1916805083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118882938910408032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac66012482942f4693c149dac5111b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iKTagId: 0
-  chainId: 2
 --- !u!114 &1158501398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5730,6 +5716,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iKTagId: 1
   chainId: 1
+--- !u!114 &1916805083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8118882938910408032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac66012482942f4693c149dac5111b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iKTagId: 0
+  chainId: 2
 --- !u!1 &8658848327726033377
 GameObject:
   m_ObjectHideFlags: 0
