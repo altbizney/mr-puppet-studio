@@ -16,29 +16,6 @@ namespace MrPuppet
         private MrPuppetDataMapper DataMapper;
         Quaternion DeltaQuat;
 
-        /*
-        [InfoBox("DeltaEuler is quaternion subtraction, to euler conversion. DeltaClamped is quaternion subtraction to euler conversion, clamped. DeltaAngle~ is using the DeltaAngle method.")]
-
-        [ReadOnly]
-        public Vector3 DeltaEuler;
-
-        [ReadOnly]
-        public Vector3 DeltaClamped;
-
-        [ReadOnly]
-        public Vector3 DeltaAngleAttach;
-        [ReadOnly]
-        public Vector3 DeltaAnglePose1;
-        [ReadOnly]
-        public Vector3 DeltaAnglePose2;
-
-        [ReadOnly]
-        public Vector3 DeltaScore;
-
-        [ReadOnly]
-        public Vector3 DeltaScore2;
-        */
-
         [Title("Poses")]
         [ReadOnly]
         public Quaternion Attach;
@@ -55,16 +32,6 @@ namespace MrPuppet
         [ReadOnly]
         public float ScoreZ1;
 
-        /*
-                [Title("Second Scores")]
-                [ReadOnly]
-                public float ScoreX2;
-                [ReadOnly]
-                public float ScoreY2;
-                [ReadOnly]
-                public float ScoreZ2;
-                */
-
         [Title("Total Scores")]
         [ReadOnly]
         public float ScoreTotal1;
@@ -79,6 +46,22 @@ namespace MrPuppet
         [ReadOnly]
         public string FormulaZ;
 
+        private GameObject[] Joints = new GameObject[3];
+        private GameObject[] JointsPose = new GameObject[3];
+
+        private class RotationPose
+        {
+            public Quaternion YAxis;
+            public Quaternion XAxis;
+            public Quaternion ZAxis;
+        }
+
+        private RotationPose[] Poses = new RotationPose[3];
+        private RotationPose[] IsolateJoiints = new RotationPose[3];
+        private RotationPose ZeroAxis = new RotationPose();
+        public Vector3 ScoreWrist;
+        public Vector3 ScoreElbow;
+        public Vector3 ScoreShoulder;
 
         private void Awake()
         {
@@ -86,120 +69,90 @@ namespace MrPuppet
 
             GameObject Prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
 
-            Clone1 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, 2f, 0), gameObject.transform.rotation);
-            Clone2 = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -2f, 0), gameObject.transform.rotation);
+            Joints[0] = gameObject;
+            for (int j = 1; j < JointsPose.Length; j++)
+                Joints[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -j, 0), gameObject.transform.rotation);
 
-            //SnapshotAttach();
+            for (int j = 0; j < JointsPose.Length; j++)
+                JointsPose[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(1, -j, 0), gameObject.transform.rotation);
+
+            for (int p = 0; p < JointsPose.Length; p++)
+            {
+                Poses[p] = new RotationPose();
+                IsolateJoiints[p] = new RotationPose();
+            }
+
             SnapshotPose1();
-            SnapshotPose2();
-
-            //transform.rotation *= Quaternion.AngleAxis(30, Vector3.up);
-            //transform.rotation *= Quaternion.AngleAxis(30, Vector3.down);
         }
 
         private Quaternion RotationDeltaFromAttachWrist()
+        {
+            return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation);
+        }
+
+        private Quaternion RotationDeltaFromAttachElbow()
+        {
+            return DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation);
+        }
+
+        private Quaternion RotationDeltaFromAttachShoulder()
         {
             return DataMapper.ShoulderJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ShoulderRotation);
         }
 
         void Update()
         {
-            //DeltaQuat = gameObject.transform.localRotation * Quaternion.Inverse(Attach);
-
-            //DeltaAngleAttach = PopulateVector(Attach);
-            //DeltaAnglePose1 = PopulateVector(Pose1);
-            //DeltaAnglePose2 = PopulateVector(Pose2);
-            /*
-            Attach = DataMapper.AttachPose.ShoulderRotation;
-
-            gameObject.transform.localRotation = DataMapper.ShoulderJoint.rotation;
-
-            ScoreY1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, DataMapper.AttachPose.ShoulderRotation.eulerAngles.y, Pose1.eulerAngles.y, 0f, 1f);
-            ScoreX1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, DataMapper.AttachPose.ShoulderRotation.eulerAngles.x, Pose1.eulerAngles.x, 0f, 1f);
-            ScoreZ1 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, DataMapper.AttachPose.ShoulderRotation.eulerAngles.z, Pose1.eulerAngles.z, 0f, 1f);
-            ScoreTotal1 = ScoreY1 + ScoreX1 + ScoreZ1;
-
-            ScoreY2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.y, DataMapper.AttachPose.ShoulderRotation.eulerAngles.y, Pose2.eulerAngles.y, 0f, 1f);
-            ScoreX2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.x, DataMapper.AttachPose.ShoulderRotation.eulerAngles.x, Pose2.eulerAngles.x, 0f, 1f);
-            ScoreZ2 = RemapAndClamp(gameObject.transform.localRotation.eulerAngles.z, DataMapper.AttachPose.ShoulderRotation.eulerAngles.z, Pose2.eulerAngles.z, 0f, 1f);
-            ScoreTotal2 = ScoreY2 + ScoreX2 + ScoreZ2; //RemapAndClamp(ScoreTotal2, 0f, , 0f, 1f);
-
-            Quaternion ay = Quaternion.AngleAxis(Attach.eulerAngles.y, Vector3.up);
-            Quaternion py = Quaternion.AngleAxis(Pose1.eulerAngles.y, Vector3.up);
-
-            Quaternion ax = Quaternion.AngleAxis(Attach.eulerAngles.x, Vector3.up);
-            Quaternion px = Quaternion.AngleAxis(Pose1.eulerAngles.x, Vector3.up);
-
-            Quaternion az = Quaternion.AngleAxis(Attach.eulerAngles.z, Vector3.up);
-            Quaternion pz = Quaternion.AngleAxis(Pose1.eulerAngles.z, Vector3.up);
-
-            //how close you are to attach pose
-            //how close you are to pose2. 
-
-
-
-            DebugGraph.Log(Quaternion.Angle(ay, py));
-            DebugGraph.Log(Quaternion.Angle(ax, px));
-            DebugGraph.Log(Quaternion.Angle(az, pz));
-            */
-
             if (!DataMapper.AttachPoseSet) return;
-            gameObject.transform.localRotation = RotationDeltaFromAttachWrist();
 
-            Quaternion zero_y = Quaternion.AngleAxis(0f, Vector3.up);
-            Quaternion live_y = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.y, gameObject.transform.up);
-            Quaternion pose1_y = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.y, Clone1.transform.up);
+            Joints[0].transform.localRotation = RotationDeltaFromAttachWrist();
+            Joints[1].transform.localRotation = RotationDeltaFromAttachElbow();
+            Joints[2].transform.localRotation = RotationDeltaFromAttachShoulder();
 
-            Quaternion zero_x = Quaternion.AngleAxis(0f, Vector3.right);
-            Quaternion live_x = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.x, gameObject.transform.right);
-            Quaternion pose1_x = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.x, Clone1.transform.right);
+            for (int p = 0; p < JointsPose.Length; p++)
+            {
+                Poses[p].YAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.y, JointsPose[p].transform.up);
+                Poses[p].XAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.x, JointsPose[p].transform.right);
+                Poses[p].ZAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.z, JointsPose[p].transform.forward);
+            }
 
-            Quaternion zero_z = Quaternion.AngleAxis(0f, Vector3.forward);
-            Quaternion live_z = Quaternion.AngleAxis(gameObject.transform.localRotation.eulerAngles.z, gameObject.transform.forward);
-            Quaternion pose1_z = Quaternion.AngleAxis(Clone1.transform.localRotation.eulerAngles.z, Clone1.transform.forward);
+            for (int p = 0; p < Joints.Length; p++)
+            {
+                IsolateJoiints[p].YAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.y, Joints[p].transform.up);
+                IsolateJoiints[p].XAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.x, Joints[p].transform.right);
+                IsolateJoiints[p].ZAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.z, Joints[p].transform.forward);
+            }
 
-            float pose_attach_delta_y = Quaternion.Angle(zero_y, pose1_y);
-            float pose_live_delta_y = Quaternion.Angle(live_y, pose1_y);
+            ZeroAxis.YAxis = Quaternion.AngleAxis(0f, Vector3.up);
+            ZeroAxis.XAxis = Quaternion.AngleAxis(0f, Vector3.right);
+            ZeroAxis.ZAxis = Quaternion.AngleAxis(0f, Vector3.forward);
 
-            float pose_attach_delta_x = Quaternion.Angle(zero_x, pose1_x);
-            float pose_live_delta_x = Quaternion.Angle(live_x, pose1_x);
+            ScoreWrist = PopulateScores(0);
+            ScoreElbow = PopulateScores(1);
+            ScoreShoulder = PopulateScores(2);
 
-            float pose_attach_delta_z = Quaternion.Angle(zero_z, pose1_z);
-            float pose_live_delta_z = Quaternion.Angle(live_z, pose1_z);
-
-            float live_origin_dela_y = Quaternion.Angle(zero_y, live_y);
-            float live_origin_dela_x = Quaternion.Angle(zero_x, live_x);
-            float live_origin_dela_z = Quaternion.Angle(zero_z, live_z);
-
-            ScoreY1 = (live_origin_dela_y / pose_attach_delta_y).Clamp(0f, 1f);
-            ScoreX1 = (live_origin_dela_x / pose_attach_delta_x).Clamp(0f, 1f);
-            ScoreZ1 = (live_origin_dela_z / pose_attach_delta_z).Clamp(0f, 1f);
-
-            FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
-            FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
-            FormulaZ = live_origin_dela_z + " / " + pose_attach_delta_z + " = " + live_origin_dela_z / pose_attach_delta_z;
-
-            // DeltaClamped = EulerAnglesClamp(DeltaQuat);
-            // DeltaEuler = DeltaQuat.eulerAngles;
+            //FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
+            //FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
+            //FormulaZ = live_origin_dela_z + " / " + pose_attach_delta_z + " = " + live_origin_dela_z / pose_attach_delta_z;
         }
 
-        private void LateUpdate()
+        private Vector3 PopulateScores(int index)
         {
 
+            float pose_attach_delta_y = Quaternion.Angle(ZeroAxis.YAxis, Poses[index].YAxis);
+            float pose_attach_delta_x = Quaternion.Angle(ZeroAxis.XAxis, Poses[index].XAxis);
+            float pose_attach_delta_z = Quaternion.Angle(ZeroAxis.ZAxis, Poses[index].ZAxis);
+
+            float live_origin_dela_y = Quaternion.Angle(ZeroAxis.YAxis, IsolateJoiints[index].YAxis);
+            float live_origin_dela_x = Quaternion.Angle(ZeroAxis.XAxis, IsolateJoiints[index].YAxis);
+            float live_origin_dela_z = Quaternion.Angle(ZeroAxis.ZAxis, IsolateJoiints[index].YAxis);
+
+            Vector3 Score;
+            Score.y = (live_origin_dela_y / pose_attach_delta_y).Clamp(0f, 1f);
+            Score.x = (live_origin_dela_x / pose_attach_delta_x).Clamp(0f, 1f);
+            Score.z = (live_origin_dela_z / pose_attach_delta_z).Clamp(0f, 1f);
+
+            return Score;
         }
-
-        /*
-        private Vector3 PopulateVector(Quaternion SnapshotPose)
-        {
-            Vector3 Delta = new Vector3();
-
-            Delta.y = Mathf.DeltaAngle(SnapshotPose.eulerAngles.y, gameObject.transform.localRotation.eulerAngles.y);
-            Delta.x = Mathf.DeltaAngle(SnapshotPose.eulerAngles.x, gameObject.transform.localRotation.eulerAngles.x);
-            Delta.z = Mathf.DeltaAngle(SnapshotPose.eulerAngles.z, gameObject.transform.localRotation.eulerAngles.z);
-
-            return Delta;
-        }
-        */
 
         private float RemapAndClamp(float value, float from1, float to1, float from2, float to2)
         {
@@ -209,110 +162,20 @@ namespace MrPuppet
                 return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
 
-        [HorizontalGroup("Poses")]
         [Button(ButtonSizes.Large)]
         public void SnapshotPose1()
         {
-            Pose1 = gameObject.transform.localRotation;
-            Clone1.transform.rotation = gameObject.transform.rotation;
+            for (int p = 0; p < JointsPose.Length; p++)
+            {
+                Poses[p] = IsolateJoiints[p];
+            }
+
+            for (int p = 0; p < JointsPose.Length; p++)
+            {
+                Quaternion totalQ = Quaternion.Euler(IsolateJoiints[p].XAxis.eulerAngles.x, IsolateJoiints[p].YAxis.eulerAngles.y, IsolateJoiints[p].ZAxis.eulerAngles.z);
+
+                JointsPose[p].transform.rotation = totalQ;
+            }
         }
-
-        [HorizontalGroup("Poses")]
-        [Button(ButtonSizes.Large)]
-        public void SnapshotPose2()
-        {
-            Pose2 = gameObject.transform.localRotation;
-            Clone2.transform.rotation = gameObject.transform.rotation;
-        }
-
-        /*
-        [Button(ButtonSizes.Large)]
-        public void SnapshotAttach()
-        {
-            Attach = gameObject.transform.localRotation;
-        }
-
-        [HorizontalGroup("UpDown")]
-        [Button(ButtonSizes.Large)]
-        public void RotateUp()
-        {
-            transform.rotation *= Quaternion.AngleAxis(10, Vector3.up);
-        }
-
-        [HorizontalGroup("UpDown")]
-        [Button(ButtonSizes.Large)]
-        public void RotateDown()
-        {
-            transform.rotation *= Quaternion.AngleAxis(10, Vector3.down);
-        }
-
-        [HorizontalGroup("LeftRight")]
-        [Button(ButtonSizes.Large)]
-        public void RotateLeft()
-        {
-            transform.rotation *= Quaternion.AngleAxis(10, Vector3.left);
-        }
-
-        [HorizontalGroup("LeftRight")]
-        [Button(ButtonSizes.Large)]
-        public void RotateRight()
-        {
-            transform.rotation *= Quaternion.AngleAxis(10, Vector3.right);
-        }
-        */
-
-        /*
-        private void OnDrawGizmos()
-        {
-            Matrix4x4 rotationMatrix = Matrix4x4.TRS(gameObject.transform.position, DeltaQuat, transform.lossyScale);
-            Gizmos.matrix = rotationMatrix;
-            Debug.DrawRay(gameObject.transform.position, Vector3.one);
-        }
-
-        private Vector3 EulerAnglesClamp(Quaternion from)
-        {
-            Vector3 delta = from.eulerAngles;
-
-            if (delta.x > 180)
-                delta.x -= 360;
-            else if (delta.x < -180)
-                delta.x += 360;
-
-            if (delta.y > 180)
-                delta.y -= 360;
-            else if (delta.y < -180)
-                delta.y += 360;
-
-            if (delta.z > 180)
-                delta.z -= 360;
-            else if (delta.z < -180)
-                delta.z += 360;
-
-            return delta;
-        }
-
-
-        private Quaternion SeperateAxisY(Quaternion q)
-        {
-            float theta = Mathf.Atan2(q.y, q.w);
-
-            return new Quaternion(0, Mathf.Sin(theta), 0, Mathf.Cos(theta));
-        }
-
-        private Quaternion SeperateAxisX(Quaternion q)
-        {
-            float theta = Mathf.Atan2(q.x, q.w);
-
-            return new Quaternion(Mathf.Sin(theta), 0, 0, Mathf.Cos(theta));
-        }
-
-        private Quaternion SeperateAxisZ(Quaternion q)
-        {
-            float theta = Mathf.Atan2(q.z, q.w);
-
-            return new Quaternion(0, 0, Mathf.Sin(theta), Mathf.Cos(theta));
-        }
-         */
-
     }
 }
