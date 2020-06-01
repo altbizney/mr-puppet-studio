@@ -57,11 +57,8 @@ namespace MrPuppet
                 // calculate weighted rotation
                 weighted = Quaternion.Slerp(spawn, full, amount * SensorAmount);
 
-                // calculate deattach rotation
-                //attach = Quaternion.Slerp(weighted, spawn, AttachAmount);
-
                 // apply with smoothing
-                target.rotation = Quaternion.Slerp(target.rotation, attach, RotationSpeed * Time.deltaTime);
+                target.rotation = Quaternion.Slerp(target.rotation, weighted, RotationSpeed * Time.deltaTime);
             }
 
             public void OnDrawGizmos()
