@@ -166,10 +166,14 @@ namespace MrPuppet
             EastScore = PopulateScores(EastPoseAxes);
             WestScore = PopulateScores(WestPoseAxes);
 
-            North.transform.localScale = new Vector3(1f, NorthScore, 1f);
-            South.transform.localScale = new Vector3(1f, SouthScore, 1f);
-            East.transform.localScale = new Vector3(1f, EastScore, 1f);
-            West.transform.localScale = new Vector3(1f, WestScore, 1f);
+            if (!float.IsNaN(NorthScore))
+                North.transform.localScale = new Vector3(1f, NorthScore, 1f);
+            if (!float.IsNaN(SouthScore))
+                South.transform.localScale = new Vector3(1f, SouthScore, 1f);
+            if (!float.IsNaN(EastScore))
+                East.transform.localScale = new Vector3(1f, EastScore, 1f);
+            if (!float.IsNaN(WestScore))
+                West.transform.localScale = new Vector3(1f, WestScore, 1f);
 
             JointWrist = JointsArm[0].transform.localRotation.eulerAngles;
             JointElbow = JointsArm[1].transform.localRotation.eulerAngles;
@@ -198,7 +202,6 @@ namespace MrPuppet
                 FormulaY[p] = live_origin_delta_y + " / " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y;
                 FormulaZ[p] = live_origin_delta_z + " / " + pose_attach_delta_z + " = " + live_origin_delta_z / pose_attach_delta_z;
             }
-
 
             float ScoreTotal = Scores[0].x + Scores[0].y + Scores[0].z + Scores[1].x + Scores[1].y + Scores[1].z + Scores[2].x + Scores[2].y + Scores[2].z;
             ScoreTotal = Remap(ScoreTotal, 0f, 9f, 0f, 1f);
