@@ -10,7 +10,7 @@ namespace MrPuppet
 {
     public class PoseSpaceObjectTest : MonoBehaviour
     {
-        [Title("Poses")]
+        [Title("Pose")]
         [ReadOnly]
         public Vector3 PoseWrist;
         [ReadOnly]
@@ -33,6 +33,10 @@ namespace MrPuppet
         public Vector3 ScoreElbow;
         [ReadOnly]
         public Vector3 ScoreShoulder;
+        [ReadOnly]
+        public float ScoreTotal;
+
+        private GameObject North;
 
         /*
         [Title("Formula - live_origin_dela_z / pose_attach_delta_z = score")]
@@ -49,15 +53,6 @@ namespace MrPuppet
             public Quaternion YAxis;
             public Quaternion XAxis;
             public Quaternion ZAxis;
-
-            /*
-            public RotationAxis()
-            {
-                this.YAxis = new GameObject("Y").transform;
-                this.YAxis = new GameObject("Y").transform;
-                this.ZAxis = new GameObject("Y").transform;
-            }
-            */
         }
 
         private MrPuppetDataMapper DataMapper;
@@ -77,10 +72,10 @@ namespace MrPuppet
 
             JointsArm[0] = gameObject;
             for (int j = 1; j < JointsArm.Length; j++)
-                JointsArm[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -j, 0), gameObject.transform.rotation);
+                JointsArm[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -(j * 1.5f), 0), gameObject.transform.rotation);
 
             for (int j = 0; j < JointsPose.Length; j++)
-                JointsPose[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(1, -j, 0), gameObject.transform.rotation);
+                JointsPose[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(2.5f, -(j * 1.5f), 0), gameObject.transform.rotation);
 
             for (int p = 0; p < PoseAxes.Length; p++)
             {
@@ -88,7 +83,9 @@ namespace MrPuppet
                 ArmAxes[p] = new RotationAxis();
             }
 
-            SnapshotPose1();
+            SnapshotPose();
+
+            North = GameObject.Find("N Marker");
         }
 
         private Quaternion RotationDeltaFromAttachWrist()
@@ -138,10 +135,14 @@ namespace MrPuppet
             ScoreWrist = PopulateScores(0);
             ScoreElbow = PopulateScores(1);
             ScoreShoulder = PopulateScores(2);
+            ScoreTotal = ScoreWrist.x + ScoreWrist.y + ScoreWrist.z + ScoreElbow.x + ScoreElbow.y + ScoreElbow.z + ScoreShoulder.x + ScoreShoulder.y + ScoreShoulder.z;
+            ScoreTotal = Remap(ScoreTotal, 0f, 9f, 0f, 1f);
 
-            //JointWrist.x = ArmAxes[0].XAxis.eulerAngles.x;
-            //JointWrist.y = ArmAxes[0].YAxis.eulerAngles.y;
-            //JointWrist.z = ArmAxes[0].ZAxis.eulerAngles.z;
+            North.transform.localScale = new Vector3(1f, 6 * ScoreTotal, 1f);
+
+            JointWrist = JointsArm[0].transform.localRotation.eulerAngles;
+            JointElbow = JointsArm[1].transform.localRotation.eulerAngles;
+            JointShoulder = JointsArm[2].transform.localRotation.eulerAngles;
 
             //FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
             //FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
@@ -164,11 +165,29 @@ namespace MrPuppet
             Score.x = (live_origin_delta_x / pose_attach_delta_x).Clamp(0f, 1f);
             Score.z = (live_origin_delta_z / pose_attach_delta_z).Clamp(0f, 1f);
 
-            //Debug.Log(live_origin_delta_y + " " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y);
-
             return Score;
         }
 
+        public float Remap(float value, float from1, float to1, float from2, float to2)
+        {
+            return Mathf.Clamp((value - from1) / (to1 - from1) * (to2 - from2) + from2, from2, to2);
+        }
+
+        [Button(ButtonSizes.Large)]
+        public void SnapshotPose()
+        {
+            for (int p = 0; p < JointsPose.Length; p++)
+            {
+                Quaternion totalQ = Quaternion.Euler(ArmAxes[p].XAxis.eulerAngles.x, ArmAxes[p].YAxis.eulerAngles.y, ArmAxes[p].ZAxis.eulerAngles.z);
+                JointsPose[p].transform.rotation = totalQ;
+            }
+
+            PoseWrist = JointsPose[0].transform.localRotation.eulerAngles;
+            PoseElbow = JointsPose[1].transform.localRotation.eulerAngles;
+            PoseShoulder = JointsPose[2].transform.localRotation.eulerAngles;
+        }
+
+        /*
         private float RemapAndClamp(float value, float from1, float to1, float from2, float to2)
         {
             if (from1 == to1)
@@ -176,25 +195,6 @@ namespace MrPuppet
             else
                 return value.Remap(from1, to1, from2, to2).Clamp(from2, to2);
         }
-
-        [Button(ButtonSizes.Large)]
-        public void SnapshotPose1()
-        {
-            for (int p = 0; p < PoseAxes.Length; p++)
-            {
-                PoseAxes[p] = ArmAxes[p];
-            }
-
-            PoseWrist.y = PoseAxes[0].YAxis.y;
-            PoseWrist.x = PoseAxes[0].XAxis.x;
-            PoseWrist.z = PoseAxes[0].ZAxis.z;
-
-            for (int p = 0; p < JointsPose.Length; p++)
-            {
-                Quaternion totalQ = Quaternion.Euler(ArmAxes[p].XAxis.eulerAngles.x, ArmAxes[p].YAxis.eulerAngles.y, ArmAxes[p].ZAxis.eulerAngles.z);
-
-                JointsPose[p].transform.rotation = totalQ;
-            }
-        }
+        */
     }
 }

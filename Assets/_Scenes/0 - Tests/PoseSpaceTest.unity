@@ -215,12 +215,12 @@ PrefabInstance:
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
@@ -287,17 +287,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9d6f3527540459a80645867a639927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attach: {x: 0, y: 0, z: 0, w: 0}
-  Pose1: {x: 0, y: 0, z: 0, w: 0}
-  Pose2: {x: 0, y: 0, z: 0, w: 0}
-  ScoreX1: 0
-  ScoreY1: 0
-  ScoreZ1: 0
-  ScoreTotal1: 0
-  ScoreTotal2: 0
-  FormulaX: 
-  FormulaY: 
-  FormulaZ: 
+  PoseWrist: {x: 0, y: 0, z: 0}
+  PoseElbow: {x: 0, y: 0, z: 0}
+  PoseShoulder: {x: 0, y: 0, z: 0}
+  JointWrist: {x: 0, y: 0, z: 0}
+  JointElbow: {x: 0, y: 0, z: 0}
+  JointShoulder: {x: 0, y: 0, z: 0}
+  ScoreWrist: {x: 0, y: 0, z: 0}
+  ScoreElbow: {x: 0, y: 0, z: 0}
+  ScoreShoulder: {x: 0, y: 0, z: 0}
+  ScoreTotal: 0
 --- !u!1 &221525652
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +378,7 @@ PrefabInstance:
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
