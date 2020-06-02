@@ -36,17 +36,13 @@ namespace MrPuppet
         [ReadOnly]
         public float ScoreTotal;
 
-        private GameObject North;
-
-        /*
         [Title("Formula - live_origin_dela_z / pose_attach_delta_z = score")]
         [ReadOnly]
-        public string FormulaX;
+        public string[] FormulaX = new string[3];
         [ReadOnly]
-        public string FormulaY;
+        public string[] FormulaY = new string[3];
         [ReadOnly]
-        public string FormulaZ;
-        */
+        public string[] FormulaZ = new string[3];
 
         private class RotationAxis
         {
@@ -56,6 +52,7 @@ namespace MrPuppet
         }
 
         private MrPuppetDataMapper DataMapper;
+        private GameObject North;
 
         private GameObject[] JointsArm = new GameObject[3];
         private GameObject[] JointsPose = new GameObject[3];
@@ -85,7 +82,7 @@ namespace MrPuppet
 
             SnapshotPose();
 
-            North = GameObject.Find("N Marker");
+            North = GameObject.Find("North");
         }
 
         private Quaternion RotationDeltaFromAttachWrist()
@@ -138,20 +135,20 @@ namespace MrPuppet
             ScoreTotal = ScoreWrist.x + ScoreWrist.y + ScoreWrist.z + ScoreElbow.x + ScoreElbow.y + ScoreElbow.z + ScoreShoulder.x + ScoreShoulder.y + ScoreShoulder.z;
             ScoreTotal = Remap(ScoreTotal, 0f, 9f, 0f, 1f);
 
-            North.transform.localScale = new Vector3(1f, 6 * ScoreTotal, 1f);
+            North.transform.localScale = new Vector3(1f, ScoreTotal, 1f);
 
             JointWrist = JointsArm[0].transform.localRotation.eulerAngles;
             JointElbow = JointsArm[1].transform.localRotation.eulerAngles;
             JointShoulder = JointsArm[2].transform.localRotation.eulerAngles;
 
-            //FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
-            //FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
-            //FormulaZ = live_origin_dela_z + " / " + pose_attach_delta_z + " = " + live_origin_dela_z / pose_attach_delta_z;
+            //FormulaX = live_origin_delta_x + " / " + pose_attach_delta_x + " = " + live_origin_delta_x / pose_attach_delta_x;
+            //FormulaY = live_origin_delta_y + " / " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y;
+            //FormulaZ = live_origin_delta_z + " / " + pose_attach_delta_z + " = " + live_origin_delta_z / pose_attach_delta_z;
         }
 
         private Vector3 PopulateScores(int index)
         {
-
+            // creating these 3 times per frame. not good! 
             float pose_attach_delta_y = Quaternion.Angle(ZeroAxes.YAxis, PoseAxes[index].YAxis);
             float pose_attach_delta_x = Quaternion.Angle(ZeroAxes.XAxis, PoseAxes[index].XAxis);
             float pose_attach_delta_z = Quaternion.Angle(ZeroAxes.ZAxis, PoseAxes[index].ZAxis);
@@ -159,6 +156,11 @@ namespace MrPuppet
             float live_origin_delta_y = Quaternion.Angle(ZeroAxes.YAxis, ArmAxes[index].YAxis);
             float live_origin_delta_x = Quaternion.Angle(ZeroAxes.XAxis, ArmAxes[index].XAxis);
             float live_origin_delta_z = Quaternion.Angle(ZeroAxes.ZAxis, ArmAxes[index].ZAxis);
+
+            FormulaX[index] = live_origin_delta_x + " / " + pose_attach_delta_x + " = " + live_origin_delta_x / pose_attach_delta_x;
+            FormulaY[index] = live_origin_delta_y + " / " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y;
+            FormulaZ[index] = live_origin_delta_z + " / " + pose_attach_delta_z + " = " + live_origin_delta_z / pose_attach_delta_z;
+
 
             Vector3 Score;
             Score.y = (live_origin_delta_y / pose_attach_delta_y).Clamp(0f, 1f);
