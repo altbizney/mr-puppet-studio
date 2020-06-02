@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -30,16 +31,16 @@ namespace MrPuppet
         }
 
         private GameObject PuppetReplay;
-       //private AudioClip _AudioClip;
-       //private AudioSource _AudioSource;
+        //private AudioClip _AudioClip;
+        //private AudioSource _AudioSource;
         private Transform JawJointMimic;
-        private bool InCoroutine;
+        //private bool InCoroutine;
         private GameObject TransformWrapper;
         private RecorderWindow Recorder;
         private Transform JawJoint;
         private Coroutine AnimationCoroutine;
         private static MrPuppetHubConnection HubConnection;
-        private static string _AnimationClipName;
+        //private static string _AnimationClipName;
 
         private List<Transform> JointsMimic;
         private List<Transform> JointsClone;
@@ -47,8 +48,22 @@ namespace MrPuppet
         private bool OverwriteButtPuppet;
         private bool OverwriteJaw;
 
+        //[OnValueChanged("InitComponents")]
+        [InfoBox("$ParseMessageBox")]
         public GameObject Actor;
+
+        [OnValueChanged("ParseMessageBoxUpdate")]
         public AnimationClip _AnimationClip;
+
+        //private string ButtComponent;
+        private string ParseMessageBox;
+        private string AudioClipParseAfterPlay = "Waiting for Animation Clip";
+        private bool PlayModeEntered;
+
+        [OnValueChanged("ParseMessageBoxUpdate")]
+        [LabelText("Use full audio take name")]
+        [ToggleLeft]
+        public bool EnableAudioParse;
 
         /*
         [SerializeField]
@@ -57,6 +72,85 @@ namespace MrPuppet
         [HideLabel]
         private string InfoBoxMsg;
         */
+
+        /*
+        private void InitComponents()
+        {
+            if ((Actor.GetComponent("ButtPuppet") as ButtPuppet) != null)
+                ButtComponent = "ButtPuppet";
+            else if ((Actor.GetComponent("IKButtPuppet") as IKButtPuppet) != null)
+                ButtComponent = "IKButtPuppet";
+
+        }
+        */
+        private bool HubConnectionCheck()
+        {
+            if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
+                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
+            if (HubConnection)
+                return true;
+
+            return false;
+        }
+
+        private void ParseMessageBoxUpdate()
+        {
+            if (_AnimationClip)
+            {
+                if (_AnimationClip.name.Count(c => c == '-') == 2)
+                {
+                    if (!EnableAudioParse)
+                    {
+                        ParseMessageBox = _AnimationClip.name.Substring(0, _AnimationClip.name.LastIndexOf("-"));
+                    }
+                    else
+                    {
+                        ParseMessageBox = _AnimationClip.name;
+                    }
+
+                    if (HubConnectionCheck() && EditorApplication.isPlaying)
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParseMessageBox);
+                }
+                else
+                    ParseMessageBox = "Please input Animation Clip with correct format";
+            }
+            else
+                ParseMessageBox = "Waiting for Animation Clip";
+        }
+
+        private void SetButtPuppetSensors(bool SensorBoolean)
+        {
+            if (Actor)
+            {
+                if (Actor.GetComponent<ButtPuppet>() != null)
+                {
+                    if (SensorBoolean == false)
+                    {
+                        if (Actor.GetComponent<ButtPuppet>().ApplySensors)
+                            Actor.GetComponent<ButtPuppet>().ApplySensors = false;
+                    }
+                    else
+                    {
+                        if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
+                            Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                    }
+                }
+                else if (Actor.GetComponent<IKButtPuppet>() != null)
+                {
+                    if (SensorBoolean == false)
+                    {
+                        if (Actor.GetComponent<IKButtPuppet>().ApplySensors)
+                            Actor.GetComponent<IKButtPuppet>().ApplySensors = false;
+                    }
+                    else
+                    {
+                        if (!Actor.GetComponent<IKButtPuppet>().ApplySensors)
+                            Actor.GetComponent<IKButtPuppet>().ApplySensors = true;
+                    }
+                }
+            }
+        }
 
         private void KillChildren(UnityEngine.Object[] children)
         {
@@ -89,11 +183,12 @@ namespace MrPuppet
         [HideIf("IsPlaying", false)]
         [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
-        private void RerecordJaw(){
+        private void RerecordJaw()
+        {
 
             if (!PuppetReplay)
                 InitializeAnimation();
-                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
 
             OverwriteButtPuppet = true;
             OverwriteJaw = false;
@@ -110,7 +205,7 @@ namespace MrPuppet
         {
             if (!PuppetReplay)
                 InitializeAnimation();
-                //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
+            //Actor.GetComponent<MonoBehaviour>().StartCoroutine(QueryHyperMesh("https://hypermesh.app/performances/" + _AnimationClip.name + "-audio/info.json"));
 
             OverwriteButtPuppet = false;
             OverwriteJaw = true;
@@ -125,11 +220,19 @@ namespace MrPuppet
         {
             if (PuppetReplay)
             {
-               if (AnimationCoroutine != null)
-                 Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
+                if (AnimationCoroutine != null)
+                    Actor.GetComponent<MonoBehaviour>().StopCoroutine(AnimationCoroutine);
 
-                //_AudioSource.Stop();
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                if (Recorder)
+                {
+                    if (Recorder.IsRecording())
+                    {
+                        Recorder.StopRecording();
+                    }
+                }
+
+                if (HubConnectionCheck())
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
 
                 TransformWrapper.transform.DetachChildren();
 
@@ -138,11 +241,12 @@ namespace MrPuppet
 
                 //InfoBoxMsg = "The audio file has NOT been succesfully loaded yet...";
 
-                if (!Actor.GetComponent<ButtPuppet>().ApplySensors)
-                    Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                SetButtPuppetSensors(true);
 
-                if (!Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                    Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                if (Actor.GetComponent<JawTransformMapper>() != null){
+                    if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
+                        JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+                }
 
                 AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
@@ -150,12 +254,16 @@ namespace MrPuppet
 
         private void InitializeAnimation()
         {
-            JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            if (Actor.GetComponent<JawTransformMapper>() != null){
+                if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
+                    JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
+            }
 
             PuppetReplay = Instantiate(Actor, new Vector3(0, 0, 0), Actor.transform.rotation);
 
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.JawTransformMapper>());
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.ButtPuppet>());
+            KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.IKButtPuppet>());
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.Blink>());
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.HeadPuppet>());
             KillChildren(PuppetReplay.GetComponentsInChildren<MrPuppet.JawBlendShapeMapper>());
@@ -169,20 +277,31 @@ namespace MrPuppet
             //_AudioSource.clip = _AudioClip;
             //_AudioSource.Play();
 
-            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
             //_AnimationClipName = _AnimationClip.name;
-            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + _AnimationClip.name);
+            if (_AnimationClip)
+            {
+                if (_AnimationClip.name.Count(c => c == '-') == 2)
+                {
+                    if (!EnableAudioParse)
+                        AudioClipParseAfterPlay = _AnimationClip.name.Substring(0, _AnimationClip.name.LastIndexOf("-"));
+                    else
+                        AudioClipParseAfterPlay = _AnimationClip.name;
+
+                    if (HubConnectionCheck())
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + AudioClipParseAfterPlay);
+                }
+            }
 
             JointController _JointController = PuppetReplay.AddComponent<JointController>();
             _JointController.PAR = this;
 
             Animator cloneReplay = PuppetReplay.AddComponent<Animator>();
             cloneReplay.runtimeAnimatorController = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/tempPAR.controller", _AnimationClip);
-            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine( StopAfterAnimation() );
+            AnimationCoroutine = Actor.GetComponent<MonoBehaviour>().StartCoroutine(StopAfterAnimation());
 
             TransformWrapper = new GameObject("TransformWrapper");
             PuppetReplay.transform.parent = TransformWrapper.transform;
-            TransformWrapper.transform.position += new Vector3(0, 0, 2);
+            TransformWrapper.transform.position += new Vector3(0, 0, 3.5f);
             Actor.transform.parent = TransformWrapper.transform;
 
             foreach (Transform child in PuppetReplay.transform.GetComponentsInChildren<Transform>())
@@ -211,8 +330,13 @@ namespace MrPuppet
             }
 
             if (!Recorder)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-            Recorder.StartRecording();
+            {
+                try
+                { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                catch { return; }
+            }
+            if (Recorder)
+                Recorder.StartRecording();
         }
 
         private void Update()
@@ -221,20 +345,39 @@ namespace MrPuppet
             {
                 if (HubConnection == FindObjectOfType<MrPuppetHubConnection>())
                 {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClip.name);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
                     HubConnection = null;
+                }
+                if (PlayModeEntered == true)
+                    PlayModeEntered = false;
+            }
+            else
+            {
+                if (PlayModeEntered == false)
+                {
+                    if (_AnimationClip)
+                    {
+                        if (_AnimationClip.name.Count(c => c == '-') == 2)
+                        {
+                            if (HubConnectionCheck())
+                            {
+                                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParseMessageBox);
+                            }
+                        }
+                    }
+                    PlayModeEntered = true;
                 }
             }
         }
 
         private IEnumerator StopAfterAnimation()
         {
-            yield return new WaitForSeconds( (float) System.Math.Ceiling(_AnimationClip.length * 1000) / 1000 );
+            yield return new WaitForSeconds((float)System.Math.Ceiling(_AnimationClip.length * 1000) / 1000);
 
             if (Recorder)
             {
-              if(Recorder.IsRecording())
-                Recorder.StopRecording();
+                if (Recorder.IsRecording())
+                    Recorder.StopRecording();
             }
 
             StopAnimation();
@@ -285,7 +428,7 @@ namespace MrPuppet
         /*
         private IEnumerator Stream_AutioClip(string url)
         {
-           
+
             InCoroutine = true;
             using (UnityWebRequest webRequest = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.WAV))
             {
@@ -343,60 +486,63 @@ namespace MrPuppet
                 {
                     if (PAR.OverwriteJaw == true)
                     {
-                        if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
 
-                        PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
-                        PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
+                        }
 
+                        if (PAR.JawJoint != null){
+                            PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
+                            PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
+                        }
                     }
                     else
                     {
-                        if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
-                            PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
-
+                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                            if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
+                                PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
+                        }
                     }
 
                     if (PAR.OverwriteButtPuppet == true)
                     {
-                        if (PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = false;
+                        PAR.SetButtPuppetSensors(false);
 
-                        for (var i = 0; i<PAR.JointsMimic.Count; i++)
+                        for (var i = 0; i < PAR.JointsMimic.Count; i++)
                         {
                             PAR.JointsMimic[i].localRotation = PAR.JointsClone[i].localRotation;
+                            PAR.JointsMimic[i].localPosition = PAR.JointsClone[i].localPosition;
                         }
 
                     }
                     else
                     {
-                        if (!PAR.Actor.GetComponent<ButtPuppet>().ApplySensors)
-                            PAR.Actor.GetComponent<ButtPuppet>().ApplySensors = true;
+                        PAR.SetButtPuppetSensors(true);
                     }
                 }
             }
-    }
+        }
 
-    [InitializeOnLoadAttribute]
+        [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
         {
             static PlayModeStateChanged()
             {
                 EditorApplication.playModeStateChanged += playModes;
-                //HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-                //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + _AnimationClipName);
             }
 
             private static void playModes(PlayModeStateChange state)
             {
-               if(state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
-                AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
+                if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+                    AssetDatabase.DeleteAsset("Assets/Recordings/tempPAR.controller");
             }
         }
     }
 #else
-public class PerformanceAnimationReplacementManager : MonoBehaviour {
+    public class PerformanceAnimationReplacementManager : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }

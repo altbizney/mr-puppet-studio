@@ -301,7 +301,7 @@ namespace MrPuppet
             }
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             /*
             if (!Actor)

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MrPuppet
 {
@@ -15,6 +18,17 @@ namespace MrPuppet
         private Quaternion RootSpawnRotation;
 
         public Transform Root;
+        private Vector3 position;
+
+        private Quaternion RootRotationTarget;
+        private Quaternion RotationModifiedTarget;
+        private bool Unsubscribed = true;
+        private bool UnsubscribeForward;
+        private string UnsubscribeButtonLabel = "Hardware control disabled. Attach to enable";
+        private float LerpTimer;
+        private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
+        private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
+
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;
@@ -43,13 +57,54 @@ namespace MrPuppet
         [Range(1f, 2.5f)]
         public float RotationModifier = 1f;
 
+        [MinValue(0.01f)]
+        [TitleGroup("Sensor Subscription")]
+        [OnValueChanged("ChangedDuration")]
+        public float UnsubscribeDuration = 1f;
+
+        [ReadOnly]
+        [Range(0f, 1f)]
+        [TitleGroup("Sensor Subscription")]
+        public float SensorAmount = 0f;
+
         [Button(ButtonSizes.Large)]
         [GUIColor(0f, 1f, 0f)]
         [DisableInEditorMode()]
-        public void FocusDataMapper()
+        [TitleGroup("Sensor Subscription")]
+        [LabelText("$UnsubscribeButtonLabel")]
+        [DisableIf("$Unsubscribed")]
+        public void UnsubscribeFromSensors()
         {
-            Selection.activeGameObject = DataMapper.gameObject;
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                Unsubscribed = true;
+                SensorAmount = 0;
+                UnsubscribeForward = false;
+                UnsubscribeButtonLabel = "Hardware control disabled. Re-attach to enable";
+            }
         }
+
+        private void ChangedDuration()
+        {
+            if (!Unsubscribed)
+            {
+                LerpTimer = UnsubscribeDuration;
+                SensorAmount = 1f;
+            }
+        }
+
+        public void SubscribeEventHeadPuppet()
+        {
+            if (Unsubscribed)
+            {
+                UnsubscribeForward = true;
+            }
+        }
+
+        //deattach only deattaches.
+        //remove ability to ease back from deattach button
+        //put it in attach eventheadpuppet
 
         // public string AttachPoseToString()
         // {
@@ -81,15 +136,61 @@ namespace MrPuppet
 
             RootSpawnPosition = Root.localPosition;
             RootSpawnRotation = Root.rotation;
+
+            SensorAmount = 0;
+            RotationModifiedTarget = Root.rotation;
+            LerpTimer = 0;
+
+            DataMapper.OnSubscribeEvent += SubscribeEventHeadPuppet;
+            foreach (JawTransformMapper jaw in gameObject.GetComponentsInChildren<JawTransformMapper>())
+            {
+                JawTransformComponents.Add(jaw);
+            }
+            foreach (JawBlendShapeMapper jaw in gameObject.GetComponentsInChildren<JawBlendShapeMapper>())
+            {
+                JawBlendshapeComponents.Add(jaw);
+            }
         }
 
         private void Update()
         {
             if (DataMapper.AttachPoseSet)
             {
-
                 // apply position delta to bind pose
-                Vector3 position = RootSpawnPosition + (DataMapper.WristJoint.position - DataMapper.AttachPose.WristPosition);
+                position = RootSpawnPosition + ((DataMapper.WristJoint.position - (DataMapper.AttachPose.WristPosition)));
+
+                RotationModifiedTarget = Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier);
+
+                if (Unsubscribed)
+                {
+                    if (UnsubscribeForward)
+                        LerpTimer += Time.deltaTime;
+                    else
+                        LerpTimer -= Time.deltaTime;
+
+                    SensorAmount = LerpTimer / UnsubscribeDuration;
+                    SensorAmount = SensorAmount * SensorAmount * (3f - 2f * SensorAmount);
+                }
+
+                if (LerpTimer > UnsubscribeDuration && UnsubscribeForward)
+                {
+                    LerpTimer = UnsubscribeDuration;
+                    UnsubscribeButtonLabel = "Disable hardware control";
+                    Unsubscribed = false;
+                    SensorAmount = 1;
+                }
+                else if (LerpTimer < 0 && !UnsubscribeForward)
+                {
+                    LerpTimer = 0;
+                    SensorAmount = 0;
+                }
+
+                RootRotationTarget = Quaternion.Slerp(RootSpawnRotation, RotationModifiedTarget, SensorAmount);
+                Root.rotation = Quaternion.Slerp(Root.rotation, RootRotationTarget, RotationSpeed * Time.deltaTime);
+                position = Vector3.Lerp(RootSpawnPosition, position, SensorAmount);
+
+                foreach (JawBlendShapeMapper Jaw in JawBlendshapeComponents) { Jaw.SensorAmount = SensorAmount; }
+                foreach (JawTransformMapper Jaw in JawTransformComponents) { Jaw.SensorAmount = SensorAmount; }
 
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
@@ -101,11 +202,7 @@ namespace MrPuppet
                 // smoothly apply changes to position
                 Root.localPosition = Vector3.SmoothDamp(Root.localPosition, position, ref PositionVelocity, PositionSpeed);
 
-                Root.rotation = Quaternion.Slerp(
-                    Root.rotation,
-                    Quaternion.SlerpUnclamped(RootSpawnRotation, RotationDeltaFromAttachWrist(), RotationModifier),
-                    RotationSpeed * Time.deltaTime
-                );
+                if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
         }
 
