@@ -53,6 +53,10 @@ namespace MrPuppet
 
         private MrPuppetDataMapper DataMapper;
         private GameObject North;
+        private GameObject South;
+        private GameObject East;
+        private GameObject West;
+
 
         private GameObject[] JointsArm = new GameObject[3];
         private RotationAxis[] ArmAxes = new RotationAxis[3];
@@ -102,6 +106,9 @@ namespace MrPuppet
             SnapshotWestPose();
 
             North = GameObject.Find("North");
+            South = GameObject.Find("South");
+            East = GameObject.Find("East");
+            West = GameObject.Find("West");
         }
 
         private Quaternion RotationDeltaFromAttachWrist()
@@ -159,7 +166,10 @@ namespace MrPuppet
             EastScore = PopulateScores(EastPoseAxes);
             WestScore = PopulateScores(WestPoseAxes);
 
-            //North.transform.localScale = new Vector3(1f, ScoreTotal, 1f);
+            North.transform.localScale = new Vector3(1f, NorthScore, 1f);
+            South.transform.localScale = new Vector3(1f, SouthScore, 1f);
+            East.transform.localScale = new Vector3(1f, EastScore, 1f);
+            West.transform.localScale = new Vector3(1f, WestScore, 1f);
 
             JointWrist = JointsArm[0].transform.localRotation.eulerAngles;
             JointElbow = JointsArm[1].transform.localRotation.eulerAngles;

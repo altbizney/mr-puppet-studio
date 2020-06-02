@@ -215,7 +215,7 @@ PrefabInstance:
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 548618288063274431, guid: 0fd312b924ee4467283b8756aa41c201,
         type: 3}
@@ -293,10 +293,22 @@ MonoBehaviour:
   JointWrist: {x: 0, y: 0, z: 0}
   JointElbow: {x: 0, y: 0, z: 0}
   JointShoulder: {x: 0, y: 0, z: 0}
-  ScoreWrist: {x: 0, y: 0, z: 0}
-  ScoreElbow: {x: 0, y: 0, z: 0}
-  ScoreShoulder: {x: 0, y: 0, z: 0}
-  ScoreTotal: 0
+  NorthScore: 0
+  SouthScore: 0
+  EastScore: 0
+  WestScore: 0
+  FormulaX:
+  - 
+  - 
+  - 
+  FormulaY:
+  - 
+  - 
+  - 
+  FormulaZ:
+  - 
+  - 
+  - 
 --- !u!1 &221525652
 GameObject:
   m_ObjectHideFlags: 0
