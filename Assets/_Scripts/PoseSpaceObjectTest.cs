@@ -10,34 +10,31 @@ namespace MrPuppet
 {
     public class PoseSpaceObjectTest : MonoBehaviour
     {
-
-        private GameObject Clone1;
-        private GameObject Clone2;
-        private MrPuppetDataMapper DataMapper;
-        Quaternion DeltaQuat;
-
         [Title("Poses")]
         [ReadOnly]
-        public Quaternion Attach;
+        public Vector3 PoseWrist;
         [ReadOnly]
-        public Quaternion Pose1;
+        public Vector3 PoseElbow;
         [ReadOnly]
-        public Quaternion Pose2;
+        public Vector3 PoseShoulder;
 
-        [Title("First Scores")]
+        [Title("Joints")]
         [ReadOnly]
-        public float ScoreX1;
+        public Vector3 JointWrist;
         [ReadOnly]
-        public float ScoreY1;
+        public Vector3 JointElbow;
         [ReadOnly]
-        public float ScoreZ1;
+        public Vector3 JointShoulder;
 
         [Title("Total Scores")]
         [ReadOnly]
-        public float ScoreTotal1;
+        public Vector3 ScoreWrist;
         [ReadOnly]
-        public float ScoreTotal2;
+        public Vector3 ScoreElbow;
+        [ReadOnly]
+        public Vector3 ScoreShoulder;
 
+        /*
         [Title("Formula - live_origin_dela_z / pose_attach_delta_z = score")]
         [ReadOnly]
         public string FormulaX;
@@ -45,23 +42,32 @@ namespace MrPuppet
         public string FormulaY;
         [ReadOnly]
         public string FormulaZ;
+        */
 
-        private GameObject[] Joints = new GameObject[3];
-        private GameObject[] JointsPose = new GameObject[3];
-
-        private class RotationPose
+        private class RotationAxis
         {
             public Quaternion YAxis;
             public Quaternion XAxis;
             public Quaternion ZAxis;
+
+            /*
+            public RotationAxis()
+            {
+                this.YAxis = new GameObject("Y").transform;
+                this.YAxis = new GameObject("Y").transform;
+                this.ZAxis = new GameObject("Y").transform;
+            }
+            */
         }
 
-        private RotationPose[] Poses = new RotationPose[3];
-        private RotationPose[] IsolateJoints = new RotationPose[3];
-        private RotationPose ZeroAxis = new RotationPose();
-        public Vector3 ScoreWrist;
-        public Vector3 ScoreElbow;
-        public Vector3 ScoreShoulder;
+        private MrPuppetDataMapper DataMapper;
+
+        private GameObject[] JointsArm = new GameObject[3];
+        private GameObject[] JointsPose = new GameObject[3];
+
+        private RotationAxis[] PoseAxes = new RotationAxis[3];
+        private RotationAxis[] ArmAxes = new RotationAxis[3];
+        private RotationAxis ZeroAxes = new RotationAxis();
 
         private void Awake()
         {
@@ -69,17 +75,17 @@ namespace MrPuppet
 
             GameObject Prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
 
-            Joints[0] = gameObject;
-            for (int j = 1; j < JointsPose.Length; j++)
-                Joints[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -j, 0), gameObject.transform.rotation);
+            JointsArm[0] = gameObject;
+            for (int j = 1; j < JointsArm.Length; j++)
+                JointsArm[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(0, -j, 0), gameObject.transform.rotation);
 
             for (int j = 0; j < JointsPose.Length; j++)
                 JointsPose[j] = Instantiate(Prefab, gameObject.transform.position + new Vector3(1, -j, 0), gameObject.transform.rotation);
 
-            for (int p = 0; p < JointsPose.Length; p++)
+            for (int p = 0; p < PoseAxes.Length; p++)
             {
-                Poses[p] = new RotationPose();
-                IsolateJoints[p] = new RotationPose();
+                PoseAxes[p] = new RotationAxis();
+                ArmAxes[p] = new RotationAxis();
             }
 
             SnapshotPose1();
@@ -104,31 +110,38 @@ namespace MrPuppet
         {
             if (!DataMapper.AttachPoseSet) return;
 
-            Joints[0].transform.localRotation = RotationDeltaFromAttachWrist();
-            Joints[1].transform.localRotation = RotationDeltaFromAttachElbow();
-            Joints[2].transform.localRotation = RotationDeltaFromAttachShoulder();
+            JointsArm[0].transform.localRotation = RotationDeltaFromAttachWrist();
+            JointsArm[1].transform.localRotation = RotationDeltaFromAttachElbow();
+            JointsArm[2].transform.localRotation = RotationDeltaFromAttachShoulder();
 
             for (int p = 0; p < JointsPose.Length; p++)
             {
-                Poses[p].YAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.y, JointsPose[p].transform.up);
-                Poses[p].XAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.x, JointsPose[p].transform.right);
-                Poses[p].ZAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.z, JointsPose[p].transform.forward);
+                PoseAxes[p].YAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.y, JointsPose[p].transform.up);
+                PoseAxes[p].XAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.x, JointsPose[p].transform.right);
+                PoseAxes[p].ZAxis = Quaternion.AngleAxis(JointsPose[p].transform.localRotation.eulerAngles.z, JointsPose[p].transform.forward);
             }
 
-            for (int p = 0; p < Joints.Length; p++)
+            for (int p = 0; p < JointsArm.Length; p++)
             {
-                IsolateJoints[p].YAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.y, Joints[p].transform.up);
-                IsolateJoints[p].XAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.x, Joints[p].transform.right);
-                IsolateJoints[p].ZAxis = Quaternion.AngleAxis(Joints[p].transform.localRotation.eulerAngles.z, Joints[p].transform.forward);
+                ArmAxes[p].YAxis = Quaternion.AngleAxis(JointsArm[p].transform.localRotation.eulerAngles.y, JointsArm[p].transform.up);
+                ArmAxes[p].XAxis = Quaternion.AngleAxis(JointsArm[p].transform.localRotation.eulerAngles.x, JointsArm[p].transform.right);
+                ArmAxes[p].ZAxis = Quaternion.AngleAxis(JointsArm[p].transform.localRotation.eulerAngles.z, JointsArm[p].transform.forward);
             }
 
-            ZeroAxis.YAxis = Quaternion.AngleAxis(0f, Vector3.up);
-            ZeroAxis.XAxis = Quaternion.AngleAxis(0f, Vector3.right);
-            ZeroAxis.ZAxis = Quaternion.AngleAxis(0f, Vector3.forward);
+            Debug.Log("Not equal " + Quaternion.AngleAxis(JointsArm[0].transform.localRotation.eulerAngles.y, JointsArm[0].transform.up) + " " + Quaternion.AngleAxis(JointsPose[0].transform.localRotation.eulerAngles.y, JointsPose[0].transform.up));
+            Debug.Log(ArmAxes[0].YAxis.eulerAngles.y + " " + PoseAxes[0].YAxis.eulerAngles.y);
+
+            ZeroAxes.YAxis = Quaternion.AngleAxis(0f, Vector3.up);
+            ZeroAxes.XAxis = Quaternion.AngleAxis(0f, Vector3.right);
+            ZeroAxes.ZAxis = Quaternion.AngleAxis(0f, Vector3.forward);
 
             ScoreWrist = PopulateScores(0);
             ScoreElbow = PopulateScores(1);
             ScoreShoulder = PopulateScores(2);
+
+            //JointWrist.x = ArmAxes[0].XAxis.eulerAngles.x;
+            //JointWrist.y = ArmAxes[0].YAxis.eulerAngles.y;
+            //JointWrist.z = ArmAxes[0].ZAxis.eulerAngles.z;
 
             //FormulaX = live_origin_dela_x + " / " + pose_attach_delta_x + " = " + live_origin_dela_x / pose_attach_delta_x;
             //FormulaY = live_origin_dela_y + " / " + pose_attach_delta_y + " = " + live_origin_dela_y / pose_attach_delta_y;
@@ -138,18 +151,20 @@ namespace MrPuppet
         private Vector3 PopulateScores(int index)
         {
 
-            float pose_attach_delta_y = Quaternion.Angle(ZeroAxis.YAxis, Poses[index].YAxis);
-            float pose_attach_delta_x = Quaternion.Angle(ZeroAxis.XAxis, Poses[index].XAxis);
-            float pose_attach_delta_z = Quaternion.Angle(ZeroAxis.ZAxis, Poses[index].ZAxis);
+            float pose_attach_delta_y = Quaternion.Angle(ZeroAxes.YAxis, PoseAxes[index].YAxis);
+            float pose_attach_delta_x = Quaternion.Angle(ZeroAxes.XAxis, PoseAxes[index].XAxis);
+            float pose_attach_delta_z = Quaternion.Angle(ZeroAxes.ZAxis, PoseAxes[index].ZAxis);
 
-            float live_origin_dela_y = Quaternion.Angle(ZeroAxis.YAxis, IsolateJoints[index].YAxis);
-            float live_origin_dela_x = Quaternion.Angle(ZeroAxis.XAxis, IsolateJoints[index].YAxis);
-            float live_origin_dela_z = Quaternion.Angle(ZeroAxis.ZAxis, IsolateJoints[index].YAxis);
+            float live_origin_delta_y = Quaternion.Angle(ZeroAxes.YAxis, ArmAxes[index].YAxis);
+            float live_origin_delta_x = Quaternion.Angle(ZeroAxes.XAxis, ArmAxes[index].XAxis);
+            float live_origin_delta_z = Quaternion.Angle(ZeroAxes.ZAxis, ArmAxes[index].ZAxis);
 
             Vector3 Score;
-            Score.y = (live_origin_dela_y / pose_attach_delta_y).Clamp(0f, 1f);
-            Score.x = (live_origin_dela_x / pose_attach_delta_x).Clamp(0f, 1f);
-            Score.z = (live_origin_dela_z / pose_attach_delta_z).Clamp(0f, 1f);
+            Score.y = (live_origin_delta_y / pose_attach_delta_y).Clamp(0f, 1f);
+            Score.x = (live_origin_delta_x / pose_attach_delta_x).Clamp(0f, 1f);
+            Score.z = (live_origin_delta_z / pose_attach_delta_z).Clamp(0f, 1f);
+
+            //Debug.Log(live_origin_delta_y + " " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y);
 
             return Score;
         }
@@ -165,14 +180,18 @@ namespace MrPuppet
         [Button(ButtonSizes.Large)]
         public void SnapshotPose1()
         {
-            for (int p = 0; p < JointsPose.Length; p++)
+            for (int p = 0; p < PoseAxes.Length; p++)
             {
-                Poses[p] = IsolateJoints[p];
+                PoseAxes[p] = ArmAxes[p];
             }
+
+            PoseWrist.y = PoseAxes[0].YAxis.y;
+            PoseWrist.x = PoseAxes[0].XAxis.x;
+            PoseWrist.z = PoseAxes[0].ZAxis.z;
 
             for (int p = 0; p < JointsPose.Length; p++)
             {
-                Quaternion totalQ = Quaternion.Euler(IsolateJoints[p].XAxis.eulerAngles.x, IsolateJoints[p].YAxis.eulerAngles.y, IsolateJoints[p].ZAxis.eulerAngles.z);
+                Quaternion totalQ = Quaternion.Euler(ArmAxes[p].XAxis.eulerAngles.x, ArmAxes[p].YAxis.eulerAngles.y, ArmAxes[p].ZAxis.eulerAngles.z);
 
                 JointsPose[p].transform.rotation = totalQ;
             }
