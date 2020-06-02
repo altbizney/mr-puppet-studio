@@ -14,6 +14,9 @@ namespace MrPuppet
         [SerializeField]
         public string ShowsRootPath;
 
+        [SerializeField]
+        public bool UseHyperMeshPerformancePath;
+
         internal static MrPuppetSettings GetOrCreateSettings()
         {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>(AssetPath);
@@ -21,21 +24,25 @@ namespace MrPuppet
             {
                 settings = ScriptableObject.CreateInstance<MrPuppetSettings>();
                 settings.ShowsRootPath = "/Volumes/GoogleDrive/My Drive/Thinko/Shows/";
+                settings.UseHyperMeshPerformancePath = true;
                 AssetDatabase.CreateAsset(settings, AssetPath);
                 AssetDatabase.SaveAssets();
             }
             return settings;
         }
 
-        internal static MrPuppetSettings SaveSettings(string ProviderPath)
+        /*
+        internal static MrPuppetSettings SaveSettings(string ProviderPath, bool ProviderBool)
         {
             var settings = AssetDatabase.LoadAssetAtPath<MrPuppetSettings>(AssetPath);
             settings.ShowsRootPath = ProviderPath;
+            settings.UseHyperMeshPerformancePath = ProviderBool;
             if (settings.ShowsRootPath.Length > 0 && settings.ShowsRootPath.Last() != '/')
                 settings.ShowsRootPath += '/';
 
             return settings;
         }
+        */
 
         internal static SerializedObject GetSerializedSettings()
         {
@@ -50,6 +57,7 @@ namespace MrPuppet
         class Styles
         {
             public static GUIContent RootPath = new GUIContent("Shows Root Path");
+            public static GUIContent HyperMeshPath = new GUIContent("Use ~/HyperMesh/Performances path");
         }
 
         public MrPuppetSettingsProvider(string path, SettingsScope scope = SettingsScope.User)
@@ -63,12 +71,14 @@ namespace MrPuppet
         public override void OnGUI(string searchContext)
         {
             EditorGUILayout.PropertyField(Settings.FindProperty("ShowsRootPath"), Styles.RootPath);
+            EditorGUILayout.PropertyField(Settings.FindProperty("UseHyperMeshPerformancePath"), Styles.HyperMeshPath);
+
 
             if (GUI.changed)
             {
-                MrPuppetSettings.SaveSettings(Settings.FindProperty("ShowsRootPath").stringValue);
+                //MrPuppetSettings.SaveSettings(Settings.FindProperty("ShowsRootPath").stringValue, Settings.FindProperty("UseHyperMeshPerformancePath").boolValue);
+                Settings.ApplyModifiedProperties();
             }
-            //Settings.ApplyModifiedProperties();
         }
 
         [SettingsProvider]
