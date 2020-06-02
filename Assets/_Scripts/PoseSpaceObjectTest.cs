@@ -183,18 +183,17 @@ namespace MrPuppet
                 Scores[p].y = (live_origin_delta_y / pose_attach_delta_y).Clamp(0f, 1f);
                 Scores[p].x = (live_origin_delta_x / pose_attach_delta_x).Clamp(0f, 1f);
                 Scores[p].z = (live_origin_delta_z / pose_attach_delta_z).Clamp(0f, 1f);
+
+                FormulaX[p] = live_origin_delta_x + " / " + pose_attach_delta_x + " = " + live_origin_delta_x / pose_attach_delta_x;
+                FormulaY[p] = live_origin_delta_y + " / " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y;
+                FormulaZ[p] = live_origin_delta_z + " / " + pose_attach_delta_z + " = " + live_origin_delta_z / pose_attach_delta_z;
             }
+
 
             float ScoreTotal = Scores[0].x + Scores[0].y + Scores[0].z + Scores[1].x + Scores[1].y + Scores[1].z + Scores[2].x + Scores[2].y + Scores[2].z;
             ScoreTotal = Remap(ScoreTotal, 0f, 9f, 0f, 1f);
 
             return ScoreTotal;
-
-            /*
-                FormulaX[index] = live_origin_delta_x + " / " + pose_attach_delta_x + " = " + live_origin_delta_x / pose_attach_delta_x;
-                FormulaY[index] = live_origin_delta_y + " / " + pose_attach_delta_y + " = " + live_origin_delta_y / pose_attach_delta_y;
-                FormulaZ[index] = live_origin_delta_z + " / " + pose_attach_delta_z + " = " + live_origin_delta_z / pose_attach_delta_z;
-            */
         }
 
         public float Remap(float value, float from1, float to1, float from2, float to2)
@@ -211,10 +210,6 @@ namespace MrPuppet
                 Quaternion totalQ = Quaternion.Euler(ArmAxes[p].XAxis.eulerAngles.x, ArmAxes[p].YAxis.eulerAngles.y, ArmAxes[p].ZAxis.eulerAngles.z);
                 NorthPoseJoints[p].transform.rotation = totalQ;
             }
-
-            PoseWrist = NorthPoseJoints[0].transform.localRotation.eulerAngles;
-            PoseElbow = NorthPoseJoints[1].transform.localRotation.eulerAngles;
-            PoseShoulder = NorthPoseJoints[2].transform.localRotation.eulerAngles;
         }
 
         [Button(ButtonSizes.Medium)]
@@ -248,6 +243,10 @@ namespace MrPuppet
                 Quaternion totalQ = Quaternion.Euler(ArmAxes[p].XAxis.eulerAngles.x, ArmAxes[p].YAxis.eulerAngles.y, ArmAxes[p].ZAxis.eulerAngles.z);
                 WestPoseJoints[p].transform.rotation = totalQ;
             }
+
+            PoseWrist = WestPoseJoints[0].transform.localRotation.eulerAngles;
+            PoseElbow = WestPoseJoints[1].transform.localRotation.eulerAngles;
+            PoseShoulder = WestPoseJoints[2].transform.localRotation.eulerAngles;
         }
 
         /*
