@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using UnityEditor;
-
-
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -57,7 +55,6 @@ namespace MrPuppet
         private GameObject East;
         private GameObject West;
 
-
         private GameObject[] JointsArm = new GameObject[3];
         private RotationAxis[] ArmAxes = new RotationAxis[3];
 
@@ -76,7 +73,7 @@ namespace MrPuppet
         {
             DataMapper = FindObjectOfType<MrPuppetDataMapper>();
 
-            GameObject Prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
+            GameObject Prefab = (GameObject) AssetDatabase.LoadAssetAtPath("Assets/_Prefabs/0 - Debug/CubeColored.prefab", typeof(GameObject));
 
             JointsArm[0] = gameObject;
             for (int j = 1; j < JointsArm.Length; j++)
