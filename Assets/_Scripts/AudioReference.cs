@@ -228,7 +228,12 @@ namespace MrPuppet
                         parts = Take.Split('-').ToList();
 
                     if (parts.Count > 1)
-                        filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    {
+                        if (settings.UseHyperMeshPerformancePath)
+                            filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/HyperMesh/Performances/" + parts[0] + "/" + parts[1] + "/" + Take + ".FACS.txt";
+                        else
+                            filePath = settings.ShowsRootPath + parts[0] + "/episode/" + parts[1] + "/performance/" + Take + ".txt";
+                    }
                 }
             }
             else
@@ -280,7 +285,7 @@ namespace MrPuppet
                 Timer = 0;
 
                 if (EnableAudioPlayback && Application.isPlaying)
-                {   //&& EditorApplication.isPlaying
+                {
                     if (!HubConnection)
                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
