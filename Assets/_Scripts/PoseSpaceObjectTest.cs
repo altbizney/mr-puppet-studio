@@ -191,6 +191,15 @@ namespace MrPuppet
                 float live_origin_delta_x = Quaternion.Angle(ZeroAxes.XAxis, ArmAxes[p].XAxis);
                 float live_origin_delta_z = Quaternion.Angle(ZeroAxes.ZAxis, ArmAxes[p].ZAxis);
 
+                DebugGraph.MultiLog("Pose y " + p, Color.red, live_origin_delta_y, "live_origin_delta_y");
+                DebugGraph.MultiLog("Pose y " + p, Color.blue, pose_attach_delta_y, "pose_attach_delta_y");
+
+                DebugGraph.MultiLog("Pose x " + p, Color.red, live_origin_delta_x, "live_origin_delta_x");
+                DebugGraph.MultiLog("Pose x " + p, Color.blue, pose_attach_delta_x, "pose_attach_delta_x");
+
+                DebugGraph.MultiLog("Pose z " + p, Color.red, live_origin_delta_z, "live_origin_delta_z");
+                DebugGraph.MultiLog("Pose z " + p, Color.blue, pose_attach_delta_z, "pose_attach_delta_z");
+
                 Scores[p].y = (live_origin_delta_y / pose_attach_delta_y).Clamp(0f, 1f);
                 Scores[p].x = (live_origin_delta_x / pose_attach_delta_x).Clamp(0f, 1f);
                 Scores[p].z = (live_origin_delta_z / pose_attach_delta_z).Clamp(0f, 1f);
