@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: MrPuppetSettings
   m_EditorClassIdentifier: 
   ShowsRootPath: /Volumes/GoogleDrive/My Drive/Thinko/Shows/
+  UseHyperMeshPerformancePath: 1
