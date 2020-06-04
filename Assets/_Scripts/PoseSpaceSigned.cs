@@ -128,23 +128,14 @@ namespace MrPuppet
             poseWestSeperated.y = Mathf.Atan2(poseWestUp.x, poseWestUp.y) * Mathf.Rad2Deg;
             poseWestSeperated.z = Mathf.Atan2(poseWestUp.y, poseWestUp.z) * Mathf.Rad2Deg;
 
-            deltaLiveOriginXZ = Mathf.DeltaAngle(zeroXZ, liveXZ);
-            deltaLiveOriginXY = Mathf.DeltaAngle(zeroXY, liveXY);
-            deltaLiveOriginYZ = Mathf.DeltaAngle(zeroYZ, liveYZ);
+            deltaLiveOriginXZ = Mathf.DeltaAngle(liveXZ, zeroXZ);
+            deltaLiveOriginXY = Mathf.DeltaAngle(liveXY, zeroXY);
+            deltaLiveOriginYZ = Mathf.DeltaAngle(liveYZ, zeroYZ);
 
             NorthTotalScore = PopulateScores(poseNorthSeperated, "North");
             SouthTotalScore = PopulateScores(poseSouthSeperated, "South");
             EastTotalScore = PopulateScores(poseEastSeperated, "East");
             WestTotalScore = PopulateScores(poseWestSeperated, "West");
-
-            /*
-            DebugGraph.MultiLog("Pose y ", Color.red, live_origin_delta_y, "live_origin_delta_y");
-            DebugGraph.MultiLog("Pose y ", Color.blue, pose_attach_delta_y, "pose_attach_delta_y");
-            DebugGraph.MultiLog("Pose x ", Color.red, live_origin_delta_x, "live_origin_delta_x");
-            DebugGraph.MultiLog("Pose x ", Color.blue, pose_attach_delta_x, "pose_attach_delta_x");
-            DebugGraph.MultiLog("Pose z ", Color.red, live_origin_delta_z, "live_origin_delta_z");
-            DebugGraph.MultiLog("Pose z ", Color.blue, pose_attach_delta_z, "pose_attach_delta_z");
-            */
 
             if (!float.IsNaN(NorthTotalScore))
                 North.transform.localScale = new Vector3(1f, NorthTotalScore, 1f);
@@ -160,17 +151,20 @@ namespace MrPuppet
         {
             float Score;
 
-            var deltaPoseOriginXZ = Mathf.DeltaAngle(zeroXZ, PoseSeperated.x);
-            var deltaPoseOriginXY = Mathf.DeltaAngle(zeroXY, PoseSeperated.y);
-            var deltaPoseOriginYZ = Mathf.DeltaAngle(zeroYZ, PoseSeperated.z);
+            var deltaPoseOriginXZ = Mathf.DeltaAngle(PoseSeperated.x, zeroXZ);
+            var deltaPoseOriginXY = Mathf.DeltaAngle(PoseSeperated.y, zeroXY);
+            var deltaPoseOriginYZ = Mathf.DeltaAngle(poseNorthSeperated.z, zeroYZ);
+
+            Debug.Log(Mathf.DeltaAngle(90, 1080));
+
 
             DebugGraph.MultiLog("Pose XZ " + Name, Color.green, deltaPoseOriginXZ, "deltaPoseOriginXZ");
             DebugGraph.MultiLog("Pose XY " + Name, Color.green, deltaPoseOriginXY, "deltaPoseOriginXY");
             DebugGraph.MultiLog("Pose YZ " + Name, Color.green, deltaPoseOriginYZ, "deltaPoseOriginYZ");
 
-            DebugGraph.MultiLog("Pose XZ " + Name, Color.blue, deltaLiveOriginXZ, "deltaLiveOriginXZ");
-            DebugGraph.MultiLog("Pose XY " + Name, Color.blue, deltaLiveOriginXY, "deltaLiveOriginXY");
-            DebugGraph.MultiLog("Pose YZ " + Name, Color.blue, deltaLiveOriginYZ, "deltaLiveOriginYZ");
+            DebugGraph.MultiLog("Pose XZ " + Name, Color.white, deltaLiveOriginXZ, "deltaLiveOriginXZ");
+            DebugGraph.MultiLog("Pose XY " + Name, Color.white, deltaLiveOriginXY, "deltaLiveOriginXY");
+            DebugGraph.MultiLog("Pose YZ " + Name, Color.white, deltaLiveOriginYZ, "deltaLiveOriginYZ");
 
             Vector3 ScoreSeperated = new Vector3((deltaLiveOriginXY / deltaPoseOriginXY).Clamp(0f, 1f), (deltaLiveOriginXZ / deltaPoseOriginXZ).Clamp(0f, 1f), (deltaLiveOriginYZ / deltaPoseOriginYZ).Clamp(0f, 1f));
 
