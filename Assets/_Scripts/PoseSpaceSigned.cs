@@ -107,6 +107,7 @@ namespace MrPuppet
             liveXZ = Mathf.Atan2(liveForward.x, liveForward.z) * Mathf.Rad2Deg;
             liveXY = Mathf.Atan2(liveUp.x, liveUp.y) * Mathf.Rad2Deg;
             liveYZ = Mathf.Atan2(liveUp.y, liveUp.z) * Mathf.Rad2Deg;
+            DebugGraph.Log(Mathf.Atan2(liveForward.x, liveForward.z));
 
             zeroXZ = Mathf.Atan2(zeroForward.y, zeroForward.z) * Mathf.Rad2Deg;
             zeroXY = Mathf.Atan2(zeroUp.x, zeroUp.y) * Mathf.Rad2Deg;
@@ -155,9 +156,6 @@ namespace MrPuppet
             var deltaPoseOriginXY = Mathf.DeltaAngle(PoseSeperated.y, zeroXY);
             var deltaPoseOriginYZ = Mathf.DeltaAngle(poseNorthSeperated.z, zeroYZ);
 
-            Debug.Log(Mathf.DeltaAngle(90, 1080));
-
-
             DebugGraph.MultiLog("Pose XZ " + Name, Color.green, deltaPoseOriginXZ, "deltaPoseOriginXZ");
             DebugGraph.MultiLog("Pose XY " + Name, Color.green, deltaPoseOriginXY, "deltaPoseOriginXY");
             DebugGraph.MultiLog("Pose YZ " + Name, Color.green, deltaPoseOriginYZ, "deltaPoseOriginYZ");
@@ -172,6 +170,28 @@ namespace MrPuppet
             Score = Remap(Score, 0f, 3f, 0f, 1f);
 
             return Score;
+        }
+
+        private Vector3 EulerAnglesClamp(Quaternion from)
+        {
+            Vector3 delta = from.eulerAngles;
+
+            if (delta.x > 180)
+                delta.x -= 360;
+            else if (delta.x < -180)
+                delta.x += 360;
+
+            if (delta.y > 180)
+                delta.y -= 360;
+            else if (delta.y < -180)
+                delta.y += 360;
+
+            if (delta.z > 180)
+                delta.z -= 360;
+            else if (delta.z < -180)
+                delta.z += 360;
+
+            return delta;
         }
 
         public float Remap(float value, float from1, float to1, float from2, float to2)
