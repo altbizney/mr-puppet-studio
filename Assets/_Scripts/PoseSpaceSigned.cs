@@ -98,7 +98,6 @@ namespace MrPuppet
             var poseSouthForward = poseSouth * Vector3.forward;
             var poseEastForward = poseEast * Vector3.forward;
             var poseWestForward = poseWest * Vector3.forward;
-
             var poseNorthUp = poseNorth * Vector3.up;
             var poseSouthUp = poseSouth * Vector3.up;
             var poseEastUp = poseEast * Vector3.up;
@@ -106,30 +105,30 @@ namespace MrPuppet
 
             liveXZ = Mathf.Atan2(Mathf.Sin(liveForward.x), Mathf.Cos(liveForward.z)) * Mathf.Rad2Deg;
             liveXY = Mathf.Atan2(Mathf.Sin(liveUp.x), Mathf.Cos(liveUp.y)) * Mathf.Rad2Deg;
-            liveYZ = Mathf.Atan2(Mathf.Sin(liveUp.y), Mathf.Cos(liveUp.z)) * Mathf.Rad2Deg;
+            liveYZ = Mathf.Atan2(Mathf.Sin(liveForward.y), Mathf.Cos(liveForward.z)) * Mathf.Rad2Deg;
 
             //DebugGraph.MultiLog("Atan ", Color.white, Mathf.Atan2(liveForward.x, liveForward.)z) * Mathf.Rad2Deg, "Atan");
             //DebugGraph.MultiLog("Atan", Color.blue, Mathf.Atan2(Mathf.Sin(liveForward.x), Mathf.Cos(liveForward.z)) * Mathf.Rad2Deg, "Atan");
 
             zeroXZ = Mathf.Atan2(Mathf.Sin(zeroForward.y), Mathf.Cos(zeroForward.z)) * Mathf.Rad2Deg;
             zeroXY = Mathf.Atan2(Mathf.Sin(zeroUp.x), Mathf.Cos(zeroUp.y)) * Mathf.Rad2Deg;
-            zeroYZ = Mathf.Atan2(Mathf.Sin(zeroUp.y), Mathf.Cos(zeroUp.z)) * Mathf.Rad2Deg;
+            zeroYZ = Mathf.Atan2(Mathf.Sin(zeroForward.y), Mathf.Cos(zeroForward.z)) * Mathf.Rad2Deg;
 
             poseNorthSeperated.x = Mathf.Atan2(Mathf.Sin(poseNorthForward.x), Mathf.Cos(poseNorthForward.z)) * Mathf.Rad2Deg;
             poseNorthSeperated.y = Mathf.Atan2(Mathf.Sin(poseNorthUp.x), Mathf.Cos(poseNorthUp.y)) * Mathf.Rad2Deg;
-            poseNorthSeperated.z = Mathf.Atan2(Mathf.Sin(poseNorthUp.y), Mathf.Cos(poseNorthUp.z)) * Mathf.Rad2Deg;
+            poseNorthSeperated.z = Mathf.Atan2(Mathf.Sin(poseNorthForward.y), Mathf.Cos(poseNorthForward.z)) * Mathf.Rad2Deg;
 
             poseSouthSeperated.x = Mathf.Atan2(Mathf.Sin(poseSouthForward.x), Mathf.Cos(poseSouthForward.z)) * Mathf.Rad2Deg;
             poseSouthSeperated.y = Mathf.Atan2(Mathf.Sin(poseSouthUp.x), Mathf.Cos(poseSouthUp.y)) * Mathf.Rad2Deg;
-            poseSouthSeperated.z = Mathf.Atan2(Mathf.Sin(poseSouthUp.y), Mathf.Cos(poseSouthUp.z)) * Mathf.Rad2Deg;
+            poseSouthSeperated.z = Mathf.Atan2(Mathf.Sin(poseSouthForward.y), Mathf.Cos(poseSouthForward.z)) * Mathf.Rad2Deg;
 
             poseEastSeperated.x = Mathf.Atan2(Mathf.Sin(poseEastForward.x), Mathf.Cos(poseEastForward.z)) * Mathf.Rad2Deg;
             poseEastSeperated.y = Mathf.Atan2(Mathf.Sin(poseEastUp.x), Mathf.Cos(poseEastUp.y)) * Mathf.Rad2Deg;
-            poseEastSeperated.z = Mathf.Atan2(Mathf.Sin(poseEastUp.y), Mathf.Cos(poseEastUp.z)) * Mathf.Rad2Deg;
+            poseEastSeperated.z = Mathf.Atan2(Mathf.Sin(poseEastForward.y), Mathf.Cos(poseEastForward.z)) * Mathf.Rad2Deg;
 
             poseWestSeperated.x = Mathf.Atan2(Mathf.Sin(poseWestForward.x), Mathf.Cos(poseWestForward.z)) * Mathf.Rad2Deg;
             poseWestSeperated.y = Mathf.Atan2(Mathf.Sin(poseWestUp.x), Mathf.Cos(poseWestUp.y)) * Mathf.Rad2Deg;
-            poseWestSeperated.z = Mathf.Atan2(Mathf.Sin(poseWestUp.y), Mathf.Cos(poseWestUp.z)) * Mathf.Rad2Deg;
+            poseWestSeperated.z = Mathf.Atan2(Mathf.Sin(poseWestForward.y), Mathf.Cos(poseWestForward.z)) * Mathf.Rad2Deg;
 
             deltaLiveOriginXZ = Mathf.DeltaAngle(zeroXZ, liveXZ);
             deltaLiveOriginXY = Mathf.DeltaAngle(zeroXY, liveXY);
