@@ -104,34 +104,36 @@ namespace MrPuppet
             var poseEastUp = poseEast * Vector3.up;
             var poseWestUp = poseWest * Vector3.up;
 
-            liveXZ = Mathf.Atan2(liveForward.x, liveForward.z) * Mathf.Rad2Deg;
-            liveXY = Mathf.Atan2(liveUp.x, liveUp.y) * Mathf.Rad2Deg;
-            liveYZ = Mathf.Atan2(liveUp.y, liveUp.z) * Mathf.Rad2Deg;
-            DebugGraph.Log(Mathf.Atan2(liveForward.x, liveForward.z));
+            liveXZ = Mathf.Atan2(Mathf.Sin(liveForward.x), Mathf.Cos(liveForward.z)) * Mathf.Rad2Deg;
+            liveXY = Mathf.Atan2(Mathf.Sin(liveUp.x), Mathf.Cos(liveUp.y)) * Mathf.Rad2Deg;
+            liveYZ = Mathf.Atan2(Mathf.Sin(liveUp.y), Mathf.Cos(liveUp.z)) * Mathf.Rad2Deg;
 
-            zeroXZ = Mathf.Atan2(zeroForward.y, zeroForward.z) * Mathf.Rad2Deg;
-            zeroXY = Mathf.Atan2(zeroUp.x, zeroUp.y) * Mathf.Rad2Deg;
-            zeroYZ = Mathf.Atan2(zeroUp.y, zeroUp.z) * Mathf.Rad2Deg;
+            //DebugGraph.MultiLog("Atan ", Color.white, Mathf.Atan2(liveForward.x, liveForward.)z) * Mathf.Rad2Deg, "Atan");
+            //DebugGraph.MultiLog("Atan", Color.blue, Mathf.Atan2(Mathf.Sin(liveForward.x), Mathf.Cos(liveForward.z)) * Mathf.Rad2Deg, "Atan");
 
-            poseNorthSeperated.x = Mathf.Atan2(poseNorthForward.x, poseNorthForward.z) * Mathf.Rad2Deg;
-            poseNorthSeperated.y = Mathf.Atan2(poseNorthUp.x, poseNorthUp.y) * Mathf.Rad2Deg;
-            poseNorthSeperated.z = Mathf.Atan2(poseNorthUp.y, poseNorthUp.z) * Mathf.Rad2Deg;
+            zeroXZ = Mathf.Atan2(Mathf.Sin(zeroForward.y), Mathf.Cos(zeroForward.z)) * Mathf.Rad2Deg;
+            zeroXY = Mathf.Atan2(Mathf.Sin(zeroUp.x), Mathf.Cos(zeroUp.y)) * Mathf.Rad2Deg;
+            zeroYZ = Mathf.Atan2(Mathf.Sin(zeroUp.y), Mathf.Cos(zeroUp.z)) * Mathf.Rad2Deg;
 
-            poseSouthSeperated.x = Mathf.Atan2(poseSouthForward.x, poseSouthForward.z) * Mathf.Rad2Deg;
-            poseSouthSeperated.y = Mathf.Atan2(poseSouthUp.x, poseSouthUp.y) * Mathf.Rad2Deg;
-            poseSouthSeperated.z = Mathf.Atan2(poseSouthUp.y, poseSouthUp.z) * Mathf.Rad2Deg;
+            poseNorthSeperated.x = Mathf.Atan2(Mathf.Sin(poseNorthForward.x), Mathf.Cos(poseNorthForward.z)) * Mathf.Rad2Deg;
+            poseNorthSeperated.y = Mathf.Atan2(Mathf.Sin(poseNorthUp.x), Mathf.Cos(poseNorthUp.y)) * Mathf.Rad2Deg;
+            poseNorthSeperated.z = Mathf.Atan2(Mathf.Sin(poseNorthUp.y), Mathf.Cos(poseNorthUp.z)) * Mathf.Rad2Deg;
 
-            poseEastSeperated.x = Mathf.Atan2(poseEastForward.x, poseEastForward.z) * Mathf.Rad2Deg;
-            poseEastSeperated.y = Mathf.Atan2(poseEastUp.x, poseEastUp.y) * Mathf.Rad2Deg;
-            poseEastSeperated.z = Mathf.Atan2(poseEastUp.y, poseEastUp.z) * Mathf.Rad2Deg;
+            poseSouthSeperated.x = Mathf.Atan2(Mathf.Sin(poseSouthForward.x), Mathf.Cos(poseSouthForward.z)) * Mathf.Rad2Deg;
+            poseSouthSeperated.y = Mathf.Atan2(Mathf.Sin(poseSouthUp.x), Mathf.Cos(poseSouthUp.y)) * Mathf.Rad2Deg;
+            poseSouthSeperated.z = Mathf.Atan2(Mathf.Sin(poseSouthUp.y), Mathf.Cos(poseSouthUp.z)) * Mathf.Rad2Deg;
 
-            poseWestSeperated.x = Mathf.Atan2(poseWestForward.x, poseWestForward.z) * Mathf.Rad2Deg;
-            poseWestSeperated.y = Mathf.Atan2(poseWestUp.x, poseWestUp.y) * Mathf.Rad2Deg;
-            poseWestSeperated.z = Mathf.Atan2(poseWestUp.y, poseWestUp.z) * Mathf.Rad2Deg;
+            poseEastSeperated.x = Mathf.Atan2(Mathf.Sin(poseEastForward.x), Mathf.Cos(poseEastForward.z)) * Mathf.Rad2Deg;
+            poseEastSeperated.y = Mathf.Atan2(Mathf.Sin(poseEastUp.x), Mathf.Cos(poseEastUp.y)) * Mathf.Rad2Deg;
+            poseEastSeperated.z = Mathf.Atan2(Mathf.Sin(poseEastUp.y), Mathf.Cos(poseEastUp.z)) * Mathf.Rad2Deg;
 
-            deltaLiveOriginXZ = Mathf.DeltaAngle(liveXZ, zeroXZ);
-            deltaLiveOriginXY = Mathf.DeltaAngle(liveXY, zeroXY);
-            deltaLiveOriginYZ = Mathf.DeltaAngle(liveYZ, zeroYZ);
+            poseWestSeperated.x = Mathf.Atan2(Mathf.Sin(poseWestForward.x), Mathf.Cos(poseWestForward.z)) * Mathf.Rad2Deg;
+            poseWestSeperated.y = Mathf.Atan2(Mathf.Sin(poseWestUp.x), Mathf.Cos(poseWestUp.y)) * Mathf.Rad2Deg;
+            poseWestSeperated.z = Mathf.Atan2(Mathf.Sin(poseWestUp.y), Mathf.Cos(poseWestUp.z)) * Mathf.Rad2Deg;
+
+            deltaLiveOriginXZ = Mathf.DeltaAngle(zeroXZ, liveXZ);
+            deltaLiveOriginXY = Mathf.DeltaAngle(zeroXY, liveXY);
+            deltaLiveOriginYZ = Mathf.DeltaAngle(zeroYZ, liveYZ);
 
             NorthTotalScore = PopulateScores(poseNorthSeperated, "North");
             SouthTotalScore = PopulateScores(poseSouthSeperated, "South");
@@ -152,46 +154,40 @@ namespace MrPuppet
         {
             float Score;
 
-            var deltaPoseOriginXZ = Mathf.DeltaAngle(PoseSeperated.x, zeroXZ);
-            var deltaPoseOriginXY = Mathf.DeltaAngle(PoseSeperated.y, zeroXY);
-            var deltaPoseOriginYZ = Mathf.DeltaAngle(poseNorthSeperated.z, zeroYZ);
+            var deltaPoseOriginXZ = Mathf.DeltaAngle(zeroXZ, PoseSeperated.x);
+            var deltaPoseOriginXY = Mathf.DeltaAngle(zeroXY, PoseSeperated.y);
+            var deltaPoseOriginYZ = Mathf.DeltaAngle(zeroYZ, PoseSeperated.z);
 
             DebugGraph.MultiLog("Pose XZ " + Name, Color.green, deltaPoseOriginXZ, "deltaPoseOriginXZ");
             DebugGraph.MultiLog("Pose XY " + Name, Color.green, deltaPoseOriginXY, "deltaPoseOriginXY");
             DebugGraph.MultiLog("Pose YZ " + Name, Color.green, deltaPoseOriginYZ, "deltaPoseOriginYZ");
+
+            DebugGraph.MultiLog("Pose XZ " + Name, Color.blue, EulerAnglesClamp(deltaLiveOriginXZ), "deltaLiveOriginXZ");
+            DebugGraph.MultiLog("Pose XY " + Name, Color.blue, EulerAnglesClamp(deltaLiveOriginXY), "deltaLiveOriginXY");
+            DebugGraph.MultiLog("Pose YZ " + Name, Color.blue, EulerAnglesClamp(deltaLiveOriginYZ), "deltaLiveOriginYZ");
 
             DebugGraph.MultiLog("Pose XZ " + Name, Color.white, deltaLiveOriginXZ, "deltaLiveOriginXZ");
             DebugGraph.MultiLog("Pose XY " + Name, Color.white, deltaLiveOriginXY, "deltaLiveOriginXY");
             DebugGraph.MultiLog("Pose YZ " + Name, Color.white, deltaLiveOriginYZ, "deltaLiveOriginYZ");
 
             Vector3 ScoreSeperated = new Vector3((deltaLiveOriginXY / deltaPoseOriginXY).Clamp(0f, 1f), (deltaLiveOriginXZ / deltaPoseOriginXZ).Clamp(0f, 1f), (deltaLiveOriginYZ / deltaPoseOriginYZ).Clamp(0f, 1f));
-
             Score = ScoreSeperated.x + ScoreSeperated.y + ScoreSeperated.z;
             Score = Remap(Score, 0f, 3f, 0f, 1f);
 
             return Score;
         }
 
-        private Vector3 EulerAnglesClamp(Quaternion from)
+        private float EulerAnglesClamp(float value)
         {
-            Vector3 delta = from.eulerAngles;
+            //Vector3 delta = from.eulerAngles;
+            float newValue = value;
 
-            if (delta.x > 180)
-                delta.x -= 360;
-            else if (delta.x < -180)
-                delta.x += 360;
+            if (newValue > 180)
+                newValue -= 360;
+            else if (newValue < -180)
+                newValue += 360;
 
-            if (delta.y > 180)
-                delta.y -= 360;
-            else if (delta.y < -180)
-                delta.y += 360;
-
-            if (delta.z > 180)
-                delta.z -= 360;
-            else if (delta.z < -180)
-                delta.z += 360;
-
-            return delta;
+            return newValue;
         }
 
         public float Remap(float value, float from1, float to1, float from2, float to2)
