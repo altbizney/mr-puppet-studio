@@ -32,16 +32,40 @@ public class MLHeuristicTraining : Agent
     public override void OnActionReceived(float[] vectorAction)
     {
         RealScore = Mathf.Abs(gameObject.transform.position.x - Goal.transform.position.x);
-        MyScore = vectorAction[0];
-
         RealScore = Remap(RealScore, 0f, 6f, 0f, 1f);
-        SetReward(Mathf.Abs((RealScore - MyScore) - 1));
 
-        Debug.Log((Mathf.Abs((RealScore - MyScore) - 1)));
+        MyScore = vectorAction[0];
+        float MyReward;
+
+        if (MyScore < 0)
+        {
+            SetReward(-0.3f);
+            EndEpisode();
+        }
+
+        if (Mathf.Abs(RealScore - MyScore) < 0.2f)
+        {
+            MyReward = 0.1f;//SetReward(0.3f);
+        }
+        else if (Mathf.Abs(RealScore - MyScore) < 0.1f)
+            MyReward = 0.3f; //SetReward(0.7f);
+        else if (Mathf.Abs(RealScore - MyScore) < 0.05f)
+            MyReward = 0.5f; //SetReward(0.7f);
+        else if (RealScore == MyScore)
+            MyReward = 1f; //SetReward(1f);
+        else
+            MyReward = -0.2f; //SetReward(-0.2f);
+
+
+        //DebugGraph.MultiLog("Scores ", Color.white, RealScore, "RealScore");
+        //DebugGraph.MultiLog("Scores ", Color.green, MyScore, "MyScore");
+        //DebugGraph.MultiLog("Scores ", Color.blue, MyReward, "Reward");
+        Debug.Log(RealScore + " " + MyScore);// + " " + MyReward);
+
+        SetReward(MyReward);
+        EndEpisode();
 
         // How correct was your score? if 0==0 give 1, if 0.5==0.5 give 1. if 1==0 give 0;
-
-        EndEpisode();
     }
 
     private float Remap(float value, float from1, float to1, float from2, float to2)
@@ -66,29 +90,6 @@ public class MLHeuristicTraining : Agent
 
         }
         */
-
-    /*
-        you can move the dude
-        left right up down
-
-        once you are at a place you can say, this is good
-
-                //use getkey or getaxis so not inputs get lost
-        //whatever we put into actions out is recieved by the onacctions recieved method
-
-        //do x/y do 2d positions
-        //we have one buttons for not very good, -1 reward
-        //we have another button for very good, +1 reward
-
-        //what is the question and the answer
-
-        --------------
-
-        instead, we guess a score from action array???????
-        we input pos. we output score. this is the goal. 
-        find score by doing distance. if its right, give reward. if its wrong, dont give reward. 
-        actually, player just outputs score. 
-    */
 
     public override void OnEpisodeBegin()
     {
