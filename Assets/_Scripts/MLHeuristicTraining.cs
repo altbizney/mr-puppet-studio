@@ -33,17 +33,21 @@ public class MLHeuristicTraining : Agent
         sensor.AddObservation(RealScore);
     }
 
+    /*
     private void Update()
     {
-        Vector3 GoalVector = new Vector3(gameObject.transform.position.x, 0f, gameObject.transform.position.z);
-        Vector3 MyVector = new Vector3(Goal.transform.position.x, 0f, Goal.transform.position.z);
+        //Vector3 GoalVector = new Vector3(gameObject.transform.position.x, 0f, gameObject.transform.position.z);
+        //Vector3 MyVector = new Vector3(Goal.transform.position.x, 0f, Goal.transform.position.z);
 
-        RealTimeScore = Vector3.Distance(GoalVector, MyVector);
+        //RealTimeScore = Vector3.Distance(GoalVector, MyVector);
         //Debug.Log(RealTimeScore);
-        RealTimeScore = Remap(RealTimeScore, 0f, 8.485281f, 0f, 1f);
+        //RealTimeScore = Remap(RealTimeScore, 0f, 8.485281f, 0f, 1f);
 
-        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.blue, RealTimeScore, "RealTimeScore");
+        //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.blue, RealTimeScore, "RealTimeScore");
+        //put movement in here
     }
+    */
+
 
     public override void OnActionReceived(float[] vectorAction)
     {
@@ -73,9 +77,12 @@ public class MLHeuristicTraining : Agent
         else
             MyReward = -0.2f;
 
+        /*
         DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealScore, "RealScore");
         DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, MyScore, "MyScore");
-        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, RealScore * 2f, gameObject.transform.localScale.x);
+        */
+
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, MyScore * 2f, gameObject.transform.localScale.x);
         //DebugGraph.MultiLog("Scores ", Color.blue, MyReward, "Reward");
         //Debug.Log(RealScore + " " + MyScore);// + " " + MyReward);
 
@@ -89,20 +96,10 @@ public class MLHeuristicTraining : Agent
     }
 
     /*
-        public override void Heuristic(float[] actionsOut)
-        {
-            //put movement in here
+    public override void Heuristic(float[] actionsOut)
+    {
 
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.position += new Vector3(3f * Time.deltaTime, 0, 0);
-                Debug.Log("Pressed D");
-            }
-
-            if (Input.GetKey(KeyCode.A))
-                transform.position += new Vector3(-3f * Time.deltaTime, 0, 0);
-
-        }
+    }
     */
 
     public override void OnEpisodeBegin()
