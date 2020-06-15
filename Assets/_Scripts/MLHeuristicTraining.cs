@@ -9,11 +9,21 @@ public class MLHeuristicTraining : Agent
     public GameObject Goal;
     private float MyScore;
     private float RealScore;
+    private float RealTimeScore;
+
 
     public override void Initialize()
     {
         //SetResetParameters();
     }
+    //probs put these new scripts in their own spot.
+
+    //give the "goals" this distance behavior
+    //each one can have a brain. the "goals" goal is the dude who moves around. 
+
+    //each pose has a behavior, its goal is the actor each time. 
+    //we have a controller object, it creates goals at your position. 
+    //we can control the "actor"
 
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -23,6 +33,17 @@ public class MLHeuristicTraining : Agent
         sensor.AddObservation(RealScore);
     }
 
+    private void Update()
+    {
+        Vector3 GoalVector = new Vector3(gameObject.transform.position.x, 0f, gameObject.transform.position.z);
+        Vector3 MyVector = new Vector3(Goal.transform.position.x, 0f, Goal.transform.position.z);
+
+        RealTimeScore = Vector3.Distance(GoalVector, MyVector);
+        //Debug.Log(RealTimeScore);
+        RealTimeScore = Remap(RealTimeScore, 0f, 8.485281f, 0f, 1f);
+
+        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.blue, RealTimeScore, "RealTimeScore");
+    }
 
     public override void OnActionReceived(float[] vectorAction)
     {
@@ -52,8 +73,9 @@ public class MLHeuristicTraining : Agent
         else
             MyReward = -0.2f;
 
-        DebugGraph.MultiLog("Scores ", Color.white, RealScore, "RealScore");
-        DebugGraph.MultiLog("Scores ", Color.green, MyScore, "MyScore");
+        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealScore, "RealScore");
+        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, MyScore, "MyScore");
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, RealScore * 2f, gameObject.transform.localScale.x);
         //DebugGraph.MultiLog("Scores ", Color.blue, MyReward, "Reward");
         //Debug.Log(RealScore + " " + MyScore);// + " " + MyReward);
 
@@ -86,7 +108,7 @@ public class MLHeuristicTraining : Agent
     public override void OnEpisodeBegin()
     {
         //Should I be doing something inside of init?
-        transform.localPosition = new Vector3(Random.Range(-3f, 3f), gameObject.transform.localPosition.y, Random.Range(-3f, 3f));
-        Goal.transform.localPosition = new Vector3(Random.Range(-3f, 3f), Goal.transform.localPosition.y, Random.Range(-3f, 3f));
+        //transform.localPosition = new Vector3(Random.Range(-3f, 3f), gameObject.transform.localPosition.y, Random.Range(-3f, 3f));
+        //Goal.transform.localPosition = new Vector3(Random.Range(-3f, 3f), Goal.transform.localPosition.y, Random.Range(-3f, 3f));
     }
 }
