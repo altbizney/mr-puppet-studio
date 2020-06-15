@@ -52,13 +52,13 @@ public class MLHeuristicTraining : Agent
         else
             MyReward = -0.2f;
 
-        //DebugGraph.MultiLog("Scores ", Color.white, RealScore, "RealScore");
-        //DebugGraph.MultiLog("Scores ", Color.green, MyScore, "MyScore");
+        DebugGraph.MultiLog("Scores ", Color.white, RealScore, "RealScore");
+        DebugGraph.MultiLog("Scores ", Color.green, MyScore, "MyScore");
         //DebugGraph.MultiLog("Scores ", Color.blue, MyReward, "Reward");
         //Debug.Log(RealScore + " " + MyScore);// + " " + MyReward);
 
         SetReward(MyReward);
-        EndEpisode();
+        //EndEpisode();
     }
 
     private float Remap(float value, float from1, float to1, float from2, float to2)
