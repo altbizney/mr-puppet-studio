@@ -28,7 +28,8 @@ public class MLHeuristicTraining : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(gameObject.transform.position);
-        sensor.AddObservation(Goal.transform.position);
+        if (Goal != null)
+            sensor.AddObservation(Goal.transform.position);
 
         sensor.AddObservation(RealScore);
     }
