@@ -10,6 +10,7 @@ public class MLRotation : Agent
     private float MyScore;
     private float RealScore;
     private float RealTimeScore;
+    public GameObject Pillar;
 
 
     public override void Initialize()
@@ -53,8 +54,10 @@ public class MLRotation : Agent
         else
             SetReward(-0.3f);
 
-        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealScore, "RealScore");
-        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, MyScore, "MyScore");
+        Pillar.transform.localScale = new Vector3(Pillar.transform.localScale.x, MyScore * 2f, Pillar.transform.localScale.x);
+
+        //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealScore, "RealScore");
+        //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, MyScore, "MyScore");
 
         //EndEpisode();
     }
@@ -66,15 +69,15 @@ public class MLRotation : Agent
 
     public override void OnEpisodeBegin()
     {
-        gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        gameObject.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
-        gameObject.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
-        gameObject.transform.Rotate(new Vector3(0f, 1f, 0f), Random.Range(-180f, 180f));
+        //gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+        //gameObject.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
+        //gameObject.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
+        //gameObject.transform.Rotate(new Vector3(0f, 1f, 0f), Random.Range(-180f, 180f));
 
-        Goal.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        Goal.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
-        Goal.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
-        Goal.transform.Rotate(new Vector3(0f, 1f, 0f), Random.Range(-180f, 180f));
+        //Goal.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+        //Goal.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
+        //Goal.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
+        //Goal.transform.Rotate(new Vector3(0f, 1f, 0f), Random.Range(-180f, 180f));
         //Should I be doing something inside of init?
     }
 }
