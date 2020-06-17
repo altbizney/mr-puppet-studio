@@ -7,7 +7,7 @@ using Unity.MLAgents.Sensors;
 public class MLRotation : Agent
 {
     public GameObject Goal;
-    private float MyScore;
+    public float MyScore;
     private float RealScore;
     private float RealTimeScore;
     public GameObject Pillar;
