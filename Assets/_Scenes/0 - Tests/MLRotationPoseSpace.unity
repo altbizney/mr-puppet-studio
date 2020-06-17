@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
+  DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
 --- !u!114 &372912051
 MonoBehaviour:
@@ -1171,7 +1171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 726744007}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MLPillarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1667,7 +1667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
+  DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
 --- !u!114 &1226438197
 MonoBehaviour:
@@ -2018,7 +2018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1541602095}
   m_Layer: 0
-  m_Name: GameObject (3)
+  m_Name: MLPillarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2346,7 +2346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1780645285}
   m_Layer: 0
-  m_Name: GameObject (2)
+  m_Name: MLPillarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2496,7 +2496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
+  DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
 --- !u!114 &1799581164
 MonoBehaviour:
@@ -2680,7 +2680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1986227000}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: MLPillarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3068,7 +3068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
+  DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
 --- !u!114 &2136673606
 MonoBehaviour:
@@ -5741,7 +5741,7 @@ Transform:
   m_GameObject: {fileID: 5674499920172671006}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4436847, y: -2.903589, z: -1.973558}
-  m_LocalScale: {x: 0.60602, y: 1, z: 0.28429}
+  m_LocalScale: {x: 1.52814, y: 1, z: 1.2491702}
   m_Children: []
   m_Father: {fileID: 1725732047838638267}
   m_RootOrder: 0
