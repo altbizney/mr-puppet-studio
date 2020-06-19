@@ -7,8 +7,8 @@ using Unity.MLAgents.Sensors;
 public class MLRotationDotProduct : Agent
 {
     public GameObject Goal;
-    //public GameObject Pillar;
-    //public GameObject RealPillar;
+    public GameObject Pillar;
+    public GameObject RealPillar;
     private float[] RealDelta = new float[3];
     private float[] BrainDelta = new float[3];
 
@@ -62,19 +62,19 @@ public class MLRotationDotProduct : Agent
                 AddReward(-0.15f);
         }
 
-        EndEpisode();
+        //EndEpisode();
 
-        //float AverageRealScore = (RealDelta[0] + RealDelta[1] + RealDelta[2]) / 3;
-        //float AverageScore = (BrainDelta[0] + BrainDelta[1] + BrainDelta[2]) / 3;
+        float AverageRealScore = (RealDelta[0] + RealDelta[1] + RealDelta[2]) / 3;
+        float AverageScore = (BrainDelta[0] + BrainDelta[1] + BrainDelta[2]) / 3;
 
         //DebugGraph.Log(AverageScore);
-        //Pillar.transform.localScale = new Vector3(Pillar.transform.localScale.x, AverageScore, Pillar.transform.localScale.z);
-        //RealPillar.transform.localScale = new Vector3(Pillar.transform.localScale.x, AverageRealScore, Pillar.transform.localScale.z);
+        Pillar.transform.localScale = new Vector3(Pillar.transform.localScale.x, AverageScore, Pillar.transform.localScale.z);
+        RealPillar.transform.localScale = new Vector3(Pillar.transform.localScale.x, AverageRealScore, Pillar.transform.localScale.z);
 
         //float my = Random.Range(0f, 1f);
         //Debug.Log(RealDelta[0] + " " + my + " " + Mathf.Abs(Mathf.Abs(RealDelta[0] - my) - 1f));
-        //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealDelta[0], "RealDelta");
-        //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, BrainDelta[0], "BrainDelta");
+        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.white, RealDelta[0], "RealDelta");
+        DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, BrainDelta[0], "BrainDelta");
         //DebugGraph.MultiLog("Scores " + gameObject.GetInstanceID(), Color.green, (Mathf.Abs(RealDelta[0] - BrainDelta[0]) - 1f) / 3, "Reward");
 
     }
@@ -86,6 +86,7 @@ public class MLRotationDotProduct : Agent
 
     public override void OnEpisodeBegin()
     {
+        /*
         gameObject.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
         gameObject.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
         gameObject.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
@@ -95,5 +96,6 @@ public class MLRotationDotProduct : Agent
         Goal.transform.Rotate(new Vector3(1f, 0f, 0f), Random.Range(-180f, 180f));
         Goal.transform.Rotate(new Vector3(0f, 0f, 1f), Random.Range(-180f, 180f));
         Goal.transform.Rotate(new Vector3(0f, 1f, 0f), Random.Range(-180f, 180f));
+        */
     }
 }
