@@ -1326,8 +1326,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1322591984618795709}
   - component: {fileID: 1322591984618795711}
-  - component: {fileID: 1322591984618795710}
   - component: {fileID: 1322591984618795697}
+  - component: {fileID: 11287911445970132}
   m_Layer: 0
   m_Name: MLActor
   m_TagString: Untagged
@@ -1376,28 +1376,11 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
   m_Model: {fileID: 0}
-  m_InferenceDevice: 0
+  m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: My Behavior
   TeamId: 0
   m_UseChildSensors: 1
---- !u!114 &1322591984618795710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322591984618795696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f38f738c216b84b3f8d2c0dfbe8d02f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  Goal: {fileID: 1322591984949998250}
 --- !u!114 &1322591984618795697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1412,6 +1395,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
+--- !u!114 &11287911445970132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322591984618795696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7654c4646299c4e669926f78a15ce211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  Goal: {fileID: 1322591984949998250}
 --- !u!1 &1322591984637221259
 GameObject:
   m_ObjectHideFlags: 0

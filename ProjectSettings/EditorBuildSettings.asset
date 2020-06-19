@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/_Scenes/1 - Builds/BNN.unity
     guid: bca309c8ccd0349b28922f7a7673e869
   - enabled: 1
-    path: Assets/_Scenes/0 - Tests/MLPoseSPaceTest.unity
+    path: Assets/_Scenes/0 - Tests/MachineLearning/MLPoseSPaceTest.unity
     guid: 0187e0ef5bb7a467092c3d6464f00bc3
   m_configObjects: {}
