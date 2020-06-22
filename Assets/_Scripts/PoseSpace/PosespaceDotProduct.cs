@@ -32,10 +32,31 @@ public class PosespaceDotProduct : MonoBehaviour
     private Quaternion poseEast;
     private Quaternion poseWest;
 
+    private GameObject[] JointsArm = new GameObject[3];
+
+    //one gameobject for each pose
+
     private float[] NorthDotProduct = new float[3];
     private float[] SouthDotProduct = new float[3];
     private float[] EastDotProduct = new float[3];
     private float[] WestDotProduct = new float[3];
+
+    /*
+    private Quaternion RotationDeltaFromAttachWrist()
+    {
+        return DataMapper.WristJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.WristRotation);
+    }
+
+    private Quaternion RotationDeltaFromAttachElbow()
+    {
+        return DataMapper.ElbowJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ElbowRotation);
+    }
+
+    private Quaternion RotationDeltaFromAttachShoulder()
+    {
+        return DataMapper.ShoulderJoint.rotation * Quaternion.Inverse(DataMapper.AttachPose.ShoulderRotation);
+    }
+    */
 
     private void Awake()
     {
@@ -65,6 +86,7 @@ public class PosespaceDotProduct : MonoBehaviour
         WestRight = GameObject.Find("WestRight");
     }
 
+
     void Update()
     {
         NorthDotProduct = PopulateVector(poseNorth);
@@ -72,6 +94,8 @@ public class PosespaceDotProduct : MonoBehaviour
         EastDotProduct = PopulateVector(poseEast);
         WestDotProduct = PopulateVector(poseWest);
 
+        //Pillar Heights
+        /*
         North.transform.localScale = new Vector3(1f, (NorthDotProduct[0] + NorthDotProduct[1] + NorthDotProduct[2]) / 3, 1f);
         South.transform.localScale = new Vector3(1f, (SouthDotProduct[0] + SouthDotProduct[1] + SouthDotProduct[2]) / 3, 1f);
         East.transform.localScale = new Vector3(1f, (EastDotProduct[0] + EastDotProduct[1] + EastDotProduct[2]) / 3, 1f);
@@ -91,6 +115,7 @@ public class PosespaceDotProduct : MonoBehaviour
         SouthRight.transform.localScale = new Vector3(1f, SouthDotProduct[2], 1f);
         EastRight.transform.localScale = new Vector3(1f, EastDotProduct[2], 1f);
         WestRight.transform.localScale = new Vector3(1f, WestDotProduct[2], 1f);
+        */
     }
 
 
