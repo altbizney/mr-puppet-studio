@@ -104,20 +104,26 @@ namespace MrPuppet
             float ScoreTotal = 0;
             for (int p = 0; p < NorthPoseJoints.Length; p++)
             {
-                float[] DotProductValues = new float[3];
+                float[] DotProductValuesLive = new float[3];
+                float[] DotProductValuesAttach = new float[3];
 
-                DotProductValues[0] = Vector3.Dot(JointsArm[p].transform.forward, Pose[p].transform.forward);
-                DotProductValues[1] = Vector3.Dot(JointsArm[p].transform.up, Pose[p].transform.up);
-                DotProductValues[2] = Vector3.Dot(JointsArm[p].transform.right, Pose[p].transform.right);
+                DotProductValuesLive[0] = Vector3.Dot(JointsArm[p].transform.forward, Pose[p].transform.forward);
+                DotProductValuesLive[1] = Vector3.Dot(JointsArm[p].transform.up, Pose[p].transform.up);
+                DotProductValuesLive[2] = Vector3.Dot(JointsArm[p].transform.right, Pose[p].transform.right);
 
-                DotProductValues[0] = Remap(DotProductValues[0], -1f, 1f, 0f, 1f);
-                DotProductValues[1] = Remap(DotProductValues[1], -1f, 1f, 0f, 1f);
-                DotProductValues[2] = Remap(DotProductValues[2], -1f, 1f, 0f, 1f);
+                DotProductValuesAttach[0] = Vector3.Dot(Quaternion.identity * Vector3.forward, Pose[p].transform.forward);
+                DotProductValuesAttach[1] = Vector3.Dot(Quaternion.identity * Vector3.up, Pose[p].transform.up);
+                DotProductValuesAttach[2] = Vector3.Dot(Quaternion.identity * Vector3.right, Pose[p].transform.right);
 
-                ScoreTotal += DotProductValues[0] + DotProductValues[1] + DotProductValues[2];
+                DotProductValuesLive[0] = Remap(DotProductValuesLive[0], DotProductValuesAttach[0], 1f, 0f, 1f);
+                DotProductValuesLive[1] = Remap(DotProductValuesLive[1], DotProductValuesAttach[1], 1f, 0f, 1f);
+                DotProductValuesLive[2] = Remap(DotProductValuesLive[2], DotProductValuesAttach[2], 1f, 0f, 1f);
+
+                ScoreTotal += DotProductValuesLive[0] + DotProductValuesLive[1] + DotProductValuesLive[2];
             }
 
-            ScoreTotal = Remap(ScoreTotal, 0f, 9f, 0f, 1f);
+            ScoreTotal = ScoreTotal / 9;//Remap(ScoreTotal, 0f, 9f, 0f, 1f);
+
             return ScoreTotal;
         }
 
