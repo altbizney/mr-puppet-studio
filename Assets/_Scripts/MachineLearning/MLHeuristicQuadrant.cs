@@ -8,11 +8,12 @@ public class MLHeuristicQuadrant : Agent
 {
     private GameObject[] Quadrants;
     private float IdealQuadrant;
+    private bool ThinkMode;
     //int KeyPress;
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Debug.Log("observing" + gameObject.transform.position.x);
+        //Debug.Log("observing" + gameObject.transform.position.x);
 
         sensor.AddObservation(gameObject.transform.position.x);
         sensor.AddObservation(gameObject.transform.position.z);
@@ -30,24 +31,44 @@ public class MLHeuristicQuadrant : Agent
 
     public override void OnActionReceived(float[] vectorAction)
     {
-
-        //IdealQuadrant = vectorAction[0];
-
         Debug.Log(vectorAction[0]);
-        SetReward(1f);
-        EndEpisode();
+        if (IdealQuadrant == vectorAction[0])
+        {
+            AddReward(1f);
+            //EndEpisode();
+        }
+        else
+            AddReward(-0.1f);
+
+        for (int i = 0; i < 4; i++)
+        {
+            if ((int)vectorAction[0] == i)
+                Quadrants[i].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);//(Vector3.down * 180f * Time.deltaTime);
+            else
+                Quadrants[i].transform.localScale = new Vector3(1f, 1f, 1f);
+        }
     }
 
     public override void OnEpisodeBegin()
     {
+        ThinkMode = false;
         Academy.Instance.AutomaticSteppingEnabled = false;
         transform.localPosition = new Vector3(0f, gameObject.transform.localPosition.y, 0f);
         foreach (GameObject q in Quadrants)
         {
             q.GetComponent<Renderer>().transform.localScale = new Vector3(1f, 1f, 1f);
-
         }
-        IdealQuadrant = Random.Range(0, 3);
+        IdealQuadrant = Random.Range(0, 4);
+    }
+
+    void FixedUpdate()
+    {
+        //if (ThinkMode)
+        //{
+        Academy.Instance.EnvironmentStep();
+        RequestDecision();
+        //EndEpisode();
+        //}
     }
 
     void Update()
@@ -66,16 +87,8 @@ public class MLHeuristicQuadrant : Agent
 
         if (Input.GetKey("space"))
         {
-            RequestDecision();
-            Academy.Instance.EnvironmentStep();
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            if ((int)IdealQuadrant == i)
-                Quadrants[i].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);//(Vector3.down * 180f * Time.deltaTime);
-            else
-                Quadrants[i].transform.localScale = new Vector3(1f, 1f, 1f);
+            if (!ThinkMode)
+                ThinkMode = true;
         }
     }
 
