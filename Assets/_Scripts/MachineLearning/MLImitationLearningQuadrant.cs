@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
@@ -61,7 +61,22 @@ public class MLHeuristicQuadrant : Agent
         IdealQuadrant = Random.Range(0, 4);
     }
 
-    /*
+    public override void Heuristic(float[] actionsOut)
+    {
+        actionsOut[0] = 4;
+
+        if (Input.GetKey(KeyCode.I))
+            actionsOut[0] = 0;
+        if (Input.GetKey(KeyCode.O))
+            actionsOut[0] = 1;
+        if (Input.GetKey(KeyCode.K))
+            actionsOut[0] = 2;
+        if (Input.GetKey(KeyCode.L))
+        {
+            actionsOut[0] = 3;
+        }
+    }
+
     void FixedUpdate()
     {
         //if (ThinkMode)
@@ -70,8 +85,13 @@ public class MLHeuristicQuadrant : Agent
         //RequestDecision();
         //EndEpisode();
         //}
+
+        if (Input.GetKey(KeyCode.L))
+        {
+            Academy.Instance.EnvironmentStep();
+            RequestDecision();
+        }
     }
-    */
 
     void Update()
     {
@@ -109,23 +129,5 @@ public override void CollectDiscreteActionMasks(DiscreteActionMasker actionMaske
     IdealQuadrant = 999999999;
 }
 */
-
-    /*
-        public override void Heuristic(float[] actionsOut)
-        {
-            actionsOut[0] = 0;
-
-            //if (Input.GetKey(KeyCode.I)) l
-            //actionsOut[0] = 1;
-            //if (Input.GetKey(KeyCode.O))
-            //actionsOut[0] = 2;
-            // if (Input.GetKey(KeyCode.K))
-            //actionsOut[0] = 3;
-            if (Input.GetKey(KeyCode.L))
-            {
-                //RequestDecision();
-            }
-        }
-    */
 
 }
