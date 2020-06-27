@@ -31,7 +31,7 @@ public class MLHeuristicQuadrant : Agent
 
     public override void OnActionReceived(float[] vectorAction)
     {
-        Debug.Log(vectorAction[0]);
+        //Debug.Log(vectorAction[0]);
         if (IdealQuadrant == vectorAction[0])
         {
             AddReward(1f);
@@ -39,6 +39,7 @@ public class MLHeuristicQuadrant : Agent
         }
         else
             AddReward(-0.1f);
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -52,7 +53,7 @@ public class MLHeuristicQuadrant : Agent
     public override void OnEpisodeBegin()
     {
         ThinkMode = false;
-        Academy.Instance.AutomaticSteppingEnabled = true;
+        Academy.Instance.AutomaticSteppingEnabled = false;
         transform.localPosition = new Vector3(0f, gameObject.transform.localPosition.y, 0f);
         foreach (GameObject q in Quadrants)
         {
@@ -61,17 +62,16 @@ public class MLHeuristicQuadrant : Agent
         IdealQuadrant = Random.Range(0, 4);
     }
 
-    /*
+
     void FixedUpdate()
     {
         //if (ThinkMode)
         //{
-        //Academy.Instance.EnvironmentStep();
-        //RequestDecision();
-        //EndEpisode();
+        Academy.Instance.EnvironmentStep();
+        RequestDecision();
         //}
     }
-    */
+
 
     void Update()
     {
@@ -92,6 +92,7 @@ public class MLHeuristicQuadrant : Agent
             if (!ThinkMode)
                 ThinkMode = true;
         }
+
     }
 
     /*
