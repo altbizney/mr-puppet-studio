@@ -320,12 +320,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1427630544 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3413486055794061688, guid: 67051f6f5c1d3429baa09326b184773f,
-    type: 3}
-  m_PrefabInstance: {fileID: 5023980810338722270}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1430334297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -713,16 +707,6 @@ PrefabInstance:
     - target: {fileID: 2389345299038645014, guid: 67051f6f5c1d3429baa09326b184773f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5110208432928696104, guid: 67051f6f5c1d3429baa09326b184773f,
-        type: 3}
-      propertyPath: Head
-      value: 
-      objectReference: {fileID: 1427630544}
-    - target: {fileID: 5110208432928696104, guid: 67051f6f5c1d3429baa09326b184773f,
-        type: 3}
-      propertyPath: WeightedInfluences.Array.data[0].amount
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
