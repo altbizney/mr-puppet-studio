@@ -213,7 +213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357930669}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.109999895}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -251,7 +251,7 @@ MonoBehaviour:
     VectorActionSize: 02000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: d71c0a2de9a6c4b49ad00f08dbf6163e, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: d2d86f0acad0742f8a7aabc876b921ae, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: My Behavior
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Record: 0
-  DemonstrationName: ImitationQuadrant
+  DemonstrationName: ImitationQuadrantHelpMe2
   DemonstrationDirectory: Assets
 --- !u!1 &370953525
 GameObject:
@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 370953528}
   - component: {fileID: 370953527}
   - component: {fileID: 370953526}
+  - component: {fileID: 370953529}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -349,12 +350,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370953525}
   m_LocalRotation: {x: -0.000000030908623, y: 0.7071068, z: -0.7071068, w: -0.000000030908623}
-  m_LocalPosition: {x: -0, y: 12.84, z: 0.72}
+  m_LocalPosition: {x: -1.23, y: 36.32, z: 0.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &370953529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370953525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a9ee1b954054c6ba512fd10596ad34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MLTarget: {fileID: 357930669}
 --- !u!1 &1497611469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,8 +1162,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322591984592125043}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
-  m_LocalScale: {x: 2, y: 0.1, z: 2}
+  m_LocalPosition: {x: -1.2, y: -0.6, z: -0.99}
+  m_LocalScale: {x: 20, y: 0.1, z: 20}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1

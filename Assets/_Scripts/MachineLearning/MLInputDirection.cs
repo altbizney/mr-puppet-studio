@@ -8,10 +8,10 @@ public class MLInputDirection : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.A))
-            transform.Rotate(Vector3.down * 90f * Time.deltaTime);
+            transform.position += transform.right * Time.deltaTime * 4f;
 
         if (Input.GetKey(KeyCode.D))
-            transform.Rotate(Vector3.up * 90f * Time.deltaTime);
+            transform.position += (transform.right * -1) * Time.deltaTime * 4f;
 
         if (Input.GetKey(KeyCode.S))
             transform.position += transform.forward * Time.deltaTime * 4f;

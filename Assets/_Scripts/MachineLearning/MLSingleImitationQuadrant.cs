@@ -14,15 +14,18 @@ public class MLSingleImitationQuadrant : Agent
         sensor.AddObservation(gameObject.transform.position.x);
         sensor.AddObservation(gameObject.transform.position.z);
         sensor.AddObservation(Actor.transform.position.x);
-        sensor.AddObservation(Actor.transform.position.x);
+        sensor.AddObservation(Actor.transform.position.z);
     }
 
     public override void OnActionReceived(float[] vectorAction)
     {
         if (vectorAction[0] == 1)
-            gameObject.transform.localScale = new Vector3(0.5f, 2.5f, 0.5f);
+            gameObject.transform.localScale = new Vector3(0.5f, 4.5f, 0.5f);
         else
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        //if (vectorAction[0] == 1)
+        //    AddReward
 
         //EndEpisode();
     }
@@ -36,7 +39,10 @@ public class MLSingleImitationQuadrant : Agent
     public override void OnEpisodeBegin()
     {
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-        Actor.transform.position = new Vector3(Random.Range(-2f, 2f), 0f, Random.Range(-2f, 2f));
+        //gameObject.transform.position = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+        //Actor.transform.position = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+        //Actor.transform.position = new Vector3(-2f, 0f, -2f);
+
     }
 
     public override void Heuristic(float[] actionsOut)
