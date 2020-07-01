@@ -217,7 +217,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 20
+  MaxStep: 5
   Actor: {fileID: 3489387471816901488}
 --- !u!114 &3489387472556445268
 MonoBehaviour:

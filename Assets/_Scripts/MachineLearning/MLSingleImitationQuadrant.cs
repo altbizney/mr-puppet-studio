@@ -26,6 +26,7 @@ public class MLSingleImitationQuadrant : Agent
 
         //if (vectorAction[0] == 1)
         //    AddReward
+        //Debug.Log(vectorAction[0]);
 
         //EndEpisode();
     }
@@ -38,6 +39,7 @@ public class MLSingleImitationQuadrant : Agent
 
     public override void OnEpisodeBegin()
     {
+        Academy.Instance.AutomaticSteppingEnabled = false;
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         //gameObject.transform.position = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
         //Actor.transform.position = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
