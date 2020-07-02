@@ -7,20 +7,28 @@ using Unity.MLAgents.Sensors;
 public class MLImitationRotation : Agent
 {
     public GameObject Actor;
+    private int Episodes;
 
     /*
         public override void Initialize()
         {
             //Academy.Instance.AutomaticSteppingEnabled = false;
+            //Episodes = 0;
         }
-        */
+    */
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(gameObject.transform.localEulerAngles);
-        sensor.AddObservation(Actor.transform.localEulerAngles);
-        sensor.AddObservation(Quaternion.Angle(gameObject.transform.localRotation, Actor.transform.localRotation));
-        Debug.Log(gameObject.transform.localEulerAngles + " " + Actor.transform.localEulerAngles + " " + Quaternion.Angle(gameObject.transform.localRotation, Actor.transform.localRotation));
+
+        sensor.AddObservation(Vector3.Dot(gameObject.transform.forward, Actor.transform.forward));
+        sensor.AddObservation(Vector3.Dot(gameObject.transform.up, Actor.transform.up));
+        sensor.AddObservation(Vector3.Dot(gameObject.transform.right, Actor.transform.right));
+        sensor.AddObservation(gameObject.transform.localRotation);
+        sensor.AddObservation(Actor.transform.localRotation);
+
+        float QuaternionAngle = Quaternion.Angle(Actor.transform.localRotation, gameObject.transform.localRotation) / 180;
+
+        Debug.Log(Vector3.Dot(gameObject.transform.forward, Actor.transform.forward) + " " + Vector3.Dot(gameObject.transform.up, Actor.transform.up) + " " + Vector3.Dot(gameObject.transform.right, Actor.transform.right));
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -32,6 +40,7 @@ public class MLImitationRotation : Agent
 
         Debug.Log(vectorAction[0]);
     }
+
 
 
     void FixedUpdate()
@@ -59,10 +68,12 @@ public class MLImitationRotation : Agent
 
     public override void OnEpisodeBegin()
     {
-        Academy.Instance.AutomaticSteppingEnabled = false;
+        //Episodes += 1;
+        //Debug.Log("episodes " + Episodes);
+        //Academy.Instance.AutomaticSteppingEnabled = false;
         gameObject.transform.GetChild(0).gameObject.transform.localScale = new Vector3(0.08f, 0.18f, 0.08f);
         gameObject.transform.localRotation = Random.rotation;
-        //Actor.transform.localRotation = Random.rotation;
+        Actor.transform.localRotation = Random.rotation;
     }
 
     public override void Heuristic(float[] actionsOut)

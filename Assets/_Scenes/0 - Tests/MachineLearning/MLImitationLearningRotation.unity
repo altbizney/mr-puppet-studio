@@ -1832,17 +1832,18 @@ PrefabInstance:
     - target: {fileID: 3489387472556445271, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
       propertyPath: m_BehaviorType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3489387472556445271, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 7701cad7df0a54059824e73d05a6dfe3,
+        type: 3}
     - target: {fileID: 3489387472556445271, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3489387472556445270, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
@@ -1872,7 +1873,7 @@ PrefabInstance:
     - target: {fileID: 3489387472556445269, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
       propertyPath: DemonstrationName
-      value: ImitationEuler
+      value: ImitationDot
       objectReference: {fileID: 0}
     - target: {fileID: 3489387471816901494, guid: 0699ffd26ccbe40358e8b9086246ca36,
         type: 3}
