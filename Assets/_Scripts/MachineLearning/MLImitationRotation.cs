@@ -8,14 +8,21 @@ public class MLImitationRotation : Agent
 {
     public GameObject Actor;
     private int Episodes;
+    private Quaternion TargetRotation;
 
-    /*
-        public override void Initialize()
+
+    public override void Initialize()
+    {
+        TargetRotation = Random.rotation;
+        Episodes = 0;
+
+        if (!PlayerPrefs.HasKey("ImitationRotationX"))
         {
-            //Academy.Instance.AutomaticSteppingEnabled = false;
-            //Episodes = 0;
+            PlayerPrefs.SetFloat("ImitationRotationX", TargetRotation.eulerAngles.x);
+            PlayerPrefs.SetFloat("ImitationRotationY", TargetRotation.eulerAngles.y);
+            PlayerPrefs.SetFloat("ImitationRotationZ", TargetRotation.eulerAngles.z);
         }
-    */
+    }
 
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -23,12 +30,12 @@ public class MLImitationRotation : Agent
         sensor.AddObservation(Vector3.Dot(gameObject.transform.forward, Actor.transform.forward));
         sensor.AddObservation(Vector3.Dot(gameObject.transform.up, Actor.transform.up));
         sensor.AddObservation(Vector3.Dot(gameObject.transform.right, Actor.transform.right));
-        sensor.AddObservation(gameObject.transform.localRotation);
-        sensor.AddObservation(Actor.transform.localRotation);
+        //sensor.AddObservation(gameObject.transform.localRotation);
+        //sensor.AddObservation(Actor.transform.localRotation);
 
-        float QuaternionAngle = Quaternion.Angle(Actor.transform.localRotation, gameObject.transform.localRotation) / 180;
-
-        Debug.Log(Vector3.Dot(gameObject.transform.forward, Actor.transform.forward) + " " + Vector3.Dot(gameObject.transform.up, Actor.transform.up) + " " + Vector3.Dot(gameObject.transform.right, Actor.transform.right));
+        //float QuaternionAngle = Quaternion.Angle(Actor.transform.localRotation, gameObject.transform.localRotation) / 180;
+        //sensor.AddObservation(QuaternionAngle);
+        //Debug.Log("Observe");
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -38,7 +45,7 @@ public class MLImitationRotation : Agent
         else
             gameObject.transform.GetChild(0).gameObject.transform.localScale = new Vector3(0.08f, 0.11f, 0.08f);
 
-        Debug.Log(vectorAction[0]);
+        //Debug.Log(vectorAction[0]);
     }
 
 
@@ -70,10 +77,14 @@ public class MLImitationRotation : Agent
     {
         //Episodes += 1;
         //Debug.Log("episodes " + Episodes);
+
+
         //Academy.Instance.AutomaticSteppingEnabled = false;
-        gameObject.transform.GetChild(0).gameObject.transform.localScale = new Vector3(0.08f, 0.18f, 0.08f);
-        gameObject.transform.localRotation = Random.rotation;
+        Vector3 SavedRotation = new Vector3(PlayerPrefs.GetFloat("ImitationRotationX"), PlayerPrefs.GetFloat("ImitationRotationY"), PlayerPrefs.GetFloat("ImitationRotationZ"));
+        gameObject.transform.rotation = Quaternion.Euler(SavedRotation);
+
         Actor.transform.localRotation = Random.rotation;
+        gameObject.transform.GetChild(0).gameObject.transform.localScale = new Vector3(0.08f, 0.18f, 0.08f);
     }
 
     public override void Heuristic(float[] actionsOut)
