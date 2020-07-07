@@ -29,7 +29,7 @@ public class OneShotTesting : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.M))
         {
-            _Animator.SetTrigger("WaveRightTrigger");
+            _Animator.SetTrigger("PointLeftTrigger");
             //_Animator.Play("test-point-left", 2, 0f);
         }
     }
