@@ -138,6 +138,9 @@ namespace MrPuppet
                     instance.name = export._Animation.name;
 
                     // add animator to instance
+                    if (instance.GetComponent<Animator>() != null)
+                        DestroyImmediate(instance.GetComponent<Animator>());
+                    
                     var animator = instance.AddComponent<Animator>();
                     animator.runtimeAnimatorController = controller;
 
@@ -255,8 +258,9 @@ namespace MrPuppet
         }
     }
 #else
-public class ExportPerformance : MonoBehaviour {
+    public class ExportPerformance : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }
