@@ -226,8 +226,9 @@ namespace MrPuppet
         }
     }
 #else
-public class PerformanceAnimationReplacementManager : MonoBehaviour {
+    public class PerformanceAnimationReplacementManager : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }
