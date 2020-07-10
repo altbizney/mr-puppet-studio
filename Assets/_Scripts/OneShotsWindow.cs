@@ -27,6 +27,25 @@ namespace MrPuppet
         public GameObject Actor;
         public AnimationClip Performance;
 
+        void Update()
+        {
+            if (Recorder == null)
+                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
+            if (Recorder.IsRecording() && StartedRecording == false)
+            {
+                StartedRecording = true;
+                GetFilename();
+            }
+            if (!Recorder.IsRecording() && StartedRecording == true)
+            {
+                StartedRecording = false;
+                var filename = "Assets/Recordings/" + Filename + ".anim";
+                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
+                RecorderPrompt.ShowUtilityWindow(this);
+            }
+        }
+
         [Button("Play")]
         [DisableInEditorMode]
         private void Action()
