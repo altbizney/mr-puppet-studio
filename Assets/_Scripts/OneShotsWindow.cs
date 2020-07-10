@@ -3,6 +3,9 @@ using UnityEditor.Recorder;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Recorder;
+using UnityEditor.Recorder.Input;
+//using UnityEngine.Recorder.Input;
 
 
 #if UNITY_EDITOR
@@ -26,6 +29,9 @@ namespace MrPuppet
 
         public GameObject Actor;
         public AnimationClip Performance;
+        private RecorderWindow Recorder;
+        private bool StartedRecording;
+        private GameObject TransformWrapper;
 
         void Update()
         {
@@ -35,25 +41,24 @@ namespace MrPuppet
             if (Recorder.IsRecording() && StartedRecording == false)
             {
                 StartedRecording = true;
-                GetFilename();
+                Action();
             }
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
                 StartedRecording = false;
-                var filename = "Assets/Recordings/" + Filename + ".anim";
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
-                RecorderPrompt.ShowUtilityWindow(this);
             }
         }
 
-        [Button("Play")]
-        [DisableInEditorMode]
+        //[Button("Play")]
+        //[DisableInEditorMode]
         private void Action()
         {
-            //Start when recorder starts?
-            //What do when base animation ends? 
-
-            GameObject Clone = Instantiate(Actor, new Vector3(0, 0, 0), Actor.transform.rotation);
+            GameObject Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
+            SetRecorderTarget(Clone);
+            
+            TransformWrapper = new GameObject("TransformWrapper");
+            Clone.transform.parent = TransformWrapper.transform;
+            TransformWrapper.transform.position += new Vector3(0, 0, 3.5f);
 
             KillChildren(Clone.GetComponentsInChildren<MrPuppet.JawTransformMapper>());
             KillChildren(Clone.GetComponentsInChildren<MrPuppet.ButtPuppet>());
@@ -68,7 +73,6 @@ namespace MrPuppet
             KillChildren(Clone.GetComponentsInChildren<IKTag>());
             KillChildren(Clone.GetComponentsInChildren<Animator>());
             //There are more components on the clone that are potentially unnessary
-
 
             Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
 
@@ -88,6 +92,22 @@ namespace MrPuppet
             foreach (UnityEngine.Object child in children)
                 Destroy(child);
         }
+
+        private void SetRecorderTarget(GameObject Clone)
+        {
+            RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
+            RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
+
+            foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
+            {
+                if (!recorder.Enabled) continue;
+
+                foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Clone; }
+
+                return;
+            }
+        }
+
     }
 #else
     public class PerformanceAnimationReplacementManager : MonoBehaviour
