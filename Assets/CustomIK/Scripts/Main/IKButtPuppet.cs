@@ -828,7 +828,7 @@ namespace MrPuppet
                 HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);
 
                 // apply rotation deltas to bind pose
-                HipRotation.rotation = Quaternion.Slerp(HipTranslation.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
+                HipRotation.rotation = Quaternion.Slerp(HipRotation.rotation, UnsubscribeHipRotation, RotationSpeed * Time.deltaTime);
                 Head.rotation = Quaternion.Slerp(Head.rotation, UnsubscribeHeadRotation, RotationSpeed * Time.deltaTime);
 
                 if (EnableJawHeadMixer)
