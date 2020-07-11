@@ -33,6 +33,11 @@ namespace MrPuppet
         private bool StartedRecording;
         private GameObject TransformWrapper;
 
+        public string TemporaryInput;
+
+        private static MrPuppetHubConnection HubConnection;
+
+
         void Update()
         {
             if (Recorder == null)
@@ -49,10 +54,21 @@ namespace MrPuppet
             }
         }
 
+        void Awake()
+        {
+            if (HubConnectionCheck())
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + TemporaryInput);
+            //might not make a difference?
+        }
+
         //[Button("Play")]
         //[DisableInEditorMode]
         private void Action()
         {
+
+            if (HubConnectionCheck())
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;PLAY;" + TemporaryInput);
+                
             GameObject Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
             SetRecorderTarget(Clone);
             
@@ -106,6 +122,18 @@ namespace MrPuppet
 
                 return;
             }
+        }
+
+        private bool HubConnectionCheck()
+        {
+            
+            if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
+                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
+            if (HubConnection)
+                return true;
+
+            return false;
         }
 
     }
