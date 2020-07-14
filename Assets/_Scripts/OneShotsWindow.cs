@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Recorder;
 using UnityEditor.Recorder.Input;
+using System.Linq;
+
 //using UnityEngine.Recorder.Input;
 
 
@@ -20,61 +22,66 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
-
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
         {
             GetWindow<OneShotsWindow>().Show();
         }
 
-        public GameObject Actor;
+        [OnValueChanged("ParseAnimationClip")]
         public AnimationClip Performance;
+
+        [OnValueChanged("ParseAnimationClip")]
+        public bool IncludeAnimationSuffix;
+        
+        [ReadOnly]
+        public string ParsedClipName;
+
+        public GameObject Actor;
         private RecorderWindow Recorder;
         private bool StartedRecording;
-        private GameObject TransformWrapper;
+        private MrPuppetHubConnection HubConnection;
+        private bool PlayModeEntered;
 
-        public string TemporaryInput;
-
-        private static MrPuppetHubConnection HubConnection;
-
-
-        void Update()
+        private void Update()
         {
-            if (Recorder == null)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+            if (EditorApplication.isPlaying)
+            {
+                if (PlayModeEntered == false)
+                {
+                    if (!string.IsNullOrEmpty(ParsedClipName) && ParsedClipName.Contains("-"))
+                    {
+                        if (HubConnectionCheck())
+                        {
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                        }
+                    }
+                    PlayModeEntered = true;
+                }
 
-            if (Recorder.IsRecording() && StartedRecording == false)
-            {
-                StartedRecording = true;
-                Action();
+                if (!Recorder.IsRecording() && StartedRecording == true)
+                    EditorApplication.isPlaying = false;
             }
-            if (!Recorder.IsRecording() && StartedRecording == true)
+            else
             {
+                if (PlayModeEntered == true)
+                    PlayModeEntered = false;
+                
                 StartedRecording = false;
             }
         }
 
-        void Awake()
-        {
-            if (HubConnectionCheck())
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + TemporaryInput);
-            //might not make a difference?
-        }
-
-        //[Button("Play")]
-        //[DisableInEditorMode]
+        [Button("Play")]
+        [DisableInEditorMode]
         private void Action()
-        {
-
-            if (HubConnectionCheck())
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;PLAY;" + TemporaryInput);
-                
+        { 
             GameObject Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
-            SetRecorderTarget(Clone);
-            
-            TransformWrapper = new GameObject("TransformWrapper");
-            Clone.transform.parent = TransformWrapper.transform;
-            TransformWrapper.transform.position += new Vector3(0, 0, 3.5f);
+
+            if (HubConnectionCheck()){
+                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
+            }
+
+            Actor.SetActive(false);
 
             KillChildren(Clone.GetComponentsInChildren<MrPuppet.JawTransformMapper>());
             KillChildren(Clone.GetComponentsInChildren<MrPuppet.ButtPuppet>());
@@ -100,7 +107,12 @@ namespace MrPuppet
             AnimatorOverride["BaseAnimation"] = Performance;
             Clone.AddComponent<OneShotTesting>(); 
 
-            //AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
+            if (Recorder == null)
+                Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
+            Recorder.StartRecording();
+            StartedRecording = true;
+            SetRecorderTarget(Clone);
         }
 
         private void KillChildren(UnityEngine.Object[] children)
@@ -125,8 +137,9 @@ namespace MrPuppet
         }
 
         private bool HubConnectionCheck()
-        {
-            
+        {   
+            //Check to see if name is correct format?
+
             if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
                 HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
@@ -134,6 +147,49 @@ namespace MrPuppet
                 return true;
 
             return false;
+        }
+
+        
+        private void ParseAnimationClip()
+        {
+            if (Performance)
+            {
+                if (Performance.name.Count(c => c == '-') == 2)
+                {
+                    if (!IncludeAnimationSuffix)
+                    {
+                        ParsedClipName = Performance.name.Substring(0, Performance.name.LastIndexOf("-"));
+                    }
+                    else
+                    {
+                        ParsedClipName = Performance.name;
+                    }
+
+                    if (HubConnectionCheck() && EditorApplication.isPlaying)
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                }
+                else
+                    ParsedClipName = "Error: Format";
+            }
+        }
+
+        
+        [InitializeOnLoadAttribute]
+        static class PlayModeStateChanged
+        {
+            static PlayModeStateChanged()
+            {
+                EditorApplication.playModeStateChanged += playModes;
+            }
+
+            private static void playModes(PlayModeStateChange state)
+            {
+
+                if (state == UnityEditor.PlayModeStateChange.EnteredEditMode)
+                {
+                    AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
+                }
+            }
         }
 
     }
