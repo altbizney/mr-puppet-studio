@@ -22,6 +22,12 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
+
+        //change to mesh renderers?
+        //more performant, update could maybe be changed
+        //more performant, 
+        //rename whatever to keybindings and delete extra scripts
+
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
         {
@@ -31,17 +37,30 @@ namespace MrPuppet
         [OnValueChanged("ParseAnimationClip")]
         public AnimationClip Performance;
 
+        public GameObject Actor;
+
         [OnValueChanged("ParseAnimationClip")]
+        [HorizontalGroup("Bottom")]
         public bool IncludeAnimationSuffix;
         
         [ReadOnly]
+        [HorizontalGroup("Bottom")]
         public string ParsedClipName;
 
-        public GameObject Actor;
         private RecorderWindow Recorder;
         private bool StartedRecording;
         private MrPuppetHubConnection HubConnection;
         private bool PlayModeEntered;
+        private GameObject Clone;
+        private string ParsedClipNameAfterPlay;
+        private Coroutine AnimationCoroutine;
+        private GameObject CoroutineHolder;
+
+        private bool NotPlaying(){ return !Clone; }
+        private bool IsPlaying(){ return Clone; }
+
+        public class BlankMonoBehaviour : MonoBehaviour{ }
+
 
         private void Update()
         {
@@ -58,9 +77,6 @@ namespace MrPuppet
                     }
                     PlayModeEntered = true;
                 }
-
-                if (!Recorder.IsRecording() && StartedRecording == true)
-                    EditorApplication.isPlaying = false;
             }
             else
             {
@@ -71,15 +87,22 @@ namespace MrPuppet
             }
         }
 
-        [Button("Play")]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
-        private void Action()
+        [GUIColor(0.2f, 0.9f, 0.2f)]
+        [Button(ButtonSizes.Large)]
+        private void Play()
         { 
-            GameObject Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
-
             if (HubConnectionCheck()){
+                ParsedClipNameAfterPlay = ParsedClipName;
                 HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
+                Debug.Log("COMMAND;PLAYBACK;START;" + ParsedClipName);
             }
+
+            Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
+            CoroutineHolder = new GameObject("CoroutineHolder");
+            CoroutineHolder.AddComponent<BlankMonoBehaviour>();
 
             Actor.SetActive(false);
 
@@ -106,6 +129,7 @@ namespace MrPuppet
             AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
             AnimatorOverride["BaseAnimation"] = Performance;
             Clone.AddComponent<OneShotTesting>(); 
+            AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
 
             if (Recorder == null)
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
@@ -113,6 +137,34 @@ namespace MrPuppet
             Recorder.StartRecording();
             StartedRecording = true;
             SetRecorderTarget(Clone);
+        }
+
+        [GUIColor(0.9f, 0.3f, 0.3f)]
+        [Button(ButtonSizes.Large)]
+        [HideIf("NotPlaying", false)]
+        [ShowIf("IsPlaying", false)]
+        [DisableInEditorMode]
+        private void Stop()
+        {
+            if (Clone)
+            {
+                //foreach (Renderer renderer in activeRenderers)
+                //    renderer.enabled = true;
+
+                Actor.SetActive(true);
+
+                Recorder.StopRecording();
+
+               if (HubConnectionCheck()){
+                    //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipNameAfterPlay);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
+                    Debug.Log("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
+               }
+
+                Destroy(Clone);
+                Destroy(CoroutineHolder);
+                AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
+            }
         }
 
         private void KillChildren(UnityEngine.Object[] children)
@@ -135,20 +187,6 @@ namespace MrPuppet
                 return;
             }
         }
-
-        private bool HubConnectionCheck()
-        {   
-            //Check to see if name is correct format?
-
-            if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
-                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-
-            if (HubConnection)
-                return true;
-
-            return false;
-        }
-
         
         private void ParseAnimationClip()
         {
@@ -173,6 +211,26 @@ namespace MrPuppet
             }
         }
 
+        private bool HubConnectionCheck()
+        {   
+            //Check to see if name is correct format?
+
+            if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
+                HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+
+            if (HubConnection)
+                return true;
+
+            return false;
+        }
+
+        private IEnumerator AnimationEndCheck(Animator animator)
+        {
+            while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
+                yield return null;
+            
+            Stop();
+        }
         
         [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
