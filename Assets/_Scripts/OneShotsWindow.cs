@@ -1,17 +1,12 @@
 using UnityEngine;
-using UnityEditor.Recorder;
-using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.Recorder;
-using UnityEditor.Recorder.Input;
 using System.Linq;
-
-//using UnityEngine.Recorder.Input;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Recorder;
+using UnityEditor.Recorder.Input;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor.Animations;
@@ -22,10 +17,6 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
-
-        //change to mesh renderers?
-        //rename whatever to keybindings and delete extra scripts
-
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
         {
@@ -46,67 +37,39 @@ namespace MrPuppet
         public string ParsedClipName;
 
         private RecorderWindow Recorder;
-        private bool StartedRecording;
         private MrPuppetHubConnection HubConnection;
         private bool PlayModeEntered;
-        public GameObject Clone;
+        private GameObject Clone;
         private string ParsedClipNameAfterPlay;
         private Coroutine AnimationCoroutine;
         private GameObject CoroutineHolder;
+        static private int TakeCount; //Consider adding in logic to remove static
+        static private string RecordedName;
 
         private bool NotPlaying(){ return !Clone; }
         private bool IsPlaying(){ return Clone; }
 
         public class BlankMonoBehaviour : MonoBehaviour{ }
+        public class _OnDestroy : MonoBehaviour{ void OnDestroy() { AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedName + "." + TakeCount.ToString().PadLeft(3, '0') + ".anim"); } }
 
-
-        private void Update()
-        {
-            //HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-
-            if (EditorApplication.isPlaying)
-            {
-                if (PlayModeEntered == false)
-                {
-                    if (!string.IsNullOrEmpty(ParsedClipName) && ParsedClipName.Contains("-"))
-                    {
-                        //if (HubConnectionCheck())
-                        //{
-                            //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
-                        //}
-                    }
-                    PlayModeEntered = true;
-                }
-            }
-            else
-            {
-                if (PlayModeEntered == true)
-                    PlayModeEntered = false;
-                
-                StartedRecording = false;
-            }
-        }
-
-        //[HideIf("IsPlaying", false)]
-        //[ShowIf("NotPlaying", false)]
+        [HideIf("IsPlaying", false)]
+        [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
-        private void Play()
+        private void Record()
         { 
-            HubConnection = FindObjectOfType<MrPuppetHubConnection>();
-            //if (HubConnectionCheck()){
+            if (HubConnectionCheck()){
                 ParsedClipNameAfterPlay = ParsedClipName;
                 HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
-                //Debug.Log("COMMAND;PLAYBACK;START;" + ParsedClipName);
-            //}
-            
+            }
 
-            Clone = Instantiate(Actor, new Vector3(0, 2f, 3f), Actor.transform.rotation);
+            Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
             CoroutineHolder = new GameObject("CoroutineHolder");
             CoroutineHolder.AddComponent<BlankMonoBehaviour>();
+            Clone.AddComponent<_OnDestroy>();
 
-            //Actor.SetActive(false);
+            Actor.SetActive(false);
 
             KillChildren(Clone.GetComponentsInChildren<JawTransformMapper>());
             KillChildren(Clone.GetComponentsInChildren<ButtPuppet>());
@@ -132,34 +95,22 @@ namespace MrPuppet
             AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
             AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
             AnimatorOverride["BaseAnimation"] = Performance;
-            Clone.AddComponent<OneShotTesting>(); 
+            Clone.AddComponent<OneShotKeybinding>(); 
             AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
             
             if (Recorder == null)
                 Recorder = EditorWindow.GetWindow<RecorderWindow>();
-
+            
             Recorder.StartRecording();
-            StartedRecording = true;
+            TakeCount += 1;
             SetRecorderTarget(Clone);
         }
 
-/*
-        [Button(ButtonSizes.Large)]
-        [DisableInEditorMode]
-        private void Test()
-        {
-            if (HubConnectionCheck()){
-                ParsedClipNameAfterPlay = ParsedClipName;
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
-                //Debug.Log("COMMAND;PLAYBACK;START;" + ParsedClipName);
-            }
-        }
-*/
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
         [Button(ButtonSizes.Large)]
-        //[HideIf("NotPlaying", false)]
-        //[ShowIf("IsPlaying", false)]
+        [HideIf("NotPlaying", false)]
+        [ShowIf("IsPlaying", false)]
         [DisableInEditorMode]
         private void Stop()
         {
@@ -173,17 +124,45 @@ namespace MrPuppet
 
                 Recorder.StopRecording();
 
-               //if (HubConnectionCheck()){
-                    //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipNameAfterPlay);
-                    //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
-                    //Debug.Log("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
-               //}
+               if (HubConnectionCheck()){
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+               }
 
                 Destroy(Clone);
                 Destroy(CoroutineHolder);
                 AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
             }
         }
+
+        private void Update()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                if (PlayModeEntered == false)
+                {
+                    if (!string.IsNullOrEmpty(ParsedClipName) && ParsedClipName.Contains("-")) //create safer check
+                    {
+                        if (HubConnectionCheck())
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                    }
+                    PlayModeEntered = true;
+                    TakeCount = 0;
+                }
+            }
+            else
+            {
+                if ( HubConnectionCheck() && !string.IsNullOrEmpty(ParsedClipNameAfterPlay))
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
+                    ParsedClipNameAfterPlay = null;
+                }
+
+                if (PlayModeEntered == true)
+                    PlayModeEntered = false;                
+            }
+        }
+
 
         private void KillChildren(UnityEngine.Object[] children)
         {
@@ -199,6 +178,15 @@ namespace MrPuppet
             foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
             {
                 if (!recorder.Enabled) continue;
+
+                RecordedName = recorder.FileNameGenerator.FileName;
+                RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
+
+                /*
+                recorder.FileNameGenerator.FileName = "";
+                recorder.OutputFile = "";
+                recorder.Take = 999999;
+                */
 
                 foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Clone; }
 
@@ -221,20 +209,17 @@ namespace MrPuppet
                         ParsedClipName = Performance.name;
                     }
 
-                    //if (HubConnectionCheck() && EditorApplication.isPlaying)
-                    //    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                    if (HubConnectionCheck() && EditorApplication.isPlaying && !Recorder.IsRecording())
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
                 }
                 else
                     ParsedClipName = "Error: Format";
             }
-
-           //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
-
         }
 
         private bool HubConnectionCheck()
         {   
-            //Check to see if name is correct format?
+            //Check to see if name is in the correct format?
 
             if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
                 HubConnection = FindObjectOfType<MrPuppetHubConnection>();

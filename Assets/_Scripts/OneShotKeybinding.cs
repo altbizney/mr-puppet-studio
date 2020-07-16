@@ -2,7 +2,7 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class OneShotTesting : MonoBehaviour
+public class OneShotKeybinding : MonoBehaviour
 {
     private Animator _Animator;
 
@@ -21,16 +21,14 @@ public class OneShotTesting : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             _Animator.SetTrigger("WaveRightTrigger");
-            //_Animator.Play("test-wave-right", 1, 0f);
         }
 
         if (Input.GetKeyDown(KeyCode.M))
         {
             _Animator.SetTrigger("PointLeftTrigger");
-            //_Animator.Play("test-point-left", 2, 0f);
         }
     }
 }
