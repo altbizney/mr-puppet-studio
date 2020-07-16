@@ -37,21 +37,28 @@ namespace MrPuppet
         public string ParsedClipName;
 
         private RecorderWindow Recorder;
-        private MrPuppetHubConnection HubConnection;
         private bool PlayModeEntered;
         private GameObject Clone;
-        private string ParsedClipNameAfterPlay;
         private Coroutine AnimationCoroutine;
         private GameObject CoroutineHolder;
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
+        static private string ParsedClipNameAfterPlay;
+        static private MrPuppetHubConnection HubConnection;
 
         private bool NotPlaying(){ return !Clone; }
         private bool IsPlaying(){ return Clone; }
 
         public class BlankMonoBehaviour : MonoBehaviour{ }
-        public class _OnDestroy : MonoBehaviour{ void OnDestroy() { AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedName + "." + TakeCount.ToString().PadLeft(3, '0') + ".anim"); } }
-
+        public class _OnDestroy : MonoBehaviour
+        { 
+            void OnDestroy() 
+            { 
+                AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedName + "." + TakeCount.ToString().PadLeft(3, '0') + ".anim");
+                OneShotsWindow.HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + OneShotsWindow.ParsedClipNameAfterPlay);
+            } 
+        }
+        
         [HideIf("IsPlaying", false)]
         [ShowIf("NotPlaying", false)]
         [DisableInEditorMode]
@@ -152,12 +159,6 @@ namespace MrPuppet
             }
             else
             {
-                if ( HubConnectionCheck() && !string.IsNullOrEmpty(ParsedClipNameAfterPlay))
-                {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
-                    ParsedClipNameAfterPlay = null;
-                }
-
                 if (PlayModeEntered == true)
                     PlayModeEntered = false;                
             }
@@ -215,6 +216,16 @@ namespace MrPuppet
                 else
                     ParsedClipName = "Error: Format";
             }
+        }
+
+        [Button(ButtonSizes.Large)]
+        private void TestStop(){
+                            if ( HubConnectionCheck() && !string.IsNullOrEmpty(ParsedClipNameAfterPlay))
+                {
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
+                    Debug.Log(ParsedClipNameAfterPlay);
+                    //ParsedClipNameAfterPlay = null;
+                }            
         }
 
         private bool HubConnectionCheck()
