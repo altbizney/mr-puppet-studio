@@ -36,6 +36,11 @@ namespace MrPuppet
         private string Filename;
         private RecorderWindow Recorder;
         private bool StartedRecording;
+
+        private static bool OneShotsRecording;
+        private static GameObject OneShotTarget;
+        private static string OneShotName;
+
         //private bool PromptShowing;
 
         [Serializable]
@@ -43,6 +48,7 @@ namespace MrPuppet
         {
             [PreviewField]
             [TableColumnWidth(60, Resizable = false)]
+            [VerticalGroup("Preview")]
             public GameObject _Prefab;
 
             [TableColumnWidth(160)]
@@ -56,12 +62,34 @@ namespace MrPuppet
             [HideLabel]
             public Rating _Rating;
 
+            //public bool OneShotsRecording;
+
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
                 _Animation = ConstructorAnimation;
                 _Prefab = ConstructorPrefab;
                 _Rating = ConstructorRating;
             }
+
+            [Button(ButtonSizes.Small)]
+            [VerticalGroup("Preview")]
+            [GUIColor(0.2f, 0.9f, 0.2f)]
+            private void OneShots()
+            {                
+                GetWindow<OneShotsWindow>().Show();
+                OneShotsWindow Instance = EditorWindow.GetWindow<OneShotsWindow>();
+                Instance.Actor = _Prefab;
+                Instance.Performance = _Animation;
+                Instance.ParseAnimationClip();
+
+                OneShotTarget = _Prefab;
+                OneShotName = OneShotsWindow.RecordedPaddedName;
+                OneShotsRecording = true;
+
+                if (EditorApplication.isPlaying)
+                    Instance.Record();
+            }
+
         }
 
         void Update()
@@ -76,8 +104,16 @@ namespace MrPuppet
             }
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
+                var filename = "";
+                if (OneShotsRecording)
+                {
+                    RecorderTarget = OneShotTarget;
+                    filename = "Assets/Recordings/" + OneShotName + ".anim";
+                }
+                else
+                    filename = "Assets/Recordings/" + Filename + ".anim";
+
                 StartedRecording = false;
-                var filename = "Assets/Recordings/" + Filename + ".anim";
                 Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
                 RecorderPrompt.ShowUtilityWindow(this);
             }

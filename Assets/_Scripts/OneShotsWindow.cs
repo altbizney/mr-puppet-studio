@@ -17,6 +17,11 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
+
+        //fix audio ref stuff
+        //in exports have button that opens this, and just preloads your stufff
+        //animator error and other error
+
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
         {
@@ -43,6 +48,7 @@ namespace MrPuppet
         private GameObject CoroutineHolder;
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
+        static public string RecordedPaddedName;
         static private string ParsedClipNameAfterPlay;
         static private MrPuppetHubConnection HubConnection;
 
@@ -54,7 +60,7 @@ namespace MrPuppet
         { 
             void OnDestroy() 
             { 
-                AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedName + "." + TakeCount.ToString().PadLeft(3, '0') + ".anim");
+                AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
                 OneShotsWindow.HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + OneShotsWindow.ParsedClipNameAfterPlay);
             } 
         }
@@ -64,7 +70,7 @@ namespace MrPuppet
         [DisableInEditorMode]
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
-        private void Record()
+        public void Record()
         { 
             if (HubConnectionCheck()){
                 ParsedClipNameAfterPlay = ParsedClipName;
@@ -182,6 +188,7 @@ namespace MrPuppet
 
                 RecordedName = recorder.FileNameGenerator.FileName;
                 RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
+                RecordedPaddedName = RecordedName + "." + TakeCount.ToString().PadLeft(3, '0');
 
                 /*
                 recorder.FileNameGenerator.FileName = "";
@@ -195,7 +202,7 @@ namespace MrPuppet
             }
         }
         
-        private void ParseAnimationClip()
+        public void ParseAnimationClip()
         {
             if (Performance)
             {
@@ -210,22 +217,15 @@ namespace MrPuppet
                         ParsedClipName = Performance.name;
                     }
 
+                    if (Recorder == null)
+                        Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
                     if (HubConnectionCheck() && EditorApplication.isPlaying && !Recorder.IsRecording())
                         HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
                 }
                 else
                     ParsedClipName = "Error: Format";
             }
-        }
-
-        [Button(ButtonSizes.Large)]
-        private void TestStop(){
-                            if ( HubConnectionCheck() && !string.IsNullOrEmpty(ParsedClipNameAfterPlay))
-                {
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
-                    Debug.Log(ParsedClipNameAfterPlay);
-                    //ParsedClipNameAfterPlay = null;
-                }            
         }
 
         private bool HubConnectionCheck()
