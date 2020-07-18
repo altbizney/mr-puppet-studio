@@ -18,9 +18,7 @@ namespace MrPuppet
     public class OneShotsWindow : OdinEditorWindow
     {
 
-        //fix audio ref stuff
-        //in exports have button that opens this, and just preloads your stufff
-        //animator error and other error
+        //export performance probs wont get the object that is recorded during a one shot without using its button
 
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()

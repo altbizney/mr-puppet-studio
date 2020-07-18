@@ -29,6 +29,9 @@ namespace MrPuppet
             Instance = this;
         }
 
+        public enum AudioModes { AudRef, OneShot};
+
+
         private RecorderWindow Recorder;
         private static string ButtonMessage;
         //private bool ShowInfo;
@@ -43,8 +46,39 @@ namespace MrPuppet
         public static RecorderHelper Instance { get; private set; }
         public static bool IsOpen { get { return Instance != null; } }
 
+        [EnumToggleButtons]
+        [HideLabel]
+        [HorizontalGroup]
+        [OnValueChanged("ChangeModes")]
+        public AudioModes Mode;
+
         [Range(0, 1)]
+        [HorizontalGroup]
+        [HideLabel]
         public float AudioVolume;
+
+        private OneShotsWindow OneShots;
+        private AudioReference AudioRef;
+
+        private void ChangeModes()
+        {
+            if (!OneShots)
+                OneShots = EditorWindow.GetWindow<OneShotsWindow>();
+            
+            if(!AudioRef)
+                AudioRef = FindObjectOfType<AudioReference>();
+
+            if (Mode == AudioModes.OneShot){
+                GetWindow<ExportPerformance>().Show();
+                AudioRef.enabled = false;
+            }
+            if (Mode == AudioModes.AudRef){
+                OneShots.Close();
+                AudioRef.enabled = true;
+            }
+
+            //when enter playmmode, call this
+        }
 
         private void GetFilename()
         {

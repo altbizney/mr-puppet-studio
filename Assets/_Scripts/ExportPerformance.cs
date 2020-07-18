@@ -82,12 +82,12 @@ namespace MrPuppet
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
 
+                if (EditorApplication.isPlaying)
+                    Instance.Record();
+
                 OneShotTarget = _Prefab;
                 OneShotName = OneShotsWindow.RecordedPaddedName;
                 OneShotsRecording = true;
-
-                if (EditorApplication.isPlaying)
-                    Instance.Record();
             }
 
         }
@@ -109,6 +109,7 @@ namespace MrPuppet
                 {
                     RecorderTarget = OneShotTarget;
                     filename = "Assets/Recordings/" + OneShotName + ".anim";
+                    OneShotsRecording = false;
                 }
                 else
                     filename = "Assets/Recordings/" + Filename + ".anim";

@@ -284,13 +284,15 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                if (EnableAudioPlayback && Application.isPlaying)
-                {
-                    if (!HubConnection)
-                        HubConnection = FindObjectOfType<MrPuppetHubConnection>();
+                /* 
+                 if (EnableAudioPlayback && Application.isPlaying)
+                 {
+                     if (!HubConnection)
+                         HubConnection = FindObjectOfType<MrPuppetHubConnection>();
 
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
-                }
+                     //HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + Take);
+                 }
+                 */
             }
             else
             {
