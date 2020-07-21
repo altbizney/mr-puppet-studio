@@ -32,6 +32,8 @@ namespace MrPuppet
         [PropertyOrder(1)]
         public List<ExportTake> Exports = new List<ExportTake>();
 
+        public GameObject PrefabOverwrite;
+
         private GameObject RecorderTarget;
         private string Filename;
         private RecorderWindow Recorder;
@@ -104,15 +106,21 @@ namespace MrPuppet
             }
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
-                var filename = "";
+                var filename = "Assets/Recordings/" + Filename + ".anim";
+                Debug.Log("ep " + Filename);
+
                 if (OneShotsRecording)
                 {
                     RecorderTarget = OneShotTarget;
                     filename = "Assets/Recordings/" + OneShotName + ".anim";
                     OneShotsRecording = false;
                 }
-                else
-                    filename = "Assets/Recordings/" + Filename + ".anim";
+
+                if (PrefabOverwrite)
+                {
+                    RecorderTarget = PrefabOverwrite;
+                    PrefabOverwrite = null;
+                }
 
                 StartedRecording = false;
                 Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
@@ -139,7 +147,7 @@ namespace MrPuppet
                 if (!recorder.Enabled) continue;
 
                 Filename = recorder.OutputFile;
-
+                
                 foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
 
                 Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));

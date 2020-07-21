@@ -17,8 +17,13 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
+        //Audio Ref wont stop audio when mode changes yet. 
+        //Add Repaint.
+        //I think get window opens the window??? cant use oneshots without recorder window. 
+        //if recorder helper is not open, it opens it. that is even kinda weird. 
+        //How should all this interact with each other? can you use one without the other for everything?
 
-        //export performance probs wont get the object that is recorded during a one shot without using its button
+        //animation clip not being found when using one shots normally? 
 
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
@@ -39,6 +44,8 @@ namespace MrPuppet
         [HorizontalGroup("Bottom")]
         public string ParsedClipName;
 
+        private RecorderHelper ModeAccess;
+
         private RecorderWindow Recorder;
         private bool PlayModeEntered;
         private GameObject Clone;
@@ -52,74 +59,101 @@ namespace MrPuppet
 
         private bool NotPlaying(){ return !Clone; }
         private bool IsPlaying(){ return Clone; }
+        
+        private bool IsAudRef()
+        { 
+            ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
 
+            if (ModeAccess.Mode == RecorderHelper.AudioModes.AudRef)
+            {
+                return true;
+            }
+            else
+            {
+              return false;
+            }
+        }
+        
         public class BlankMonoBehaviour : MonoBehaviour{ }
         public class _OnDestroy : MonoBehaviour
         { 
             void OnDestroy() 
             { 
+                //Debug.Log(AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim"));
                 AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
+                AssetDatabase.SaveAssets();
                 OneShotsWindow.HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + OneShotsWindow.ParsedClipNameAfterPlay);
             } 
         }
         
         [HideIf("IsPlaying", false)]
         [ShowIf("NotPlaying", false)]
+        [DisableIf("IsAudRef")]
         [DisableInEditorMode]
         [GUIColor(0.2f, 0.9f, 0.2f)]
         [Button(ButtonSizes.Large)]
         public void Record()
         { 
-            if (HubConnectionCheck()){
-                ParsedClipNameAfterPlay = ParsedClipName;
-                HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
+            if (IsAudRef() == false)
+            {
+                if (HubConnectionCheck()){
+                    ParsedClipNameAfterPlay = ParsedClipName;
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
+                }
+
+                Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
+                CoroutineHolder = new GameObject("CoroutineHolder");
+                CoroutineHolder.AddComponent<BlankMonoBehaviour>();
+                Clone.AddComponent<_OnDestroy>();
+
+                Actor.SetActive(false);
+
+                KillChildren(Clone.GetComponentsInChildren<JawTransformMapper>());
+                KillChildren(Clone.GetComponentsInChildren<ButtPuppet>());
+                KillChildren(Clone.GetComponentsInChildren<IKButtPuppet>());
+                KillChildren(Clone.GetComponentsInChildren<Blink>());
+                KillChildren(Clone.GetComponentsInChildren<HeadPuppet>());
+                KillChildren(Clone.GetComponentsInChildren<JawBlendShapeMapper>());
+                KillChildren(Clone.GetComponentsInChildren<FaceCapBlendShapeMapper>());
+                KillChildren(Clone.GetComponentsInChildren<JointFollower>());
+                KillChildren(Clone.GetComponentsInChildren<LookAtTarget>());
+                KillChildren(Clone.GetComponentsInChildren<CaptureMicrophone>());
+                KillChildren(Clone.GetComponentsInChildren<OneShotAnimations>());
+                KillChildren(Clone.GetComponentsInChildren<AudioReference>());
+                KillChildren(Clone.GetComponentsInChildren<IKTag>());
+                KillChildren(Clone.GetComponentsInChildren<Animator>());
+                //There are more components on the clone that are potentially unnessary
+
+                Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
+
+                AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
+                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsTemp") as RuntimeAnimatorController;
+
+                AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
+                AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
+                AnimatorOverride["BaseAnimation"] = Performance;
+                Clone.AddComponent<OneShotKeybinding>(); 
+                AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
+                
+                if (Recorder == null)
+                    Recorder = EditorWindow.GetWindow<RecorderWindow>();
+                
+                Recorder.StartRecording();
+                TakeCount += 1;
+                SetRecorderTarget(Clone);
+
+                //if export window exists
+                //if ( (Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[]).Length > 0 )
+                //{
+                    EditorWindow.GetWindow<ExportPerformance>().PrefabOverwrite = Actor;
+                //}
             }
-
-            Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
-            CoroutineHolder = new GameObject("CoroutineHolder");
-            CoroutineHolder.AddComponent<BlankMonoBehaviour>();
-            Clone.AddComponent<_OnDestroy>();
-
-            Actor.SetActive(false);
-
-            KillChildren(Clone.GetComponentsInChildren<JawTransformMapper>());
-            KillChildren(Clone.GetComponentsInChildren<ButtPuppet>());
-            KillChildren(Clone.GetComponentsInChildren<IKButtPuppet>());
-            KillChildren(Clone.GetComponentsInChildren<Blink>());
-            KillChildren(Clone.GetComponentsInChildren<HeadPuppet>());
-            KillChildren(Clone.GetComponentsInChildren<JawBlendShapeMapper>());
-            KillChildren(Clone.GetComponentsInChildren<FaceCapBlendShapeMapper>());
-            KillChildren(Clone.GetComponentsInChildren<JointFollower>());
-            KillChildren(Clone.GetComponentsInChildren<LookAtTarget>());
-            KillChildren(Clone.GetComponentsInChildren<CaptureMicrophone>());
-            KillChildren(Clone.GetComponentsInChildren<OneShotAnimations>());
-            KillChildren(Clone.GetComponentsInChildren<AudioReference>());
-            KillChildren(Clone.GetComponentsInChildren<IKTag>());
-            KillChildren(Clone.GetComponentsInChildren<Animator>());
-            //There are more components on the clone that are potentially unnessary
-
-            Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
-
-            AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
-            AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsTemp") as RuntimeAnimatorController;
-
-            AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
-            AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
-            AnimatorOverride["BaseAnimation"] = Performance;
-            Clone.AddComponent<OneShotKeybinding>(); 
-            AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
-            
-            if (Recorder == null)
-                Recorder = EditorWindow.GetWindow<RecorderWindow>();
-            
-            Recorder.StartRecording();
-            TakeCount += 1;
-            SetRecorderTarget(Clone);
         }
 
 
         [GUIColor(0.9f, 0.3f, 0.3f)]
         [Button(ButtonSizes.Large)]
+        [DisableIf("IsAudRef")]
         [HideIf("NotPlaying", false)]
         [ShowIf("IsPlaying", false)]
         [DisableInEditorMode]
@@ -160,6 +194,13 @@ namespace MrPuppet
                     PlayModeEntered = true;
                     TakeCount = 0;
                 }
+
+                //Do you need to gurantee that Recorder exists? 
+                if (ModeAccess.Mode == RecorderHelper.AudioModes.AudRef && Recorder.IsRecording())
+                {
+                    Stop();
+                    Repaint();
+                }
             }
             else
             {
@@ -184,9 +225,12 @@ namespace MrPuppet
             {
                 if (!recorder.Enabled) continue;
 
+                
                 RecordedName = recorder.FileNameGenerator.FileName;
                 RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
-                RecordedPaddedName = RecordedName + "." + TakeCount.ToString().PadLeft(3, '0');
+                Debug.Log("oneshots  " + RecordedName);
+                RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
+                recorder.OutputFile = RecordedPaddedName;
 
                 /*
                 recorder.FileNameGenerator.FileName = "";

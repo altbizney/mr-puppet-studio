@@ -62,22 +62,20 @@ namespace MrPuppet
 
         private void ChangeModes()
         {
-            if (!OneShots)
-                OneShots = EditorWindow.GetWindow<OneShotsWindow>();
             
-            if(!AudioRef)
-                AudioRef = FindObjectOfType<AudioReference>();
+            if (EditorApplication.isPlaying){
+                
+                if(!AudioRef)
+                    AudioRef = FindObjectOfType<AudioReference>();
 
-            if (Mode == AudioModes.OneShot){
-                GetWindow<ExportPerformance>().Show();
-                AudioRef.enabled = false;
+                if (Mode == AudioModes.OneShot){
+                    AudioRef.enabled = false;
+                }
+                if (Mode == AudioModes.AudRef){
+                    AudioRef.enabled = true;
+                }
             }
-            if (Mode == AudioModes.AudRef){
-                OneShots.Close();
-                AudioRef.enabled = true;
-            }
-
-            //when enter playmmode, call this
+            
         }
 
         private void GetFilename()
@@ -118,7 +116,7 @@ namespace MrPuppet
                 {
                     _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
 
-                    Camera.main.gameObject.AddComponent<CountDown>();
+                    Camera.main.gameObject .AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
                 }
             }
@@ -247,6 +245,7 @@ namespace MrPuppet
                     //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
+                    Instance.ChangeModes();
                 }
                 else
                 {
