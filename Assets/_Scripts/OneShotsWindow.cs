@@ -18,12 +18,8 @@ namespace MrPuppet
     public class OneShotsWindow : OdinEditorWindow
     {
         //Audio Ref wont stop audio when mode changes yet. 
-        //Add Repaint.
-        //I think get window opens the window??? cant use oneshots without recorder window. 
-        //if recorder helper is not open, it opens it. that is even kinda weird. 
-        //How should all this interact with each other? can you use one without the other for everything?
-
-        //animation clip not being found when using one shots normally? 
+        //By reference would probably be good. 
+        //Work on cacheing some of this stuff before you press the record button. 
 
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
@@ -45,6 +41,10 @@ namespace MrPuppet
         public string ParsedClipName;
 
         private RecorderHelper ModeAccess;
+        private RecorderHelper.AudioModes MyMode;
+        private RecorderHelper.AudioModes PrevMode;
+
+        private static GameObject Actor2;
 
         private RecorderWindow Recorder;
         private bool PlayModeEntered;
@@ -60,18 +60,27 @@ namespace MrPuppet
         private bool NotPlaying(){ return !Clone; }
         private bool IsPlaying(){ return Clone; }
         
+        public RecorderHelper.AudioModes ModeControl
+        {
+            get { return MyMode; }
+            set
+            {
+                if (value != PrevMode)
+                {
+                    MyMode = value;
+                    Repaint();
+                }
+
+                PrevMode = value;
+            }
+        }
+
         private bool IsAudRef()
         { 
-            ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
-
-            if (ModeAccess.Mode == RecorderHelper.AudioModes.AudRef)
-            {
+            if (ModeControl == RecorderHelper.AudioModes.AudRef)
                 return true;
-            }
             else
-            {
               return false;
-            }
         }
         
         public class BlankMonoBehaviour : MonoBehaviour{ }
@@ -79,10 +88,8 @@ namespace MrPuppet
         { 
             void OnDestroy() 
             { 
-                //Debug.Log(AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim"));
                 AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
                 AssetDatabase.SaveAssets();
-                OneShotsWindow.HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + OneShotsWindow.ParsedClipNameAfterPlay);
             } 
         }
         
@@ -142,11 +149,7 @@ namespace MrPuppet
                 TakeCount += 1;
                 SetRecorderTarget(Clone);
 
-                //if export window exists
-                //if ( (Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[]).Length > 0 )
-                //{
-                    EditorWindow.GetWindow<ExportPerformance>().PrefabOverwrite = Actor;
-                //}
+                Actor2 = Actor;
             }
         }
 
@@ -162,11 +165,7 @@ namespace MrPuppet
             
             if (Clone)
             {
-                //foreach (Renderer renderer in activeRenderers)
-                //    renderer.enabled = true;
-
                 Actor.SetActive(true);
-
                 Recorder.StopRecording();
 
                if (HubConnectionCheck()){
@@ -196,11 +195,15 @@ namespace MrPuppet
                 }
 
                 //Do you need to gurantee that Recorder exists? 
-                if (ModeAccess.Mode == RecorderHelper.AudioModes.AudRef && Recorder.IsRecording())
+                if (ModeControl == RecorderHelper.AudioModes.AudRef && Recorder.IsRecording())
                 {
                     Stop();
                     Repaint();
                 }
+                if (!ModeAccess)
+                    ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
+
+                ModeControl = ModeAccess.Mode;
             }
             else
             {
@@ -232,11 +235,9 @@ namespace MrPuppet
                 RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
                 recorder.OutputFile = RecordedPaddedName;
 
-                /*
-                recorder.FileNameGenerator.FileName = "";
-                recorder.OutputFile = "";
-                recorder.Take = 999999;
-                */
+                //if export window exists
+                //if ( (Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[]).Length > 0 )
+                EditorWindow.GetWindow<ExportPerformance>().UpdateExport( Actor, RecordedPaddedName );
 
                 foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Clone; }
 
