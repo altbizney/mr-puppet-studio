@@ -231,7 +231,6 @@ namespace MrPuppet
                 
                 RecordedName = recorder.FileNameGenerator.FileName;
                 RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
-                Debug.Log("oneshots  " + RecordedName);
                 RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
                 recorder.OutputFile = RecordedPaddedName;
 
