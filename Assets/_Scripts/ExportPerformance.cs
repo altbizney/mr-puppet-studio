@@ -44,7 +44,20 @@ namespace MrPuppet
         private static GameObject OneShotTarget;
         private static string OneShotName;
 
-        //private bool PromptShowing;
+        /*
+        public static ExportPerformance Instance { get; private set; }
+
+        public static bool IsOpen {
+         get { return Instance != null; }
+        }
+
+        void OnEnable() {
+            Instance = this;
+        }
+        void OnDisable() {
+            Instance = null;
+        }
+        */
 
         [Serializable]
         public class ExportTake

@@ -245,7 +245,8 @@ namespace MrPuppet
                     //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
-                    Instance.ChangeModes();
+                    if (Instance)
+                        Instance.ChangeModes();
                 }
                 else
                 {

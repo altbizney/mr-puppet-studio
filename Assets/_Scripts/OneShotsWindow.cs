@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Recorder;
 using System.Linq;
+using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,10 +18,6 @@ namespace MrPuppet
 #if UNITY_EDITOR
     public class OneShotsWindow : OdinEditorWindow
     {
-        //Audio Ref wont stop audio when mode changes yet. 
-        //By reference would probably be good. 
-        //Work on cacheing some of this stuff before you press the record button. 
-
         [MenuItem("Tools/One Shots Performance")]
         private static void OpenWindow()
         {
@@ -44,13 +41,13 @@ namespace MrPuppet
         private RecorderHelper.AudioModes MyMode;
         private RecorderHelper.AudioModes PrevMode;
 
-        private static GameObject Actor2;
-
         private RecorderWindow Recorder;
         private bool PlayModeEntered;
         private GameObject Clone;
         private Coroutine AnimationCoroutine;
         private GameObject CoroutineHolder;
+        private bool StartedRecording;
+
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
         static public string RecordedPaddedName;
@@ -59,7 +56,8 @@ namespace MrPuppet
 
         private bool NotPlaying(){ return !Clone; }
         private bool IsPlaying(){ return Clone; }
-        
+        public class BlankMonoBehaviour : MonoBehaviour{ }
+
         public RecorderHelper.AudioModes ModeControl
         {
             get { return MyMode; }
@@ -83,13 +81,12 @@ namespace MrPuppet
               return false;
         }
         
-        public class BlankMonoBehaviour : MonoBehaviour{ }
         public class _OnDestroy : MonoBehaviour
         { 
             void OnDestroy() 
             { 
-                AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
+                //AssetDatabase.SaveAssets();
             } 
         }
         
@@ -109,9 +106,11 @@ namespace MrPuppet
                 }
 
                 Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
+                
+                //Have Clone hold coroutine with its MonoBehavior?
                 CoroutineHolder = new GameObject("CoroutineHolder");
                 CoroutineHolder.AddComponent<BlankMonoBehaviour>();
-                Clone.AddComponent<_OnDestroy>();
+                //Clone.AddComponent<_OnDestroy>();
 
                 Actor.SetActive(false);
 
@@ -130,11 +129,12 @@ namespace MrPuppet
                 KillChildren(Clone.GetComponentsInChildren<IKTag>());
                 KillChildren(Clone.GetComponentsInChildren<Animator>());
                 //There are more components on the clone that are potentially unnessary
-
+                
+                
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
 
-                AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
-                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsTemp") as RuntimeAnimatorController;
+                //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
+                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsTest") as RuntimeAnimatorController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
@@ -142,14 +142,13 @@ namespace MrPuppet
                 Clone.AddComponent<OneShotKeybinding>(); 
                 AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
                 
-                if (Recorder == null)
-                    Recorder = EditorWindow.GetWindow<RecorderWindow>();
+                //if (Recorder == null)
+                //    Recorder = EditorWindow.GetWindow<RecorderWindow>();
                 
                 Recorder.StartRecording();
+                StartedRecording = true;
                 TakeCount += 1;
                 SetRecorderTarget(Clone);
-
-                Actor2 = Actor;
             }
         }
 
@@ -162,7 +161,6 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Stop()
         {
-            
             if (Clone)
             {
                 Actor.SetActive(true);
@@ -176,6 +174,8 @@ namespace MrPuppet
                 Destroy(Clone);
                 Destroy(CoroutineHolder);
                 AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
+
+                Repaint();
             }
         }
 
@@ -190,28 +190,37 @@ namespace MrPuppet
                         if (HubConnectionCheck())
                             HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
                     }
+
+                    if (Recorder == null)
+                        Recorder = EditorWindow.GetWindow<RecorderWindow>();
+
+                    ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
+
                     PlayModeEntered = true;
                     TakeCount = 0;
                 }
 
-                //Do you need to gurantee that Recorder exists? 
+                if (StartedRecording == true && !Recorder.IsRecording())
+                {
+                    Stop();
+                    StartedRecording = false;
+                }
+
                 if (ModeControl == RecorderHelper.AudioModes.AudRef && Recorder.IsRecording())
                 {
                     Stop();
                     Repaint();
                 }
-                if (!ModeAccess)
-                    ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
-
                 ModeControl = ModeAccess.Mode;
             }
             else
             {
                 if (PlayModeEntered == true)
-                    PlayModeEntered = false;                
+                    PlayModeEntered = false; 
+
+                StartedRecording = false;               
             }
         }
-
 
         private void KillChildren(UnityEngine.Object[] children)
         {
@@ -228,14 +237,33 @@ namespace MrPuppet
             {
                 if (!recorder.Enabled) continue;
 
-                
                 RecordedName = recorder.FileNameGenerator.FileName;
                 RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
                 RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
                 recorder.OutputFile = RecordedPaddedName;
 
-                //if export window exists
-                //if ( (Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[]).Length > 0 )
+                //ExportPerformance[] EP = Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[];
+                //Debug.Log(EP.Length);
+                /*
+                 EditorWindow[] allWindows = Resources.FindObjectsOfTypeAll<EditorWindow>();
+                 foreach (EditorWindow go in allWindows)
+                 {
+                    Debug.Log(go + "  " + go.titleContent.text);
+
+                 }
+                 */
+
+                //Debug.Log(ExportPerformance.IsOpen);
+                //if ( ExportPerformance.IsOpen )
+
+                //Could potentially do this in both areas where the asset gets renamed, for performance. 
+                int increment = 1;
+                while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
+                {
+                        TakeCount += 1;
+                        RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
+                }
+
                 EditorWindow.GetWindow<ExportPerformance>().UpdateExport( Actor, RecordedPaddedName );
 
                 foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Clone; }
