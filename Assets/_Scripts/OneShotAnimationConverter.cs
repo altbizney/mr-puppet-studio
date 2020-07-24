@@ -37,6 +37,7 @@ namespace MrPuppet
         private Coroutine AnimationCoroutine;
         private GameObject CoroutineHolder;
         static private string RecordedName;
+        private bool StartRecording;
         //private Animator _Animator;
 
         //when you click start
@@ -53,18 +54,14 @@ namespace MrPuppet
                 
             }
         */
+        private void Update()
+        {
+            if (Recorder == null)
+                Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
-        [DisableInEditorMode]
-        [GUIColor(0.5f, 0.8f, 0.5f)]
-        [Button(ButtonSizes.Large)]
-        public void Convert()
-        { 
+            if (EditorApplication.isPlaying && StartRecording == true && Recorder.IsRecording() && !Clone)
+            {
                 Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
-
-                CoroutineHolder = new GameObject("CoroutineHolder");
-                CoroutineHolder.AddComponent<BlankMonoBehaviour>();
-
-                Actor.SetActive(false);
 
                 KillChildren(Clone.GetComponentsInChildren<JawTransformMapper>());
                 KillChildren(Clone.GetComponentsInChildren<IKButtPuppet>());
@@ -72,8 +69,27 @@ namespace MrPuppet
                 KillChildren(Clone.GetComponentsInChildren<FaceCapBlendShapeMapper>());
                 KillChildren(Clone.GetComponentsInChildren<AudioReference>());
 
+                SetRecorderTarget(Clone);
+
+                Actor.SetActive(false);
+
                 Animator animator = Clone.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<Animator>();
                 animator.runtimeAnimatorController = Controller;
+            }
+            else
+            {
+                StartRecording = false;
+            }
+        }
+
+        [DisableInEditorMode]
+        [GUIColor(0.5f, 0.8f, 0.5f)]
+        [Button(ButtonSizes.Large)]
+        public void Convert()
+        { 
+
+                //CoroutineHolder = new GameObject("CoroutineHolder");
+                //CoroutineHolder.AddComponent<BlankMonoBehaviour>();
 
                 //AnimationCoroutine = Clone.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(_Animator));
                 
@@ -81,7 +97,7 @@ namespace MrPuppet
                     Recorder = EditorWindow.GetWindow<RecorderWindow>();
                 
                 Recorder.StartRecording();
-                SetRecorderTarget(Clone);
+                StartRecording = true;
         }
 
         [DisableInEditorMode]
@@ -94,6 +110,9 @@ namespace MrPuppet
                 
                 Recorder.StopRecording();
                 AssetDatabase.RenameAsset("Assets/Recordings/" + RecordedName + ".anim", "ONESHOT." + AnimationName + ".anim");
+                Destroy(Clone);
+                Actor.SetActive(true);
+                StartRecording = false;
         }
 
         private void KillChildren(UnityEngine.Object[] children)

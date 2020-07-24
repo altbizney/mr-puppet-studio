@@ -33,6 +33,9 @@ public class OneShotKeybinding : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4))
             _Animator.SetTrigger("YawningTrigger");
 
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+            _Animator.SetTrigger("SpineWaveTrigger");
+
         //if (_Animator.GetBool("WaveRightTrigger") == true)
         //    Debug.Log("add");
 
