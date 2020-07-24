@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 73811a70f95e948578cbbcaf9f98771b
+guid: 5487dce9ffe8e4aa7a9e6df238385694
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
@@ -8,7 +8,7 @@ ModelImporter:
     second: mojo-oneshot-shrug_temp
   externalObjects: {}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -39,7 +39,7 @@ ModelImporter:
       takeName: mojo-oneshot-shrug_temp
       internalID: -7030618398070050794
       firstFrame: 1
-      lastFrame: 50
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -99,9 +99,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 92147f54a32914251a89254ff978ed40
-  - cd2ba4f8b2e624735a3fd3708aff7664
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 1
   humanDescription:

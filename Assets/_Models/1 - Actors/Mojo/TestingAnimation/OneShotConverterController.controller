@@ -51,7 +51,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mojo-test-gasp_temp
+  m_Name: OneShot
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -64,7 +64,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -4815877333122679691, guid: ab641030822304f198e9344ae36d4fad,
+  m_Motion: {fileID: -7030618398070050794, guid: 5487dce9ffe8e4aa7a9e6df238385694,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 

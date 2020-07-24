@@ -38,22 +38,7 @@ namespace MrPuppet
         private GameObject CoroutineHolder;
         static private string RecordedName;
         private bool StartRecording;
-        //private Animator _Animator;
 
-        //when you click start
-        //start a recording
-        //public animator controller. 
-
-        //public actor
-        /*
-            void record()
-            {
-                //clone the actor
-                //delete components from the clone
-                //set recorder target to clone
-                
-            }
-        */
         private void Update()
         {
             if (Recorder == null)

@@ -34,7 +34,22 @@ public class OneShotKeybinding : MonoBehaviour
             _Animator.SetTrigger("YawningTrigger");
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
-            _Animator.SetTrigger("SpineWaveTrigger");
+            _Animator.SetTrigger("ClapTrigger");
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+            _Animator.SetTrigger("FingerWagTrigger");
+
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+            _Animator.SetTrigger("GestureTrigger");
+
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+            _Animator.SetTrigger("HandsHipTrigger");
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+            _Animator.SetTrigger("ShrugTrigger");
+
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //    _Animator.SetTrigger("SpineWaveTrigger");
 
         //if (_Animator.GetBool("WaveRightTrigger") == true)
         //    Debug.Log("add");
