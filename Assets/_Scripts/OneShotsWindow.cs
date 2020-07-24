@@ -134,7 +134,7 @@ namespace MrPuppet
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
 
                 //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
-                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsTest") as RuntimeAnimatorController;
+                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
@@ -339,7 +339,7 @@ namespace MrPuppet
 
     }
 #else
-    public class PerformanceAnimationReplacementManager : MonoBehaviour
+    public class OneShotsWindow : MonoBehaviour
     {
 
     }

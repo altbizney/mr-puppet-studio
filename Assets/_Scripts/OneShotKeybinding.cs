@@ -21,14 +21,25 @@ public class OneShotKeybinding : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
             _Animator.SetTrigger("WaveRightTrigger");
-        }
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
             _Animator.SetTrigger("PointLeftTrigger");
-        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            _Animator.SetTrigger("ThinkingTrigger");
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            _Animator.SetTrigger("YawningTrigger");
+
+        //if (_Animator.GetBool("WaveRightTrigger") == true)
+        //    Debug.Log("add");
+
     }
+
+    //can you detect if triggger is true?
+    //if so, just check all of those, find the words you liie, light em up as the animation plays. 
+
 }
+
