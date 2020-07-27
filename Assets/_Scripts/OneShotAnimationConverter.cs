@@ -13,8 +13,6 @@ using Sirenix.OdinInspector.Editor;
 using UnityEditor.Animations;
 #endif
 
-//put animator controller on the specific prefab it should be on. 
-
 namespace MrPuppet
 {
 #if UNITY_EDITOR
@@ -38,6 +36,9 @@ namespace MrPuppet
         private GameObject CoroutineHolder;
         static private string RecordedName;
         private bool StartRecording;
+
+        public AnimationClip _AnimationClip;
+        public Object Object2;
 
         private void Update()
         {
@@ -66,6 +67,38 @@ namespace MrPuppet
                 StartRecording = false;
             }
         }
+
+/*
+        [Button(ButtonSizes.Large)]
+        private void TestRemove()
+        {
+            Avatar aa = AvatarBuilder.BuildGenericAvatar(Actor, "");
+            aa.name = "TempAvatar";
+            AssetDatabase.CreateAsset(aa, "Assets/new Avatar.asset");
+
+            //AssetDatabase.AddObjectToAsset(aa, Object2);
+
+            //Animator animator = Actor.GetComponent<Animator>() as Animator;
+            //animator.avatar = aa;
+        }
+        C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT
+*/
+
+        [Button(ButtonSizes.Large)]
+        public void buildAvatarMask(){
+            
+            string name = "TestingAvatars";
+
+            Avatar avatar = AvatarBuilder.BuildGenericAvatar(Actor,"");
+            AvatarMask avatarMask = new AvatarMask();
+
+            avatarMask.AddTransformPath(Actor.transform);
+
+            AssetDatabase.CreateAsset(avatar, "Assets/" + name + ".anim.asset");
+            AssetDatabase.CreateAsset(avatarMask, "Assets/" + name + ".mask.asset");
+        }
+ 
+        
 
         [DisableInEditorMode]
         [GUIColor(0.5f, 0.8f, 0.5f)]

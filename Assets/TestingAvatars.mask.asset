@@ -1,0 +1,491 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TestingAvatars.mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Rotator
+    m_Weight: 1
+  - m_Path: Rotator/Root
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_eyes_Blink_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_eyes_Flat_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_eyes_happy_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_happyAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_happyE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_HappyFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_happyLDTH_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_happyNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_happyRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_mouthZip_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_O_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadLDTH1_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_sadRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_U_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/C_mouth_WQ_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/cheekPuff_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/eyeSquint_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/eyeSquint_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/eyeWide_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/eyeWide_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/jawForward_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/jawLeft_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/jawOpen_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/jawRight_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_eyes_Blink_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_eyes_happy_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_happyAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_happyE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_HappyFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_happyLDTH_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_happyNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_happyRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_mouthZip_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_O_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadLDTH1_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_sadRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_U_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/L_mouth_WQ_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouth_closed_correct_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthClose_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthDimple_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthDimple_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthFrown_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthFrown_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthFunnel_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthLeft_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthLowerDown_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthLowerDown_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthPress_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthPress_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthPucker_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthRight_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthRollLower_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthRollUpper_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthShrugLower_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthShrugUpper_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthSmile_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthSmile_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthStretch_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthStretch_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthUpperUp_L_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/mouthUpperUp_R_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_eyes_Blink_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_eyes_happy_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_happyAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_happyE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_HappyFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_happyLDTH_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_happyNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_happyRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_mouthZip_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_O_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadAI_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadE_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadFV_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadLDTH1_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadNK_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_sadRestMB_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_U_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/dataTransport/R_mouth_WQ_CHANNEL
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/antenna_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/antennaDot_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/arms_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/body_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/eyes_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_knotLarge_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_knotSmall_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/legs_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/mouthBag_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_bottom_inner_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_bottom_outer_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_top_inner_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_top_outer_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/geometry_GRP/tongue_utilGEO_01
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT/C_Antenna_Driven5_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT/C_Antenna_Driven5_connector_JNT/C_Antenna_Driven6_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT/R_Bandana_Bottom_Driven5_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT/R_Bandana_Bottom_Driven5_connector_JNT/R_Bandana_Bottom_Driven6_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT/R_Bandana_Top_Driven5_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT/R_Bandana_Top_Driven5_connector_JNT/R_Bandana_Top_Driven6_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/Jaw_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/Jaw_connector_JNT/C_Head_JawTop_tempJNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT/L_Arm_LowerArm_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT/L_Arm_LowerArm_FK_connector_JNT/L_Arm_Hand_end_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT/R_Arm_LowerArm_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT/R_Arm_LowerArm_FK_connector_JNT/R_Arm_Hand_end_FK_connector_JNT
+    m_Weight: 0
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT/L_Leg_Ball_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT/L_Leg_Ball_connector_JNT/L_Leg_ToeEnd_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT/R_Leg_Ball_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT/R_Leg_Ball_connector_JNT/R_Leg_ToeEnd_connector_JNT
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/UpperBody
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/UpperBody/LArmLimb
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/UpperBody/RArmLimb
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/LowerBody
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/LowerBody/Grounder
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/LowerBody/Grounder/LLegLimb
+    m_Weight: 1
+  - m_Path: Rotator/Root/IK Biped Limbs/LowerBody/Grounder/RLegLimb
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HipRot/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/SpineRot/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/NeckRot/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/HeadRot/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LArmTarget/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RArmTarget/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/LFootTarget/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Back
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Bottom
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Front
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Left
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Right
+    m_Weight: 1
+  - m_Path: Rotator/IK Targets/RFootTarget/CubeColored/Top
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeLeft
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeLeft/eyeLeft
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeRight
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeRight/eyeRight
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/head
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/teeth
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/Null Object (Hip)
+    m_Weight: 1
+  - m_Path: Rotator/Reference Head/Null Object (Head)
+    m_Weight: 1

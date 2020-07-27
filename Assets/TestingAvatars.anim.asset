@@ -1,0 +1,2276 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!90 &9000000
+Avatar:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TestingAvatars.anim
+  m_AvatarSize: 27264
+  m_Avatar:
+    serializedVersion: 3
+    m_AvatarSkeleton:
+      data:
+        m_Node:
+        - m_ParentId: -1
+          m_AxesId: -1
+        - m_ParentId: 0
+          m_AxesId: -1
+        - m_ParentId: 1
+          m_AxesId: -1
+        - m_ParentId: 2
+          m_AxesId: -1
+        - m_ParentId: 3
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 4
+          m_AxesId: -1
+        - m_ParentId: 3
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 99
+          m_AxesId: -1
+        - m_ParentId: 99
+          m_AxesId: -1
+        - m_ParentId: 99
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 105
+          m_AxesId: -1
+        - m_ParentId: 105
+          m_AxesId: -1
+        - m_ParentId: 105
+          m_AxesId: -1
+        - m_ParentId: 105
+          m_AxesId: -1
+        - m_ParentId: 93
+          m_AxesId: -1
+        - m_ParentId: 3
+          m_AxesId: -1
+        - m_ParentId: 111
+          m_AxesId: -1
+        - m_ParentId: 112
+          m_AxesId: -1
+        - m_ParentId: 113
+          m_AxesId: -1
+        - m_ParentId: 114
+          m_AxesId: -1
+        - m_ParentId: 115
+          m_AxesId: -1
+        - m_ParentId: 116
+          m_AxesId: -1
+        - m_ParentId: 117
+          m_AxesId: -1
+        - m_ParentId: 118
+          m_AxesId: -1
+        - m_ParentId: 119
+          m_AxesId: -1
+        - m_ParentId: 120
+          m_AxesId: -1
+        - m_ParentId: 121
+          m_AxesId: -1
+        - m_ParentId: 116
+          m_AxesId: -1
+        - m_ParentId: 123
+          m_AxesId: -1
+        - m_ParentId: 124
+          m_AxesId: -1
+        - m_ParentId: 125
+          m_AxesId: -1
+        - m_ParentId: 126
+          m_AxesId: -1
+        - m_ParentId: 127
+          m_AxesId: -1
+        - m_ParentId: 128
+          m_AxesId: -1
+        - m_ParentId: 123
+          m_AxesId: -1
+        - m_ParentId: 130
+          m_AxesId: -1
+        - m_ParentId: 131
+          m_AxesId: -1
+        - m_ParentId: 132
+          m_AxesId: -1
+        - m_ParentId: 133
+          m_AxesId: -1
+        - m_ParentId: 134
+          m_AxesId: -1
+        - m_ParentId: 116
+          m_AxesId: -1
+        - m_ParentId: 136
+          m_AxesId: -1
+        - m_ParentId: 116
+          m_AxesId: -1
+        - m_ParentId: 138
+          m_AxesId: -1
+        - m_ParentId: 139
+          m_AxesId: -1
+        - m_ParentId: 140
+          m_AxesId: -1
+        - m_ParentId: 116
+          m_AxesId: -1
+        - m_ParentId: 142
+          m_AxesId: -1
+        - m_ParentId: 143
+          m_AxesId: -1
+        - m_ParentId: 144
+          m_AxesId: -1
+        - m_ParentId: 112
+          m_AxesId: -1
+        - m_ParentId: 146
+          m_AxesId: -1
+        - m_ParentId: 147
+          m_AxesId: -1
+        - m_ParentId: 148
+          m_AxesId: -1
+        - m_ParentId: 149
+          m_AxesId: -1
+        - m_ParentId: 112
+          m_AxesId: -1
+        - m_ParentId: 151
+          m_AxesId: -1
+        - m_ParentId: 152
+          m_AxesId: -1
+        - m_ParentId: 153
+          m_AxesId: -1
+        - m_ParentId: 154
+          m_AxesId: -1
+        - m_ParentId: 2
+          m_AxesId: -1
+        - m_ParentId: 156
+          m_AxesId: -1
+        - m_ParentId: 157
+          m_AxesId: -1
+        - m_ParentId: 157
+          m_AxesId: -1
+        - m_ParentId: 156
+          m_AxesId: -1
+        - m_ParentId: 160
+          m_AxesId: -1
+        - m_ParentId: 161
+          m_AxesId: -1
+        - m_ParentId: 161
+          m_AxesId: -1
+        - m_ParentId: 1
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 165
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 166
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 173
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 174
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 181
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 182
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 189
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 190
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 197
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 198
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 205
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 206
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 213
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 214
+          m_AxesId: -1
+        - m_ParentId: 164
+          m_AxesId: -1
+        - m_ParentId: 221
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 222
+          m_AxesId: -1
+        - m_ParentId: 1
+          m_AxesId: -1
+        - m_ParentId: 229
+          m_AxesId: -1
+        - m_ParentId: 230
+          m_AxesId: -1
+        - m_ParentId: 231
+          m_AxesId: -1
+        - m_ParentId: 232
+          m_AxesId: -1
+        - m_ParentId: 231
+          m_AxesId: -1
+        - m_ParentId: 234
+          m_AxesId: -1
+        - m_ParentId: 231
+          m_AxesId: -1
+        - m_ParentId: 231
+          m_AxesId: -1
+        - m_ParentId: 229
+          m_AxesId: -1
+        - m_ParentId: 229
+          m_AxesId: -1
+        m_ID: 00000000f2ebda5007ee1e1b2a1357d67625ecfc83d13efda272187e5cdc5a84b9f0b9fe63c35b80fe58d9e72b9ae475b2834421cd0d420de7dfbf95c3d5ff9dc967b63d9e12428310f113ac2a2e953ec2144be2e18cd41b2c1d11a44876f80298120328e0116d0d03886f69b2577cd751ce7eb3734e6aeeae584afd3b91ac879d81737aa2a1a1817dacc5f8312bb98823dbc15c7683d99134f5bf973a584457c19d151d2ed4aa7616e67d5be7e8a371bf62ddff3e7e06e0e32580ddec9b5eaefee38ff9f92e936220d287f4380c9d08410a86c5ffdeb3dc1c47b1b8ed5c57ba0ec555defe0ce7a3a13219b391ffa0a97266a2cdc5c3f480265af6e46b4f6db666cf82ea9aedc562a626e0067248d4114e83f175d8e4da033b7dd867ff0184a21c9886c65622c336b5bbc152e0419f783f4cfb01219cb864e2ed843e6634d87d4b2d78882aef45bbd9bdba3dfdc5f16bfd87080dbbf688e9fd82e30662602d783034dbc0b0857536813b48e6124fe634b19c09c3c7e587ad18d1706a7f8dfb62e766f9e020a26e4d04ebbe7f8216fd7b2e2d3186eb41bacb181edaaa61e4d725279133d9bff26e5228403b818af6b9fc4c5d2456eeeba62b87ab9f13de1da67a008f0be80be3571bcb7a1be784b3fd5e1de80abd3204db244f0c2ecd25c05dc73fdc553028fd13ecebcae324b3319053422d8b7015fc31335a36be3ba332dd1be74b6ba6d682f5eb31b17f44d70093a37b35a4945bffc70ea0560ac6f678f40b89b3a442a884f69d1ada98972debc3ecab0b4f9609d4cee16cedd484b4c4a27b07ceb3c855812f86731b69e668d11c33660dcb21fe7b63ba33b9cd9d9afacee25faa8b11695c5d9ec6a2c2c8d81edb352329957c9eaf4462867e2e619f5d1f08bd461b02bb68106711e0c86b08c3f902a0f1cd8e8967dce7e9c8398d83a5a15a368b2943077ac032dc83084de56df178215b86a915c8a10da74cc62a047c8780ec35e4c85d4ac6415b5a2e97bf5df70b4a0ce7ef2aaf1d2ab4e2ce4732bb33d43ea7f844036b288e6d9d9ac3e17c19c4bc13778526d96e6b5a1ec480ccaf4b06086d1dd40cccffd49389e211eedbce9e9a10e6f02e2453c6fc2e794c5ac8cea3ea11d0201a7f36cd05ee67b4f8680787bded347f759534ff3d183c2e42e86183d489a5996c487ade1dcec8948e5f4b94c84691bf62afdc2f6a034bac1baf41d6daee641a7b8198cc4489e8c19996a9867f30f09aaf405cd37ab44a406d980dc5e986bcdb4519ed7532bea4d2a70edc3f67105fba0bc7ce13437b3ae2bfb99e37a9b5680e5950cc866088dd58cba6de4753cd63966aa5448b7a24780450d08132
+        m_AxesArray: []
+    m_AvatarSkeletonPose:
+      data:
+        m_X:
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 100, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: -0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.75144774, z: 0}
+          q: {x: -0.0143977, y: 0, z: 0, w: 0.99989635}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -2.7755576e-17, y: 0.21657668, z: -6.9849193e-10}
+          q: {x: 0.00029619367, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.169924e-16, y: 0.3415546, z: -6.505213e-19}
+          q: {x: 0.00066461455, y: -0, z: -0, w: 0.9999998}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 2.339847e-16, y: 0.33773962, z: 0.002501016}
+          q: {x: -0.010992519, y: 0, z: 0, w: 0.9999396}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 4.930381e-32, y: 0.128871, z: 1.387779e-17}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.908717e-24, y: 1.623229, z: -0.002498524}
+          q: {x: 6.591949e-17, y: 8.326673e-17, z: -0.7071068, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16324797, y: -5.395412e-19, z: -0.0019529044}
+          q: {x: 1.4343519e-17, y: -0.0061301533, z: 1.2962426e-16, w: 0.9999812}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.17125104, y: -1.1061823e-18, z: -0.0024070777}
+          q: {x: 3.8641736e-17, y: -0.006098608, z: 2.1768461e-16, w: 0.9999814}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.18682422, y: -1.6939219e-18, z: -0.0022035232}
+          q: {x: 8.587058e-18, y: -0.005539758, z: 3.8200137e-17, w: 0.9999847}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.20994557, y: -2.2978085e-18, z: -0.0018418819}
+          q: {x: 1.7341077e-17, y: -0.004405862, z: -6.563711e-19, w: 0.99999034}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.24060273, y: -2.9193315e-18, z: -0.0013881366}
+          q: {x: -5.2041704e-18, y: 0.000000005582248, z: -1.1118489e-16, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 1.004573, z: -0.002498533}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.136399, y: -0.04555243, z: -0.02268411}
+          q: {x: 0.35634434, y: 0.9343318, z: -0.0051247785, w: -0.0040773205}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.096637264, y: -0.0005418022, z: 0.00048137028}
+          q: {x: -1.0254105e-13, y: -0.000000041302712, z: 3.5823684e-11, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.0953277, y: -0.00048545797, z: 0.00038075284}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.09595141, y: -0.00044631166, z: 0.00034051808}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.098507054, y: -0.00038846984, z: 0.0002862587}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.10299372, y: -0.0003157575, z: 0.00021998702}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.1365149, y: 0.01522214, z: -0.023063377}
+          q: {x: -0.29085523, y: 0.9567447, z: -0.0015517859, w: -0.006361985}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16479395, y: -0.0006423408, z: 0.0006859908}
+          q: {x: -4.555967e-21, y: -2.8320592e-18, z: 1.5320899e-18, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16480519, y: -0.000586891, z: 0.00078920374}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16482328, y: -0.00052462635, z: 0.0007122918}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16484596, y: -0.0004623206, z: 0.0006351226}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16487181, y: -0.0003996691, z: 0.0005569931}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0.007591056, z: 0.01928858}
+          q: {x: -0.04990437, y: -0, z: 0.000000005587935, w: 0.9987541}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: -0.03860111, z: 0.9365219}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.118806, y: 0.01550844, z: 0.08731256}
+          q: {x: 0, y: 0, z: 0.13082652, w: 0.9914053}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.9125674, y: -0.08356504, z: -0.013349549}
+          q: {x: 0.27425447, y: 0.044175085, z: 0.4331274, w: 0.85745776}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.3208159, y: 2.220446e-16, z: -9.992007e-16}
+          q: {x: 0, y: 0.16387436, z: 0, w: 0.98648125}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.3035051, y: 0.0000003406649, z: -0.000008470863}
+          q: {x: 0.040183604, y: -0, z: -0, w: 0.9991923}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.1188064, y: 0.0155109, z: 0.08731256}
+          q: {x: 0.9915556, y: -0.1296827, z: 6.3290393e-18, w: -6.0824794e-17}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.9123278, y: 0.08378013, z: 0.013263503}
+          q: {x: 0.27585655, y: 0.04314402, z: 0.43590078, w: 0.8555889}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.3208195, y: 1.332268e-15, z: -0.0000009924387}
+          q: {x: 0, y: 0.18453147, z: 0, w: 0.98282665}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.3035008, y: -0.0000003324639, z: 0.000008286382}
+          q: {x: 0.040183604, y: -0, z: -0, w: 0.9991923}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.7269982, y: -0.002357226, z: 0.02014467}
+          q: {x: 0.0049337973, y: -0, z: -0, w: 0.99998784}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.110223e-16, y: -0.3040968, z: -0.00001350717}
+          q: {x: 0.000012986977, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -5.108143e-16, y: -0.2769989, z: -0.0150556825}
+          q: {x: 0.025093436, y: 8.329883e-17, z: 5.5101406e-17, w: 0.99968517}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00000011920929, y: -0.14032477, z: 0.1450138}
+          q: {x: -0.005852619, y: 0.70708257, z: -0.005852619, w: 0.70708257}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.201211, y: 4.163336e-17, z: 4.440892e-16}
+          q: {x: -0.0052093975, y: -0.7070876, z: -0.0052093975, w: 0.7070876}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.726998, y: -0.002357653, z: 0.02014468}
+          q: {x: 0.99998873, y: 0.00000017966104, z: -0.00000020753667, w: -0.0047475873}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.330669e-16, y: 0.3040963, z: 0.00001348014}
+          q: {x: 0.000012986977, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -2.9193184e-16, y: 0.29402283, z: 0.019067837}
+          q: {x: 0.02369363, y: 3.8791438e-16, z: -3.2839712e-17, w: 0.99971926}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00000019203469, y: 0.12380019, z: -0.14707483}
+          q: {x: -0.0045504635, y: 0.7070923, z: -0.0045502214, w: 0.707092}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.2012118, y: 0.00000004445595, z: -7.771561e-16}
+          q: {x: -0.0052093975, y: -0.7070876, z: -0.0052093975, w: 0.7070876}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.063551, y: 1.8086526, z: 0.08981109}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.0635502, y: 1.8086545, z: 0.08981109}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.72699827, y: 0.16506112, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.7269981, y: 0.16506135, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.0041617, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.3457162, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.683456, z: 0.0024985345}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.8123269, z: 0.002498535}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.5, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.5, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.7269984, y: 0.16506112, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.7269982, y: 0.16506135, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.5, y: 2.5, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 0.1, y: 0.1, z: 0.1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.2895, y: 2.61225, z: 2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.2895, y: -2.61225, z: -2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.2895, y: 2.61225, z: 2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.2895, y: -2.61225, z: -2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00061798096, y: -3.7853491, z: 3.3174002}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+    m_DefaultPose:
+      data:
+        m_X:
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 100, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: -0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0.23779179}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.75144774, z: 0}
+          q: {x: -0.0143977, y: 0, z: 0, w: 0.99989635}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -2.7755576e-17, y: 0.21657668, z: -6.9849193e-10}
+          q: {x: 0.00029619367, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.169924e-16, y: 0.3415546, z: -6.505213e-19}
+          q: {x: 0.00066461455, y: -0, z: -0, w: 0.9999998}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 2.339847e-16, y: 0.33773962, z: 0.002501016}
+          q: {x: -0.010992519, y: 0, z: 0, w: 0.9999396}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 4.930381e-32, y: 0.128871, z: 1.387779e-17}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.908717e-24, y: 1.623229, z: -0.002498524}
+          q: {x: 6.591949e-17, y: 8.326673e-17, z: -0.7071068, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16324797, y: -5.395412e-19, z: -0.0019529044}
+          q: {x: 1.4343519e-17, y: -0.0061301533, z: 1.2962426e-16, w: 0.9999812}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.17125104, y: -1.1061823e-18, z: -0.0024070777}
+          q: {x: 3.8641736e-17, y: -0.006098608, z: 2.1768461e-16, w: 0.9999814}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.18682422, y: -1.6939219e-18, z: -0.0022035232}
+          q: {x: 8.587058e-18, y: -0.005539758, z: 3.8200137e-17, w: 0.9999847}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.20994557, y: -2.2978085e-18, z: -0.0018418819}
+          q: {x: 1.7341077e-17, y: -0.004405862, z: -6.563711e-19, w: 0.99999034}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.24060273, y: -2.9193315e-18, z: -0.0013881366}
+          q: {x: -5.2041704e-18, y: 0.000000005582248, z: -1.1118489e-16, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 1.004573, z: -0.002498533}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.136399, y: -0.04555243, z: -0.02268411}
+          q: {x: 0.35634434, y: 0.9343318, z: -0.0051247785, w: -0.0040773205}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.096637264, y: -0.0005418022, z: 0.00048137028}
+          q: {x: -1.0254105e-13, y: -0.000000041302712, z: 3.5823684e-11, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.0953277, y: -0.00048545797, z: 0.00038075284}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.09595141, y: -0.00044631166, z: 0.00034051808}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.098507054, y: -0.00038846984, z: 0.0002862587}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.10299372, y: -0.0003157575, z: 0.00021998702}
+          q: {x: -6.123234e-17, y: -6.123234e-17, z: -6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.1365149, y: 0.01522214, z: -0.023063377}
+          q: {x: -0.29085523, y: 0.9567447, z: -0.0015517859, w: -0.006361985}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16479395, y: -0.0006423408, z: 0.0006859908}
+          q: {x: -4.555967e-21, y: -2.8320592e-18, z: 1.5320899e-18, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16480519, y: -0.000586891, z: 0.00078920374}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16482328, y: -0.00052462635, z: 0.0007122918}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16484596, y: -0.0004623206, z: 0.0006351226}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.16487181, y: -0.0003996691, z: 0.0005569931}
+          q: {x: -6.123234e-17, y: 6.123234e-17, z: 6.123234e-17, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0.007591056, z: 0.01928858}
+          q: {x: -0.04990437, y: -0, z: 0.000000005587935, w: 0.9987541}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: -0.03860111, z: 0.9365219}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.118806, y: 0.01550844, z: 0.08731256}
+          q: {x: 0, y: 0, z: 0.13082652, w: 0.9914053}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.9125674, y: -0.08356504, z: -0.013349549}
+          q: {x: 0.27425447, y: 0.044175085, z: 0.4331274, w: 0.85745776}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.3208159, y: 2.220446e-16, z: -9.992007e-16}
+          q: {x: 0, y: 0.16387436, z: 0, w: 0.98648125}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.3035051, y: 0.0000003406649, z: -0.000008470863}
+          q: {x: 0.040183604, y: -0, z: -0, w: 0.9991923}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.1188064, y: 0.0155109, z: 0.08731256}
+          q: {x: 0.9915556, y: -0.1296827, z: 6.3290393e-18, w: -6.0824794e-17}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.9123278, y: 0.08378013, z: 0.013263503}
+          q: {x: 0.27585655, y: 0.04314402, z: 0.43590078, w: 0.8555889}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.3208195, y: 1.332268e-15, z: -0.0000009924387}
+          q: {x: 0, y: 0.18453147, z: 0, w: 0.98282665}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.3035008, y: -0.0000003324639, z: 0.000008286382}
+          q: {x: 0.040183604, y: -0, z: -0, w: 0.9991923}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.7269982, y: -0.002357226, z: 0.02014467}
+          q: {x: 0.0049337973, y: -0, z: -0, w: 0.99998784}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.110223e-16, y: -0.3040968, z: -0.00001350717}
+          q: {x: 0.000012986977, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -5.108143e-16, y: -0.2769989, z: -0.0150556825}
+          q: {x: 0.025093436, y: 8.329883e-17, z: 5.5101406e-17, w: 0.99968517}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00000011920929, y: -0.14032477, z: 0.1450138}
+          q: {x: -0.005852619, y: 0.70708257, z: -0.005852619, w: 0.70708257}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.201211, y: 4.163336e-17, z: 4.440892e-16}
+          q: {x: -0.0052093975, y: -0.7070876, z: -0.0052093975, w: 0.7070876}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.726998, y: -0.002357653, z: 0.02014468}
+          q: {x: 0.99998873, y: 0.00000017966104, z: -0.00000020753667, w: -0.0047475873}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.330669e-16, y: 0.3040963, z: 0.00001348014}
+          q: {x: 0.000012986977, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -2.9193184e-16, y: 0.29402283, z: 0.019067837}
+          q: {x: 0.02369363, y: 3.8791438e-16, z: -3.2839712e-17, w: 0.99971926}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00000019203469, y: 0.12380019, z: -0.14707483}
+          q: {x: -0.0045504635, y: 0.7070923, z: -0.0045502214, w: 0.707092}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.2012118, y: 0.00000004445595, z: -7.771561e-16}
+          q: {x: -0.0052093975, y: -0.7070876, z: -0.0052093975, w: 0.7070876}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.063551, y: 1.8086526, z: 0.08981109}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.0635502, y: 1.8086545, z: 0.08981109}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.72699827, y: 0.16506112, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.7269981, y: 0.16506135, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.0041617, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.3457162, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.683456, z: 0.0024985345}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 1.8123269, z: 0.002498535}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -1.5, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 1.5, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.7269984, y: 0.16506112, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.7269982, y: 0.16506135, z: 0.014005721}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 0.2, y: 0.2, z: 0.2}
+        - t: {x: 0, y: 0, z: 0.5}
+          q: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: -0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: -0.5}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.5, y: 0, z: 0}
+          q: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0.5, z: 0}
+          q: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.5, y: 2.5, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 0.1, y: 0.1, z: 0.1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.2895, y: 2.61225, z: 2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.2895, y: -2.61225, z: -2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -3.2895, y: 2.61225, z: 2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 3.2895, y: -2.61225, z: -2.381555}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0, y: 0, z: 0}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: -0.00061798096, y: -3.7853491, z: 3.3174002}
+          q: {x: 0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+          s: {x: 1, y: 1, z: 1}
+    m_SkeletonNameIDArray: 9e9e1a7df2ebda506556c6b6052cae49312f4400ac831aed38073080738e7e94732a2679f2db221734824660ba19f7227859dba61f33a911936b89ee98319b4ac27e7796b14066931be8d2075e9aa345c90d8a49700fc74c77f97573d09a96fec3f667ff7a6445f399fd4797e9b318000a2a1a64eba204123d473dcda88edbb77c3445138df3859152fee1e8fbf1260fb2c3b8cbbc594616a576acc0f082dbd013a3fe015a609c0d4d02198cecf162da9030f9ef3567c74b9791b6a6e7829f056f609caea2caf7b5b83ee908fe545c60d9e6e839f4c77277175e7013c20e73aa219771ce6479cf5dfad67d64e54b96d206d294b6ea91d0900908d2f4f13a4548fe23ec160bf5bcf5373e9991b8924b9684596ef2f7b6fe13142ffc776e19fd358d80ff51c73abaa124a3b8c5cf13bb68101edf11eb4627e373f5fda9acee47fadaae6bdfe035da3c0b8351218971c710a6636cdab0ef4942d2d0c7166979ecd34480edbbbb9cb49d10b85bb149ab82e32970673f9cde05bc96a4935ab4851be204918640c35511ede71cc1dfb7da5e420c99821ec9f50953220d53738213a88575dc03d37d8e562dd03fecb472896ec9c2267d496090ff3468cc1545c9012499b2b7f9e5cbdd84f423067f4de283ea8995a4d96e081a254d7170585c99aba3e583a4a27e6b7f59c7121524d657bb368ccb2b281eb241550f5a9aaeb64095af2da84e5494d1242985d06dba76a907c76741dc3cde5bd33d45b308c6fcca62bbede048853f9c408552681772f670da084efd125875cf5ec5011e203ee50e6319f183ab49cab1e7d4becf15d92942dd8912b83cc8179f475b1f9cb5c99b26f47e2d3c6498ad3a71caa04c560002e91e6c5bc977efcafa07011f846b0f3b9d483e52d9ee5e7f916bbbc7c620bb0edf038a67614306d991a4e177ccae3568096efccd9277f38ef24d3a3f564855da105a0b752a5994267b53d78dccae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426bf0ae139ccae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426b37c9278ccae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426bda8f05accae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426e6199763ccae3568096efccd9277f38ef24d3a3f564855da105a0b752a59942610ce4646ccae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426dd21c6baccae3568096efccd9277f38ef24d3a3f564855da105a0b752a599426c4aee4c6f4460c0cda9f0393711511c3428f0cc226ab18d0aad7c96f9cf6f3a770eaae8078bf243ce7edb7dc
+    m_Human:
+      data:
+        serializedVersion: 2
+        m_RootX:
+          t: {x: 0, y: 0, z: 0}
+          q: {x: 0, y: 0, z: 0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        m_Skeleton:
+          data:
+            m_Node: []
+            m_ID: 
+            m_AxesArray: []
+        m_SkeletonPose:
+          data:
+            m_X: []
+        m_LeftHand:
+          data:
+            m_HandBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_RightHand:
+          data:
+            m_HandBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_HumanBoneIndex: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        m_HumanBoneMass:
+        - 0.14545456
+        - 0.12121213
+        - 0.12121213
+        - 0.048484854
+        - 0.048484854
+        - 0.009696971
+        - 0.009696971
+        - 0.030303033
+        - 0.14545456
+        - 0.14545456
+        - 0.012121214
+        - 0.048484854
+        - 0.006060607
+        - 0.006060607
+        - 0.024242427
+        - 0.024242427
+        - 0.01818182
+        - 0.01818182
+        - 0.006060607
+        - 0.006060607
+        - 0.0024242427
+        - 0.0024242427
+        - 0
+        - 0
+        - 0
+        m_Scale: 1
+        m_ArmTwist: 0.5
+        m_ForeArmTwist: 0.5
+        m_UpperLegTwist: 0.5
+        m_LegTwist: 0.5
+        m_ArmStretch: 0.05
+        m_LegStretch: 0.05
+        m_FeetSpacing: 0
+        m_HasLeftHand: 0
+        m_HasRightHand: 0
+        m_HasTDoF: 0
+    m_HumanSkeletonIndexArray: 
+    m_HumanSkeletonReverseIndexArray: 
+    m_RootMotionBoneIndex: -1
+    m_RootMotionBoneX:
+      t: {x: 0, y: 0, z: 0}
+      q: {x: 0, y: 0, z: 0, w: 1}
+      s: {x: 1, y: 1, z: 1}
+    m_RootMotionSkeleton:
+      data:
+        m_Node: []
+        m_ID: 
+        m_AxesArray: []
+    m_RootMotionSkeletonPose:
+      data:
+        m_X: []
+    m_RootMotionSkeletonIndexArray: 
+  m_TOS:
+    3004773025: Rotator/Root/Mojo/dataTransport/mouthLeft_CHANNEL
+    1299096096: Rotator/Root/Mojo/geometry_GRP/body_utilGEO_01
+    2204231746: Rotator/IK Targets/RArmTarget/CubeColored/Back
+    2336531818: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/teeth
+    2664356846: Rotator/IK Targets/HeadRot/CubeColored/Right
+    222432717: Rotator/Root/Mojo/dataTransport/C_mouth_happyRestMB_CHANNEL
+    225251808: Rotator/Root/Mojo/dataTransport/eyeSquint_L_CHANNEL
+    2111321190: Rotator/Root/Mojo/dataTransport/R_mouth_HappyFV_CHANNEL
+    2143218436: Rotator/Root/Mojo/geometry_GRP/eyes_utilGEO_01
+    3290004705: Rotator/IK Targets/NeckRot/CubeColored/Right
+    2289577291: Rotator/Root/Mojo/dataTransport/R_mouth_happyLDTH_CHANNEL
+    1118090121: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/Jaw_connector_JNT
+    4243334518: Rotator/Root/Mojo/dataTransport
+    903552728: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT/R_Leg_Ball_connector_JNT/R_Leg_ToeEnd_connector_JNT
+    115573501: Rotator/Root/Mojo/dataTransport/R_mouth_sadE_CHANNEL
+    1292403676: Rotator/IK Targets/HipRot/CubeColored/Left
+    2202145438: Rotator/Root/Mojo/dataTransport/C_mouth_sadE_CHANNEL
+    3863493505: Rotator/Root/Mojo/dataTransport/R_mouth_sadRestMB_CHANNEL
+    455011847: Rotator/Root
+    857526632: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT
+    1660652927: Rotator/Root/Mojo/geometry_GRP/antennaDot_utilGEO_01
+    1593684868: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT
+    2261536857: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeLeft/eyeLeft
+    3805215386: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT
+    1888169282: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT
+    3306002541: Rotator/IK Targets/RFootTarget/CubeColored/Back
+    1534977558: Rotator/Root/Mojo/dataTransport/L_mouth_O_CHANNEL
+    49837640: Rotator/Root/Mojo/dataTransport/C_mouth_WQ_CHANNEL
+    3235591216: Rotator/Root/Mojo/dataTransport/R_mouth_sadLDTH1_CHANNEL
+    3272187057: Rotator/Root/Mojo/dataTransport/R_mouth_WQ_CHANNEL
+    1729128635: Rotator/Root/IK Biped Limbs/LowerBody/Grounder
+    3560160050: Rotator/IK Targets/NeckRot/CubeColored/Back
+    3322566304: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT/R_Bandana_Top_Driven5_connector_JNT
+    1204740788: Rotator/IK Targets/NeckRot/CubeColored
+    566955366: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT
+    2521762731: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT/L_Arm_LowerArm_FK_connector_JNT
+    2054390173: Rotator/Root/Mojo/dataTransport/jawRight_CHANNEL
+    3644035367: Rotator/Root/Mojo/geometry_GRP/mouthBag_utilGEO_01
+    2090150179: Rotator/Root/IK Biped Limbs
+    467481251: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT
+    1049964074: Rotator/Root/Mojo/dataTransport/C_mouth_sadLDTH1_CHANNEL
+    3934441318: Rotator/Root/Mojo/dataTransport/mouthRight_CHANNEL
+    4041609370: Rotator/IK Targets/HeadRot/CubeColored/Top
+    1401958835: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT
+    802991970: Rotator/IK Targets/LFootTarget
+    732359662: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_top_outer_utilGEO_01
+    2496187933: Rotator/IK Targets/RArmTarget/CubeColored/Left
+    4249508014: Rotator/Root/Mojo/dataTransport/jawLeft_CHANNEL
+    3442900762: Rotator/IK Targets/LArmTarget/CubeColored/Front
+    1157146430: Rotator/IK Targets/NeckRot/CubeColored/Bottom
+    487955905: Rotator/Root/Mojo/dataTransport/L_mouth_happyRestMB_CHANNEL
+    3732555884: Rotator/IK Targets/RArmTarget/CubeColored/Front
+    913671600: Rotator/Root/Mojo/dataTransport/R_mouth_sadNK_CHANNEL
+    2844154657: Rotator/IK Targets/HipRot/CubeColored/Top
+    706588458: Rotator/IK Targets/NeckRot
+    3958735574: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT/R_Bandana_Bottom_Driven5_connector_JNT/R_Bandana_Bottom_Driven6_connector_JNT
+    2487967630: Rotator/IK Targets/RArmTarget/CubeColored/Right
+    3126792295: Rotator/IK Targets/RFootTarget/CubeColored/Top
+    558138290: Rotator/Root/Mojo/dataTransport/C_mouth_happyNK_CHANNEL
+    74982522: Rotator/Reference Head/Null Object (Hip)
+    2925435884: Rotator/Root/Mojo/dataTransport/L_mouth_sadNK_CHANNEL
+    2029088229: Rotator/IK Targets/HipRot/CubeColored/Right
+    4186956798: Rotator/Root/Mojo/dataTransport/L_mouth_sadRestMB_CHANNEL
+    3098625820: Rotator/Root/Mojo/dataTransport/mouthDimple_R_CHANNEL
+    3795483459: Rotator/Reference Head/FaceCapHeadGeneric
+    1906567399: Rotator/Root/Mojo/dataTransport/L_mouth_sadAI_CHANNEL
+    3432546683: Rotator/IK Targets/LFootTarget/CubeColored/Front
+    618908395: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT/C_Antenna_Driven5_connector_JNT/C_Antenna_Driven6_connector_JNT
+    115353254: Rotator/Root/Mojo/dataTransport/mouthRollUpper_CHANNEL
+    3774441191: Rotator/Root/Mojo/geometry_GRP/arms_utilGEO_01
+    2259261081: Rotator/IK Targets/LFootTarget/CubeColored/Right
+    3534011954: Rotator/IK Targets/RFootTarget/CubeColored/Left
+    1283010300: Rotator/IK Targets/LArmTarget/CubeColored
+    2276233531: Rotator/Root/Mojo/dataTransport/jawOpen_CHANNEL
+    3060617067: Rotator/Root/Mojo/dataTransport/mouthPucker_CHANNEL
+    2545939764: Rotator/Root/Mojo/dataTransport/L_mouth_happyLDTH_CHANNEL
+    3758521918: Rotator/Root/Mojo/dataTransport/L_mouth_sadFV_CHANNEL
+    1048899042: Rotator/Root/Mojo/dataTransport/R_mouth_happyE_CHANNEL
+    2744320215: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT
+    3171608605: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT
+    3253242180: Rotator/IK Targets/LFootTarget/CubeColored/Left
+    1630436998: Rotator/Root/IK Biped Limbs/UpperBody/LArmLimb
+    851474951: Rotator/IK Targets/HipRot/CubeColored/Front
+    1445223756: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_top_inner_utilGEO_01
+    1464096826: Rotator/Root/Mojo/dataTransport/L_mouth_happyNK_CHANNEL
+    2749828350: Rotator/Root/Mojo/dataTransport/mouthFunnel_CHANNEL
+    2228546924: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT
+    1768916995: Rotator/Root/Mojo/dataTransport/eyeSquint_R_CHANNEL
+    3546038447: Rotator/IK Targets/RFootTarget
+    458744587: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT
+    2543376922: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT
+    2074264756: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT
+    3889780990: Rotator/Root/Mojo/dataTransport/C_mouth_HappyFV_CHANNEL
+    2160336474: Rotator/IK Targets/HeadRot/CubeColored
+    136273311: Rotator/Root/IK Biped Limbs/UpperBody/RArmLimb
+    3573533708: Rotator/IK Targets/HeadRot/CubeColored/Front
+    3330709532: Rotator/Root/Mojo/dataTransport/mouthStretch_R_CHANNEL
+    3370399212: Rotator/IK Targets/SpineRot/CubeColored/Bottom
+    3960732968: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT/C_Antenna_Driven5_connector_JNT
+    1035364297: Rotator/Root/Mojo/dataTransport/C_mouth_sadAI_CHANNEL
+    466914529: Rotator/Root/Mojo/dataTransport/C_mouth_sadRestMB_CHANNEL
+    2890597226: Rotator/IK Targets/LFootTarget/CubeColored
+    3011432017: Rotator/Root/Mojo/dataTransport/eyeWide_R_CHANNEL
+    3213969096: Rotator/IK Targets/RArmTarget/CubeColored/Top
+    1742241083: Rotator/Root/Mojo/dataTransport/mouthSmile_R_CHANNEL
+    3615250354: Rotator/Root/Mojo/dataTransport/eyeWide_L_CHANNEL
+    3889981321: Rotator/IK Targets/HipRot
+    2726560255: Rotator/Root/Mojo/dataTransport/mouthStretch_L_CHANNEL
+    1149219121: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT
+    4273598649: Rotator/Root/Mojo/dataTransport/C_mouth_happyAI_CHANNEL
+    1689820193: Rotator/Root/Mojo/dataTransport/R_mouth_happyAI_CHANNEL
+    2395861408: Rotator/IK Targets
+    3442347087: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT
+    3788428297: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT/L_Arm_LowerArm_FK_connector_JNT/L_Arm_Hand_end_FK_connector_JNT
+    4173704317: Rotator/Root/Mojo/dataTransport/L_eyes_happy_CHANNEL
+    3972262701: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/L_Arm_Shoulder_connector_JNT/L_Arm_UpperArm_FK_connector_JNT
+    2153497443: Rotator/Root/Mojo/dataTransport/C_mouth_happyE_CHANNEL
+    2385013507: Rotator/IK Targets/NeckRot/CubeColored/Front
+    3127081982: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT/L_Leg_Ball_connector_JNT
+    3716163043: Rotator/Root/Mojo/dataTransport/L_mouth_sadLDTH1_CHANNEL
+    442822362: Rotator/IK Targets/LFootTarget/CubeColored/Bottom
+    2174853538: Rotator/Root/Mojo/dataTransport/L_eyes_Blink_CHANNEL
+    2251369774: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_knotLarge_utilGEO_01
+    1653812985: Rotator/Root/Mojo/dataTransport/L_mouth_U_CHANNEL
+    2752585004: Rotator/Root/Mojo/dataTransport/C_mouth_U_CHANNEL
+    1071386279: Rotator/IK Targets/RFootTarget/CubeColored/Right
+    858913813: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT
+    64677080: Rotator/Root/Mojo/dataTransport/mouthSmile_L_CHANNEL
+    3141922602: Rotator/Root/Mojo/dataTransport/R_mouth_happyNK_CHANNEL
+    1002321498: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT
+    2650789315: Rotator/Root/Mojo/dataTransport/C_mouth_O_CHANNEL
+    299124850: Rotator/Root/Mojo/dataTransport/mouthShrugLower_CHANNEL
+    3796571330: Rotator/Root/Mojo/dataTransport/C_mouth_sadNK_CHANNEL
+    3367226887: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT/R_Arm_LowerArm_FK_connector_JNT
+    1648668574: Rotator/Root/IK Biped Limbs/UpperBody
+    2156362756: Rotator/IK Targets/SpineRot/CubeColored/Back
+    2845900689: Rotator/Root/Mojo/dataTransport/mouthLowerDown_L_CHANNEL
+    49922824: Rotator/Root/IK Biped Limbs/LowerBody/Grounder/RLegLimb
+    810933311: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT/C_Antenna_Driven4_connector_JNT
+    4024896586: Rotator/IK Targets/SpineRot/CubeColored/Top
+    4248752515: Rotator/Root/Mojo/dataTransport/C_eyes_Blink_CHANNEL
+    3865647987: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT
+    3026710021: Rotator/IK Targets/LArmTarget/CubeColored/Left
+    2512379879: Rotator/Root/Mojo/dataTransport/C_mouth_mouthZip_CHANNEL
+    2369374441: Rotator/IK Targets/HipRot/CubeColored
+    1978762062: Rotator/Root/Mojo/dataTransport/mouthShrugUpper_CHANNEL
+    1388428213: Rotator/Root/Mojo/dataTransport/mouthUpperUp_R_CHANNEL
+    3596030762: Rotator/Root/Mojo
+    2536397403: Rotator/IK Targets/SpineRot/CubeColored/Left
+    2748237914: Rotator/IK Targets/LArmTarget/CubeColored/Back
+    1205774027: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeRight/eyeRight
+    2599432319: Rotator/IK Targets/LFootTarget/CubeColored/Top
+    1811006973: Rotator/Root/Mojo/dataTransport/R_mouth_mouthZip_CHANNEL
+    618333234: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT
+    2656918633: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT
+    2523123027: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/head
+    329231239: Rotator/Root/Mojo/geometry_GRP/tongue_utilGEO_01
+    294365791: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT
+    2792049639: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Bottom_Driven1_connector_JNT/R_Bandana_Bottom_Driven2_connector_JNT/R_Bandana_Bottom_Driven3_connector_JNT/R_Bandana_Bottom_Driven4_connector_JNT/R_Bandana_Bottom_Driven5_connector_JNT
+    3327337518: Rotator/IK Targets/LArmTarget
+    1785778456: Rotator/Root/Mojo/geometry_GRP/antenna_utilGEO_01
+    3999944307: Rotator/Root/Mojo/dataTransport/jawForward_CHANNEL
+    200760767: Rotator/IK Targets/SpineRot/CubeColored/Right
+    2446951286: Rotator/Root/Mojo/dataTransport/L_mouth_HappyFV_CHANNEL
+    3558698248: Rotator/IK Targets/HeadRot/CubeColored/Bottom
+    847368272: Rotator/Reference Head/Null Object (Head)
+    1490913376: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeRight
+    2647505203: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/L_Leg_UpperLeg_FK_connector_JNT/L_Leg_LowerLeg_FK_connector_JNT/L_Leg_Ankle_end_FK_connector_JNT/L_Leg_Ball_connector_JNT/L_Leg_ToeEnd_connector_JNT
+    1356524530: Rotator
+    2650178728: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/Jaw_connector_JNT/C_Head_JawTop_tempJNT
+    2023703008: Rotator/Root/Mojo/dataTransport/R_eyes_Blink_CHANNEL
+    887508754: Rotator/Root/Mojo/dataTransport/R_mouth_U_CHANNEL
+    4240045706: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_bottom_outer_utilGEO_01
+    3893071616: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT
+    247988059: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT
+    3841350182: Rotator/Root/Mojo/dataTransport/mouthPress_R_CHANNEL
+    33246271: Rotator/Root/Mojo/dataTransport/R_eyes_happy_CHANNEL
+    4292698815: Rotator/Root/Mojo/dataTransport/L_mouth_sadE_CHANNEL
+    1035648473: Rotator/Root/Mojo/dataTransport/R_mouth_happyRestMB_CHANNEL
+    0: 
+    717638823: Rotator/IK Targets/SpineRot/CubeColored
+    1657138586: Rotator/Root/Mojo/dataTransport/mouthRollLower_CHANNEL
+    2115531426: Rotator/Root/Mojo/dataTransport/C_eyes_Flat_CHANNEL
+    918757974: Rotator/Root/Mojo/dataTransport/mouthUpperUp_L_CHANNEL
+    4281636213: Rotator/IK Targets/RArmTarget
+    3313896001: Rotator/Root/Mojo/dataTransport/mouthClose_CHANNEL
+    2493789563: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT
+    2168143912: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP/teeth_bottom_inner_utilGEO_01
+    3730162958: Rotator/Root/Mojo/dataTransport/mouthFrown_R_CHANNEL
+    2239173564: Rotator/IK Targets/NeckRot/CubeColored/Top
+    1078637690: Rotator/IK Targets/RFootTarget/CubeColored
+    3686565609: Rotator/IK Targets/RFootTarget/CubeColored/Bottom
+    2057706974: Rotator/Root/Mojo/joints_GRP
+    3417981419: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_knotSmall_utilGEO_01
+    228706325: Rotator/IK Targets/SpineRot
+    3281689965: Rotator/IK Targets/NeckRot/CubeColored/Left
+    1990906926: Rotator/Root/Mojo/dataTransport/L_mouth_mouthZip_CHANNEL
+    1126796086: Rotator/IK Targets/HipRot/CubeColored/Bottom
+    3918067387: Rotator/Root/Mojo/dataTransport/R_mouth_sadAI_CHANNEL
+    2220547164: Rotator/Root/Mojo/dataTransport/C_eyes_happy_CHANNEL
+    2866421272: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP/headBand_utilGEO_01
+    144510008: Rotator/Root/Mojo/dataTransport/mouth_closed_correct_CHANNEL
+    4102541856: Rotator/Root/Mojo/dataTransport/L_mouth_WQ_CHANNEL
+    1802426662: Rotator/IK Targets/HeadRot
+    2134175165: Rotator/IK Targets/LArmTarget/CubeColored/Top
+    550506986: Rotator/IK Targets/LArmTarget/CubeColored/Bottom
+    3368198854: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/eg_FK_connector_JNTonnector_JNT/R_Leg_LowerLeg_FK_connector_JNT/R_Leg_Ankle_end_FK_connector_JNT/R_Leg_Ball_connector_JNT
+    933149119: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform
+    3344810021: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Antenna_Driven1_connector_JNT/C_Antenna_Driven2_connector_JNT/C_Antenna_Driven3_connector_JNT
+    218662909: Rotator/Root/Mojo/dataTransport/R_mouth_O_CHANNEL
+    2293836593: Rotator/Root/Mojo/dataTransport/L_mouth_happyAI_CHANNEL
+    1808326673: Rotator/Root/IK Biped Limbs/LowerBody/Grounder/LLegLimb
+    2016239714: Rotator/Root/Mojo/dataTransport/R_mouth_sadFV_CHANNEL
+    2251260245: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/R_Arm_Shoulder_connector_JNT/R_Arm_UpperArm_FK_connector_JNT/R_Arm_LowerArm_FK_connector_JNT/R_Arm_Hand_end_FK_connector_JNT
+    241743273: Rotator/Reference Head/FaceCapHeadGeneric/grp_transform/grp_eyeLeft
+    2163524549: Rotator/Root/Mojo/dataTransport/mouthPress_L_CHANNEL
+    2080183938: Rotator/Root/Mojo/geometry_GRP/headband_utilGRP
+    1383002815: Rotator/Root/Mojo/geometry_GRP/teeth_utilGRP
+    634905697: Rotator/Root/Mojo/geometry_GRP/legs_utilGEO_01
+    671290008: Rotator/Root/Mojo/dataTransport/cheekPuff_CHANNEL
+    300059027: Rotator/IK Targets/HeadRot/CubeColored/Left
+    2265409784: Rotator/IK Targets/LArmTarget/CubeColored/Right
+    105623500: Rotator/IK Targets/HeadRot/CubeColored/Back
+    2577762772: Rotator/IK Targets/RArmTarget/CubeColored/Bottom
+    2886988048: Rotator/Root/Mojo/dataTransport/C_mouth_sadFV_CHANNEL
+    35342013: Rotator/Root/IK Biped Limbs/LowerBody
+    1103514205: Rotator/IK Targets/SpineRot/CubeColored/Front
+    3877337803: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT
+    3449972338: Rotator/Root/Mojo/dataTransport/mouthLowerDown_R_CHANNEL
+    1977915947: Rotator/Root/Mojo/dataTransport/C_mouth_happyLDTH_CHANNEL
+    332318475: Rotator/Reference Head
+    775690301: Rotator/IK Targets/RArmTarget/CubeColored
+    3126287597: Rotator/Root/Mojo/dataTransport/mouthFrown_L_CHANNEL
+    1978472773: Rotator/IK Targets/RFootTarget/CubeColored/Front
+    1556208419: Rotator/Root/Mojo/dataTransport/L_mouth_happyE_CHANNEL
+    3702775551: Rotator/Root/Mojo/dataTransport/mouthDimple_L_CHANNEL
+    200571126: Rotator/Root/Mojo/joints_GRP/C_Spine_Main_1_connector_JNT/C_Spine_Main_2_connector_JNT/C_Spine_Main_3_connector_JNT/Neck_base_connector_JNT/C_Head_connector_JNT/C_Bandana_Placement_connector_JNT/R_Bandana_Top_Driven1_connector_JNT/R_Bandana_Top_Driven2_connector_JNT/R_Bandana_Top_Driven3_connector_JNT/R_Bandana_Top_Driven4_connector_JNT/R_Bandana_Top_Driven5_connector_JNT/R_Bandana_Top_Driven6_connector_JNT
+    2911364551: Rotator/Root/Mojo/geometry_GRP
+    1520543107: Rotator/IK Targets/HipRot/CubeColored/Back
+    3594628891: Rotator/IK Targets/LFootTarget/CubeColored/Back
+  m_HumanDescription:
+    serializedVersion: 3
+    m_Human: []
+    m_Skeleton: []
+    m_ArmTwist: 0.5
+    m_ForeArmTwist: 0.5
+    m_UpperLegTwist: 0.5
+    m_LegTwist: 0.5
+    m_ArmStretch: 0.05
+    m_LegStretch: 0.05
+    m_FeetSpacing: 0
+    m_GlobalScale: 1
+    m_RootMotionBoneName: 
+    m_HasTranslationDoF: 0
+    m_HasExtraRoot: 0
+    m_SkeletonHasParents: 1
