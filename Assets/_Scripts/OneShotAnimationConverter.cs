@@ -37,8 +37,8 @@ namespace MrPuppet
         static private string RecordedName;
         private bool StartRecording;
 
-        public AnimationClip _AnimationClip;
-        public Object Object2;
+        //public AnimationClip _AnimationClip;
+        //public Object Object2;
 
         private void Update()
         {
