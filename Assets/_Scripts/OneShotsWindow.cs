@@ -134,7 +134,7 @@ namespace MrPuppet
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
 
                 //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
-                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsDuplicateTest") as RuntimeAnimatorController;
+                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
@@ -239,7 +239,7 @@ namespace MrPuppet
 
                 RecordedName = recorder.FileNameGenerator.FileName;
                 RecordedName = RecordedName.Replace("<Take>", recorder.Take.ToString("000"));
-                RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
+                RecordedPaddedName = Performance.name + "_" + TakeCount.ToString().PadLeft(3, '0');
                 recorder.OutputFile = RecordedPaddedName;
 
                 //ExportPerformance[] EP = Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[];

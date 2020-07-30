@@ -22,54 +22,49 @@ public class OneShotKeybinding : MonoBehaviour
 
     private void Update()
     {
-        //layers can still get weird when you play a C animation, then play a L animatoin
-        //L gets added to c still
-        //if we ramp c down, then obv the animation will end. so that may be weird
-        //we could potentially do an avatar mask, right? 
-
-        //i see, the additiave animation continues. so if you play again anim is there
-        //we dont wanna start ramping it down again. if its at 0 it should stay at 0
+        //Known bug when playing 9-7-9 in quick progression.
+        //Can refactor this to on key down find the layer associated with that keypress, and do the weight set up they all need. 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _Animator.SetLayerWeight(1, 1f);
             _Animator.SetTrigger("WaveRightTrigger");
+            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             _Animator.SetLayerWeight(1, 1f);
             _Animator.SetTrigger("ThinkingTrigger");
+            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             _Animator.SetLayerWeight(2, 1f);
             _Animator.SetTrigger("ThumbsUpTrigger");
+
+            Debug.Log(_Animator.GetLayerWeight(3));
+            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             _Animator.SetTrigger("GestureTrigger");
-            //if this animation is playing, set ramp weight to its weight
-            Debug.Log(_Animator.GetCurrentAnimatorStateInfo(2).IsName("LArm"));
+            _Animator.SetLayerWeight(3, 1f);
 
-            if (_Animator.GetCurrentAnimatorStateInfo(1).IsName("WaveRight"))
+            if (_Animator.GetCurrentAnimatorStateInfo(1).IsName("WaveRight") || _Animator.GetCurrentAnimatorStateInfo(1).IsName("ONESHOT_Thinking"))
             {
-                StartCoroutine(RampLayer(_Animator.GetLayerWeight(1)));
+                StartCoroutine(RampLayer(_Animator.GetLayerWeight(1), 1));
             }
 
-            Debug.Log(_Animator.GetCurrentAnimatorClipInfo(2)[0].clip.name);
-
-            if (_Animator.GetCurrentAnimatorStateInfo(2).IsName("ThumbsUp"))
+            if (_Animator.GetCurrentAnimatorStateInfo(2).IsTag("ThumbsUp"))
             {
-                StartCoroutine(RampLayer(_Animator.GetLayerWeight(2)));
-                Debug.Log("dajdlaj");
+                StartCoroutine(RampLayer(_Animator.GetLayerWeight(2), 2));
             }
         }
 
-
-        // _Animator.SetTrigger("ShrugTrigger");
+        /*
         if (Input.GetKeyDown(KeyCode.Alpha6))
             _Animator.SetTrigger("FingerWagTrigger");
 
@@ -84,11 +79,8 @@ public class OneShotKeybinding : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
             _Animator.SetTrigger("PointLeftTrigger");
-        //when click gesture trigger
-        //ramp weights down to 0
+        */
 
-        //when click RArm trigger
-        //ramp weights up to 1
 
         //if (Input.GetKeyDown(KeyCode.Alpha5))
         //    _Animator.SetTrigger("SpineWaveTrigger");
@@ -98,12 +90,33 @@ public class OneShotKeybinding : MonoBehaviour
 
     }
 
-    IEnumerator RampLayer(float weight)
+    IEnumerator Ease(float weight, int layer)
     {
-        for (float ft = weight; ft >= 0; ft -= 0.15f)
+        float currentLerp = 0f;
+        float lerpTimer = 1f;
+        float t = 0f;
+
+        while (t < lerpTimer)
         {
-            _Animator.SetLayerWeight(1, ft);
-            _Animator.SetLayerWeight(2, ft);
+            currentLerp += Time.deltaTime;
+            if (currentLerp > lerpTimer)
+            {
+                currentLerp = lerpTimer;
+            }
+
+            t = currentLerp / lerpTimer;
+
+            _Animator.SetLayerWeight(layer, t);
+
+            yield return null;
+        }
+    }
+
+    IEnumerator RampLayer(float weight, int layer)
+    {
+        for (float ft = weight; ft >= 0; ft -= 0.125f)
+        {
+            _Animator.SetLayerWeight(layer, ft);
 
             yield return null;
         }
