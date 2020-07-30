@@ -120,6 +120,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &14327414 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3348738741927305390, guid: d846c2d32fc8440b98b7396316272849,
+    type: 3}
+  m_PrefabInstance: {fileID: 4553085520682898155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &241347502
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,8 +472,10 @@ MonoBehaviour:
   m_References:
     m_Keys:
     - 864068ca3e12541dc9dfe2c710667e15
+    - 971ac0822bc994a42987b73711ecf953
     m_Values:
     - {fileID: 0}
+    - {fileID: 14327414}
 --- !u!4 &1328187559
 Transform:
   m_ObjectHideFlags: 1
@@ -1056,11 +1064,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mojo - IK
-      objectReference: {fileID: 0}
-    - target: {fileID: 3348738741927305390, guid: d846c2d32fc8440b98b7396316272849,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3348738741927305385, guid: d846c2d32fc8440b98b7396316272849,
         type: 3}
