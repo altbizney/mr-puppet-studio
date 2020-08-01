@@ -33,7 +33,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ONESHOT_Thinking
+  m_Name: Thinking
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -189,7 +189,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneShotsDuplicateTest 1
+  m_Name: OneShotsDuplicate
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: PointLeftTrigger
@@ -529,7 +529,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ONESHOT_Gesture
+  m_Name: Gesture
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -646,7 +646,7 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
-  m_OrderedInterruption: 1
+  m_OrderedInterruption: 0
   m_CanTransitionToSelf: 1
 --- !u!1101 &8267206805783230390
 AnimatorStateTransition:

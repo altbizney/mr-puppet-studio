@@ -163,6 +163,8 @@ namespace MrPuppet
         {
             if (Clone)
             {
+                //stop coroutine?
+
                 Actor.SetActive(true);
                 Recorder.StopRecording();
 
@@ -261,7 +263,7 @@ namespace MrPuppet
                 while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
                 {
                         TakeCount += 1;
-                        RecordedPaddedName = Performance.name + "." + TakeCount.ToString().PadLeft(3, '0');
+                        RecordedPaddedName = Performance.name + "_" + TakeCount.ToString().PadLeft(3, '0');
                 }
 
                 EditorWindow.GetWindow<ExportPerformance>().UpdateExport( Actor, RecordedPaddedName );

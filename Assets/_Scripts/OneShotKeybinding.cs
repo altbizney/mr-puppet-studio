@@ -6,14 +6,7 @@ using System.Collections;
 public class OneShotKeybinding : MonoBehaviour
 {
     private Animator _Animator;
-
-    private bool AnimationEndCheck(Animator animator)
-    {
-        if ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
-            return true;
-        else
-            return false;
-    }
+    private Coroutine[] CoroutineManager = new Coroutine[3];
 
     private void Awake()
     {
@@ -22,49 +15,71 @@ public class OneShotKeybinding : MonoBehaviour
 
     private void Update()
     {
-        //Known bug when playing 9-7-9 in quick progression.
-        //Can refactor this to on key down find the layer associated with that keypress, and do the weight set up they all need. 
+        //These are all have similiar functionality. Refactor to eliminate repetition. 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _Animator.SetLayerWeight(1, 1f);
+            if (CoroutineManager[0] != null)
+            {
+                StopCoroutine(CoroutineManager[0]);
+                CoroutineManager[0] = null;
+            }
+
+            StartCoroutine(EaseForward(1));
             _Animator.SetTrigger("WaveRightTrigger");
-            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
+
+            CoroutineManager[2] = StartCoroutine(EaseBackward(3));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (CoroutineManager[1] != null)
+            {
+                StopCoroutine(CoroutineManager[1]);
+                CoroutineManager[1] = null;
+            }
+
+            StartCoroutine(EaseForward(2));
+
+            _Animator.SetTrigger("ThumbsUpTrigger");
+
+            CoroutineManager[2] = StartCoroutine(EaseBackward(3));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            _Animator.SetLayerWeight(1, 1f);
-            _Animator.SetTrigger("ThinkingTrigger");
-            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
-        }
+            if (CoroutineManager[2] != null)
+            {
+                StopCoroutine(CoroutineManager[2]);
+                CoroutineManager[2] = null;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            _Animator.SetLayerWeight(2, 1f);
-            _Animator.SetTrigger("ThumbsUpTrigger");
-
-            Debug.Log(_Animator.GetLayerWeight(3));
-            StartCoroutine(RampLayer(_Animator.GetLayerWeight(3), 3));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
+            StartCoroutine(EaseForward(3));
             _Animator.SetTrigger("GestureTrigger");
-            _Animator.SetLayerWeight(3, 1f);
 
             if (_Animator.GetCurrentAnimatorStateInfo(1).IsName("WaveRight") || _Animator.GetCurrentAnimatorStateInfo(1).IsName("ONESHOT_Thinking"))
             {
-                StartCoroutine(RampLayer(_Animator.GetLayerWeight(1), 1));
+                CoroutineManager[0] = StartCoroutine(EaseBackward(1));
             }
 
             if (_Animator.GetCurrentAnimatorStateInfo(2).IsTag("ThumbsUp"))
             {
-                StartCoroutine(RampLayer(_Animator.GetLayerWeight(2), 2));
+                CoroutineManager[1] = StartCoroutine(EaseBackward(2));
             }
         }
 
         /*
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            _Animator.SetLayerWeight(1, 1f);
+            _Animator.ResetTrigger("ThinkingTrigger");
+            _Animator.SetTrigger("ThinkingTrigger");
+
+            //myAnimationController.Play("animState", -1, normalizedTime = 0.0f);
+
+            CArmCoroutine = StartCoroutine(Ease(_Animator.GetLayerWeight(3), 3));
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha6))
             _Animator.SetTrigger("FingerWagTrigger");
 
@@ -80,31 +95,25 @@ public class OneShotKeybinding : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
             _Animator.SetTrigger("PointLeftTrigger");
         */
-
-
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //    _Animator.SetTrigger("SpineWaveTrigger");
-
-        //if (_Animator.GetBool("WaveRightTrigger") == true)
-        //    Debug.Log("add");
-
     }
 
-    IEnumerator Ease(float weight, int layer)
+    IEnumerator EaseBackward(int layer)
     {
-        float currentLerp = 0f;
-        float lerpTimer = 1f;
-        float t = 0f;
 
-        while (t < lerpTimer)
+        float currentLerp = _Animator.GetLayerWeight(layer);
+        float t = currentLerp;
+
+        while (t > 0)
         {
-            currentLerp += Time.deltaTime;
-            if (currentLerp > lerpTimer)
+            currentLerp -= Time.deltaTime;
+
+            if (currentLerp < 0)
             {
-                currentLerp = lerpTimer;
+                currentLerp = 0;
             }
 
-            t = currentLerp / lerpTimer;
+            t = currentLerp / 1;
+            t = t * t * (3f - 2f * t);
 
             _Animator.SetLayerWeight(layer, t);
 
@@ -112,15 +121,28 @@ public class OneShotKeybinding : MonoBehaviour
         }
     }
 
-    IEnumerator RampLayer(float weight, int layer)
+    IEnumerator EaseForward(int layer)
     {
-        for (float ft = weight; ft >= 0; ft -= 0.125f)
+
+        float currentLerp = _Animator.GetLayerWeight(layer);
+        float lerpTimer = 1f;
+        float t = currentLerp;
+
+        while (t < lerpTimer)
         {
-            _Animator.SetLayerWeight(layer, ft);
+            currentLerp += Time.deltaTime * 2f;
+
+            if (currentLerp > lerpTimer)
+            {
+                currentLerp = lerpTimer;
+            }
+
+            t = currentLerp / lerpTimer;
+            t = t * t * (3f - 2f * t);
+
+            _Animator.SetLayerWeight(layer, t);
 
             yield return null;
         }
     }
-
 }
-
