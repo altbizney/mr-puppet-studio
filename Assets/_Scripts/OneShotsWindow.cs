@@ -31,11 +31,11 @@ namespace MrPuppet
 
         [OnValueChanged("ParseAnimationClip")]
         [HorizontalGroup("Bottom")]
-        public bool IncludeAnimationSuffix;
+        public bool InferAudioClip;
         
-        [ReadOnly]
+        [DisableIf("InferAudioClip")]
         [HorizontalGroup("Bottom")]
-        public string ParsedClipName;
+        public string AudioClipName;
 
         private RecorderHelper ModeAccess;
         private RecorderHelper.AudioModes MyMode;
@@ -51,12 +51,13 @@ namespace MrPuppet
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
         static public string RecordedPaddedName;
-        static private string ParsedClipNameAfterPlay;
+        static private string AudioClipNameAfterPlay;
         static private MrPuppetHubConnection HubConnection;
 
-        private bool NotPlaying(){ return !Clone; }
-        private bool IsPlaying(){ return Clone; }
+        //private bool NotPlaying(){ return !Clone; }
+        //private bool IsPlaying(){ return Clone; }
         public class BlankMonoBehaviour : MonoBehaviour{ }
+
 
         public RecorderHelper.AudioModes ModeControl
         {
@@ -90,19 +91,19 @@ namespace MrPuppet
             } 
         }
         
-        [HideIf("IsPlaying", false)]
-        [ShowIf("NotPlaying", false)]
-        [DisableIf("IsAudRef")]
-        [DisableInEditorMode]
-        [GUIColor(0.2f, 0.9f, 0.2f)]
-        [Button(ButtonSizes.Large)]
+        //[HideIf("IsPlaying", false)]
+        //[ShowIf("NotPlaying", false)]
+        //[DisableIf("IsAudRef")]
+        //[DisableInEditorMode]
+        //[GUIColor(0.2f, 0.9f, 0.2f)]
+        //[Button(ButtonSizes.Large)]
         public void Record()
         { 
             if (IsAudRef() == false)
             {
                 if (HubConnectionCheck()){
-                    ParsedClipNameAfterPlay = ParsedClipName;
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + ParsedClipName);
+                    AudioClipNameAfterPlay = AudioClipName;
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + AudioClipName);
                 }
 
                 Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
@@ -145,7 +146,7 @@ namespace MrPuppet
                 //if (Recorder == null)
                 //    Recorder = EditorWindow.GetWindow<RecorderWindow>();
                 
-                Recorder.StartRecording();
+                //Recorder.StartRecording();
                 StartedRecording = true;
                 TakeCount += 1;
                 SetRecorderTarget(Clone);
@@ -153,24 +154,24 @@ namespace MrPuppet
         }
 
 
-        [GUIColor(0.9f, 0.3f, 0.3f)]
-        [Button(ButtonSizes.Large)]
-        [DisableIf("IsAudRef")]
-        [HideIf("NotPlaying", false)]
-        [ShowIf("IsPlaying", false)]
-        [DisableInEditorMode]
-        private void Stop()
+        //[GUIColor(0.9f, 0.3f, 0.3f)]
+        //[Button(ButtonSizes.Large)]
+        //[DisableIf("IsAudRef")]
+        //[HideIf("NotPlaying", false)]
+        //[ShowIf("IsPlaying", false)]
+        //[DisableInEditorMode]
+        public void Stop()
         {
             if (Clone)
             {
                 //stop coroutine?
 
                 Actor.SetActive(true);
-                Recorder.StopRecording();
+                //Recorder.StopRecording();
 
                if (HubConnectionCheck()){
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + ParsedClipNameAfterPlay);
-                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipNameAfterPlay);
+                    HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + AudioClipName);
                }
 
                 Destroy(Clone);
@@ -187,10 +188,10 @@ namespace MrPuppet
             {
                 if (PlayModeEntered == false)
                 {
-                    if (!string.IsNullOrEmpty(ParsedClipName) && ParsedClipName.Contains("-")) //create safer check
+                    if (!string.IsNullOrEmpty(AudioClipName) && AudioClipName.Contains("-")) //create safer check
                     {
                         if (HubConnectionCheck())
-                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                            HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + AudioClipName);
                     }
 
                     if (Recorder == null)
@@ -280,23 +281,23 @@ namespace MrPuppet
             {
                 if (Performance.name.Count(c => c == '-') == 2)
                 {
-                    if (!IncludeAnimationSuffix)
+                    if (!InferAudioClip)
                     {
-                        ParsedClipName = Performance.name.Substring(0, Performance.name.LastIndexOf("-"));
+                        AudioClipName = "";
                     }
                     else
                     {
-                        ParsedClipName = Performance.name;
+                        AudioClipName = Performance.name.Substring(0, Performance.name.LastIndexOf("-"));
                     }
 
                     if (Recorder == null)
                         Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
                     if (HubConnectionCheck() && EditorApplication.isPlaying && !Recorder.IsRecording())
-                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + ParsedClipName);
+                        HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + AudioClipName);
                 }
                 else
-                    ParsedClipName = "Error: Format";
+                    AudioClipName = "Error: Format";
             }
         }
 

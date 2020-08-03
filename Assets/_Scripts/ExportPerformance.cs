@@ -63,7 +63,7 @@ namespace MrPuppet
         public class ExportTake
         {
             [PreviewField]
-            [TableColumnWidth(60, Resizable = false)]
+            [TableColumnWidth(64, Resizable = false)]
             [VerticalGroup("Preview")]
             public GameObject _Prefab;
 
@@ -77,8 +77,6 @@ namespace MrPuppet
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
             public Rating _Rating;
-
-            //public bool OneShotsRecording;
 
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
@@ -98,8 +96,8 @@ namespace MrPuppet
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
 
-                if (EditorApplication.isPlaying)
-                    Instance.Record();
+                //if (EditorApplication.isPlaying)
+                //    Instance.Record();
 
                 OneShotTarget = _Prefab;
                 OneShotName = OneShotsWindow.RecordedPaddedName;

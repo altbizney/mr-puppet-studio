@@ -134,6 +134,9 @@ namespace MrPuppet
             { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
             catch { throw; }
 
+            if (OneShots != EditorWindow.GetWindow<OneShotsWindow>())
+                OneShots = EditorWindow.GetWindow<OneShotsWindow>();
+
             if(Recorder)
             {
                 if (!Recorder.IsRecording())
@@ -142,6 +145,9 @@ namespace MrPuppet
                     EditorApplication.ExecuteMenuItem("Window/General/Game");
                     ButtonMessage = "STOP";
                     Repaint();
+
+                    if (Mode == AudioModes.OneShot)
+                        OneShots.Record();
                 }
                 else
                 {
@@ -150,6 +156,9 @@ namespace MrPuppet
                     StatusBox = "READY TO REC";
                     ButtonMessage = "START";
                     Repaint();
+
+                    if (Mode == AudioModes.OneShot)
+                        OneShots.Stop();
                 }
             }
         }
