@@ -29,13 +29,12 @@ namespace MrPuppet
 
         public GameObject Actor;
 
-        [OnValueChanged("ParseAnimationClip")]
-        [HorizontalGroup("Bottom")]
-        public bool InferAudioClip;
-        
         [DisableIf("InferAudioClip")]
-        [HorizontalGroup("Bottom")]
         public string AudioClipName;
+
+        [OnValueChanged("ParseAnimationClip")]
+        [ToggleLeft]
+        public bool InferAudioClip;
 
         private RecorderHelper ModeAccess;
         private RecorderHelper.AudioModes MyMode;
@@ -47,6 +46,7 @@ namespace MrPuppet
         private Coroutine AnimationCoroutine;
         private GameObject CoroutineHolder;
         private bool StartedRecording;
+        private RuntimeAnimatorController RuntimeController;
 
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
@@ -131,11 +131,10 @@ namespace MrPuppet
                 KillChildren(Clone.GetComponentsInChildren<Animator>());
                 //There are more components on the clone that are potentially unnessary
                 
-                
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
 
                 //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
-                AnimatorTemplate.runtimeAnimatorController =  Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
+                AnimatorTemplate.runtimeAnimatorController =  RuntimeController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
@@ -198,6 +197,8 @@ namespace MrPuppet
                         Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
                     ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
+
+                    RuntimeController = Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
 
                     PlayModeEntered = true;
                     TakeCount = 0;
@@ -281,14 +282,7 @@ namespace MrPuppet
             {
                 if (Performance.name.Count(c => c == '-') == 2)
                 {
-                    if (!InferAudioClip)
-                    {
-                        AudioClipName = "";
-                    }
-                    else
-                    {
-                        AudioClipName = Performance.name.Substring(0, Performance.name.LastIndexOf("-"));
-                    }
+                    AudioClipName = Performance.name.Substring(0, Performance.name.LastIndexOf("-"));
 
                     if (Recorder == null)
                         Recorder = EditorWindow.GetWindow<RecorderWindow>();

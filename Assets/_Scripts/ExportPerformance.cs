@@ -63,8 +63,9 @@ namespace MrPuppet
         public class ExportTake
         {
             [PreviewField]
-            [TableColumnWidth(64, Resizable = false)]
+            [TableColumnWidth(65, Resizable = false)]
             [VerticalGroup("Preview")]
+            [HideLabel]
             public GameObject _Prefab;
 
             [TableColumnWidth(160)]
