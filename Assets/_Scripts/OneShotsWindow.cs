@@ -54,8 +54,6 @@ namespace MrPuppet
         static private string AudioClipNameAfterPlay;
         static private MrPuppetHubConnection HubConnection;
 
-        //private bool NotPlaying(){ return !Clone; }
-        //private bool IsPlaying(){ return Clone; }
         public class BlankMonoBehaviour : MonoBehaviour{ }
 
 
@@ -75,30 +73,24 @@ namespace MrPuppet
         }
 
         private bool IsAudRef()
-        { 
+        {
             if (ModeControl == RecorderHelper.AudioModes.AudRef)
                 return true;
             else
               return false;
         }
-        
+
         public class _OnDestroy : MonoBehaviour
-        { 
-            void OnDestroy() 
-            { 
+        {
+            void OnDestroy()
+            {
                 //AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
                 //AssetDatabase.SaveAssets();
-            } 
+            }
         }
-        
-        //[HideIf("IsPlaying", false)]
-        //[ShowIf("NotPlaying", false)]
-        //[DisableIf("IsAudRef")]
-        //[DisableInEditorMode]
-        //[GUIColor(0.2f, 0.9f, 0.2f)]
-        //[Button(ButtonSizes.Large)]
+
         public void Record()
-        { 
+        {
             if (IsAudRef() == false)
             {
                 if (HubConnectionCheck()){
@@ -107,7 +99,7 @@ namespace MrPuppet
                 }
 
                 Clone = Instantiate(Actor, Actor.transform.position, Actor.transform.rotation);
-                
+
                 //Have Clone hold coroutine with its MonoBehavior?
                 CoroutineHolder = new GameObject("CoroutineHolder");
                 CoroutineHolder.AddComponent<BlankMonoBehaviour>();
@@ -130,8 +122,8 @@ namespace MrPuppet
                 KillChildren(Clone.GetComponentsInChildren<IKTag>());
                 KillChildren(Clone.GetComponentsInChildren<Animator>());
                 //There are more components on the clone that are potentially unnessary
-                
-                Animator AnimatorTemplate = Clone.AddComponent<Animator>(); 
+
+                Animator AnimatorTemplate = Clone.AddComponent<Animator>();
 
                 //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
                 AnimatorTemplate.runtimeAnimatorController =  RuntimeController;
@@ -139,12 +131,12 @@ namespace MrPuppet
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
                 AnimatorOverride["BaseAnimation"] = Performance;
-                Clone.AddComponent<OneShotKeybinding>(); 
+                Clone.AddComponent<OneShotKeybinding>();
                 AnimationCoroutine = CoroutineHolder.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(AnimatorTemplate));
-                
+
                 //if (Recorder == null)
                 //    Recorder = EditorWindow.GetWindow<RecorderWindow>();
-                
+
                 //Recorder.StartRecording();
                 StartedRecording = true;
                 TakeCount += 1;
@@ -153,12 +145,6 @@ namespace MrPuppet
         }
 
 
-        //[GUIColor(0.9f, 0.3f, 0.3f)]
-        //[Button(ButtonSizes.Large)]
-        //[DisableIf("IsAudRef")]
-        //[HideIf("NotPlaying", false)]
-        //[ShowIf("IsPlaying", false)]
-        //[DisableInEditorMode]
         public void Stop()
         {
             if (Clone)
@@ -220,9 +206,9 @@ namespace MrPuppet
             else
             {
                 if (PlayModeEntered == true)
-                    PlayModeEntered = false; 
+                    PlayModeEntered = false;
 
-                StartedRecording = false;               
+                StartedRecording = false;
             }
         }
 
@@ -260,7 +246,7 @@ namespace MrPuppet
                 //Debug.Log(ExportPerformance.IsOpen);
                 //if ( ExportPerformance.IsOpen )
 
-                //Could potentially do this in both areas where the asset gets renamed, for performance. 
+                //Could potentially do this in both areas where the asset gets renamed, for performance.
                 int increment = 1;
                 while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
                 {
@@ -275,7 +261,7 @@ namespace MrPuppet
                 return;
             }
         }
-        
+
         public void ParseAnimationClip()
         {
             if (Performance)
@@ -296,7 +282,7 @@ namespace MrPuppet
         }
 
         private bool HubConnectionCheck()
-        {   
+        {
             //Check to see if name is in the correct format?
 
             if (HubConnection != FindObjectOfType<MrPuppetHubConnection>() || !HubConnection)
@@ -312,10 +298,10 @@ namespace MrPuppet
         {
             while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) % 1 < 0.99f)
                 yield return null;
-            
+
             Stop();
         }
-        
+
         [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
         {
