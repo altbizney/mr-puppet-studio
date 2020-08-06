@@ -47,6 +47,7 @@ namespace MrPuppet
         private GameObject CoroutineHolder;
         private bool StartedRecording;
         private RuntimeAnimatorController RuntimeController;
+        private GameObject RecorderResetTarget;
 
         static private int TakeCount; //Consider adding in logic to remove static
         static private string RecordedName;
@@ -80,15 +81,6 @@ namespace MrPuppet
               return false;
         }
 
-        public class _OnDestroy : MonoBehaviour
-        {
-            void OnDestroy()
-            {
-                //AssetDatabase.RenameAsset("Assets/Recordings/" + OneShotsWindow.RecordedName + ".anim", OneShotsWindow.RecordedPaddedName + ".anim");
-                //AssetDatabase.SaveAssets();
-            }
-        }
-
         public void Record()
         {
             if (IsAudRef() == false)
@@ -103,7 +95,6 @@ namespace MrPuppet
                 //Have Clone hold coroutine with its MonoBehavior?
                 CoroutineHolder = new GameObject("CoroutineHolder");
                 CoroutineHolder.AddComponent<BlankMonoBehaviour>();
-                //Clone.AddComponent<_OnDestroy>();
 
                 Actor.SetActive(false);
 
@@ -125,7 +116,6 @@ namespace MrPuppet
 
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>();
 
-                //AssetDatabase.CopyAsset("Assets/Resources/OneShots.controller", "Assets/Resources/OneShotsTemp.controller");
                 AnimatorTemplate.runtimeAnimatorController =  RuntimeController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
@@ -137,10 +127,9 @@ namespace MrPuppet
                 //if (Recorder == null)
                 //    Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
-                //Recorder.StartRecording();
                 StartedRecording = true;
                 TakeCount += 1;
-                SetRecorderTarget(Clone);
+                RecorderSetup(Clone);
             }
         }
 
@@ -149,10 +138,10 @@ namespace MrPuppet
         {
             if (Clone)
             {
-                //stop coroutine?
+                //Stop coroutine?
 
                 Actor.SetActive(true);
-                //Recorder.StopRecording();
+                Recorder.StopRecording();
 
                if (HubConnectionCheck()){
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipNameAfterPlay);
@@ -161,7 +150,8 @@ namespace MrPuppet
 
                 Destroy(Clone);
                 Destroy(CoroutineHolder);
-                AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
+
+                SetRecorderTarget(RecorderResetTarget);
 
                 Repaint();
             }
@@ -206,11 +196,15 @@ namespace MrPuppet
             else
             {
                 if (PlayModeEntered == true)
+                {
                     PlayModeEntered = false;
+                    StartedRecording = false;
 
-                StartedRecording = false;
+                    SetRecorderTarget(RecorderResetTarget);
+                }
             }
         }
+
 
         private void KillChildren(UnityEngine.Object[] children)
         {
@@ -218,7 +212,7 @@ namespace MrPuppet
                 Destroy(child);
         }
 
-        private void SetRecorderTarget(GameObject Clone)
+        private void RecorderSetup(GameObject Clone)
         {
             RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
             RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
@@ -232,20 +226,6 @@ namespace MrPuppet
                 RecordedPaddedName = Performance.name + "_" + TakeCount.ToString().PadLeft(3, '0');
                 recorder.OutputFile = RecordedPaddedName;
 
-                //ExportPerformance[] EP = Resources.FindObjectsOfTypeAll(typeof(ExportPerformance)) as ExportPerformance[];
-                //Debug.Log(EP.Length);
-                /*
-                 EditorWindow[] allWindows = Resources.FindObjectsOfTypeAll<EditorWindow>();
-                 foreach (EditorWindow go in allWindows)
-                 {
-                    Debug.Log(go + "  " + go.titleContent.text);
-
-                 }
-                 */
-
-                //Debug.Log(ExportPerformance.IsOpen);
-                //if ( ExportPerformance.IsOpen )
-
                 //Could potentially do this in both areas where the asset gets renamed, for performance.
                 int increment = 1;
                 while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
@@ -256,8 +236,25 @@ namespace MrPuppet
 
                 EditorWindow.GetWindow<ExportPerformance>().UpdateExport( Actor, RecordedPaddedName );
 
-                foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Clone; }
+                foreach (var input in recorder.InputsSettings)
+                {
+                    RecorderResetTarget = ((AnimationInputSettings)input).gameObject;
+                    ((AnimationInputSettings)input).gameObject = Clone;
+                }
 
+                return;
+            }
+        }
+
+        private void SetRecorderTarget(GameObject Target)
+        {
+            RecorderControllerSettings m_ControllerSettings = RecorderControllerSettings.LoadOrCreate(Application.dataPath + "/../Library/Recorder/recorder.pref");
+            RecorderController m_RecorderController = new RecorderController(m_ControllerSettings);
+
+            foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
+            {
+                if (!recorder.Enabled) continue;
+                foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Target; }
                 return;
             }
         }
@@ -302,6 +299,7 @@ namespace MrPuppet
             Stop();
         }
 
+        /*
         [InitializeOnLoadAttribute]
         static class PlayModeStateChanged
         {
@@ -319,6 +317,7 @@ namespace MrPuppet
                 }
             }
         }
+        */
 
     }
 #else
