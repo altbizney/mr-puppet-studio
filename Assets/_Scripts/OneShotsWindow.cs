@@ -227,7 +227,6 @@ namespace MrPuppet
                 recorder.OutputFile = RecordedPaddedName;
 
                 //Could potentially do this in both areas where the asset gets renamed, for performance.
-                int increment = 1;
                 while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
                 {
                         TakeCount += 1;
