@@ -90,26 +90,19 @@ namespace MrPuppet
             [VerticalGroup("Preview")]
             [GUIColor(0.2f, 0.9f, 0.2f)]
             private void OneShots()
-            {                
+            {
                 GetWindow<OneShotsWindow>().Show();
                 OneShotsWindow Instance = EditorWindow.GetWindow<OneShotsWindow>();
                 Instance.Actor = _Prefab;
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
-
-                //if (EditorApplication.isPlaying)
-                //    Instance.Record();
-
-                OneShotTarget = _Prefab;
-                OneShotName = OneShotsWindow.RecordedPaddedName;
-                OneShotsRecording = true;
             }
 
         }
 
         public void UpdateExport(GameObject _PrefabOverwrite, string _AnimationOverwrite)
         {
-            //Allow for wider case scenarios and uses 
+            //Allow for wider case scenarios and uses
             PrefabOverwrite = _PrefabOverwrite;
             AnimationOverwrite = _AnimationOverwrite;
         }
@@ -127,13 +120,6 @@ namespace MrPuppet
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
                 var filename = "Assets/Recordings/" + Filename + ".anim";
-
-                if (OneShotsRecording)
-                {
-                    RecorderTarget = OneShotTarget;
-                    filename = "Assets/Recordings/" + OneShotName + ".anim";
-                    OneShotsRecording = false;
-                }
 
                 if (PrefabOverwrite)
                 {
@@ -211,7 +197,7 @@ namespace MrPuppet
                     // add animator to instance
                     if (instance.GetComponent<Animator>() != null)
                         DestroyImmediate(instance.GetComponent<Animator>());
-                    
+
                     var animator = instance.AddComponent<Animator>();
                     animator.runtimeAnimatorController = controller;
 
@@ -322,7 +308,7 @@ namespace MrPuppet
                         Blooper();
                         break;
                     case KeyCode.E:
-                        Blooper();
+                        Keeper();
                         break;
                 }
             }

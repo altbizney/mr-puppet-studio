@@ -297,27 +297,6 @@ namespace MrPuppet
 
             Stop();
         }
-
-        /*
-        [InitializeOnLoadAttribute]
-        static class PlayModeStateChanged
-        {
-            static PlayModeStateChanged()
-            {
-                EditorApplication.playModeStateChanged += playModes;
-            }
-
-            private static void playModes(PlayModeStateChange state)
-            {
-
-                if (state == UnityEditor.PlayModeStateChange.EnteredEditMode)
-                {
-                    AssetDatabase.DeleteAsset("Assets/Resources/OneShotsTemp.controller");
-                }
-            }
-        }
-        */
-
     }
 #else
     public class OneShotsWindow : MonoBehaviour
