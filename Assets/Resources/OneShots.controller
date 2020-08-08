@@ -189,7 +189,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneShotsDuplicate
+  m_Name: OneShots
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: PointLeftTrigger
@@ -273,7 +273,7 @@ AnimatorController:
     m_Behaviours: []
     m_BlendingMode: 1
     m_SyncedLayerIndex: -1
-    m_DefaultWeight: 1
+    m_DefaultWeight: 0.01
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -319,7 +319,7 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.5
-  m_TransitionOffset: 0.1
+  m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
@@ -347,7 +347,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7afdccc0b64594d77a2209340518a9a4, type: 2}
+  m_Motion: {fileID: 7400000, guid: 96ffc02f432614e63b31354d976c059e, type: 2}
   m_Tag: ThumbsUp
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -399,7 +399,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ab2983a30a9be4c248ad05edcbebfd04, type: 2}
+  m_Motion: {fileID: 7400000, guid: 706ba6ded6ba24c369ad08f604dab987, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -543,7 +543,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c0b2c161a7236444daff8b4c99bccd6d, type: 2}
+  m_Motion: {fileID: 7400000, guid: aa3a1aae5771846d197fcb7c1f83151c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
