@@ -174,7 +174,7 @@ namespace MrPuppet
 
                     ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
 
-                    RuntimeController = Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
+                    RuntimeController = Resources.Load("TEST") as RuntimeAnimatorController;
 
                     PlayModeEntered = true;
                     TakeCount = 0;
