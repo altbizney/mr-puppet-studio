@@ -86,8 +86,8 @@ namespace MrPuppet
 
         [Button(ButtonSizes.Large)]
         public void buildAvatarMask(){
-            
-            string name = "TestingAvatars";
+
+            string name = "WaveAvatar";
 
             Avatar avatar = AvatarBuilder.BuildGenericAvatar(Actor,"");
             AvatarMask avatarMask = new AvatarMask();
@@ -97,23 +97,23 @@ namespace MrPuppet
             AssetDatabase.CreateAsset(avatar, "Assets/" + name + ".anim.asset");
             AssetDatabase.CreateAsset(avatarMask, "Assets/" + name + ".mask.asset");
         }
- 
-        
+
+
 
         [DisableInEditorMode]
         [GUIColor(0.5f, 0.8f, 0.5f)]
         [Button(ButtonSizes.Large)]
         public void Convert()
-        { 
+        {
 
                 //CoroutineHolder = new GameObject("CoroutineHolder");
                 //CoroutineHolder.AddComponent<BlankMonoBehaviour>();
 
                 //AnimationCoroutine = Clone.GetComponent<MonoBehaviour>().StartCoroutine(AnimationEndCheck(_Animator));
-                
+
                 if (Recorder == null)
                     Recorder = EditorWindow.GetWindow<RecorderWindow>();
-                
+
                 Recorder.StartRecording();
                 StartRecording = true;
         }
@@ -122,10 +122,10 @@ namespace MrPuppet
         [GUIColor(0.8f, 0.5f, 0.5f)]
         [Button(ButtonSizes.Large)]
         public void Stop()
-        { 
+        {
                 if (Recorder == null)
                     Recorder = EditorWindow.GetWindow<RecorderWindow>();
-                
+
                 Recorder.StopRecording();
                 AssetDatabase.RenameAsset("Assets/Recordings/" + RecordedName + ".anim", "ONESHOT." + AnimationName + ".anim");
                 Destroy(Clone);
