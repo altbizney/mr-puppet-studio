@@ -5,6 +5,9 @@ using System;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
 using UnityEngine.SceneManagement;
+using System.Linq;
+
+
 
 
 #if UNITY_EDITOR
@@ -176,55 +179,73 @@ namespace MrPuppet
         [PropertyOrder(-1)]
         private void Export()
         {
-            int success = 0;
             AssetDatabase.SaveAssets();
 
             string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/";
             if (!Directory.Exists(DataPath))
                 DataPath = "Performances/";
 
-            foreach (var export in Exports)
+            foreach (var export in Exports.ToList())
             {
+                //if rating is null there would be an issue. but that shouldnt be possible
+                bool errorFound = false;
+
                 if (export._Rating != Rating.Trash)
                 {
-                    // create controller
-                    var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
+                    GameObject instance = null;
+                    try
+                    {
+                        // create controller
+                        var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
 
-                    // create instance, rename
-                    var instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
-                    instance.name = export._Animation.name;
+                        // create instance, rename
+                        instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
+                        instance.name = export._Animation.name;
 
-                    // add animator to instance
-                    if (instance.GetComponent<Animator>() != null)
-                        DestroyImmediate(instance.GetComponent<Animator>());
+                        // add animator to instance
+                        if (instance.GetComponent<Animator>() != null)
+                            DestroyImmediate(instance.GetComponent<Animator>());
 
-                    var animator = instance.AddComponent<Animator>();
-                    animator.runtimeAnimatorController = controller;
+                        var animator = instance.AddComponent<Animator>();
+                        animator.runtimeAnimatorController = controller;
 
-                    // export
-                    ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                        // export
+                        ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                    }
+                    catch(Exception ex)
+                    {
+                        errorFound = true;
+                        Debug.Log("Export Error: " + ex);
+                    }
+
+                    Exports.Remove(export);
 
                     // cleanup
-                    DestroyImmediate(instance);
+                    //this can give error about not being set to an object, if missing reference
                     AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+                    if(instance != null)
+         s               DestroyImmediate(instance);
                 }
-                else
+
+                try
+                {   if (errorFound == false)
+                        FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+                    else
+                        AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".anim");
+                }
+                catch(Exception ex)
                 {
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+                    errorFound = true;
+                    Debug.Log(ex);
                 }
 
                 // write file
-                var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
-                sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
-                sr.Close();
-
-                success++;
-            }
-
-            if (success == Exports.Count)
-            {
-                Exports = new List<ExportTake>();
+                if (errorFound == false)
+                {
+                    var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
+                    sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
+                    sr.Close();
+                }
             }
         }
 
