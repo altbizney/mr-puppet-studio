@@ -33,6 +33,7 @@ namespace MrPuppet
 
         [TableList(DefaultMinColumnWidth = 160)]
         [PropertyOrder(1)]
+        [OnValueChanged("SetList")]
         public List<ExportTake> Exports = new List<ExportTake>();
 
         private GameObject PrefabOverwrite;
@@ -47,20 +48,39 @@ namespace MrPuppet
         private static GameObject OneShotTarget;
         private static string OneShotName;
 
-        /*
+        [SerializeField]
+        private List<string> AnimationNames = new List<string>();
+
+
         public static ExportPerformance Instance { get; private set; }
 
+        /*
         public static bool IsOpen {
          get { return Instance != null; }
         }
+        */
 
-        void OnEnable() {
+        void OnEnable()
+        {
             Instance = this;
         }
         void OnDisable() {
             Instance = null;
         }
-        */
+        private void Awake() {
+            for(int i=0; i<Exports.Count; i++)
+            {
+                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
+            }
+        }
+
+
+        public void SetList()
+        {
+            AnimationNames = new List<string>();
+            foreach(ExportTake export in Exports)
+                AnimationNames.Add(export._Animation.name);
+        }
 
         [Serializable]
         public class ExportTake
@@ -74,6 +94,7 @@ namespace MrPuppet
             [TableColumnWidth(160)]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
+            [OnValueChanged("SetList")]
             public AnimationClip _Animation;
 
             [TableColumnWidth(160)]
@@ -99,6 +120,13 @@ namespace MrPuppet
                 Instance.Actor = _Prefab;
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
+            }
+
+            public void SetList()
+            {
+                Instance.AnimationNames = new List<string>();
+                foreach(ExportTake export in Instance.Exports)
+                   Instance.AnimationNames.Add(export._Animation.name);
             }
 
         }
@@ -131,7 +159,9 @@ namespace MrPuppet
                 }
 
                 StartedRecording = false;
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
+                ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                Exports.Add(currentTake);
+                AnimationNames.Add(currentTake._Animation.name);
 
                 if (AnimationOverwrite != null)
                 {
@@ -143,14 +173,16 @@ namespace MrPuppet
             }
         }
 
+        /*
         private void OnDestroy()
         {
-            var win = Instantiate<ExportPerformance>(this);
-            if (RecorderHelper.IsOpen)
-            {
-                win.Show();
-            }
+            //var win = Instantiate<ExportPerformance>(this);
+            //if (RecorderHelper.IsOpen)
+            //{
+              //  win.Show();
+            //}
         }
+        */
 
         private void GetFilename()
         {
@@ -185,6 +217,7 @@ namespace MrPuppet
             if (!Directory.Exists(DataPath))
                 DataPath = "Performances/";
 
+
             foreach (var export in Exports.ToList())
             {
                 //if rating is null there would be an issue. but that shouldnt be possible
@@ -215,30 +248,45 @@ namespace MrPuppet
                     catch(Exception ex)
                     {
                         errorFound = true;
-                        Debug.Log("Export Error: " + ex);
+                        Debug.LogError("<color=red>Export Error: </color> " + ex);
                     }
 
-                    Exports.Remove(export);
-
                     // cleanup
-                    //this can give error about not being set to an object, if missing reference
-                    AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    if(export._Animation)
+                        AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
                     if(instance != null)
                         DestroyImmediate(instance);
                 }
 
-                // write file
                 if (errorFound == false)
                 {
+                    // write file
                     var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
                     sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
                     sr.Close();
 
-                    //Will do regardless of rating
+                    // move animation regardless of rating
                     FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+
+                    // update datastructure with sucessful export
+                    Exports.Remove(export);
+                    AnimationNames.Remove(export._Animation.name);
                 }
+                else
+                    break;
             }
         }
+
+        /*
+        [Button(ButtonSizes.Large)]
+        private void Remove()
+        {
+            Exports.RemoveAt(0);
+        }
+        */
+
+        //when remove clip thorugh a draggin in a new clip, or when selecting none
+        //remove clip when you just exist that exportTake out
 
         public class RecorderPrompt : OdinEditorWindow
         {

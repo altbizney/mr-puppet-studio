@@ -62,9 +62,9 @@ namespace MrPuppet
 
         private void ChangeModes()
         {
-            
+
             if (EditorApplication.isPlaying){
-                
+
                 if(!AudioRef)
                     AudioRef = FindObjectOfType<AudioReference>();
 
@@ -75,7 +75,7 @@ namespace MrPuppet
                     AudioRef.enabled = true;
                 }
             }
-            
+
         }
 
         private void GetFilename()
