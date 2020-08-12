@@ -49,6 +49,7 @@ namespace MrPuppet
         private static string OneShotName;
 
         [SerializeField]
+        [HideInInspector]
         private List<string> AnimationNames = new List<string>();
 
 
@@ -268,7 +269,7 @@ namespace MrPuppet
                     // move animation regardless of rating
                     FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
 
-                    // update datastructure with sucessful export
+                    // update datastructures with sucessful export
                     Exports.Remove(export);
                     AnimationNames.Remove(export._Animation.name);
                 }
