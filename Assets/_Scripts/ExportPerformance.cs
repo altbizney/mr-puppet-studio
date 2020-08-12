@@ -224,19 +224,7 @@ namespace MrPuppet
                     //this can give error about not being set to an object, if missing reference
                     AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
                     if(instance != null)
-         s               DestroyImmediate(instance);
-                }
-
-                try
-                {   if (errorFound == false)
-                        FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
-                    else
-                        AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".anim");
-                }
-                catch(Exception ex)
-                {
-                    errorFound = true;
-                    Debug.Log(ex);
+                        DestroyImmediate(instance);
                 }
 
                 // write file
@@ -245,6 +233,9 @@ namespace MrPuppet
                     var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
                     sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
                     sr.Close();
+
+                    //Will do regardless of rating
+                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
                 }
             }
         }
