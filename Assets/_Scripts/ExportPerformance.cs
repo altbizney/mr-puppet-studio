@@ -30,7 +30,6 @@ namespace MrPuppet
 
         [TableList(DefaultMinColumnWidth = 160)]
         [PropertyOrder(1)]
-        //[OnValueChanged("SetSerializedList")]
         public List<ExportTake> Exports = new List<ExportTake>();
 
         private GameObject PrefabOverwrite;
@@ -44,10 +43,6 @@ namespace MrPuppet
         private static bool OneShotsRecording;
         private static GameObject OneShotTarget;
         private static string OneShotName;
-
-        [SerializeField]
-        //[HideInInspector]
-        private List<string> SerialzedAnimations = new List<string>();
 
         public static ExportPerformance Instance { get; private set; }
 
@@ -73,26 +68,8 @@ namespace MrPuppet
 
         private void SetExports()
         {
-            /*
-            for(int i=0; i<Exports.Count; i++)
-            {
-                //var anim = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + SerialzedAnimations[i] + ".anim", typeof(AnimationClip));
-                //if ( anim == false)
-                //    SerialzedAnimations.RemoveAt(i);
-
-                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + SerialzedAnimations[i] + ".anim", typeof(AnimationClip));
-            }
-            */
-                //export.SerializedFileName = export._Animation.name;
             foreach(ExportTake export in Exports)
                 export._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + export.SerializedFileName + ".anim", typeof(AnimationClip));
-        }
-
-        public void SetSerializedList()
-        {
-            SerialzedAnimations = new List<string>();
-            foreach(ExportTake export in Exports)
-                SerialzedAnimations.Add(export._Animation.name);
         }
 
         [Serializable]
@@ -116,8 +93,9 @@ namespace MrPuppet
             [HideLabel]
             public Rating _Rating;
 
-            //[SerializeField]
+            [HideInInspector]
             public string SerializedFileName;
+            public void SetSerializedList(){ SerializedFileName = _Animation.name; }
 
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
@@ -138,15 +116,6 @@ namespace MrPuppet
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
             }
-
-            public void SetSerializedList()
-            {
-                //Instance.SerialzedAnimations = new List<string>();
-                //foreach(ExportTake export in Instance.Exports)
-                //   Instance.SerialzedAnimations.Add(export._Animation.name);
-                SerializedFileName = _Animation.name;
-            }
-
         }
 
         public void UpdateExport(GameObject _PrefabOverwrite, string _AnimationOverwrite)
@@ -179,7 +148,6 @@ namespace MrPuppet
                 StartedRecording = false;
                 ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
                 Exports.Add(currentTake);
-                SerialzedAnimations.Add(currentTake._Animation.name);
 
                 if (AnimationOverwrite != null)
                 {
@@ -278,7 +246,6 @@ namespace MrPuppet
 
                     // update datastructures with sucessful export
                     Exports.Remove(export);
-                    SerialzedAnimations.Remove(export._Animation.name);
                 }
                 else
                     break;
