@@ -64,7 +64,7 @@ namespace MrPuppet
         {
             Instance = this;
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
-
+            Debug.Log("Enabled");
         }
         void OnDisable() {
             Instance = null;
