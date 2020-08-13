@@ -65,7 +65,12 @@ namespace MrPuppet
             Instance = this;
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
             Debug.Log("Enabled");
+            for(int i=0; i<Exports.Count; i++)
+            {
+                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
+            }
         }
+
         void OnDisable() {
             Instance = null;
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
