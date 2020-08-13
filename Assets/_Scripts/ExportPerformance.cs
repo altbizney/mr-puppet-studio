@@ -63,24 +63,15 @@ namespace MrPuppet
         void OnEnable()
         {
             Instance = this;
-            SceneManager.sceneLoaded += OnLevelFinishedLoading;
-            Debug.Log("Enabled");
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
-
-            for(int i=0; i<Exports.Count; i++)
-            {
-                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
-            }
         }
 
         void OnDisable() {
             Instance = null;
-            SceneManager.sceneLoaded += OnLevelFinishedLoading;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
-
         }
+
         private void Awake() {
-            Debug.Log("s");
             for(int i=0; i<Exports.Count; i++)
             {
                 Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
@@ -90,19 +81,12 @@ namespace MrPuppet
         public void OnAfterAssemblyReload()
         {
             Debug.Log("After Assembly Reload");
-        }
 
-        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-        {
-            Debug.Log("Level Loaded");
-            Debug.Log(scene.name);
-            Debug.Log(mode);
             for(int i=0; i<Exports.Count; i++)
             {
                 Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
             }
         }
-
 
         public void SetList()
         {
@@ -295,6 +279,7 @@ namespace MrPuppet
                     sr.Close();
 
                     // move animation regardless of rating
+                    // what if already exists?
                     FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
 
                     // update datastructures with sucessful export
