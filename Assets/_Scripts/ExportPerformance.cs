@@ -6,8 +6,6 @@ using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using UnityEngine.SceneManagement;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -32,7 +30,7 @@ namespace MrPuppet
 
         [TableList(DefaultMinColumnWidth = 160)]
         [PropertyOrder(1)]
-        [OnValueChanged("SetList")]
+        [OnValueChanged("SetSerializedList")]
         public List<ExportTake> Exports = new List<ExportTake>();
 
         private GameObject PrefabOverwrite;
@@ -48,17 +46,10 @@ namespace MrPuppet
         private static string OneShotName;
 
         [SerializeField]
-        //[HideInInspector]
-        private List<string> AnimationNames = new List<string>();
-
+        [HideInInspector]
+        private List<string> SerialzedAnimations = new List<string>();
 
         public static ExportPerformance Instance { get; private set; }
-
-        /*
-        public static bool IsOpen {
-         get { return Instance != null; }
-        }
-        */
 
         void OnEnable()
         {
@@ -72,27 +63,27 @@ namespace MrPuppet
         }
 
         private void Awake() {
-            for(int i=0; i<Exports.Count; i++)
-            {
-                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
-            }
+            SetExports();
         }
 
         public void OnAfterAssemblyReload()
         {
-            Debug.Log("After Assembly Reload");
+            SetExports();
+        }
 
+        private void SetExports()
+        {
             for(int i=0; i<Exports.Count; i++)
             {
-                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
+                Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + SerialzedAnimations[i] + ".anim", typeof(AnimationClip));
             }
         }
 
-        public void SetList()
+        public void SetSerializedList()
         {
-            AnimationNames = new List<string>();
+            SerialzedAnimations = new List<string>();
             foreach(ExportTake export in Exports)
-                AnimationNames.Add(export._Animation.name);
+                SerialzedAnimations.Add(export._Animation.name);
         }
 
         [Serializable]
@@ -107,7 +98,7 @@ namespace MrPuppet
             [TableColumnWidth(160)]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
-            [OnValueChanged("SetList")]
+            [OnValueChanged("SetSerializedList")]
             public AnimationClip _Animation;
 
             [TableColumnWidth(160)]
@@ -135,11 +126,11 @@ namespace MrPuppet
                 Instance.ParseAnimationClip();
             }
 
-            public void SetList()
+            public void SetSerializedList()
             {
-                Instance.AnimationNames = new List<string>();
+                Instance.SerialzedAnimations = new List<string>();
                 foreach(ExportTake export in Instance.Exports)
-                   Instance.AnimationNames.Add(export._Animation.name);
+                   Instance.SerialzedAnimations.Add(export._Animation.name);
             }
 
         }
@@ -174,7 +165,7 @@ namespace MrPuppet
                 StartedRecording = false;
                 ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
                 Exports.Add(currentTake);
-                AnimationNames.Add(currentTake._Animation.name);
+                SerialzedAnimations.Add(currentTake._Animation.name);
 
                 if (AnimationOverwrite != null)
                 {
@@ -185,17 +176,6 @@ namespace MrPuppet
                 RecorderPrompt.ShowUtilityWindow(this);
             }
         }
-
-        /*
-        private void OnDestroy()
-        {
-            //var win = Instantiate<ExportPerformance>(this);
-            //if (RecorderHelper.IsOpen)
-            //{
-              //  win.Show();
-            //}
-        }
-        */
 
         private void GetFilename()
         {
@@ -284,23 +264,12 @@ namespace MrPuppet
 
                     // update datastructures with sucessful export
                     Exports.Remove(export);
-                    AnimationNames.Remove(export._Animation.name);
+                    SerialzedAnimations.Remove(export._Animation.name);
                 }
                 else
                     break;
             }
         }
-
-        /*
-        [Button(ButtonSizes.Large)]
-        private void Remove()
-        {
-            Exports.RemoveAt(0);
-        }
-        */
-
-        //when remove clip thorugh a draggin in a new clip, or when selecting none
-        //remove clip when you just exist that exportTake out
 
         public class RecorderPrompt : OdinEditorWindow
         {
