@@ -65,6 +65,8 @@ namespace MrPuppet
             Instance = this;
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
             Debug.Log("Enabled");
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+
             for(int i=0; i<Exports.Count; i++)
             {
                 Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
@@ -74,6 +76,8 @@ namespace MrPuppet
         void OnDisable() {
             Instance = null;
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
+            AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+
         }
         private void Awake() {
             Debug.Log("s");
@@ -81,6 +85,11 @@ namespace MrPuppet
             {
                 Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
             }
+        }
+
+        public void OnAfterAssemblyReload()
+        {
+            Debug.Log("After Assembly Reload");
         }
 
         void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
