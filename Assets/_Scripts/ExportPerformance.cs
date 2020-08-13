@@ -49,7 +49,7 @@ namespace MrPuppet
         private static string OneShotName;
 
         [SerializeField]
-        [HideInInspector]
+        //[HideInInspector]
         private List<string> AnimationNames = new List<string>();
 
 
