@@ -69,6 +69,7 @@ namespace MrPuppet
             Instance = null;
         }
         private void Awake() {
+            Debug.Log("s");
             for(int i=0; i<Exports.Count; i++)
             {
                 Exports[i]._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationNames[i] + ".anim", typeof(AnimationClip));
