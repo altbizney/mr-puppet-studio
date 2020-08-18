@@ -1,16 +1,18 @@
-using UnityEngine;
+using System;
 using System.Collections;
-using UnityEngine.Recorder;
-using System.Linq;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Recorder;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using UnityEditor.Animations;
 #endif
 
 namespace MrPuppet
@@ -55,8 +57,17 @@ namespace MrPuppet
         static private string AudioClipNameAfterPlay;
         static private MrPuppetHubConnection HubConnection;
 
-        public class BlankMonoBehaviour : MonoBehaviour{ }
+        public class BlankMonoBehaviour : MonoBehaviour { }
 
+        public enum OneShotParameters { Wave, ThumbsUp, Gesture }
+        public KeyCommand[] KeyCommands = new KeyCommand[3];
+
+        [Serializable]
+        public class KeyCommand
+        {
+            public KeyCode Key;
+            public List<OneShotParameters> Parameters;
+        }
 
         public RecorderHelper.AudioModes ModeControl
         {
@@ -78,14 +89,15 @@ namespace MrPuppet
             if (ModeControl == RecorderHelper.AudioModes.AudRef)
                 return true;
             else
-              return false;
+                return false;
         }
 
         public void Record()
         {
             if (IsAudRef() == false)
             {
-                if (HubConnectionCheck()){
+                if (HubConnectionCheck())
+                {
                     AudioClipNameAfterPlay = AudioClipName;
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;START;" + AudioClipName);
                 }
@@ -112,11 +124,13 @@ namespace MrPuppet
                 KillChildren(Clone.GetComponentsInChildren<AudioReference>());
                 KillChildren(Clone.GetComponentsInChildren<IKTag>());
                 KillChildren(Clone.GetComponentsInChildren<Animator>());
+                //KillChildren(Clone.GetComponentsInChildren<DataTransport>());
+                //DataTRansport is not removed
                 //There are more components on the clone that are potentially unnessary
 
                 Animator AnimatorTemplate = Clone.AddComponent<Animator>();
 
-                AnimatorTemplate.runtimeAnimatorController =  RuntimeController;
+                AnimatorTemplate.runtimeAnimatorController = RuntimeController;
 
                 AnimatorOverrideController AnimatorOverride = new AnimatorOverrideController(AnimatorTemplate.runtimeAnimatorController);
                 AnimatorTemplate.runtimeAnimatorController = AnimatorOverride;
@@ -133,7 +147,6 @@ namespace MrPuppet
             }
         }
 
-
         public void Stop()
         {
             if (Clone)
@@ -143,10 +156,11 @@ namespace MrPuppet
                 Actor.SetActive(true);
                 Recorder.StopRecording();
 
-               if (HubConnectionCheck()){
+                if (HubConnectionCheck())
+                {
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipNameAfterPlay);
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;LOAD;" + AudioClipName);
-               }
+                }
 
                 Destroy(Clone);
                 Destroy(CoroutineHolder);
@@ -172,7 +186,7 @@ namespace MrPuppet
                     if (Recorder == null)
                         Recorder = EditorWindow.GetWindow<RecorderWindow>();
 
-                    ModeAccess = (RecorderHelper)EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
+                    ModeAccess = (RecorderHelper) EditorWindow.GetWindow(typeof(RecorderHelper), false, null, false);
 
                     RuntimeController = Resources.Load("OneShotsDuplicate") as RuntimeAnimatorController;
 
@@ -205,7 +219,6 @@ namespace MrPuppet
             }
         }
 
-
         private void KillChildren(UnityEngine.Object[] children)
         {
             foreach (UnityEngine.Object child in children)
@@ -227,18 +240,18 @@ namespace MrPuppet
                 recorder.OutputFile = RecordedPaddedName;
 
                 //Could potentially do this in both areas where the asset gets renamed, for performance.
-                while(File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
+                while (File.Exists("Assets/Recordings/" + RecordedPaddedName + ".anim"))
                 {
-                        TakeCount += 1;
-                        RecordedPaddedName = Performance.name + "_" + TakeCount.ToString().PadLeft(3, '0');
+                    TakeCount += 1;
+                    RecordedPaddedName = Performance.name + "_" + TakeCount.ToString().PadLeft(3, '0');
                 }
 
-                EditorWindow.GetWindow<ExportPerformance>().UpdateExport( Actor, RecordedPaddedName );
+                EditorWindow.GetWindow<ExportPerformance>().UpdateExport(Actor, RecordedPaddedName);
 
                 foreach (var input in recorder.InputsSettings)
                 {
-                    RecorderResetTarget = ((AnimationInputSettings)input).gameObject;
-                    ((AnimationInputSettings)input).gameObject = Clone;
+                    RecorderResetTarget = ((AnimationInputSettings) input).gameObject;
+                    ((AnimationInputSettings) input).gameObject = Clone;
                 }
 
                 return;
@@ -253,7 +266,10 @@ namespace MrPuppet
             foreach (var recorder in m_RecorderController.Settings.RecorderSettings)
             {
                 if (!recorder.Enabled) continue;
-                foreach (var input in recorder.InputsSettings) { ((AnimationInputSettings)input).gameObject = Target; }
+                foreach (var input in recorder.InputsSettings)
+                {
+                    ((AnimationInputSettings) input).gameObject = Target;
+                }
                 return;
             }
         }
