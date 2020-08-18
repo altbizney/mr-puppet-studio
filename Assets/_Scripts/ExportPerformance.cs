@@ -5,7 +5,7 @@ using System;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -44,20 +44,33 @@ namespace MrPuppet
         private static GameObject OneShotTarget;
         private static string OneShotName;
 
-        /*
         public static ExportPerformance Instance { get; private set; }
 
-        public static bool IsOpen {
-         get { return Instance != null; }
+        void OnEnable()
+        {
+            Instance = this;
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
         }
 
-        void OnEnable() {
-            Instance = this;
-        }
         void OnDisable() {
             Instance = null;
+            AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
         }
-        */
+
+        private void Awake() {
+            SetExports();
+        }
+
+        public void OnAfterAssemblyReload()
+        {
+            SetExports();
+        }
+
+        private void SetExports()
+        {
+            foreach(ExportTake export in Exports)
+                export._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + export.SerializedFileName + ".anim", typeof(AnimationClip));
+        }
 
         [Serializable]
         public class ExportTake
@@ -71,6 +84,7 @@ namespace MrPuppet
             [TableColumnWidth(160)]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
+            [OnValueChanged("SetSerializedList")]
             public AnimationClip _Animation;
 
             [TableColumnWidth(160)]
@@ -79,11 +93,16 @@ namespace MrPuppet
             [HideLabel]
             public Rating _Rating;
 
+            [HideInInspector]
+            public string SerializedFileName;
+            public void SetSerializedList(){ SerializedFileName = _Animation.name; }
+
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
                 _Animation = ConstructorAnimation;
                 _Prefab = ConstructorPrefab;
                 _Rating = ConstructorRating;
+                SerializedFileName = _Animation.name;
             }
 
             [Button(ButtonSizes.Small)]
@@ -97,7 +116,6 @@ namespace MrPuppet
                 Instance.Performance = _Animation;
                 Instance.ParseAnimationClip();
             }
-
         }
 
         public void UpdateExport(GameObject _PrefabOverwrite, string _AnimationOverwrite)
@@ -128,7 +146,8 @@ namespace MrPuppet
                 }
 
                 StartedRecording = false;
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
+                ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                Exports.Add(currentTake);
 
                 if (AnimationOverwrite != null)
                 {
@@ -137,15 +156,6 @@ namespace MrPuppet
                 }
 
                 RecorderPrompt.ShowUtilityWindow(this);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            var win = Instantiate<ExportPerformance>(this);
-            if (RecorderHelper.IsOpen)
-            {
-                win.Show();
             }
         }
 
@@ -176,55 +186,69 @@ namespace MrPuppet
         [PropertyOrder(-1)]
         private void Export()
         {
-            int success = 0;
             AssetDatabase.SaveAssets();
 
             string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/";
             if (!Directory.Exists(DataPath))
                 DataPath = "Performances/";
 
-            foreach (var export in Exports)
+
+            foreach (var export in Exports.ToList())
             {
+                //if rating is null there would be an issue. but that shouldnt be possible
+                bool errorFound = false;
+
                 if (export._Rating != Rating.Trash)
                 {
-                    // create controller
-                    var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
+                    GameObject instance = null;
+                    try
+                    {
+                        // create controller
+                        var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
 
-                    // create instance, rename
-                    var instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
-                    instance.name = export._Animation.name;
+                        // create instance, rename
+                        instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
+                        instance.name = export._Animation.name;
 
-                    // add animator to instance
-                    if (instance.GetComponent<Animator>() != null)
-                        DestroyImmediate(instance.GetComponent<Animator>());
+                        // add animator to instance
+                        if (instance.GetComponent<Animator>() != null)
+                            DestroyImmediate(instance.GetComponent<Animator>());
 
-                    var animator = instance.AddComponent<Animator>();
-                    animator.runtimeAnimatorController = controller;
+                        var animator = instance.AddComponent<Animator>();
+                        animator.runtimeAnimatorController = controller;
 
-                    // export
-                    ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                        // export
+                        ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                    }
+                    catch(Exception ex)
+                    {
+                        errorFound = true;
+                        Debug.LogError("<color=red>Export Error: </color> " + ex);
+                    }
 
                     // cleanup
-                    DestroyImmediate(instance);
-                    AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    if(export._Animation)
+                        AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    if(instance != null)
+                        DestroyImmediate(instance);
+                }
+
+                if (errorFound == false)
+                {
+                    // write file
+                    var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
+                    sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
+                    sr.Close();
+
+                    // move animation regardless of rating
+                    // what if already exists?
                     FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+
+                    // update datastructures with sucessful export
+                    Exports.Remove(export);
                 }
                 else
-                {
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
-                }
-
-                // write file
-                var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
-                sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
-                sr.Close();
-
-                success++;
-            }
-
-            if (success == Exports.Count)
-            {
-                Exports = new List<ExportTake>();
+                    break;
             }
         }
 
