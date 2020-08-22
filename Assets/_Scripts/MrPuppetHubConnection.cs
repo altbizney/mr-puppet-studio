@@ -10,6 +10,8 @@ using UnityEditor;
 
 namespace MrPuppet
 {
+    public delegate void Notification();
+
     [Serializable]
     public class SensorCalibrationData
     {
@@ -56,6 +58,9 @@ namespace MrPuppet
 
     public class MrPuppetHubConnection : MonoBehaviour
     {
+
+        public event Notification Notified();
+
         private MrPuppetDataMapper DataMapper;
 
         [Header("Connection")]
@@ -103,7 +108,7 @@ namespace MrPuppet
 
         private WebSocket webSocket;
 
-        private string _data;
+        public string _data;
         private string[] _array;
         private string[] _wrist;
         private string[] _elbow;
