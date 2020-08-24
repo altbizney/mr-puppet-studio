@@ -25,7 +25,15 @@ namespace MrPuppet {
         private void Awake () {
             _Animator = GetComponent<Animator> ();
             _OneShots = EditorWindow.GetWindow<OneShotsWindow> ();
-            HubConnection = GameObject.Find ("MrPuppet").GetComponent<MrPuppetHubConnection> ();
+            GameObject.Find ("MrPuppet").GetComponent<MrPuppetHubConnection> ().OneShotDataEvent += HubConnectionSubsciption;
+        }
+
+        private void HubConnectionSubsciption (string SocketData) {
+            if (!string.IsNullOrEmpty (SocketData)) {
+                    DataSplit = SocketData.Split (';');
+                    HubConnectionCommand = DataSplit[2];
+                    HubConnectionCommand = new string (HubConnectionCommand.Where (c => !char.IsControl (c)).ToArray ());
+            }
         }
 
         private void ChooseAnimation (int index) {
@@ -41,7 +49,7 @@ namespace MrPuppet {
                 StartCoroutine (EaseForward (1));
                 _Animator.SetTrigger ("WaveRightTrigger");
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
-
+                HubConnectionCommand = "";
             }
 
             if (index == 1) {
@@ -53,6 +61,7 @@ namespace MrPuppet {
                 StartCoroutine (EaseForward (2));
                 _Animator.SetTrigger ("ThumbsUpTrigger");
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
+                HubConnectionCommand = "";
             }
 
             if (index == 2) {
@@ -73,21 +82,11 @@ namespace MrPuppet {
                 if (_Animator.GetCurrentAnimatorStateInfo (2).IsTag ("ThumbsUp")) {
                     CoroutineManager[1] = StartCoroutine (EaseBackward (2));
                 }
+                HubConnectionCommand = "";
             }
         }
 
         private void Update () {
-
-            if (!string.IsNullOrEmpty (HubConnection._data)) {
-                if (HubConnection._data.StartsWith ("COMMAND")) {
-                    DataSplit = HubConnection._data.Split (';');
-                    HubConnectionCommand = DataSplit[2];
-                    HubConnectionCommand = new string (HubConnectionCommand.Where (c => !char.IsControl (c)).ToArray ());
-                } else {
-                    HubConnectionCommand = "";
-                }
-            }
-
             if (Input.GetKeyDown (_OneShots.KeyCommands[0].Key) || HubConnectionCommand == "Wave") {
                 ChooseAnimation (0);
             }
