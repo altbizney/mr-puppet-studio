@@ -27,8 +27,8 @@ namespace MrPuppet {
             _OneShots = EditorWindow.GetWindow<OneShotsWindow> ();
         }
 
-        private void OnEnable(){ GameObject.Find ("MrPuppet").GetComponent<MrPuppetHubConnection> ().OneShotDataEvent += HubConnectionSubsciption; }
-        private void OnDisable(){ GameObject.Find ("MrPuppet").GetComponent<MrPuppetHubConnection> ().OneShotDataEvent -= HubConnectionSubsciption; }
+        private void OnEnable(){ FindObjectOfType<MrPuppetHubConnection>().OneShotDataEvent += HubConnectionSubsciption; }
+        private void OnDisable(){ FindObjectOfType<MrPuppetHubConnection>().OneShotDataEvent -= HubConnectionSubsciption; }
 
 
         private void HubConnectionSubsciption (string SocketData) {
