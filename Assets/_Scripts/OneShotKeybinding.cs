@@ -27,18 +27,21 @@ namespace MrPuppet {
             _OneShots = EditorWindow.GetWindow<OneShotsWindow> ();
         }
 
-        private void OnEnable(){ FindObjectOfType<MrPuppetHubConnection>().OneShotDataEvent += HubConnectionSubsciption; }
-        private void OnDisable(){ FindObjectOfType<MrPuppetHubConnection>().OneShotDataEvent -= HubConnectionSubsciption; }
-
+        private void OnEnable () { FindObjectOfType<MrPuppetHubConnection> ().OneShotDataEvent += HubConnectionSubsciption; }
+        private void OnDisable () { FindObjectOfType<MrPuppetHubConnection> ().OneShotDataEvent -= HubConnectionSubsciption; }
 
         private void HubConnectionSubsciption (string SocketData) {
             if (!string.IsNullOrEmpty (SocketData)) {
-                    DataSplit = SocketData.Split (';');
-                    HubConnectionCommand = DataSplit[2];
-                    HubConnectionCommand = new string (HubConnectionCommand.Where (c => !char.IsControl (c)).ToArray ());
+                DataSplit = SocketData.Split (';');
+                HubConnectionCommand = DataSplit[2];
+                HubConnectionCommand = new string (HubConnectionCommand.Where (c => !char.IsControl (c)).ToArray ());
             }
+            //When command is recieved. 
+            //Call start oneshot animation method
+            //Use string as parameter. Dont need to do any of this in update. 
         }
 
+        /*
         private void ChooseAnimation (int index) {
             //int randomIndex = UnityEngine.Random.Range (0, _OneShots.KeyCommands[index].Parameters.Count);
             //_OneShots.KeyCommands[index].Parameters[randomIndex] == OneShotsWindow.OneShotParameters.Wave
@@ -77,29 +80,102 @@ namespace MrPuppet {
                 StartCoroutine (EaseForward (3));
 
                 _Animator.SetTrigger ("GestureTrigger");
+                CoroutineManager[0] = StartCoroutine (EaseBackward (1));
+                CoroutineManager[1] = StartCoroutine (EaseBackward (2));
 
-                if (_Animator.GetCurrentAnimatorStateInfo (1).IsName ("WaveRight") || _Animator.GetCurrentAnimatorStateInfo (1).IsName ("ONESHOT_Thinking")) {
-                    CoroutineManager[0] = StartCoroutine (EaseBackward (1));
+                HubConnectionCommand = "";
+            }
+        }
+        */
+
+        private void StartOneShot (string AcessName) {
+            string[] SplitName = AcessName.Split ('-');
+            string layer = SplitName[SplitName.Length - 1];
+            //Debug.Log (layer);
+            //This can be condensed and more optimized
+
+            if (layer == "right") {
+                if (CoroutineManager[0] != null) {
+                    StopCoroutine (CoroutineManager[0]);
+                    CoroutineManager[0] = null;
                 }
 
-                if (_Animator.GetCurrentAnimatorStateInfo (2).IsTag ("ThumbsUp")) {
-                    CoroutineManager[1] = StartCoroutine (EaseBackward (2));
+                StartCoroutine (EaseForward (1));
+                _Animator.SetTrigger (AcessName);
+                CoroutineManager[2] = StartCoroutine (EaseBackward (3));
+                HubConnectionCommand = "";
+            }
+
+            if (layer == "left") {
+                if (CoroutineManager[1] != null) {
+                    StopCoroutine (CoroutineManager[1]);
+                    CoroutineManager[1] = null;
                 }
+
+                StartCoroutine (EaseForward (2));
+                _Animator.SetTrigger (AcessName);
+                CoroutineManager[2] = StartCoroutine (EaseBackward (3));
+                HubConnectionCommand = "";
+            }
+
+            if (layer == "both") {
+
+                if (CoroutineManager[2] != null) {
+                    StopCoroutine (CoroutineManager[2]);
+                    CoroutineManager[2] = null;
+                }
+
+                StartCoroutine (EaseForward (3));
+
+                _Animator.SetTrigger (AcessName);
+                CoroutineManager[0] = StartCoroutine (EaseBackward (1));
+                CoroutineManager[1] = StartCoroutine (EaseBackward (2));
+
                 HubConnectionCommand = "";
             }
         }
 
         private void Update () {
             if (Input.GetKeyDown (_OneShots.KeyCommands[0].Key) || HubConnectionCommand == "Wave") {
-                ChooseAnimation (0);
+                StartOneShot ("wave-right");
             }
 
             if (Input.GetKeyDown (_OneShots.KeyCommands[1].Key) || HubConnectionCommand == "ThumbsUp") {
-                ChooseAnimation (1);
+                StartOneShot ("thumbsup-left");
             }
 
             if (Input.GetKeyDown (_OneShots.KeyCommands[2].Key) || HubConnectionCommand == "Gesture") {
-                ChooseAnimation (2);
+                StartOneShot ("gesture-1-both");
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[3].Key)) {
+                StartOneShot ("gesture-3-right");
+            }
+
+            //////// new test each one further ////////
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[4].Key)) {
+                StartOneShot ("fingerwag-left"); // arm goes down kinda fast
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[5].Key)) {
+                StartOneShot ("gesture-2-left");
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[6].Key)) {
+                StartOneShot ("peace-left");
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[7].Key)) {
+                StartOneShot ("ok-left"); //arm goes up kinda fast?
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[8].Key)) {
+                StartOneShot ("gesture-4-both");
+            }
+
+            if (Input.GetKeyDown (_OneShots.KeyCommands[9].Key)) {
+                StartOneShot ("gesture-5-both");
             }
         }
 
