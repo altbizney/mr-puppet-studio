@@ -146,13 +146,18 @@ namespace MrPuppet
                 }
 
                 StartedRecording = false;
-                ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
-                Exports.Add(currentTake);
 
                 if (AnimationOverwrite != null)
                 {
                     AssetDatabase.RenameAsset(filename, AnimationOverwrite);
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationOverwrite + ".anim", typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    Exports.Add(currentTake);
                     AnimationOverwrite = null;
+                }
+                else
+                {
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    Exports.Add(currentTake);
                 }
 
                 RecorderPrompt.ShowUtilityWindow(this);

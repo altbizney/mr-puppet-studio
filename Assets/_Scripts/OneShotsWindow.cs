@@ -144,6 +144,8 @@ namespace MrPuppet
                 StartedRecording = true;
                 TakeCount += 1;
                 RecorderSetup(Clone);
+                            EditorApplication.ExecuteMenuItem("Window/General/Game");
+
             }
         }
 

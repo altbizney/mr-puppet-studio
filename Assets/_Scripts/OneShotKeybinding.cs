@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -21,6 +22,19 @@ namespace MrPuppet {
         private string[] DataSplit;
         private MrPuppetHubConnection HubConnection;
         private string HubConnectionCommand;
+        Dictionary<string, int> TriggerLayerMap = new Dictionary<string, int> () 
+        { 
+            { "wave-right", 1 }, 
+            { "thumbsup-left", 2 }, 
+            { "gesture-1-both", 3 }, 
+            { "gesture-3-right", 1 }, 
+            { "fingerwag-left", 2 }, 
+            { "gesture-2-left", 2 }, 
+            { "peace-left", 2 }, 
+            { "ok-left", 2 }, 
+            { "gesture-4-both", 3 }, 
+            { "gesture-5-both", 3 },
+        };
 
         private void Awake () {
             _Animator = GetComponent<Animator> ();
@@ -35,42 +49,39 @@ namespace MrPuppet {
                 DataSplit = SocketData.Split (';');
                 HubConnectionCommand = DataSplit[2];
                 HubConnectionCommand = new string (HubConnectionCommand.Where (c => !char.IsControl (c)).ToArray ());
+                StartOneShot (HubConnectionCommand);
             }
-            //When command is recieved. 
-            //Call start oneshot animation method
-            //Use string as parameter. Dont need to do any of this in update. 
         }
 
-        /*
-        private void ChooseAnimation (int index) {
-            //int randomIndex = UnityEngine.Random.Range (0, _OneShots.KeyCommands[index].Parameters.Count);
-            //_OneShots.KeyCommands[index].Parameters[randomIndex] == OneShotsWindow.OneShotParameters.Wave
+        private void StartOneShot (string AccessName) {
 
-            if (index == 0) {
+            int layerIndex = TriggerLayerMap[AccessName];
+
+            if (layerIndex == 1) {
                 if (CoroutineManager[0] != null) {
                     StopCoroutine (CoroutineManager[0]);
                     CoroutineManager[0] = null;
                 }
 
                 StartCoroutine (EaseForward (1));
-                _Animator.SetTrigger ("WaveRightTrigger");
+                _Animator.SetTrigger (AccessName);
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
                 HubConnectionCommand = "";
             }
 
-            if (index == 1) {
+            if (layerIndex == 2) {
                 if (CoroutineManager[1] != null) {
                     StopCoroutine (CoroutineManager[1]);
                     CoroutineManager[1] = null;
                 }
 
                 StartCoroutine (EaseForward (2));
-                _Animator.SetTrigger ("ThumbsUpTrigger");
+                _Animator.SetTrigger (AccessName);
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
                 HubConnectionCommand = "";
             }
 
-            if (index == 2) {
+            if (layerIndex == 3) {
 
                 if (CoroutineManager[2] != null) {
                     StopCoroutine (CoroutineManager[2]);
@@ -79,55 +90,7 @@ namespace MrPuppet {
 
                 StartCoroutine (EaseForward (3));
 
-                _Animator.SetTrigger ("GestureTrigger");
-                CoroutineManager[0] = StartCoroutine (EaseBackward (1));
-                CoroutineManager[1] = StartCoroutine (EaseBackward (2));
-
-                HubConnectionCommand = "";
-            }
-        }
-        */
-
-        private void StartOneShot (string AcessName) {
-            string[] SplitName = AcessName.Split ('-');
-            string layer = SplitName[SplitName.Length - 1];
-            //Debug.Log (layer);
-            //This can be condensed and more optimized
-
-            if (layer == "right") {
-                if (CoroutineManager[0] != null) {
-                    StopCoroutine (CoroutineManager[0]);
-                    CoroutineManager[0] = null;
-                }
-
-                StartCoroutine (EaseForward (1));
-                _Animator.SetTrigger (AcessName);
-                CoroutineManager[2] = StartCoroutine (EaseBackward (3));
-                HubConnectionCommand = "";
-            }
-
-            if (layer == "left") {
-                if (CoroutineManager[1] != null) {
-                    StopCoroutine (CoroutineManager[1]);
-                    CoroutineManager[1] = null;
-                }
-
-                StartCoroutine (EaseForward (2));
-                _Animator.SetTrigger (AcessName);
-                CoroutineManager[2] = StartCoroutine (EaseBackward (3));
-                HubConnectionCommand = "";
-            }
-
-            if (layer == "both") {
-
-                if (CoroutineManager[2] != null) {
-                    StopCoroutine (CoroutineManager[2]);
-                    CoroutineManager[2] = null;
-                }
-
-                StartCoroutine (EaseForward (3));
-
-                _Animator.SetTrigger (AcessName);
+                _Animator.SetTrigger (AccessName);
                 CoroutineManager[0] = StartCoroutine (EaseBackward (1));
                 CoroutineManager[1] = StartCoroutine (EaseBackward (2));
 
@@ -136,23 +99,21 @@ namespace MrPuppet {
         }
 
         private void Update () {
-            if (Input.GetKeyDown (_OneShots.KeyCommands[0].Key) || HubConnectionCommand == "Wave") {
+            if (Input.GetKeyDown (_OneShots.KeyCommands[0].Key)) {
                 StartOneShot ("wave-right");
             }
 
-            if (Input.GetKeyDown (_OneShots.KeyCommands[1].Key) || HubConnectionCommand == "ThumbsUp") {
+            if (Input.GetKeyDown (_OneShots.KeyCommands[1].Key)) {
                 StartOneShot ("thumbsup-left");
             }
 
-            if (Input.GetKeyDown (_OneShots.KeyCommands[2].Key) || HubConnectionCommand == "Gesture") {
+            if (Input.GetKeyDown (_OneShots.KeyCommands[2].Key)) {
                 StartOneShot ("gesture-1-both");
             }
 
             if (Input.GetKeyDown (_OneShots.KeyCommands[3].Key)) {
                 StartOneShot ("gesture-3-right");
             }
-
-            //////// new test each one further ////////
 
             if (Input.GetKeyDown (_OneShots.KeyCommands[4].Key)) {
                 StartOneShot ("fingerwag-left"); // arm goes down kinda fast
@@ -185,7 +146,7 @@ namespace MrPuppet {
             float t = currentLerp;
 
             while (t > 0) {
-                currentLerp -= Time.deltaTime;
+                currentLerp -= Time.deltaTime * 1.5f;
 
                 if (currentLerp < 0) {
                     currentLerp = 0;
@@ -207,7 +168,7 @@ namespace MrPuppet {
             float t = currentLerp;
 
             while (t < lerpTimer) {
-                currentLerp += Time.deltaTime * 2f;
+                currentLerp += Time.deltaTime * 1.5f;
 
                 if (currentLerp > lerpTimer) {
                     currentLerp = lerpTimer;
