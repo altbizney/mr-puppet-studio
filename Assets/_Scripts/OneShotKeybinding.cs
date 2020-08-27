@@ -22,18 +22,8 @@ namespace MrPuppet {
         private string[] DataSplit;
         private MrPuppetHubConnection HubConnection;
         private string HubConnectionCommand;
-        Dictionary<string, int> TriggerLayerMap = new Dictionary<string, int> () 
-        { 
-            { "wave-right", 1 }, 
-            { "thumbsup-left", 2 }, 
-            { "gesture-1-both", 3 }, 
-            { "gesture-3-right", 1 }, 
-            { "fingerwag-left", 2 }, 
-            { "gesture-2-left", 2 }, 
-            { "peace-left", 2 }, 
-            { "ok-left", 2 }, 
-            { "gesture-4-both", 3 }, 
-            { "gesture-5-both", 3 },
+        private enum Layer { LArm, RArm, CArm }
+        Dictionary<string, Layer> TriggerLayerMap = new Dictionary<string, Layer> () { { "wave-right", Layer.RArm }, { "thumbsup-left", Layer.LArm }, { "gesture-1-both", Layer.CArm }, { "gesture-3-right", Layer.RArm }, { "fingerwag-left", Layer.LArm }, { "gesture-2-left", Layer.LArm }, { "peace-left", Layer.LArm }, { "ok-left", Layer.LArm }, { "gesture-4-both", Layer.CArm }, { "gesture-5-both", Layer.CArm },
         };
 
         private void Awake () {
@@ -55,47 +45,31 @@ namespace MrPuppet {
 
         private void StartOneShot (string AccessName) {
 
-            int layerIndex = TriggerLayerMap[AccessName];
+            Layer AcessLayer = TriggerLayerMap[AccessName];
+            int LayerIndex = 0;
 
-            if (layerIndex == 1) {
-                if (CoroutineManager[0] != null) {
-                    StopCoroutine (CoroutineManager[0]);
-                    CoroutineManager[0] = null;
-                }
-
-                StartCoroutine (EaseForward (1));
-                _Animator.SetTrigger (AccessName);
+            if (AcessLayer == Layer.RArm) {
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
-                HubConnectionCommand = "";
+                LayerIndex = 0;
             }
-
-            if (layerIndex == 2) {
-                if (CoroutineManager[1] != null) {
-                    StopCoroutine (CoroutineManager[1]);
-                    CoroutineManager[1] = null;
-                }
-
-                StartCoroutine (EaseForward (2));
-                _Animator.SetTrigger (AccessName);
+            else if (AcessLayer == Layer.LArm) {
                 CoroutineManager[2] = StartCoroutine (EaseBackward (3));
-                HubConnectionCommand = "";
+                LayerIndex = 1;
             }
-
-            if (layerIndex == 3) {
-
-                if (CoroutineManager[2] != null) {
-                    StopCoroutine (CoroutineManager[2]);
-                    CoroutineManager[2] = null;
-                }
-
-                StartCoroutine (EaseForward (3));
-
-                _Animator.SetTrigger (AccessName);
+            else if (AcessLayer == Layer.CArm) {
                 CoroutineManager[0] = StartCoroutine (EaseBackward (1));
                 CoroutineManager[1] = StartCoroutine (EaseBackward (2));
-
-                HubConnectionCommand = "";
+                LayerIndex = 2;
             }
+
+            if (CoroutineManager[LayerIndex] != null) {
+                StopCoroutine (CoroutineManager[LayerIndex]);
+                CoroutineManager[LayerIndex] = null;
+            }
+
+            StartCoroutine (EaseForward (LayerIndex + 1));
+            _Animator.SetTrigger (AccessName);
+            HubConnectionCommand = "";
         }
 
         private void Update () {
