@@ -95,55 +95,63 @@ namespace MrPuppet
 
         private void Update()
         {
-            if (Input.GetKeyDown(_OneShots.KeyCommands[0].Key))
+            foreach (var command in _OneShots.KeyCommands)
             {
-                StartOneShot("wave-right");
+                if (Input.GetKeyDown(command.Key))
+                {
+                    StartOneShot(command.Trigger);
+                }
             }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[1].Key))
-            {
-                StartOneShot("thumbsup-left");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[0].Key))
+            // {
+            //     StartOneShot("wave-right");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[2].Key))
-            {
-                StartOneShot("gesture-1-both");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[1].Key))
+            // {
+            //     StartOneShot("thumbsup-left");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[3].Key))
-            {
-                StartOneShot("gesture-3-right");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[2].Key))
+            // {
+            //     StartOneShot("gesture-1-both");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[4].Key))
-            {
-                StartOneShot("fingerwag-left"); // arm goes down kinda fast
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[3].Key))
+            // {
+            //     StartOneShot("gesture-3-right");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[5].Key))
-            {
-                StartOneShot("gesture-2-left");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[4].Key))
+            // {
+            //     StartOneShot("fingerwag-left"); // arm goes down kinda fast
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[6].Key))
-            {
-                StartOneShot("peace-left");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[5].Key))
+            // {
+            //     StartOneShot("gesture-2-left");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[7].Key))
-            {
-                StartOneShot("ok-left"); //arm goes up kinda fast?
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[6].Key))
+            // {
+            //     StartOneShot("peace-left");
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[8].Key))
-            {
-                StartOneShot("gesture-4-both");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[7].Key))
+            // {
+            //     StartOneShot("ok-left"); //arm goes up kinda fast?
+            // }
 
-            if (Input.GetKeyDown(_OneShots.KeyCommands[9].Key))
-            {
-                StartOneShot("gesture-5-both");
-            }
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[8].Key))
+            // {
+            //     StartOneShot("gesture-4-both");
+            // }
+
+            // if (Input.GetKeyDown(_OneShots.KeyCommands[9].Key))
+            // {
+            //     StartOneShot("gesture-5-both");
+            // }
         }
 
         IEnumerator EaseBackward(int layer)

@@ -59,14 +59,13 @@ namespace MrPuppet
 
         public class BlankMonoBehaviour : MonoBehaviour { }
 
-        public enum OneShotParameters { Wave, ThumbsUp, Gesture }
         public KeyCommand[] KeyCommands = new KeyCommand[3];
 
         [Serializable]
         public class KeyCommand
         {
             public KeyCode Key;
-            public List<OneShotParameters> Parameters;
+            public string Trigger;
         }
 
         public RecorderHelper.AudioModes ModeControl
