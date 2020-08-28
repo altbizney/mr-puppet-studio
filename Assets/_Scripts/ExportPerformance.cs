@@ -147,7 +147,7 @@ namespace MrPuppet
 
                 StartedRecording = false;
 
-                if (AnimationOverwrite != null)
+                if (AnimationOverwrite != null && AnimationOverwrite != "")
                 {
                     AssetDatabase.RenameAsset(filename, AnimationOverwrite);
                     ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationOverwrite + ".anim", typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
