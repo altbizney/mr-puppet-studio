@@ -10,6 +10,8 @@ using UnityEditor;
 
 namespace MrPuppet
 {
+    public delegate void OneShotData(string SocketData);
+
     [Serializable]
     public class SensorCalibrationData
     {
@@ -56,6 +58,9 @@ namespace MrPuppet
 
     public class MrPuppetHubConnection : MonoBehaviour
     {
+
+        public event OneShotData OneShotDataEvent;
+
         private MrPuppetDataMapper DataMapper;
 
         [Header("Connection")]
@@ -103,7 +108,7 @@ namespace MrPuppet
 
         private WebSocket webSocket;
 
-        private string _data;
+        public string _data;
         private string[] _array;
         private string[] _wrist;
         private string[] _elbow;
@@ -205,6 +210,11 @@ namespace MrPuppet
                                         break;
                                     case "RECORDING":
                                         Debug.Log("[COMMAND][" + _array[1] + "] " + _array[2]);
+                                        break;
+                                    case "ONESHOT":
+                                        Debug.Log("[COMMAND][" + _array[1] + "] " + _array[2]);
+                                        if (OneShotDataEvent != null)
+                                            OneShotDataEvent(_data);
                                         break;
                                     default:
                                         Debug.LogWarning("[COMMAND][UNKNOWN] " + _data);

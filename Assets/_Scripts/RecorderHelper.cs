@@ -29,6 +29,9 @@ namespace MrPuppet
             Instance = this;
         }
 
+        public enum AudioModes { AudRef, OneShot};
+
+
         private RecorderWindow Recorder;
         private static string ButtonMessage;
         //private bool ShowInfo;
@@ -43,8 +46,37 @@ namespace MrPuppet
         public static RecorderHelper Instance { get; private set; }
         public static bool IsOpen { get { return Instance != null; } }
 
+        [EnumToggleButtons]
+        [HideLabel]
+        [HorizontalGroup]
+        [OnValueChanged("ChangeModes")]
+        public AudioModes Mode;
+
         [Range(0, 1)]
+        [HorizontalGroup]
+        [HideLabel]
         public float AudioVolume;
+
+        private OneShotsWindow OneShots;
+        private AudioReference AudioRef;
+
+        private void ChangeModes()
+        {
+
+            if (EditorApplication.isPlaying){
+
+                if(!AudioRef)
+                    AudioRef = FindObjectOfType<AudioReference>();
+
+                if (Mode == AudioModes.OneShot){
+                    AudioRef.enabled = false;
+                }
+                if (Mode == AudioModes.AudRef){
+                    AudioRef.enabled = true;
+                }
+            }
+
+        }
 
         private void GetFilename()
         {
@@ -84,7 +116,7 @@ namespace MrPuppet
                 {
                     _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
 
-                    Camera.main.gameObject.AddComponent<CountDown>();
+                    Camera.main.gameObject .AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
                 }
             }
@@ -102,6 +134,9 @@ namespace MrPuppet
             { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
             catch { throw; }
 
+            if (OneShots != EditorWindow.GetWindow<OneShotsWindow>())
+                OneShots = EditorWindow.GetWindow<OneShotsWindow>();
+
             if(Recorder)
             {
                 if (!Recorder.IsRecording())
@@ -110,6 +145,9 @@ namespace MrPuppet
                     EditorApplication.ExecuteMenuItem("Window/General/Game");
                     ButtonMessage = "STOP";
                     Repaint();
+
+                    if (Mode == AudioModes.OneShot)
+                        OneShots.Record();
                 }
                 else
                 {
@@ -118,6 +156,9 @@ namespace MrPuppet
                     StatusBox = "READY TO REC";
                     ButtonMessage = "START";
                     Repaint();
+
+                    if (Mode == AudioModes.OneShot)
+                        OneShots.Stop();
                 }
             }
         }
@@ -213,6 +254,8 @@ namespace MrPuppet
                     //ShowInfo = false;
                     ButtonMessage = "START";
                     ColorState = Color.green;
+                    if (Instance)
+                        Instance.ChangeModes();
                 }
                 else
                 {
@@ -226,8 +269,9 @@ namespace MrPuppet
         }
     }
 #else
-public class PerformanceAnimationReplacementManager : MonoBehaviour {
+    public class PerformanceAnimationReplacementManager : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }

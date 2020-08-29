@@ -5,7 +5,7 @@ using System;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -32,22 +32,59 @@ namespace MrPuppet
         [PropertyOrder(1)]
         public List<ExportTake> Exports = new List<ExportTake>();
 
+        private GameObject PrefabOverwrite;
+        private string AnimationOverwrite;
+
         private GameObject RecorderTarget;
         private string Filename;
         private RecorderWindow Recorder;
         private bool StartedRecording;
-        //private bool PromptShowing;
+
+        private static bool OneShotsRecording;
+        private static GameObject OneShotTarget;
+        private static string OneShotName;
+
+        public static ExportPerformance Instance { get; private set; }
+
+        void OnEnable()
+        {
+            Instance = this;
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+        }
+
+        void OnDisable() {
+            Instance = null;
+            AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+        }
+
+        private void Awake() {
+            SetExports();
+        }
+
+        public void OnAfterAssemblyReload()
+        {
+            SetExports();
+        }
+
+        private void SetExports()
+        {
+            foreach(ExportTake export in Exports)
+                export._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + export.SerializedFileName + ".anim", typeof(AnimationClip));
+        }
 
         [Serializable]
         public class ExportTake
         {
             [PreviewField]
-            [TableColumnWidth(60, Resizable = false)]
+            [TableColumnWidth(65, Resizable = false)]
+            [VerticalGroup("Preview")]
+            [HideLabel]
             public GameObject _Prefab;
 
             [TableColumnWidth(160)]
             [VerticalGroup("Animation and Rating")]
             [HideLabel]
+            [OnValueChanged("SetSerializedList")]
             public AnimationClip _Animation;
 
             [TableColumnWidth(160)]
@@ -56,12 +93,36 @@ namespace MrPuppet
             [HideLabel]
             public Rating _Rating;
 
+            [HideInInspector]
+            public string SerializedFileName;
+            public void SetSerializedList(){ SerializedFileName = _Animation.name; }
+
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
                 _Animation = ConstructorAnimation;
                 _Prefab = ConstructorPrefab;
                 _Rating = ConstructorRating;
+                SerializedFileName = _Animation.name;
             }
+
+            [Button(ButtonSizes.Small)]
+            [VerticalGroup("Preview")]
+            [GUIColor(0.2f, 0.9f, 0.2f)]
+            private void OneShots()
+            {
+                GetWindow<OneShotsWindow>().Show();
+                OneShotsWindow Instance = EditorWindow.GetWindow<OneShotsWindow>();
+                Instance.Actor = _Prefab;
+                Instance.Performance = _Animation;
+                Instance.ParseAnimationClip();
+            }
+        }
+
+        public void UpdateExport(GameObject _PrefabOverwrite, string _AnimationOverwrite)
+        {
+            //Allow for wider case scenarios and uses
+            PrefabOverwrite = _PrefabOverwrite;
+            AnimationOverwrite = _AnimationOverwrite;
         }
 
         void Update()
@@ -76,19 +137,30 @@ namespace MrPuppet
             }
             if (!Recorder.IsRecording() && StartedRecording == true)
             {
-                StartedRecording = false;
                 var filename = "Assets/Recordings/" + Filename + ".anim";
-                Exports.Add(new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper));
-                RecorderPrompt.ShowUtilityWindow(this);
-            }
-        }
 
-        private void OnDestroy()
-        {
-            var win = Instantiate<ExportPerformance>(this);
-            if (RecorderHelper.IsOpen)
-            {
-                win.Show();
+                if (PrefabOverwrite)
+                {
+                    RecorderTarget = PrefabOverwrite;
+                    PrefabOverwrite = null;
+                }
+
+                StartedRecording = false;
+
+                if (AnimationOverwrite != null && AnimationOverwrite != "")
+                {
+                    AssetDatabase.RenameAsset(filename, AnimationOverwrite);
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationOverwrite + ".anim", typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    Exports.Add(currentTake);
+                    AnimationOverwrite = null;
+                }
+                else
+                {
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    Exports.Add(currentTake);
+                }
+
+                RecorderPrompt.ShowUtilityWindow(this);
             }
         }
 
@@ -119,52 +191,69 @@ namespace MrPuppet
         [PropertyOrder(-1)]
         private void Export()
         {
-            int success = 0;
             AssetDatabase.SaveAssets();
 
             string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/";
             if (!Directory.Exists(DataPath))
                 DataPath = "Performances/";
 
-            foreach (var export in Exports)
+
+            foreach (var export in Exports.ToList())
             {
+                //if rating is null there would be an issue. but that shouldnt be possible
+                bool errorFound = false;
+
                 if (export._Rating != Rating.Trash)
                 {
-                    // create controller
-                    var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
+                    GameObject instance = null;
+                    try
+                    {
+                        // create controller
+                        var controller = AnimatorController.CreateAnimatorControllerAtPathWithClip("Assets/Recordings/" + export._Animation.name + ".controller", export._Animation);
 
-                    // create instance, rename
-                    var instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
-                    instance.name = export._Animation.name;
+                        // create instance, rename
+                        instance = GameObject.Instantiate(export._Prefab, Vector3.zero, Quaternion.identity);
+                        instance.name = export._Animation.name;
 
-                    // add animator to instance
-                    var animator = instance.AddComponent<Animator>();
-                    animator.runtimeAnimatorController = controller;
+                        // add animator to instance
+                        if (instance.GetComponent<Animator>() != null)
+                            DestroyImmediate(instance.GetComponent<Animator>());
 
-                    // export
-                    ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                        var animator = instance.AddComponent<Animator>();
+                        animator.runtimeAnimatorController = controller;
+
+                        // export
+                        ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
+                    }
+                    catch(Exception ex)
+                    {
+                        errorFound = true;
+                        Debug.LogError("<color=red>Export Error: </color> " + ex);
+                    }
 
                     // cleanup
-                    DestroyImmediate(instance);
-                    AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    if(export._Animation)
+                        AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
+                    if(instance != null)
+                        DestroyImmediate(instance);
+                }
+
+                if (errorFound == false)
+                {
+                    // write file
+                    var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
+                    sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
+                    sr.Close();
+
+                    // move animation regardless of rating
+                    // what if already exists?
                     FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
+
+                    // update datastructures with sucessful export
+                    Exports.Remove(export);
                 }
                 else
-                {
-                    FileUtil.MoveFileOrDirectory("Assets/Recordings/" + export._Animation.name + ".anim", DataPath + export._Animation.name + ".anim");
-                }
-
-                // write file
-                var sr = File.CreateText(DataPath + export._Animation.name + ".csv");
-                sr.WriteLine(export._Animation.name + "," + export._Prefab.name + "," + export._Rating);
-                sr.Close();
-
-                success++;
-            }
-
-            if (success == Exports.Count)
-            {
-                Exports = new List<ExportTake>();
+                    break;
             }
         }
 
@@ -248,15 +337,16 @@ namespace MrPuppet
                         Blooper();
                         break;
                     case KeyCode.E:
-                        Blooper();
+                        Keeper();
                         break;
                 }
             }
         }
     }
 #else
-public class ExportPerformance : MonoBehaviour {
+    public class ExportPerformance : MonoBehaviour
+    {
 
-}
+    }
 #endif
 }
