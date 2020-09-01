@@ -22,11 +22,11 @@ namespace MrPuppet
         private OneShotsWindow _OneShots;
         private Coroutine[] CoroutineManager = new Coroutine[3];
         private string[] DataSplit;
-        private MrPuppetHubConnection HubConnection;
         private string HubConnectionCommand;
-        private enum Layer { LArm, RArm, CArm }
+        private MrPuppetHubConnection HubConnection;
 
-        Dictionary<string, Layer> TriggerLayerMap = new Dictionary<string, Layer>() {
+        private enum Layer { LArm, RArm, CArm }
+        private Dictionary<string, Layer> TriggerLayerMap = new Dictionary<string, Layer>() {
             { "wave-right", Layer.RArm },
             { "thumbsup-left", Layer.LArm },
             { "gesture-1-both", Layer.CArm },
@@ -65,6 +65,8 @@ namespace MrPuppet
             Layer AcessLayer = TriggerLayerMap[AccessName];
             int LayerIndex = 0;
 
+            //Ease inactive layers out, so they can not interfere with the current animation
+            //Find the index of the layer you are trying to access
             if (AcessLayer == Layer.RArm)
             {
                 CoroutineManager[2] = StartCoroutine(EaseBackward(3));
@@ -81,13 +83,15 @@ namespace MrPuppet
                 CoroutineManager[1] = StartCoroutine(EaseBackward(2));
                 LayerIndex = 2;
             }
-
+            
+            //Stop any easing out of the layer you are currently trying to access
             if (CoroutineManager[LayerIndex] != null)
             {
                 StopCoroutine(CoroutineManager[LayerIndex]);
                 CoroutineManager[LayerIndex] = null;
             }
 
+            //Ease in the layer you are accessing, so it can be displayed to the user
             StartCoroutine(EaseForward(LayerIndex + 1));
             _Animator.SetTrigger(AccessName);
             HubConnectionCommand = "";
@@ -102,56 +106,6 @@ namespace MrPuppet
                     StartOneShot(command.Trigger);
                 }
             }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[0].Key))
-            // {
-            //     StartOneShot("wave-right");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[1].Key))
-            // {
-            //     StartOneShot("thumbsup-left");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[2].Key))
-            // {
-            //     StartOneShot("gesture-1-both");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[3].Key))
-            // {
-            //     StartOneShot("gesture-3-right");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[4].Key))
-            // {
-            //     StartOneShot("fingerwag-left"); // arm goes down kinda fast
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[5].Key))
-            // {
-            //     StartOneShot("gesture-2-left");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[6].Key))
-            // {
-            //     StartOneShot("peace-left");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[7].Key))
-            // {
-            //     StartOneShot("ok-left"); //arm goes up kinda fast?
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[8].Key))
-            // {
-            //     StartOneShot("gesture-4-both");
-            // }
-
-            // if (Input.GetKeyDown(_OneShots.KeyCommands[9].Key))
-            // {
-            //     StartOneShot("gesture-5-both");
-            // }
         }
 
         IEnumerator EaseBackward(int layer)

@@ -59,7 +59,7 @@ namespace MrPuppet
 
         public class BlankMonoBehaviour : MonoBehaviour { }
 
-        public KeyCommand[] KeyCommands = new KeyCommand[3];
+        public KeyCommand[] KeyCommands = new KeyCommand[10];
 
         [Serializable]
         public class KeyCommand
