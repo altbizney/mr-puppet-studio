@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IKController : MonoBehaviour {
+public class IKController : MonoBehaviour
+{
 
     #region Static Variables
 
     #endregion
 
     #region Public Variables
-    
+
     #endregion
 
     #region Private Variables
@@ -20,11 +21,13 @@ public class IKController : MonoBehaviour {
     #endregion
 
     #region Unity Methods
-    private void Start() {
-        
+    private void Start()
+    {
+
     }
 
-    private void Update() {
+    private void Update()
+    {
         OnCustomAnimatorIK();
     }
     #endregion
@@ -42,8 +45,10 @@ public class IKController : MonoBehaviour {
     #endregion
 
     #region Local Methods
-    void OnCustomAnimatorIK() {
-        if (isActive) {
+    void OnCustomAnimatorIK()
+    {
+        if (isActive)
+        {
 
         }
     }

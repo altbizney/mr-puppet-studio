@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
-using UnityEngine.SceneManagement;
-using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -26,7 +26,7 @@ namespace MrPuppet
             GetWindow<ExportPerformance>().Show();
         }
 
-        public enum Rating { Trash, Blooper, Keeper };
+        public enum Rating { Trash, Blooper, Keeper }
 
         [TableList(DefaultMinColumnWidth = 160)]
         [PropertyOrder(1)]
@@ -52,12 +52,14 @@ namespace MrPuppet
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
         }
 
-        void OnDisable() {
+        void OnDisable()
+        {
             Instance = null;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             SetExports();
         }
 
@@ -68,8 +70,8 @@ namespace MrPuppet
 
         private void SetExports()
         {
-            foreach(ExportTake export in Exports)
-                export._Animation = (AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + export.SerializedFileName + ".anim", typeof(AnimationClip));
+            foreach (ExportTake export in Exports)
+                export._Animation = (AnimationClip) AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + export.SerializedFileName + ".anim", typeof(AnimationClip));
         }
 
         [Serializable]
@@ -95,7 +97,7 @@ namespace MrPuppet
 
             [HideInInspector]
             public string SerializedFileName;
-            public void SetSerializedList(){ SerializedFileName = _Animation.name; }
+            public void SetSerializedList() { SerializedFileName = _Animation.name; }
 
             public ExportTake(AnimationClip ConstructorAnimation, GameObject ConstructorPrefab, Rating ConstructorRating)
             {
@@ -150,13 +152,13 @@ namespace MrPuppet
                 if (AnimationOverwrite != null && AnimationOverwrite != "")
                 {
                     AssetDatabase.RenameAsset(filename, AnimationOverwrite);
-                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationOverwrite + ".anim", typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip) AssetDatabase.LoadAssetAtPath("Assets/Recordings/" + AnimationOverwrite + ".anim", typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
                     Exports.Add(currentTake);
                     AnimationOverwrite = null;
                 }
                 else
                 {
-                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip)AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
+                    ExportTake currentTake = new ExportPerformance.ExportTake((AnimationClip) AssetDatabase.LoadAssetAtPath(filename, typeof(AnimationClip)), RecorderTarget, Rating.Keeper);
                     Exports.Add(currentTake);
                 }
 
@@ -175,7 +177,7 @@ namespace MrPuppet
 
                 Filename = recorder.OutputFile;
 
-                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings)input).gameObject; }
+                foreach (var input in recorder.InputsSettings) { RecorderTarget = ((AnimationInputSettings) input).gameObject; }
 
                 Filename = Filename.Replace("<Take>", recorder.Take.ToString("000"));
                 Filename = Filename.Replace("<Scene>", SceneManager.GetActiveScene().name);
@@ -196,7 +198,6 @@ namespace MrPuppet
             string DataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/HyperMesh/Performances/";
             if (!Directory.Exists(DataPath))
                 DataPath = "Performances/";
-
 
             foreach (var export in Exports.ToList())
             {
@@ -225,16 +226,16 @@ namespace MrPuppet
                         // export
                         ModelExporter.ExportObject(DataPath + export._Animation.name + ".fbx", instance);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         errorFound = true;
                         Debug.LogError("<color=red>Export Error: </color> " + ex);
                     }
 
                     // cleanup
-                    if(export._Animation)
+                    if (export._Animation)
                         AssetDatabase.DeleteAsset("Assets/Recordings/" + export._Animation.name + ".controller");
-                    if(instance != null)
+                    if (instance != null)
                         DestroyImmediate(instance);
                 }
 
@@ -273,7 +274,7 @@ namespace MrPuppet
             public static void ShowUtilityWindow(ExportPerformance instance)
             {
                 ExportPerformanceInstance = instance;
-                window = (RecorderPrompt)EditorWindow.GetWindow(typeof(RecorderPrompt), true, "Rate Take");
+                window = (RecorderPrompt) EditorWindow.GetWindow(typeof(RecorderPrompt), true, "Rate Take");
                 window.ShowUtility();
                 window.position = new Rect((Screen.currentResolution.width / 2) - (320 / 2), (Screen.currentResolution.height / 2) - (100 / 2), 340, 100);
 

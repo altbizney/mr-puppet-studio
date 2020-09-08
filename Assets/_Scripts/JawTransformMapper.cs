@@ -1,10 +1,10 @@
 ﻿using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
-using Sirenix.OdinInspector.Editor;
 using UnityEditor;
+using Sirenix.OdinInspector.Editor;
 #endif
 
 namespace MrPuppet

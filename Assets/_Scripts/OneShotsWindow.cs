@@ -57,7 +57,7 @@ namespace MrPuppet
         static private string AudioClipNameAfterPlay;
         static private MrPuppetHubConnection HubConnection;
 
-        public class BlankMonoBehaviour : MonoBehaviour { }
+        public class BlankMonoBehaviour : MonoBehaviour {}
 
         public KeyCommand[] KeyCommands = new KeyCommand[10];
 
@@ -143,7 +143,7 @@ namespace MrPuppet
                 StartedRecording = true;
                 TakeCount += 1;
                 RecorderSetup(Clone);
-                            EditorApplication.ExecuteMenuItem("Window/General/Game");
+                EditorApplication.ExecuteMenuItem("Window/General/Game");
 
             }
         }

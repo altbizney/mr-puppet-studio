@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -98,7 +98,6 @@ namespace MrPuppet
         [HideInInspector]
         public bool ApplySensors = true;
         #endregion
-
 
         #region IK
         [DetailedInfoBox("IK bones help", "For the Bones 1-3 in each IK component (minus the 'Grounder') they will be oriented from tip to root instead of root to tip and example is as follows - \n\n Example Rig: UpperArm => Forearm => Wrist \n UpperArm: Bone 3 \n Forearm: Bone 2 \n Wrist: Bone 1 \n\n **The exception to this rule is the legs")]
@@ -820,9 +819,9 @@ namespace MrPuppet
                 // clamp to XYZ extents (BEFORE smooth)
                 position.Set(
                     LimitHipExtentX ? Mathf.Clamp(position.x, HipSpawnPosition.x - HipExtentX, HipSpawnPosition.x + HipExtentX) : position.x,
-                                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
-                                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
-                                );
+                    LimitHipExtentY ? Mathf.Clamp(position.y, HipSpawnPosition.y - HipExtentY, HipSpawnPosition.y + HipExtentY) : position.y,
+                    LimitHipExtentZ ? Mathf.Clamp(position.z, HipSpawnPosition.z - HipExtentZ, HipSpawnPosition.z + HipExtentZ) : position.z
+                );
 
                 // smoothly apply changes to position
                 HipTranslation.localPosition = Vector3.SmoothDamp(HipTranslation.localPosition, position, ref PositionVelocity, PositionSpeed);

@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEditor.Recorder;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
+using UnityEditor.Recorder;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,8 +29,7 @@ namespace MrPuppet
             Instance = this;
         }
 
-        public enum AudioModes { AudRef, OneShot};
-
+        public enum AudioModes { AudRef, OneShot }
 
         private RecorderWindow Recorder;
         private static string ButtonMessage;
@@ -63,15 +62,18 @@ namespace MrPuppet
         private void ChangeModes()
         {
 
-            if (EditorApplication.isPlaying){
+            if (EditorApplication.isPlaying)
+            {
 
-                if(!AudioRef)
+                if (!AudioRef)
                     AudioRef = FindObjectOfType<AudioReference>();
 
-                if (Mode == AudioModes.OneShot){
+                if (Mode == AudioModes.OneShot)
+                {
                     AudioRef.enabled = false;
                 }
-                if (Mode == AudioModes.AudRef){
+                if (Mode == AudioModes.AudRef)
+                {
                     AudioRef.enabled = true;
                 }
             }
@@ -103,8 +105,7 @@ namespace MrPuppet
         [DisableInEditorMode]
         private void Action()
         {
-            try
-            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
             catch { throw; }
 
             if (_ExportPerformance != EditorWindow.GetWindow<ExportPerformance>())
@@ -114,9 +115,9 @@ namespace MrPuppet
             {
                 if (CountdownValue < 1)
                 {
-                    _AudioClip = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
+                    _AudioClip = (AudioClip) AssetDatabase.LoadAssetAtPath("Assets/_SFX/beep-01.mp3", typeof(AudioClip));
 
-                    Camera.main.gameObject .AddComponent<CountDown>();
+                    Camera.main.gameObject.AddComponent<CountDown>();
                     Camera.main.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(StartCountdown());
                 }
             }
@@ -130,14 +131,13 @@ namespace MrPuppet
         {
             ColorState = Color.red;
 
-            try
-            { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+            try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
             catch { throw; }
 
             if (OneShots != EditorWindow.GetWindow<OneShotsWindow>())
                 OneShots = EditorWindow.GetWindow<OneShotsWindow>();
 
-            if(Recorder)
+            if (Recorder)
             {
                 if (!Recorder.IsRecording())
                 {

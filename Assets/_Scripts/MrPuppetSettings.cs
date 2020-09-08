@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor;
 
 namespace MrPuppet
 {
@@ -60,8 +60,7 @@ namespace MrPuppet
             public static GUIContent HyperMeshPath = new GUIContent("Use ~/HyperMesh/Performances path");
         }
 
-        public MrPuppetSettingsProvider(string path, SettingsScope scope = SettingsScope.User)
-            : base(path, scope) { }
+        public MrPuppetSettingsProvider(string path, SettingsScope scope = SettingsScope.User) : base(path, scope) {}
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
@@ -73,7 +72,6 @@ namespace MrPuppet
             EditorGUILayout.PropertyField(Settings.FindProperty("ShowsRootPath"), Styles.RootPath);
             EditorGUILayout.PropertyField(Settings.FindProperty("UseHyperMeshPerformancePath"), Styles.HyperMeshPath);
 
-
             if (GUI.changed)
             {
                 //MrPuppetSettings.SaveSettings(Settings.FindProperty("ShowsRootPath").stringValue, Settings.FindProperty("UseHyperMeshPerformancePath").boolValue);
@@ -84,7 +82,7 @@ namespace MrPuppet
         [SettingsProvider]
         public static SettingsProvider CreateMrPuppetSettingsProvider()
         {
-            var provider = new MrPuppetSettingsProvider("Preferences/Mr.Puppet", SettingsScope.User) { };
+            var provider = new MrPuppetSettingsProvider("Preferences/Mr.Puppet", SettingsScope.User) {};
 
             provider.keywords = GetSearchKeywordsFromGUIContentProperties<Styles>();
             return provider;

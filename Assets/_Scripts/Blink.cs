@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
-using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditorInternal;
+using Sirenix.OdinInspector.Editor;
 #endif
 
 namespace MrPuppet
@@ -67,7 +67,6 @@ namespace MrPuppet
                 StartCoroutine(BlinkRoutine());
             }
         }
-
 
         protected virtual void Update()
         {
@@ -180,7 +179,6 @@ namespace MrPuppet
             CreateBlendShapesList();
 
             CreateBlendShapesEditState();
-
 
             // Transforms List
             CreateTransformsList();
@@ -308,11 +306,11 @@ namespace MrPuppet
             GUI.color = edit ? Color.green : Color.white;
 
             if (GUI.Button(new Rect(
-                    rect.x + rect.width - 100,
-                    rect.y,
-                    100,
-                    EditorGUIUtility.singleLineHeight),
-                buttonLabel))
+                        rect.x + rect.width - 100,
+                        rect.y,
+                        100,
+                        EditorGUIUtility.singleLineHeight),
+                    buttonLabel))
             {
                 edit = !edit;
                 if (edit)
@@ -390,7 +388,6 @@ namespace MrPuppet
                         EditorGUIUtility.singleLineHeight),
                     element.BlendShapeIndex,
                     options);
-
 
                 // Setup values
                 if (EditorGUI.EndChangeCheck())
@@ -584,7 +581,7 @@ namespace MrPuppet
                 _transformEditStates.Add(new TransformEditState()
                 {
                     OriginalPosition = tk.Transform.localPosition,
-                    OriginalRotation = tk.Transform.localRotation
+                        OriginalRotation = tk.Transform.localRotation
                 });
             }
         }

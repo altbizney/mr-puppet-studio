@@ -15,7 +15,8 @@ public class PinBone : MonoBehaviour
         pos = bone.position;
     }
 
-    private void Update() {
+    private void Update()
+    {
         bone.rotation = rot;
         bone.position = pos;
     }

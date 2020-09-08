@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SampleAnimations : MonoBehaviour {
+public class SampleAnimations : MonoBehaviour
+{
 
     #region Static Variables
 
@@ -18,11 +19,13 @@ public class SampleAnimations : MonoBehaviour {
     #endregion
 
     #region Unity Methods
-    private void Start() {
-        
+    private void Start()
+    {
+
     }
 
-    private void Update() {
+    private void Update()
+    {
         GetInput();
     }
     #endregion
@@ -40,20 +43,24 @@ public class SampleAnimations : MonoBehaviour {
     #endregion
 
     #region Local Methods
-    void GetInput() {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+    void GetInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
             animator.SetTrigger("doReset");
             animator.ResetTrigger("doAction");
             animator.SetInteger("action", 1);
             animator.SetTrigger("doAction");
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
             animator.SetTrigger("doReset");
             animator.ResetTrigger("doAction");
             animator.SetInteger("action", 2);
             animator.SetTrigger("doAction");
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
             animator.SetTrigger("doReset");
             animator.ResetTrigger("doAction");
             animator.SetInteger("action", 3);

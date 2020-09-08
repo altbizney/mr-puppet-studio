@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
-using UnityEditor;
-using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEditor;
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -28,7 +28,6 @@ namespace MrPuppet
         private float LerpTimer;
         private List<JawBlendShapeMapper> JawBlendshapeComponents = new List<JawBlendShapeMapper>();
         private List<JawTransformMapper> JawTransformComponents = new List<JawTransformMapper>();
-
 
         [MinValue(0f)]
         public float RotationSpeed = 7f;

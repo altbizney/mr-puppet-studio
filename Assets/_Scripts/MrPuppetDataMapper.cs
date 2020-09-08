@@ -1,10 +1,9 @@
 ﻿using System;
-using Sirenix.OdinInspector;
-using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine;
+using UnityEngine.Events;
+using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -107,7 +106,7 @@ namespace MrPuppet
         private MrPuppetHubConnection HubConnection;
 
         // yanked from Framer https://github.com/framer/Framer-fork/blob/master/framer/Utils.coffee#L285
-        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float)(JawOpened - JawClosed)) * (1f - 0f));
+        public float JawPercent => 0f + (((HubConnection.Jaw - JawClosed) / (float) (JawOpened - JawClosed)) * (1f - 0f));
 
         public enum Joint { Shoulder, Elbow, Wrist }
 
@@ -156,7 +155,7 @@ namespace MrPuppet
         public void SubscribeEvent()
         {
             if (OnSubscribeEvent != null)
-            {  
+            {
                 OnSubscribeEvent();
             }
         }

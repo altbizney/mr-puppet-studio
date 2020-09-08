@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -110,7 +109,7 @@ namespace MrPuppet
         private void InitializeAnimation()
         {
 
-            if (!clone)//&& audioClip.loadState == AudioDataLoadState.Loaded
+            if (!clone) //&& audioClip.loadState == AudioDataLoadState.Loaded
             {
 
                 clone = Instantiate(Actor, Actor.transform.position, Quaternion.identity);
@@ -163,7 +162,7 @@ namespace MrPuppet
         {
             if (!EditorApplication.isPlaying)
             {
-              if ((HubConnection == FindObjectOfType<MrPuppetHubConnection>() || HubConnection) && !string.IsNullOrEmpty(AudioClipParseAfterPlay) && AudioClipParseAfterPlay != "Waiting for Animation Clip")
+                if ((HubConnection == FindObjectOfType<MrPuppetHubConnection>() || HubConnection) && !string.IsNullOrEmpty(AudioClipParseAfterPlay) && AudioClipParseAfterPlay != "Waiting for Animation Clip")
                 {
                     HubConnection.SendSocketMessage("COMMAND;PLAYBACK;STOP;" + AudioClipParseAfterPlay);
                     HubConnection = null;

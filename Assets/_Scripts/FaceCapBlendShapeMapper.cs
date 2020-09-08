@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System;
-using Sirenix.OdinInspector;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -65,7 +65,7 @@ namespace MrPuppet
                 mouthStretch_L,
                 mouthStretch_R,
                 tongueOut
-            };
+            }
 
             public ValueDropdownList<int> _BlendShapeNames = new ValueDropdownList<int>();
 

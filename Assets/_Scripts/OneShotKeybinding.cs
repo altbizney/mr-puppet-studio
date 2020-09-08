@@ -2,16 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 #endif
 
 namespace MrPuppet
@@ -26,17 +26,18 @@ namespace MrPuppet
         private MrPuppetHubConnection HubConnection;
 
         private enum Layer { LArm, RArm, CArm }
-        private Dictionary<string, Layer> TriggerLayerMap = new Dictionary<string, Layer>() {
-            { "wave-right", Layer.RArm },
-            { "thumbsup-left", Layer.LArm },
-            { "gesture-1-both", Layer.CArm },
-            { "gesture-3-right", Layer.RArm },
-            { "fingerwag-left", Layer.LArm },
-            { "gesture-2-left", Layer.LArm },
-            { "peace-left", Layer.LArm },
-            { "ok-left", Layer.LArm },
-            { "gesture-4-both", Layer.CArm },
-            { "gesture-5-both", Layer.CArm },
+        private Dictionary<string, Layer> TriggerLayerMap = new Dictionary<string, Layer>()
+        { // trick linter not to wrap
+            { "wave-right", Layer.RArm }, //
+            { "thumbsup-left", Layer.LArm }, //
+            { "gesture-1-both", Layer.CArm }, //
+            { "gesture-3-right", Layer.RArm }, //
+            { "fingerwag-left", Layer.LArm }, //
+            { "gesture-2-left", Layer.LArm }, //
+            { "peace-left", Layer.LArm }, //
+            { "ok-left", Layer.LArm }, //
+            { "gesture-4-both", Layer.CArm }, //
+            { "gesture-5-both", Layer.CArm }, //
         };
 
         private void Awake()
@@ -83,7 +84,7 @@ namespace MrPuppet
                 CoroutineManager[1] = StartCoroutine(EaseBackward(2));
                 LayerIndex = 2;
             }
-            
+
             //Stop any easing out of the layer you are currently trying to access
             if (CoroutineManager[LayerIndex] != null)
             {

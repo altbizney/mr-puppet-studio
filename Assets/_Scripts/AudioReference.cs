@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using System.Collections;
-
 
 //#if UNITY_EDITOR
 using UnityEditor;
@@ -35,7 +34,7 @@ namespace MrPuppet
         private double TimerOffset;
 
         private string TakeAfterPlay;
-        private string InfoBoxMsg = "Waiting for Take name... ";//\n\nPlease select the actor in the scene
+        private string InfoBoxMsg = "Waiting for Take name... "; //\n\nPlease select the actor in the scene
         private bool DisablePlayButton;
         private bool PlayModeEntered = false;
         private bool FACSPlayButton;
@@ -82,7 +81,7 @@ namespace MrPuppet
         [DisableIf("DisablePlayButton")]
         public void Play()
         {
-            Timer = 0;//TimerOffset = EditorApplication.timeSinceStartup * 1000f;
+            Timer = 0; //TimerOffset = EditorApplication.timeSinceStartup * 1000f;
             FACSPlayButton = true;
         }
 
@@ -260,7 +259,7 @@ namespace MrPuppet
                     if (Lines[y][0] == "bs")
                     {
                         // remainder of line is array of channel names
-                        FACS_bs = Lines[y].Skip(1).ToList().ConvertAll(delegate (string x) { return (FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels)Enum.Parse(typeof(FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels), x); });
+                        FACS_bs = Lines[y].Skip(1).ToList().ConvertAll(delegate(string x) { return (FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels) Enum.Parse(typeof(FaceCapBlendShapeMapper.BlendShapeMap.FACSChannels), x); });
                     }
 
                     var tempList = new List<float>();
@@ -284,7 +283,7 @@ namespace MrPuppet
                 InfoBoxMsg = "Found " + Take + ".txt, loaded " + FACS_k.Count + " frames.";
                 Timer = 0;
 
-                /* 
+                /*
                  if (EnableAudioPlayback && Application.isPlaying)
                  {
                      if (!HubConnection)
@@ -438,7 +437,6 @@ namespace MrPuppet
 
             LoadFACS();
         }
-
 
         private void CacheJawTransformMapper()
         {

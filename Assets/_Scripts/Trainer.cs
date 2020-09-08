@@ -40,9 +40,15 @@ namespace MrPuppet
 
             switch (CameraDropdown.value)
             {
-                case 0: BurtCamera.SetActive(true); break;
-                case 1: CliveCamera.SetActive(true); break;
-                case 2: LuciusCamera.SetActive(true); break;
+                case 0:
+                    BurtCamera.SetActive(true);
+                    break;
+                case 1:
+                    CliveCamera.SetActive(true);
+                    break;
+                case 2:
+                    LuciusCamera.SetActive(true);
+                    break;
             }
         }
 

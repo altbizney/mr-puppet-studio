@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MrPuppet;
 
-public class IKTag : MonoBehaviour {
+public class IKTag : MonoBehaviour
+{
 
     #region Static Variables
 
@@ -19,10 +20,13 @@ public class IKTag : MonoBehaviour {
     #endregion
 
     #region Unity Methods
-    private void Awake() {
+    private void Awake()
+    {
         IKButtPuppet root = this.transform.root.GetComponent<IKButtPuppet>();
-        if (root != null) {
-            switch (iKTagId) {
+        if (root != null)
+        {
+            switch (iKTagId)
+            {
                 case IKTagId.LeftArm:
                     this.gameObject.SetActive(root.enableLeftArmLimb);
                     break;
@@ -51,7 +55,8 @@ public class IKTag : MonoBehaviour {
     #endregion
 }
 
-public enum IKTagId {
+public enum IKTagId
+{
     Unknown = -1,
     Head = 0,
     Neck = 1,
@@ -62,4 +67,4 @@ public enum IKTagId {
     Grounder = 6,
     LeftLeg = 7,
     RightLeg = 8
-};
+}

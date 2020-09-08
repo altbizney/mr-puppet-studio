@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEditor.Recorder;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using UnityEditor.Recorder;
 #endif
-
 
 namespace MrPuppet
 {
@@ -243,7 +242,8 @@ namespace MrPuppet
 
                 SetButtPuppetSensors(true);
 
-                if (Actor.GetComponent<JawTransformMapper>() != null){
+                if (Actor.GetComponent<JawTransformMapper>() != null)
+                {
                     if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
                         JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
                 }
@@ -254,7 +254,8 @@ namespace MrPuppet
 
         private void InitializeAnimation()
         {
-            if (Actor.GetComponent<JawTransformMapper>() != null){
+            if (Actor.GetComponent<JawTransformMapper>() != null)
+            {
                 if (Actor.GetComponent<JawTransformMapper>().JawJoint != null)
                     JawJoint = Actor.GetComponent<JawTransformMapper>().JawJoint;
             }
@@ -331,8 +332,7 @@ namespace MrPuppet
 
             if (!Recorder)
             {
-                try
-                { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
+                try { Recorder = EditorWindow.GetWindow<RecorderWindow>(); }
                 catch { return; }
             }
             if (Recorder)
@@ -372,7 +372,7 @@ namespace MrPuppet
 
         private IEnumerator StopAfterAnimation()
         {
-            yield return new WaitForSeconds((float)System.Math.Ceiling(_AnimationClip.length * 1000) / 1000);
+            yield return new WaitForSeconds((float) System.Math.Ceiling(_AnimationClip.length * 1000) / 1000);
 
             if (Recorder)
             {
@@ -487,19 +487,22 @@ namespace MrPuppet
                     if (PAR.OverwriteJaw == true)
                     {
 
-                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                        if (PAR.Actor.GetComponent<JawTransformMapper>() != null)
+                        {
                             if (PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
                                 PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = false;
                         }
 
-                        if (PAR.JawJoint != null){
+                        if (PAR.JawJoint != null)
+                        {
                             PAR.JawJoint.localRotation = PAR.JawJointMimic.localRotation;
                             PAR.JawJoint.localPosition = PAR.JawJointMimic.localPosition;
                         }
                     }
                     else
                     {
-                        if(PAR.Actor.GetComponent<JawTransformMapper>() != null){
+                        if (PAR.Actor.GetComponent<JawTransformMapper>() != null)
+                        {
                             if (!PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors)
                                 PAR.Actor.GetComponent<JawTransformMapper>().ApplySensors = true;
                         }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using UnityEditor.Animations;
-
+using Sirenix.OdinInspector;
 
 namespace MrPuppet
 {
@@ -23,7 +22,6 @@ namespace MrPuppet
             private Quaternion full;
             private Quaternion weighted;
             private Quaternion attach;
-
 
             public void SnapshotSpawn()
             {
@@ -338,7 +336,6 @@ namespace MrPuppet
                 if (Input.GetKeyDown(KeyCode.D)) { UnsubscribeFromSensors(); }
             }
         }
-
 
         // REMINDER: Change = Quaternion.Inverse(Last) * Current;
 

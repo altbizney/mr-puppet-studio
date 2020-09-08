@@ -1,6 +1,6 @@
-﻿using Sirenix.OdinInspector;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
 using UnityEditor;
